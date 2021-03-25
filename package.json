@@ -16,10 +16,14 @@
   "author": "Rogerio Romao",
   "license": "CC0-1.0",
   "devDependencies": {
+<<<<<<< HEAD
     "electron": "^9.0.0",
     "electron-packager": "^15.0.0"
   },
   "dependencies": {
     "ionicons": "^5.0.1"
+=======
+    "electron": "^12.0.2"
+>>>>>>> d4a77ce697e54ff947751669a8449058c210d543
   }
 }
