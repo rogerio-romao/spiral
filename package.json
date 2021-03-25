@@ -1,22 +1,25 @@
 {
-  "name": "electron-quick-start",
+  "name": "spiral-player",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Music Player with generative art visualizer.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "music",
+    "player",
+    "generative",
+    "art",
+    "visualizer"
   ],
-  "author": "GitHub",
+  "author": "Rogerio Romao",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^9.0.0"
+    "electron": "^9.0.0",
+    "electron-packager": "^15.0.0"
+  },
+  "dependencies": {
+    "ionicons": "^5.0.1"
   }
 }
