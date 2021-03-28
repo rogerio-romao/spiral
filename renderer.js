@@ -224,7 +224,10 @@ const ALGOS = [
   'duotone',
   'crosshatch',
   'networks',
-  'spikral'
+  'spikral',
+  'fruits',
+  'zentangles',
+  'zigzag'
 ]
 // stores the last played algorithms
 let LAST_ALGOS = []
@@ -1075,6 +1078,24 @@ function chooseAlgos() {
       displayAlgos('SPIKRAL')
       ctx.save()
       runningAlgo = new Spikral()
+      runningAlgo.draw()
+      break
+    case 'fruits':
+      displayAlgos('FRUITS')
+      ctx.save()
+      runningAlgo = new Fruits()
+      runningAlgo.draw()
+      break
+    case 'zentangles':
+      displayAlgos('ZENTANGLES')
+      ctx.save()
+      runningAlgo = new Zentangles()
+      runningAlgo.draw()
+      break
+    case 'zigzag':
+      displayAlgos('ZIGZAG')
+      ctx.save()
+      runningAlgo = new Zigzag()
       runningAlgo.draw()
       break
   }
@@ -10055,18 +10076,19 @@ class Crosshatch {
 class Networks {
   constructor() {
     this.drawAmount = 0.01
-    this.x = random(0, w)
-    this.y = random(0, h)
+    this.x = w / 2
+    this.y = h / 2
     this.rot = random(1, 71)
     this.size = random(30, 200)
+    this.sizeIncrease = Math.random() * random(0, 5)
 
     ctx.strokeStyle = randomColor()
 
     this.draw = () => {
       if (t % speed === 0) {
         ctx.arc(this.x, this.y, this.size, 0, this.drawAmount * Math.PI * 2)
-        this.drawAmount += 0.0025
-        this.size += 0.5
+        this.drawAmount += 0.001
+        this.size += this.sizeIncrease
         ctx.stroke()
         ctx.beginPath()
       }
@@ -10081,6 +10103,7 @@ class Networks {
         this.y = random(0, h)
         this.rot = random(1, 71)
         this.size = random(30, 200)
+        this.sizeIncrease = Math.random() * random(0, 5)
       }
       interval = requestAnimationFrame(this.draw)
     }
@@ -10114,6 +10137,167 @@ class Spikral {
       if (t % (speed * 1500) === 0) {
         this.rot = random(1, 22)
       }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Fruits {
+  constructor() {
+    this.row = 0
+    this.col = 0
+    this.cellSizes = [50, 100, 150, 200, 250, 300]
+    this.cell = this.cellSizes[random(0, this.cellSizes.length)]
+    this.size = random(10, 100)
+
+    ctx.strokeStyle = 'black'
+    ctx.fillStyle = randomColor(0, 255, 0.1, 0.33)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.arc(
+          this.col * this.cell - this.cell,
+          this.row * this.cell - this.cell,
+          this.size,
+          0,
+          2 * Math.PI
+        )
+        ctx.stroke()
+        ctx.fill()
+        ctx.beginPath()
+
+        this.col++
+        if (this.col * this.cell - this.cell * 2 > w) {
+          this.col = 0
+          this.row++
+        }
+        if (this.row * this.cell - this.cell * 2 > h) {
+          ctx.beginPath()
+          this.col = 0
+          this.row = 0
+          this.cell = this.cellSizes[random(0, this.cellSizes.length)]
+          this.size = random(10, 100)
+          ctx.beginPath()
+          ctx.fillStyle = randomColor(0, 255, 0.1, 0.33)
+        }
+      }
+      t++
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Zentangles {
+  constructor() {
+    this.x = random(0, w)
+    this.xmod = random(-10, 11)
+    this.y = random(0, h)
+    this.ymod = random(-10, 11)
+    this.cpx = random(0, w)
+    this.cpxmod = random(-10, 11)
+    this.cpy = random(0, h)
+    this.cpymod = random(-10, 11)
+    this.rot = random(1, 360)
+
+    ctx.strokeStyle = randomColor(0, 255, 0.75, 1)
+    ctx.fillStyle = randomColor(0, 255, 0.1, 0.6)
+    ctx.lineWidth = 0.1
+    ctx.moveTo(this.x, this.y)
+    ctx.fillRect(0, 0, w, h)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.quadraticCurveTo(this.cpx, this.cpy, this.x, this.y)
+        ctx.stroke()
+        this.x += this.xmod
+        if (this.x < 0 || this.x > w) {
+          this.xmod = -this.xmod
+        }
+        this.y += this.ymod
+        if (this.y < 0 || this.y > h) {
+          this.ymod = -this.ymod
+        }
+        this.cpx += this.cpxmod
+        if (this.cpx < -2 * w || this.cpx > 2 * w) {
+          this.cpxmod = -this.cpxmod
+        }
+        this.cpy += this.cpymod
+        if (this.cpy < -2 * h || this.cpy > 2 * h) {
+          this.cpymod = -this.cpymod
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 300) === 0) {
+        ctx.fillRect(-w, -h, 3 * w, 3 * h)
+        ctx.beginPath()
+        this.x = random(0, w)
+        this.xmod = random(-10, 11)
+        this.y = random(0, h)
+        this.ymod = random(-10, 11)
+        ctx.moveTo(this.x, this.y)
+        this.cpx = random(0, w)
+        this.cpxmod = random(-10, 11)
+        this.cpy = random(0, h)
+        this.cpymod = random(-10, 11)
+        this.rot = random(1, 360)
+        ctx.strokeStyle = randomColor(0, 255, 0.75, 1)
+        ctx.fillStyle = randomColor(0, 255, 0.1, 0.6)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Zigzag {
+  constructor() {
+    this.height = random(8, 64)
+    this.width = random(8, 64)
+    this.col = 0
+    this.row = 0
+
+    ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.3, 1)
+    ctx.moveTo(0, this.height)
+    ctx.shadowBlur = 10
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.lineTo(
+          this.width / 2 + this.col * this.width,
+          this.row * this.height
+        )
+        ctx.lineTo(
+          this.width + this.col * this.width,
+          this.height + this.row * this.height
+        )
+        ctx.stroke()
+        this.col++
+        if (this.col * this.width - this.col > w) {
+          this.col = 0
+          this.row++
+          ctx.translate(w / 2, h / 2)
+          ctx.rotate(Math.PI)
+          ctx.translate(-w / 2, -h / 2)
+          ctx.moveTo(
+            this.col * this.width,
+            this.row * this.height + this.height
+          )
+        }
+        if (this.row * this.height - this.row > h) {
+          this.row = 0
+          this.height = random(8, 64)
+          this.width = random(8, 64)
+          ctx.translate(w / 2, h / 2)
+          ctx.rotate(Math.PI)
+          ctx.translate(-w / 2, -h / 2)
+          ctx.beginPath()
+          ctx.moveTo(0, this.height)
+          ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.3, 1)
+        }
+      }
+      t++
       interval = requestAnimationFrame(this.draw)
     }
   }
