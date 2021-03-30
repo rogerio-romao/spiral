@@ -227,7 +227,8 @@ const ALGOS = [
   'spikral',
   'fruits',
   'zentangles',
-  'zigzag'
+  'zigzag',
+  'typobrush'
 ]
 // stores the last played algorithms
 let LAST_ALGOS = []
@@ -1096,6 +1097,12 @@ function chooseAlgos() {
       displayAlgos('ZIGZAG')
       ctx.save()
       runningAlgo = new Zigzag()
+      runningAlgo.draw()
+      break
+    case 'typobrush':
+      displayAlgos('TYPOBRUSH')
+      ctx.save()
+      runningAlgo = new Typobrush()
       runningAlgo.draw()
       break
   }
@@ -10298,6 +10305,93 @@ class Zigzag {
         }
       }
       t++
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Typobrush {
+  constructor() {
+    this.x = random(0, w)
+    this.y = random(0, h)
+    this.letters = [
+      2703,
+      2705,
+      2709,
+      2713,
+      2715,
+      2716,
+      2718,
+      2719,
+      2720,
+      2721,
+      2722,
+      2725,
+      2726,
+      2731,
+      2732,
+      2735,
+      2738,
+      2739,
+      2741,
+      2742,
+      2743,
+      2745,
+      2748,
+      2750,
+      2751,
+      2752,
+      2753,
+      2760,
+      2764,
+      2768,
+      2784,
+      2791,
+      2792,
+      2795,
+      2796,
+      2797,
+      2798,
+      2799,
+      2800
+    ]
+    this.letter = String.fromCharCode(
+      this.letters[random(0, this.letters.length)]
+    )
+    this.size = 20
+    this.sizeInc = random(1, 6)
+    this.rot = random(1, 400)
+
+    ctx.strokeStyle = randomColor(0, 255, 0.33, 0.33)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)'
+    ctx.textAlign = 'center'
+    ctx.font = `${this.size}px serif`
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.strokeText(this.letter, this.x, this.y)
+        ctx.font = `${this.size}px serif`
+        this.size += this.sizeInc
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 150) === 0) {
+        this.size = 20
+        ctx.font = `${this.size}px serif`
+        this.x = random(0, w)
+        this.y = random(0, h)
+        this.rot = random(1, 400)
+        this.sizeInc = random(1, 6)
+        ctx.strokeStyle = randomColor(0, 255, 0.33, 0.33)
+      }
+      if (t % (speed * 1500) === 0) {
+        ctx.fillRect(-w, -h, 3 * w, 3 * h)
+        this.letter = String.fromCharCode(
+          this.letters[random(0, this.letters.length)]
+        )
+      }
       interval = requestAnimationFrame(this.draw)
     }
   }
