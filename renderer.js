@@ -228,7 +228,9 @@ const ALGOS = [
   'fruits',
   'zentangles',
   'zigzag',
-  'typobrush'
+  'typobrush',
+  'veils',
+  'harmonie'
 ]
 // stores the last played algorithms
 let LAST_ALGOS = []
@@ -238,7 +240,7 @@ function chooseAlgos() {
   let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo))
   let choose = picks[random(0, picks.length)]
   LAST_ALGOS.push(choose)
-  if (LAST_ALGOS.length > 55) LAST_ALGOS.shift()
+  if (LAST_ALGOS.length > 57) LAST_ALGOS.shift()
   // setup the chosen algorithm
   switch (choose) {
     case 'squares':
@@ -1103,6 +1105,18 @@ function chooseAlgos() {
       displayAlgos('TYPOBRUSH')
       ctx.save()
       runningAlgo = new Typobrush()
+      runningAlgo.draw()
+      break
+    case 'veils':
+      displayAlgos('VEILS')
+      ctx.save()
+      runningAlgo = new Veils()
+      runningAlgo.draw()
+      break
+    case 'harmonie':
+      displayAlgos('HARMONIE')
+      ctx.save()
+      runningAlgo = new Harmonie()
       runningAlgo.draw()
       break
   }
@@ -5353,19 +5367,34 @@ class VanishingRays {
 class CarnivalRide {
   constructor() {
     this.letters = [
-      1842,
-      1845,
-      1848,
-      1849,
-      1852,
-      1856,
-      1857,
-      1858,
-      1859,
-      1860,
-      1861,
-      1863,
-      1866
+      3103,
+      3104,
+      3105,
+      3107,
+      3108,
+      3109,
+      3111,
+      3112,
+      3114,
+      3115,
+      3118,
+      3119,
+      3122,
+      3128,
+      3129,
+      3133,
+      3136,
+      3157,
+      3162,
+      3174,
+      3175,
+      3176,
+      3179,
+      3183,
+      3192,
+      3193,
+      3194,
+      3199
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -5572,37 +5601,27 @@ class Plaid {
 class ThreeD {
   constructor() {
     this.letters = [
-      1920,
-      1921,
-      1923,
-      1924,
-      1925,
-      1926,
-      1929,
-      1930,
-      1932,
-      1934,
-      1935,
-      1936,
-      1937,
-      1939,
-      1942,
-      1944,
-      1945,
-      1947,
-      1949,
-      1955,
-      1959,
-      1966,
-      1967,
-      1968,
-      1984,
-      1988,
-      1993,
-      1994,
-      1995,
-      1998,
-      2000
+      3044,
+      3045,
+      3046,
+      3047,
+      3048,
+      3052,
+      3054,
+      3057,
+      3059,
+      3063,
+      3077,
+      3079,
+      3080,
+      3086,
+      3087,
+      3088,
+      3090,
+      3093,
+      3094,
+      3097,
+      3100
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -5825,59 +5844,37 @@ class Organic {
 
 class UFOs {
   constructor() {
-    this.color1 = randomColor(30, 255, 0.5, 1)
-    this.color2 = randomColor(30, 255, 0.5, 1)
-    this.color3 = randomColor(30, 255, 0.5, 1)
-    this.perc1 = random(1, 45) + '%'
-    this.perc2 = random(1, 45) + '%'
-    this.point1 = random(0, w / 2)
-    this.point2 = random(0, h / 2)
-    this.point3 = random(w / 2, w)
-    this.point4 = random(h / 2, h)
+    this.color1 = randomColor()
+    this.color2 = randomColor()
+    this.color3 = randomColor()
+    this.perc1 = random(1, 45)
+    this.perc2 = random(1, 45)
     this.repeats = random(10, 150)
-    this.rotate = random(1, 37)
 
-    canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}, ${this.color3} ${this.perc1} ${this.repeats}px)`
-    ctx.strokeStyle = randomColor(0, 255, 0.25, 0.65)
-    ctx.lineWidth = 3
+    canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`
+    ctx.globalCompositeOperation = 'multiply'
 
     this.draw = () => {
       if (t % speed === 0) {
-        ctx.beginPath()
-        ctx.arcTo(
-          this.point1,
-          this.point2,
-          this.point3,
-          this.point4,
-          this.repeats
-        )
-        ctx.stroke()
+        canvas.style.background = `repeating-radial-gradient(circle at center, ${
+          this.color1
+        }, ${this.color2} ${this.perc2--}%, ${this.color3} ${this
+          .perc1++}% ${this.repeats++}px)`
       }
-      ctx.translate(w / 2, h / 2)
-      ctx.rotate(this.rotate)
-      ctx.translate(-w / 2, -h / 2)
       t++
-      if (t % (speed * 80) === 0) {
-        this.point1 = random(0, w / 2)
-        this.point2 = random(0, h / 2)
-        this.point3 = random(w / 2, w)
-        this.point4 = random(h / 2, h)
-      }
-      if (t % (speed * 120) === 0) {
+      if (t % (speed * 40) === 0) {
         ctx.beginPath()
-        this.color1 = randomColor(30, 255, 0.5, 1)
-        this.color2 = randomColor(30, 255, 0.5, 1)
-        this.color3 = randomColor(30, 255, 0.5, 1)
-        this.perc1 = random(1, 45) + '%'
-        this.perc2 = random(1, 45) + '%'
+        this.color1 = randomColor()
+        this.color2 = randomColor()
+        this.color3 = randomColor()
+        this.perc1 = random(1, 45)
+        this.perc2 = random(1, 45)
         this.repeats = random(10, 150)
-        canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}, ${this.color3} ${this.perc1} ${this.repeats}px)`
-      }
-      if (t % (speed * 160) === 0) {
-        ctx.strokeStyle = randomColor(0, 255, 0.25, 0.65)
-      }
-      if (t % (speed * 200) === 0) {
-        this.rotate = random(1, 37)
+        canvas.style.background = `repeating-radial-gradient(circle at center, ${
+          this.color1
+        }, ${this.color2} ${this.perc2++}%, ${this.color3} ${this.perc1--}% ${
+          this.repeats
+        }px)`
       }
       interval = requestAnimationFrame(this.draw)
     }
@@ -6819,12 +6816,14 @@ class BehindBars {
       }
       t++
       if (t % (speed * 15) === 0) {
+        ctx.globalCompositeOperation = 'overlay'
         ctx.strokeStyle = randomColor()
         ctx.translate(w / 2, h / 2)
         ctx.rotate(this.rotate)
         ctx.translate(-w / 2, -h / 2)
       }
       if (t % (speed * 180) === 0) {
+        ctx.globalCompositeOperation = 'source-over'
         this.rotate = random(1, 60)
         ctx.lineWidth = random(3, 75)
         ctx.shadowBlur = ctx.lineWidth > 30 ? 30 : ctx.lineWidth
@@ -6838,51 +6837,50 @@ class BehindBars {
 class Shadowy {
   constructor() {
     this.letters = [
-      2001,
-      2002,
-      2004,
-      2005,
-      2006,
-      2011,
-      2014,
-      2015,
-      2019,
-      2021,
-      2022,
-      2032,
-      2035,
-      2036,
-      2040,
-      2042,
-      2048,
-      2049,
-      2050,
-      2051,
-      2052,
-      2053,
-      2054,
-      2055,
-      2056,
-      2057,
-      2061,
-      2063,
-      2066,
-      2069,
-      2072,
-      2073,
-      2074,
-      2078,
-      2079,
-      2081,
-      2083,
-      2097,
-      2100
+      3201,
+      3202,
+      3203,
+      3205,
+      3207,
+      3208,
+      3209,
+      3210,
+      3215,
+      3218,
+      3219,
+      3223,
+      3225,
+      3231,
+      3235,
+      3236,
+      3238,
+      3246,
+      3247,
+      3249,
+      3250,
+      3254,
+      3255,
+      3256,
+      3257,
+      3260,
+      3262,
+      3265,
+      3266,
+      3268,
+      3271,
+      3272,
+      3274,
+      3275,
+      3285,
+      3287,
+      3296,
+      3297
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
     )
     this.rotate = random(5, 355)
-    this.fontSize = random(34, 430)
+    this.fontSize = random(34, 390)
 
     ctx.font = `bold ${this.fontSize}px serif`
     ctx.shadowColor = randomColor(55, 255, 0.7, 1)
@@ -6905,7 +6903,7 @@ class Shadowy {
       t++
       if (t % (speed * 75) === 0) {
         ctx.shadowColor = randomColor(55, 255, 0.7, 1)
-        this.fontSize = random(34, 430)
+        this.fontSize = random(34, 390)
         ctx.font = `bold ${this.fontSize}px serif`
         this.rotate = random(5, 355)
       }
@@ -10389,6 +10387,166 @@ class Typobrush {
       if (t % (speed * 1500) === 0) {
         ctx.fillRect(-w, -h, 3 * w, 3 * h)
         this.letter = String.fromCharCode(
+          this.letters[random(0, this.letters.length)]
+        )
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Veils {
+  constructor() {
+    this.x = random(0, w)
+    this.y = random(0, h)
+    this.letters = [
+      2801,
+      2817,
+      2819,
+      2822,
+      2824,
+      2827,
+      2832,
+      2835,
+      2837,
+      2849,
+      2855,
+      2856,
+      2858,
+      2859,
+      2860,
+      2862,
+      2873,
+      2877,
+      2878,
+      2880,
+      2891,
+      2893
+    ]
+    this.letter = String.fromCharCode(
+      this.letters[random(0, this.letters.length)]
+    )
+    this.rot = 1
+    ctx.strokeStyle = randomColor(0, 255, 0.5, 0.5)
+    ctx.textAlign = 'center'
+    this.size = random(30, 400)
+    ctx.font = `${this.size}px serif`
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.strokeText(this.letter, this.x, this.y)
+
+        this.size += 2
+        ctx.font = `${this.size}px serif`
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 540) === 0) {
+        this.letter = String.fromCharCode(
+          this.letters[random(0, this.letters.length)]
+        )
+        this.size = random(30, 400)
+        ctx.font = `${this.size}px serif`
+        this.x = random(0, w)
+        this.y = random(0, h)
+        ctx.strokeStyle = randomColor(0, 255, 0.5, 0.5)
+      }
+      if (t % (speed * 1620) === 0) {
+        this.rot++
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Harmonie {
+  constructor() {
+    this.x = random(0, w)
+    this.y = random(0, h)
+    this.letters = [
+      2902,
+      2908,
+      2909,
+      2911,
+      2913,
+      2915,
+      2918,
+      2919,
+      2921,
+      2922,
+      2924,
+      2925,
+      2926,
+      2927,
+      2928,
+      2929,
+      2930,
+      2931,
+      2932,
+      2934,
+      2938,
+      2947,
+      2949,
+      2952,
+      2953,
+      2960,
+      2962,
+      2970,
+      2972,
+      2975,
+      2980,
+      2984,
+      2986,
+      2990,
+      2991,
+      2992,
+      2994,
+      2997,
+      2998
+    ]
+    this.letter1 = String.fromCharCode(
+      this.letters[random(0, this.letters.length)]
+    )
+    this.letter2 = String.fromCharCode(
+      this.letters[random(0, this.letters.length)]
+    )
+    this.size = random(20, 50)
+    this.rot = 23
+
+    ctx.strokeStyle = randomColor()
+    ctx.fillStyle = randomColor()
+    ctx.textAlign = 'center'
+    ctx.font = `${this.size}px serif`
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        if (t % 2) {
+          ctx.strokeText(this.letter1, this.x, this.y)
+        } else {
+          ctx.fillText(this.letter2, this.x, this.y)
+        }
+        ctx.font = `${this.size}px serif`
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 180) === 0) {
+        this.size = random(20, 50)
+        ctx.font = `${this.size}px serif`
+        this.x = random(0, w)
+        this.y = random(0, h)
+        this.rot = random(1, 400)
+        ctx.strokeStyle = randomColor()
+        ctx.fillStyle = randomColor()
+      }
+      if (t % (speed * 900) === 0) {
+        this.letter1 = String.fromCharCode(
+          this.letters[random(0, this.letters.length)]
+        )
+        this.letter2 = String.fromCharCode(
           this.letters[random(0, this.letters.length)]
         )
       }
