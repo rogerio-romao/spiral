@@ -23,9 +23,15 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+<<<<<<< HEAD
   createWindow();
 
   app.on("activate", function () {
+=======
+  createWindow()
+
+  app.on('activate', function () {
+>>>>>>> 39bead0007d2a9e0ef48c8365472b2d8bb06a095
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
