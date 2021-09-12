@@ -6,6 +6,7 @@
 // process.
 'use strict'
 
+// Extend Canvas with rounded rectangles
 CanvasRenderingContext2D.prototype.roundRect = function (
   x,
   y,
@@ -51,6 +52,189 @@ CanvasRenderingContext2D.prototype.roundRect = function (
   }
   if (fill) {
     this.fill()
+  }
+}
+
+// Physics and math classes from Youtube channel Coding Math
+// Vector class
+class Vector {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+  }
+  setPosX(value) {
+    this.x = value
+  }
+  getX() {
+    return this.x
+  }
+  setY(value) {
+    this.y = value
+  }
+  getY() {
+    return this.y
+  }
+  setAngle(angle) {
+    const length = this.getLength()
+    this.x = Math.cos(angle) * length
+    this.y = Math.sin(angle) * length
+  }
+  getAngle() {
+    return Math.atan2(this.y, this.x)
+  }
+  setLength(length) {
+    const angle = this.getAngle()
+    this.x = Math.cos(angle) * length
+    this.y = Math.sin(angle) * length
+  }
+  getLength() {
+    return Math.sqrt(this.x * this.x + this.y * this.y)
+  }
+  add(v2) {
+    return new Vector(this.x + v2.getX(), this.y + v2.getY())
+  }
+  subtract(v2) {
+    return new Vector(this.x - v2.getX(), this.y - v2.getY())
+  }
+  multiply(val) {
+    return new Vector(this.x * val, this.y * val)
+  }
+  divide(val) {
+    return new Vector(this.x / val, this.y / val)
+  }
+  addTo(v2) {
+    this.x += v2.getX()
+    this.y += v2.getY()
+  }
+  subtractFrom(v2) {
+    this.x -= v2.getX()
+    this.y -= v2.getY()
+  }
+  multiplyBy(val) {
+    this.x *= val
+    this.y *= val
+  }
+  divideBy(val) {
+    this.x /= val
+    this.y /= val
+  }
+}
+
+// Particle class
+class Particle {
+  constructor(x, y, speed, direction, grav) {
+    this.position = new Vector(x, y)
+    this.velocity = new Vector(0, 0)
+    this.velocity.setLength(speed)
+    this.velocity.setAngle(direction)
+    this.gravity = new Vector(0, grav || 0)
+    this.bounce = -1
+  }
+  accelerate(accel) {
+    this.velocity.addTo(accel)
+  }
+  update() {
+    this.velocity.multiplyBy(this.friction)
+    this.velocity.addTo(this.gravity)
+    this.position.addTo(this.velocity)
+  }
+  angleTo(p2) {
+    return Math.atan2(
+      p2.position.getY() - this.position.getY(),
+      p2.position.getX() - this.position.getX()
+    )
+  }
+  distanceTo(p2) {
+    const dx = p2.position.getX() - this.position.getX()
+    const dy = p2.position.getY() - this.position.getY()
+    return Math.sqrt(dx * dx + dy * dy)
+  }
+  gravitateTo(p2) {
+    const grav = new Vector(0, 0)
+    const dist = this.distanceTo(p2)
+    grav.setLength(p2.mass / (dist * dist))
+    grav.setAngle(this.angleTo(p2))
+    this.velocity.addTo(grav)
+  }
+}
+
+// Math utils
+const utils = {
+  norm(value, min, max) {
+    return (value - min) / (max - min)
+  },
+
+  lerp(norm, min, max) {
+    return (max - min) * norm + min
+  },
+
+  map(value, sourceMin, sourceMax, destMin, destMax) {
+    return this.lerp(this.norm(value, sourceMin, sourceMax), destMin, destMax)
+  },
+
+  clamp(value, min, max) {
+    return Math.min(Math.max(value, Math.min(min, max)), Math.max(min, max))
+  },
+
+  distance(p0, p1) {
+    const dx = p1.x - p0.x
+    const dy = p1.y - p0.y
+    return Math.sqrt(dx * dx + dy * dy)
+  },
+
+  distanceXY(x0, y0, x1, y1) {
+    const dx = x1 - x0
+    const dy = y1 - y0
+    return Math.sqrt(dx * dx + dy * dy)
+  },
+
+  circleCollision(c0, c1) {
+    return this.distance(c0, c1) <= c0.radius + c1.radius
+  },
+
+  circlePointCollision(x, y, circle) {
+    return this.distanceXY(x, y, circle.x, circle.y) < circle.radius
+  },
+
+  pointInRect(x, y, rect) {
+    return (
+      this.inRange(x, rect.x, rect.x + rect.width) &&
+      this.inRange(y, rect.y, rect.y + rect.height)
+    )
+  },
+
+  inRange(value, min, max) {
+    return value >= Math.min(min, max) && value <= Math.max(min, max)
+  },
+
+  rangeIntersect(min0, max0, min1, max1) {
+    return (
+      Math.max(min0, max0) >= Math.min(min1, max1) &&
+      Math.min(min0, max0) <= Math.max(min1, max1)
+    )
+  },
+
+  rectIntersect(r0, r1) {
+    return (
+      this.rangeIntersect(r0.x, r0.x + r0.width, r1.x, r1.x + r1.width) &&
+      this.rangeIntersect(r0.y, r0.y + r0.height, r1.y, r1.y + r1.height)
+    )
+  },
+
+  degreesToRads(degrees) {
+    return (degrees / 180) * Math.PI
+  },
+
+  radsToDegrees(radians) {
+    return (radians * 180) / Math.PI
+  },
+
+  randomRange(min, max) {
+    return min + Math.random() * (max - min)
+  },
+
+  randomInt(min, max) {
+    return Math.floor(min + Math.random() * (max - min + 1))
   }
 }
 
@@ -230,7 +414,39 @@ const ALGOS = [
   'zigzag',
   'typobrush',
   'veils',
-  'harmonie'
+  'harmonie',
+  'portals',
+  'sandala',
+  'ghostly-shapes',
+  'psycho-rainbow',
+  'hallucinate',
+  'the-hive',
+  'boxes',
+  'digital-art',
+  'thread',
+  'helix',
+  'slices',
+  'records',
+  'lisajou',
+  'division',
+  'blur',
+  'trance',
+  'triangulate',
+  'halfsies',
+  'loading',
+  'quadratic',
+  'hubble',
+  'vortrix',
+  'vanishing-point',
+  'cubist',
+  'subwoofer',
+  'deep-sea',
+  'soapy-bubbles',
+  'gridlock',
+  'give-n-take',
+  'ethereal',
+  'glowsticks',
+  'mikado'
 ]
 // stores the last played algorithms
 let LAST_ALGOS = []
@@ -240,7 +456,7 @@ function chooseAlgos() {
   let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo))
   let choose = picks[random(0, picks.length)]
   LAST_ALGOS.push(choose)
-  if (LAST_ALGOS.length > 57) LAST_ALGOS.shift()
+  if (LAST_ALGOS.length > 58) LAST_ALGOS.shift()
   // setup the chosen algorithm
   switch (choose) {
     case 'squares':
@@ -1117,6 +1333,198 @@ function chooseAlgos() {
       displayAlgos('HARMONIE')
       ctx.save()
       runningAlgo = new Harmonie()
+      runningAlgo.draw()
+      break
+    case 'portals':
+      displayAlgos('PORTALS')
+      ctx.save()
+      runningAlgo = new Portals()
+      runningAlgo.draw()
+      break
+    case 'sandala':
+      displayAlgos('SANDALA')
+      ctx.save()
+      runningAlgo = new Sandala()
+      runningAlgo.draw()
+      break
+    case 'ghostly-shapes':
+      displayAlgos('GHOSTLY SHAPES')
+      ctx.save()
+      runningAlgo = new GhostlyShapes()
+      runningAlgo.draw()
+      break
+    case 'psycho-rainbow':
+      displayAlgos('PSYCHO RAINBOW')
+      ctx.save()
+      runningAlgo = new PsychoRainbow()
+      runningAlgo.draw()
+      break
+    case 'hallucinate':
+      displayAlgos('HALLUCINATE')
+      ctx.save()
+      runningAlgo = new Hallucinate()
+      runningAlgo.draw()
+      break
+    case 'the-hive':
+      displayAlgos('THE HIVE')
+      ctx.save()
+      runningAlgo = new Hive()
+      runningAlgo.draw()
+      break
+    case 'boxes':
+      displayAlgos('BOXES')
+      ctx.save()
+      runningAlgo = new Boxes()
+      runningAlgo.draw()
+      break
+    case 'digital-art':
+      displayAlgos('DIGITAL ART')
+      ctx.save()
+      runningAlgo = new DigitalArt()
+      runningAlgo.draw()
+      break
+    case 'thread':
+      displayAlgos('THREAD')
+      ctx.save()
+      runningAlgo = new Thread()
+      runningAlgo.draw()
+      break
+    case 'helix':
+      displayAlgos('HELIX')
+      ctx.save()
+      runningAlgo = new Helix()
+      runningAlgo.draw()
+      break
+    case 'slices':
+      displayAlgos('SLICES')
+      ctx.save()
+      runningAlgo = new Slices()
+      runningAlgo.draw()
+      break
+    case 'records':
+      displayAlgos('RECORDS')
+      ctx.save()
+      runningAlgo = new Records()
+      runningAlgo.draw()
+      break
+    case 'lisajou':
+      displayAlgos('LISA JOU')
+      ctx.save()
+      runningAlgo = new LisaJou()
+      runningAlgo.draw()
+      break
+    case 'division':
+      displayAlgos('DIVISION')
+      ctx.save()
+      runningAlgo = new Division()
+      runningAlgo.draw()
+      break
+    case 'blur':
+      displayAlgos('BLUR')
+      ctx.save()
+      runningAlgo = new Blur()
+      runningAlgo.draw()
+      break
+    case 'trance':
+      displayAlgos('TRANCE')
+      ctx.save()
+      runningAlgo = new Trance()
+      runningAlgo.draw()
+      break
+    case 'triangulate':
+      displayAlgos('TRIANGULATE')
+      ctx.save()
+      runningAlgo = new Triangulate()
+      runningAlgo.draw()
+      break
+    case 'halfsies':
+      displayAlgos('HALFSIES')
+      ctx.save()
+      runningAlgo = new Halfsies()
+      runningAlgo.draw()
+      break
+    case 'loading':
+      displayAlgos('LOADING')
+      ctx.save()
+      runningAlgo = new Loading()
+      runningAlgo.draw()
+      break
+    case 'quadratic':
+      displayAlgos('QUADRATIC')
+      ctx.save()
+      runningAlgo = new Quadratic()
+      runningAlgo.draw()
+      break
+    case 'hubble':
+      displayAlgos('HUBBLE')
+      ctx.save()
+      runningAlgo = new Hubble()
+      runningAlgo.draw()
+      break
+    case 'vortrix':
+      displayAlgos('VORTRIX')
+      ctx.save()
+      runningAlgo = new Vortrix()
+      runningAlgo.draw()
+      break
+    case 'vanishing-point':
+      displayAlgos('VANISHING POINT')
+      ctx.save()
+      runningAlgo = new VanishingPoint()
+      runningAlgo.draw()
+      break
+    case 'cubist':
+      displayAlgos('CUBIST')
+      ctx.save()
+      runningAlgo = new Cubist()
+      runningAlgo.draw()
+      break
+    case 'subwoofer':
+      displayAlgos('SUBWOOFER')
+      ctx.save()
+      runningAlgo = new Subwoofer()
+      runningAlgo.draw()
+      break
+    case 'deep-sea':
+      displayAlgos('DEEP SEA')
+      ctx.save()
+      runningAlgo = new DeepSea()
+      runningAlgo.draw()
+      break
+    case 'soapy-bubbles':
+      displayAlgos('SOAPY BUBBLES')
+      ctx.save()
+      runningAlgo = new SoapyBubbles()
+      runningAlgo.draw()
+      break
+    case 'gridlock':
+      displayAlgos('GRIDLOCK')
+      ctx.save()
+      runningAlgo = new Gridlock()
+      runningAlgo.draw()
+      break
+    case 'give-n-take':
+      displayAlgos("GIVE 'N TAKE")
+      ctx.save()
+      runningAlgo = new GiveNTake()
+      runningAlgo.draw()
+      break
+    case 'ethereal':
+      displayAlgos('ETHEREAL')
+      ctx.save()
+      runningAlgo = new Ethereal()
+      runningAlgo.draw()
+      break
+    case 'glowsticks':
+      displayAlgos('GLOWSTICKS')
+      ctx.save()
+      runningAlgo = new Glowsticks()
+      runningAlgo.draw()
+      break
+    case 'mikado':
+      displayAlgos('MIKADO')
+      ctx.save()
+      runningAlgo = new Mikado()
       runningAlgo.draw()
       break
   }
@@ -2465,9 +2873,8 @@ class CamouflagePostits {
       t++
       if (t % (speed * 100) === 0) {
         this.rot1 = (random(0, 360) * Math.PI) / 180
-        ctx.globalCompositeOperation = this.modes[
-          random(0, this.modes.length - 1)
-        ]
+        ctx.globalCompositeOperation =
+          this.modes[random(0, this.modes.length - 1)]
       }
       interval = requestAnimationFrame(this.draw)
     }
@@ -2524,9 +2931,8 @@ class TheBadge {
       }
       if (t % (speed * 50) === 0) {
         this.rot1 = (random(0, 360) * Math.PI) / 180
-        ctx.globalCompositeOperation = this.modes[
-          random(0, this.modes.length - 1)
-        ]
+        ctx.globalCompositeOperation =
+          this.modes[random(0, this.modes.length - 1)]
       }
       interval = requestAnimationFrame(this.draw)
     }
@@ -2950,66 +3356,11 @@ class AlphabetSoup {
   constructor() {
     this.rot1 = (random(8, 35) * Math.PI) / 180
     this.letters = [
-      1301,
-      1302,
-      1303,
-      1305,
-      1306,
-      1307,
-      1308,
-      1309,
-      1311,
-      1313,
-      1314,
-      1315,
-      1316,
-      1317,
-      1319,
-      1324,
-      1325,
-      1326,
-      1328,
-      1329,
-      1330,
-      1331,
-      1332,
-      1334,
-      1337,
-      1338,
-      1340,
-      1342,
-      1344,
-      1345,
-      1347,
-      1351,
-      1354,
-      1359,
-      1361,
-      1362,
-      1363,
-      1364,
-      1365,
-      1367,
-      1369,
-      1370,
-      1371,
-      1372,
-      1373,
-      1374,
-      1375,
-      1376,
-      1377,
-      1378,
-      1383,
-      1384,
-      1385,
-      1386,
-      1388,
-      1390,
-      1392,
-      1393,
-      1397,
-      1399,
+      1301, 1302, 1303, 1305, 1306, 1307, 1308, 1309, 1311, 1313, 1314, 1315,
+      1316, 1317, 1319, 1324, 1325, 1326, 1328, 1329, 1330, 1331, 1332, 1334,
+      1337, 1338, 1340, 1342, 1344, 1345, 1347, 1351, 1354, 1359, 1361, 1362,
+      1363, 1364, 1365, 1367, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376,
+      1377, 1378, 1383, 1384, 1385, 1386, 1388, 1390, 1392, 1393, 1397, 1399,
       1400
     ]
     this.letter1 = String.fromCharCode(
@@ -3169,30 +3520,8 @@ class Stargate {
 class AccelerationMandala {
   constructor() {
     this.letters = [
-      1002,
-      1006,
-      1031,
-      1033,
-      1039,
-      1046,
-      1054,
-      1064,
-      1078,
-      1092,
-      1912,
-      1916,
-      1920,
-      1921,
-      1935,
-      1944,
-      1959,
-      1963,
-      1964,
-      1968,
-      1988,
-      1991,
-      1993,
-      1997,
+      1002, 1006, 1031, 1033, 1039, 1046, 1054, 1064, 1078, 1092, 1912, 1916,
+      1920, 1921, 1935, 1944, 1959, 1963, 1964, 1968, 1988, 1991, 1993, 1997,
       12398
     ]
     this.letter = String.fromCharCode(
@@ -3234,92 +3563,14 @@ class AccelerationMandala {
 class EvolvingMandala {
   constructor() {
     this.letters = [
-      1101,
-      1102,
-      1103,
-      1104,
-      1107,
-      1111,
-      1114,
-      1115,
-      1116,
-      1118,
-      1120,
-      1121,
-      1123,
-      1126,
-      1127,
-      1130,
-      1133,
-      1135,
-      1136,
-      1137,
-      1139,
-      1140,
-      1141,
-      1144,
-      1146,
-      1148,
-      1152,
-      1154,
-      1155,
-      1156,
-      1160,
-      1161,
-      1168,
-      1169,
-      1174,
-      1176,
-      1180,
-      1185,
-      1187,
-      1188,
-      1194,
-      1197,
-      1198,
-      1199,
-      1200,
-      1202,
-      1204,
-      1205,
-      1208,
-      1209,
-      1210,
-      1216,
-      1218,
-      1219,
-      1229,
-      1231,
-      1233,
-      1234,
-      1237,
-      1238,
-      1240,
-      1242,
-      1244,
-      1246,
-      1249,
-      1251,
-      1254,
-      1255,
-      1261,
-      1262,
-      1265,
-      1266,
-      1267,
-      1269,
-      1270,
-      1271,
-      1273,
-      1274,
-      1275,
-      1276,
-      1278,
-      1280,
-      1284,
-      1286,
-      1294,
-      10400
+      1101, 1102, 1103, 1104, 1107, 1111, 1114, 1115, 1116, 1118, 1120, 1121,
+      1123, 1126, 1127, 1130, 1133, 1135, 1136, 1137, 1139, 1140, 1141, 1144,
+      1146, 1148, 1152, 1154, 1155, 1156, 1160, 1161, 1168, 1169, 1174, 1176,
+      1180, 1185, 1187, 1188, 1194, 1197, 1198, 1199, 1200, 1202, 1204, 1205,
+      1208, 1209, 1210, 1216, 1218, 1219, 1229, 1231, 1233, 1234, 1237, 1238,
+      1240, 1242, 1244, 1246, 1249, 1251, 1254, 1255, 1261, 1262, 1265, 1266,
+      1267, 1269, 1270, 1271, 1273, 1274, 1275, 1276, 1278, 1280, 1284, 1286,
+      1294, 10400
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -3638,42 +3889,9 @@ class HyperTunnel {
 class ChalkGalaxy {
   constructor() {
     this.letters = [
-      1401,
-      1402,
-      1403,
-      1404,
-      1406,
-      1407,
-      1408,
-      1410,
-      1411,
-      1412,
-      1413,
-      1414,
-      1415,
-      1417,
-      1418,
-      1425,
-      1426,
-      1427,
-      1428,
-      1429,
-      1430,
-      1431,
-      1440,
-      1441,
-      1470,
-      1472,
-      1475,
-      1478,
-      1490,
-      1491,
-      1492,
-      1493,
-      1495,
-      1499,
-      1500,
-      10157
+      1401, 1402, 1403, 1404, 1406, 1407, 1408, 1410, 1411, 1412, 1413, 1414,
+      1415, 1417, 1418, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1440, 1441,
+      1470, 1472, 1475, 1478, 1490, 1491, 1492, 1493, 1495, 1499, 1500, 10157
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -3827,9 +4045,8 @@ class Microscope {
     this.draw = () => {
       if (t % speed === 0) {
         for (let i = 0; i <= this.rows; i++) {
-          ctx.globalCompositeOperation = this.modes[
-            random(0, this.modes.length)
-          ]
+          ctx.globalCompositeOperation =
+            this.modes[random(0, this.modes.length)]
           ctx.translate(w / 2, h / 2)
           ctx.rotate(this.rotate)
           ctx.translate(-w / 2, -h / 2)
@@ -3913,29 +4130,8 @@ class Spinner {
 class FlawedMirror {
   constructor() {
     this.letters = [
-      33,
-      34,
-      42,
-      43,
-      65,
-      90,
-      94,
-      166,
-      175,
-      177,
-      191,
-      192,
-      195,
-      198,
-      199,
-      204,
-      208,
-      210,
-      212,
-      247,
-      256,
-      294,
-      298
+      33, 34, 42, 43, 65, 90, 94, 166, 175, 177, 191, 192, 195, 198, 199, 204,
+      208, 210, 212, 247, 256, 294, 298
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -3972,36 +4168,8 @@ class FlawedMirror {
 class ThePlatter {
   constructor() {
     this.letters = [
-      302,
-      306,
-      308,
-      310,
-      313,
-      323,
-      324,
-      325,
-      327,
-      328,
-      332,
-      336,
-      337,
-      345,
-      350,
-      354,
-      358,
-      363,
-      365,
-      366,
-      370,
-      371,
-      373,
-      375,
-      380,
-      381,
-      383,
-      388,
-      390,
-      399
+      302, 306, 308, 310, 313, 323, 324, 325, 327, 328, 332, 336, 337, 345, 350,
+      354, 358, 363, 365, 366, 370, 371, 373, 375, 380, 381, 383, 388, 390, 399
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4036,42 +4204,9 @@ class ThePlatter {
 class SpaceGears {
   constructor() {
     this.letters = [
-      402,
-      406,
-      407,
-      409,
-      410,
-      412,
-      414,
-      415,
-      418,
-      420,
-      423,
-      424,
-      425,
-      428,
-      429,
-      430,
-      433,
-      437,
-      438,
-      439,
-      440,
-      443,
-      444,
-      448,
-      449,
-      450,
-      451,
-      458,
-      461,
-      474,
-      478,
-      480,
-      484,
-      488,
-      491,
-      494
+      402, 406, 407, 409, 410, 412, 414, 415, 418, 420, 423, 424, 425, 428, 429,
+      430, 433, 437, 438, 439, 440, 443, 444, 448, 449, 450, 451, 458, 461, 474,
+      478, 480, 484, 488, 491, 494
     ]
     this.letter = String.fromCharCode(428)
     this.rotate = (random(3, 357) * Math.PI) / 180
@@ -4107,24 +4242,8 @@ class SpaceGears {
 class LightBringer {
   constructor() {
     this.letters = [
-      501,
-      502,
-      503,
-      508,
-      509,
-      522,
-      525,
-      526,
-      528,
-      530,
-      533,
-      534,
-      538,
-      547,
-      558,
-      562,
-      567,
-      589
+      501, 502, 503, 508, 509, 522, 525, 526, 528, 530, 533, 534, 538, 547, 558,
+      562, 567, 589
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4172,34 +4291,8 @@ class LightBringer {
 class CounterClock {
   constructor() {
     this.letters = [
-      607,
-      611,
-      615,
-      616,
-      617,
-      618,
-      619,
-      622,
-      625,
-      629,
-      632,
-      639,
-      643,
-      650,
-      656,
-      662,
-      664,
-      676,
-      683,
-      684,
-      685,
-      688,
-      690,
-      691,
-      694,
-      697,
-      698,
-      699
+      607, 611, 615, 616, 617, 618, 619, 622, 625, 629, 632, 639, 643, 650, 656,
+      662, 664, 676, 683, 684, 685, 688, 690, 691, 694, 697, 698, 699
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4265,66 +4358,10 @@ class Clock {
       'source-over'
     ]
     this.letters = [
-      701,
-      702,
-      703,
-      706,
-      707,
-      708,
-      710,
-      711,
-      712,
-      713,
-      714,
-      715,
-      716,
-      717,
-      718,
-      719,
-      720,
-      721,
-      722,
-      724,
-      726,
-      727,
-      729,
-      730,
-      731,
-      732,
-      733,
-      734,
-      735,
-      737,
-      740,
-      741,
-      744,
-      745,
-      746,
-      747,
-      749,
-      753,
-      754,
-      756,
-      757,
-      758,
-      759,
-      760,
-      761,
-      762,
-      764,
-      766,
-      769,
-      771,
-      772,
-      776,
-      778,
-      781,
-      782,
-      784,
-      790,
-      794,
-      795,
-      796
+      701, 702, 703, 706, 707, 708, 710, 711, 712, 713, 714, 715, 716, 717, 718,
+      719, 720, 721, 722, 724, 726, 727, 729, 730, 731, 732, 733, 734, 735, 737,
+      740, 741, 744, 745, 746, 747, 749, 753, 754, 756, 757, 758, 759, 760, 761,
+      762, 764, 766, 769, 771, 772, 776, 778, 781, 782, 784, 790, 794, 795, 796
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4381,40 +4418,9 @@ class Clock {
 class CakeDecorator {
   constructor() {
     this.letters = [
-      801,
-      803,
-      805,
-      808,
-      809,
-      810,
-      811,
-      812,
-      816,
-      817,
-      820,
-      822,
-      823,
-      826,
-      827,
-      829,
-      831,
-      832,
-      836,
-      837,
-      839,
-      840,
-      841,
-      843,
-      845,
-      846,
-      848,
-      850,
-      857,
-      858,
-      859,
-      860,
-      866,
-      894
+      801, 803, 805, 808, 809, 810, 811, 812, 816, 817, 820, 822, 823, 826, 827,
+      829, 831, 832, 836, 837, 839, 840, 841, 843, 845, 846, 848, 850, 857, 858,
+      859, 860, 866, 894
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4477,35 +4483,8 @@ class CakeDecorator {
 class TribalTatoo {
   constructor() {
     this.letters = [
-      901,
-      903,
-      926,
-      931,
-      932,
-      933,
-      935,
-      938,
-      939,
-      943,
-      944,
-      947,
-      953,
-      954,
-      955,
-      964,
-      965,
-      967,
-      970,
-      978,
-      979,
-      983,
-      986,
-      987,
-      989,
-      990,
-      993,
-      995,
-      999
+      901, 903, 926, 931, 932, 933, 935, 938, 939, 943, 944, 947, 953, 954, 955,
+      964, 965, 967, 970, 978, 979, 983, 986, 987, 989, 990, 993, 995, 999
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4572,47 +4551,10 @@ class TribalTatoo {
 class Pseye {
   constructor() {
     this.letters = [
-      1502,
-      1505,
-      1509,
-      1510,
-      1511,
-      1512,
-      1513,
-      1520,
-      1522,
-      1524,
-      1540,
-      1546,
-      1549,
-      1550,
-      1553,
-      1554,
-      1555,
-      1556,
-      1558,
-      1559,
-      1566,
-      1568,
-      1569,
-      1570,
-      1571,
-      1572,
-      1573,
-      1574,
-      1575,
-      1576,
-      1577,
-      1578,
-      1583,
-      1584,
-      1586,
-      1587,
-      1590,
-      1593,
-      1597,
-      1598,
-      1599
+      1502, 1505, 1509, 1510, 1511, 1512, 1513, 1520, 1522, 1524, 1540, 1546,
+      1549, 1550, 1553, 1554, 1555, 1556, 1558, 1559, 1566, 1568, 1569, 1570,
+      1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1583, 1584, 1586, 1587,
+      1590, 1593, 1597, 1598, 1599
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -4812,65 +4754,11 @@ class AcidStars {
     this.rotate = random(2, 44)
     this.fontSize = random(12, 20)
     this.letters = [
-      1606,
-      1607,
-      1608,
-      1610,
-      1611,
-      1613,
-      1614,
-      1616,
-      1618,
-      1619,
-      1621,
-      1622,
-      1623,
-      1624,
-      1627,
-      1628,
-      1629,
-      1631,
-      1632,
-      1633,
-      1634,
-      1635,
-      1636,
-      1637,
-      1639,
-      1640,
-      1644,
-      1645,
-      1647,
-      1648,
-      1649,
-      1650,
-      1654,
-      1656,
-      1659,
-      1660,
-      1663,
-      1664,
-      1665,
-      1666,
-      1667,
-      1668,
-      1670,
-      1671,
-      1672,
-      1673,
-      1674,
-      1675,
-      1677,
-      1678,
-      1680,
-      1682,
-      1683,
-      1686,
-      1690,
-      1691,
-      1693,
-      1695,
-      1697
+      1606, 1607, 1608, 1610, 1611, 1613, 1614, 1616, 1618, 1619, 1621, 1622,
+      1623, 1624, 1627, 1628, 1629, 1631, 1632, 1633, 1634, 1635, 1636, 1637,
+      1639, 1640, 1644, 1645, 1647, 1648, 1649, 1650, 1654, 1656, 1659, 1660,
+      1663, 1664, 1665, 1666, 1667, 1668, 1670, 1671, 1672, 1673, 1674, 1675,
+      1677, 1678, 1680, 1682, 1683, 1686, 1690, 1691, 1693, 1695, 1697
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -5079,57 +4967,11 @@ class NeuralSlinky {
 class GoldenSpiral {
   constructor() {
     this.letters = [
-      1701,
-      1703,
-      1704,
-      1705,
-      1706,
-      1707,
-      1712,
-      1713,
-      1714,
-      1718,
-      1722,
-      1723,
-      1724,
-      1726,
-      1727,
-      1728,
-      1729,
-      1731,
-      1734,
-      1736,
-      1737,
-      1744,
-      1746,
-      1748,
-      1749,
-      1750,
-      1752,
-      1755,
-      1758,
-      1759,
-      1760,
-      1761,
-      1763,
-      1768,
-      1769,
-      1770,
-      1771,
-      1773,
-      1774,
-      1776,
-      1777,
-      1779,
-      1781,
-      1784,
-      1788,
-      1789,
-      1790,
-      1792,
-      1793,
-      1794,
-      1795
+      1701, 1703, 1704, 1705, 1706, 1707, 1712, 1713, 1714, 1718, 1722, 1723,
+      1724, 1726, 1727, 1728, 1729, 1731, 1734, 1736, 1737, 1744, 1746, 1748,
+      1749, 1750, 1752, 1755, 1758, 1759, 1760, 1761, 1763, 1768, 1769, 1770,
+      1771, 1773, 1774, 1776, 1777, 1779, 1781, 1784, 1788, 1789, 1790, 1792,
+      1793, 1794, 1795
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -5138,72 +4980,10 @@ class GoldenSpiral {
     this.y = 1
     this.fontSize = random(20, 80)
     this.rotations = [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7,
-      8,
-      10,
-      11,
-      12,
-      14,
-      15,
-      16,
-      17,
-      19,
-      20,
-      21,
-      23,
-      24,
-      26,
-      27,
-      28,
-      29,
-      30,
-      32,
-      33,
-      34,
-      35,
-      36,
-      38,
-      39,
-      41,
-      42,
-      43,
-      45,
-      46,
-      47,
-      48,
-      50,
-      51,
-      52,
-      54,
-      55,
-      56,
-      57,
-      58,
-      59,
-      60,
-      64,
-      65,
-      66,
-      67,
-      69,
-      70,
-      73,
-      75,
-      76,
-      77,
-      78,
-      81,
-      82,
-      83,
-      84,
-      85,
-      88,
-      89
+      1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 16, 17, 19, 20, 21, 23, 24, 26,
+      27, 28, 29, 30, 32, 33, 34, 35, 36, 38, 39, 41, 42, 43, 45, 46, 47, 48,
+      50, 51, 52, 54, 55, 56, 57, 58, 59, 60, 64, 65, 66, 67, 69, 70, 73, 75,
+      76, 77, 78, 81, 82, 83, 84, 85, 88, 89
     ]
     this.rotate = this.rotations[random(0, this.rotations.length)]
 
@@ -5284,37 +5064,9 @@ class Warp2001 {
 class VanishingRays {
   constructor() {
     this.letters = [
-      1801,
-      1802,
-      1803,
-      1807,
-      1814,
-      1816,
-      1821,
-      1826,
-      1827,
-      1828,
-      1829,
-      1830,
-      1831,
-      1833,
-      1834,
-      1835,
-      1836,
-      1837,
-      1838,
-      1839,
-      1869,
-      1872,
-      1873,
-      1877,
-      1879,
-      1883,
-      1884,
-      1888,
-      1890,
-      1894,
-      1899
+      1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829, 1830,
+      1831, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872, 1873, 1877,
+      1879, 1883, 1884, 1888, 1890, 1894, 1899
     ]
     this.incAlpha = 0
     this.letter = String.fromCharCode(
@@ -5367,34 +5119,9 @@ class VanishingRays {
 class CarnivalRide {
   constructor() {
     this.letters = [
-      3103,
-      3104,
-      3105,
-      3107,
-      3108,
-      3109,
-      3111,
-      3112,
-      3114,
-      3115,
-      3118,
-      3119,
-      3122,
-      3128,
-      3129,
-      3133,
-      3136,
-      3157,
-      3162,
-      3174,
-      3175,
-      3176,
-      3179,
-      3183,
-      3192,
-      3193,
-      3194,
-      3199
+      3103, 3104, 3105, 3107, 3108, 3109, 3111, 3112, 3114, 3115, 3118, 3119,
+      3122, 3128, 3129, 3133, 3136, 3157, 3162, 3174, 3175, 3176, 3179, 3183,
+      3192, 3193, 3194, 3199
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -5601,27 +5328,8 @@ class Plaid {
 class ThreeD {
   constructor() {
     this.letters = [
-      3044,
-      3045,
-      3046,
-      3047,
-      3048,
-      3052,
-      3054,
-      3057,
-      3059,
-      3063,
-      3077,
-      3079,
-      3080,
-      3086,
-      3087,
-      3088,
-      3090,
-      3093,
-      3094,
-      3097,
-      3100
+      3044, 3045, 3046, 3047, 3048, 3052, 3054, 3057, 3059, 3063, 3077, 3079,
+      3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -6837,44 +6545,10 @@ class BehindBars {
 class Shadowy {
   constructor() {
     this.letters = [
-      3201,
-      3202,
-      3203,
-      3205,
-      3207,
-      3208,
-      3209,
-      3210,
-      3215,
-      3218,
-      3219,
-      3223,
-      3225,
-      3231,
-      3235,
-      3236,
-      3238,
-      3246,
-      3247,
-      3249,
-      3250,
-      3254,
-      3255,
-      3256,
-      3257,
-      3260,
-      3262,
-      3265,
-      3266,
-      3268,
-      3271,
-      3272,
-      3274,
-      3275,
-      3285,
-      3287,
-      3296,
-      3297
+      3201, 3202, 3203, 3205, 3207, 3208, 3209, 3210, 3215, 3218, 3219, 3223,
+      3225, 3231, 3235, 3236, 3238, 3246, 3247, 3249, 3250, 3254, 3255, 3256,
+      3257, 3260, 3262, 3265, 3266, 3268, 3271, 3272, 3274, 3275, 3285, 3287,
+      3296, 3297
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -7104,9 +6778,8 @@ class CrystalTiles {
           ctx.rotate(this.rotate)
           ctx.translate(-w / 2, -h / 2)
           this.size = random(35, 150)
-          ctx.globalCompositeOperation = this.modes[
-            random(0, this.modes.length)
-          ]
+          ctx.globalCompositeOperation =
+            this.modes[random(0, this.modes.length)]
         }
       }
       t++
@@ -7159,9 +6832,8 @@ class Wallpapering {
           this.x = 0
           this.y = 0
           this.size = random(35, 200)
-          ctx.globalCompositeOperation = this.modes[
-            random(0, this.modes.length)
-          ]
+          ctx.globalCompositeOperation =
+            this.modes[random(0, this.modes.length)]
         }
       }
       t++
@@ -7272,27 +6944,7 @@ class Polyhedra {
     this.x = random(0, w)
     this.y = random(0, h)
     this.rotations = [
-      1,
-      2,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      12,
-      14,
-      15,
-      16,
-      17,
-      19,
-      20,
-      21,
-      23,
-      27,
-      28,
-      29
+      1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 19, 20, 21, 23, 27, 28, 29
     ]
     this.rotate = this.rotations[random(0, this.rotations.length)]
 
@@ -7463,48 +7115,10 @@ class Sushi {
 class Wormholes {
   constructor() {
     this.letters = [
-      2101,
-      2102,
-      2103,
-      2104,
-      2108,
-      2109,
-      2110,
-      2116,
-      2117,
-      2119,
-      2121,
-      2123,
-      2127,
-      2130,
-      2134,
-      2142,
-      2304,
-      2305,
-      2312,
-      2313,
-      2314,
-      2316,
-      2317,
-      2318,
-      2319,
-      2320,
-      2325,
-      2328,
-      2330,
-      2336,
-      2349,
-      2352,
-      2353,
-      2361,
-      2362,
-      2365,
-      2367,
-      2368,
-      2383,
-      2385,
-      2390,
-      2391
+      2101, 2102, 2103, 2104, 2108, 2109, 2110, 2116, 2117, 2119, 2121, 2123,
+      2127, 2130, 2134, 2142, 2304, 2305, 2312, 2313, 2314, 2316, 2317, 2318,
+      2319, 2320, 2325, 2328, 2330, 2336, 2349, 2352, 2353, 2361, 2362, 2365,
+      2367, 2368, 2383, 2385, 2390, 2391
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -7658,39 +7272,9 @@ class TheJester {
 class Shells {
   constructor() {
     this.letters = [
-      2404,
-      2405,
-      2413,
-      2414,
-      2416,
-      2422,
-      2424,
-      2425,
-      2426,
-      2427,
-      2428,
-      2429,
-      2431,
-      2432,
-      2434,
-      2435,
-      2438,
-      2439,
-      2443,
-      2444,
-      2448,
-      2451,
-      2452,
-      2454,
-      2455,
-      2462,
-      2464,
-      2467,
-      2472,
-      2479,
-      2480,
-      2489,
-      2492
+      2404, 2405, 2413, 2414, 2416, 2422, 2424, 2425, 2426, 2427, 2428, 2429,
+      2431, 2432, 2434, 2435, 2438, 2439, 2443, 2444, 2448, 2451, 2452, 2454,
+      2455, 2462, 2464, 2467, 2472, 2479, 2480, 2489, 2492
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -7940,29 +7524,8 @@ class FadeIn {
 class Ourobouros {
   constructor() {
     this.letters = [
-      2503,
-      2504,
-      2508,
-      2509,
-      2510,
-      2519,
-      2527,
-      2528,
-      2529,
-      2530,
-      2531,
-      2536,
-      2537,
-      2539,
-      2541,
-      2544,
-      2545,
-      2563,
-      2566,
-      2569,
-      2584,
-      2591,
-      2596
+      2503, 2504, 2508, 2509, 2510, 2519, 2527, 2528, 2529, 2530, 2531, 2536,
+      2537, 2539, 2541, 2544, 2545, 2563, 2566, 2569, 2584, 2591, 2596
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -8011,33 +7574,8 @@ class EpicRays {
     this.pointCx = random(0, w)
     this.pointCy = random(0, h)
     this.rotations = [
-      1,
-      2,
-      3,
-      4,
-      7,
-      8,
-      11,
-      13,
-      14,
-      16,
-      17,
-      19,
-      21,
-      22,
-      23,
-      26,
-      28,
-      29,
-      31,
-      32,
-      33,
-      34,
-      37,
-      38,
-      39,
-      41,
-      43
+      1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29, 31, 32,
+      33, 34, 37, 38, 39, 41, 43
     ]
     this.rotate = this.rotations[random(0, this.rotations.length)]
 
@@ -8100,33 +7638,8 @@ class Abstractions {
     this.pointCpCx = random(0, w)
     this.pointCpCy = random(0, h)
     this.rotations = [
-      1,
-      2,
-      3,
-      4,
-      7,
-      8,
-      11,
-      13,
-      14,
-      16,
-      17,
-      19,
-      21,
-      22,
-      23,
-      26,
-      28,
-      29,
-      31,
-      32,
-      33,
-      34,
-      37,
-      38,
-      39,
-      41,
-      43
+      1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29, 31, 32,
+      33, 34, 37, 38, 39, 41, 43
     ]
     this.rotate = this.rotations[random(0, this.rotations.length)]
 
@@ -8944,12 +8457,10 @@ class Seeds {
 
     this.rotate = random(10, 101)
 
-    ctx.fillStyle = ctx.strokeStyle = ctx.shadowColor = randomColor(
-      40,
-      255,
-      0.65,
-      1
-    )
+    ctx.fillStyle =
+      ctx.strokeStyle =
+      ctx.shadowColor =
+        randomColor(40, 255, 0.65, 1)
     ctx.shadowBlur = 2
 
     this.draw = () => {
@@ -8978,12 +8489,10 @@ class Seeds {
         this.y2 = random(0, h)
         this.x3 = random(0, w)
         this.y3 = random(0, h)
-        ctx.fillStyle = ctx.strokeStyle = ctx.shadowColor = randomColor(
-          40,
-          255,
-          0.65,
-          1
-        )
+        ctx.fillStyle =
+          ctx.strokeStyle =
+          ctx.shadowColor =
+            randomColor(40, 255, 0.65, 1)
         this.rotate = random(10, 101)
       }
       interval = requestAnimationFrame(this.draw)
@@ -9146,9 +8655,8 @@ class Nazca {
       if (this.r > Math.max(w, h)) {
         this.cycles++
         if (this.cycles % 10 === 0) {
-          ctx.globalCompositeOperation = this.modes[
-            random(0, this.modes.length)
-          ]
+          ctx.globalCompositeOperation =
+            this.modes[random(0, this.modes.length)]
         }
         ctx.lineWidth = random(1, 7)
         ctx.fillStyle = randomColor(0, 255, 0.15, 0.55)
@@ -9373,26 +8881,8 @@ class Encoded {
 class Concentric {
   constructor() {
     this.letters = [
-      2605,
-      2608,
-      2617,
-      2626,
-      2632,
-      2635,
-      2641,
-      2652,
-      2654,
-      2662,
-      2663,
-      2667,
-      2670,
-      2676,
-      2677,
-      2691,
-      2694,
-      2695,
-      2696,
-      2700
+      2605, 2608, 2617, 2626, 2632, 2635, 2641, 2652, 2654, 2662, 2663, 2667,
+      2670, 2676, 2677, 2691, 2694, 2695, 2696, 2700
     ]
     this.letter1 = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -9816,34 +9306,8 @@ class Germinate {
     this.hc = random(-5, 6)
     this.rc = random(-7, 8)
     this.angles = [
-      5,
-      6,
-      8,
-      9,
-      10,
-      12,
-      15,
-      16,
-      18,
-      20,
-      24,
-      32,
-      35,
-      36,
-      42,
-      44,
-      45,
-      48,
-      50,
-      55,
-      64,
-      65,
-      66,
-      70,
-      72,
-      75,
-      95,
-      100
+      5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 32, 35, 36, 42, 44, 45, 48, 50,
+      55, 64, 65, 66, 70, 72, 75, 95, 100
     ]
     this.rotate = this.angles[random(0, this.angles.length)]
 
@@ -10313,45 +9777,10 @@ class Typobrush {
     this.x = random(0, w)
     this.y = random(0, h)
     this.letters = [
-      2703,
-      2705,
-      2709,
-      2713,
-      2715,
-      2716,
-      2718,
-      2719,
-      2720,
-      2721,
-      2722,
-      2725,
-      2726,
-      2731,
-      2732,
-      2735,
-      2738,
-      2739,
-      2741,
-      2742,
-      2743,
-      2745,
-      2748,
-      2750,
-      2751,
-      2752,
-      2753,
-      2760,
-      2764,
-      2768,
-      2784,
-      2791,
-      2792,
-      2795,
-      2796,
-      2797,
-      2798,
-      2799,
-      2800
+      2703, 2705, 2709, 2713, 2715, 2716, 2718, 2719, 2720, 2721, 2722, 2725,
+      2726, 2731, 2732, 2735, 2738, 2739, 2741, 2742, 2743, 2745, 2748, 2750,
+      2751, 2752, 2753, 2760, 2764, 2768, 2784, 2791, 2792, 2795, 2796, 2797,
+      2798, 2799, 2800
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -10400,28 +9829,8 @@ class Veils {
     this.x = random(0, w)
     this.y = random(0, h)
     this.letters = [
-      2801,
-      2817,
-      2819,
-      2822,
-      2824,
-      2827,
-      2832,
-      2835,
-      2837,
-      2849,
-      2855,
-      2856,
-      2858,
-      2859,
-      2860,
-      2862,
-      2873,
-      2877,
-      2878,
-      2880,
-      2891,
-      2893
+      2801, 2817, 2819, 2822, 2824, 2827, 2832, 2835, 2837, 2849, 2855, 2856,
+      2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893
     ]
     this.letter = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -10466,45 +9875,10 @@ class Harmonie {
     this.x = random(0, w)
     this.y = random(0, h)
     this.letters = [
-      2902,
-      2908,
-      2909,
-      2911,
-      2913,
-      2915,
-      2918,
-      2919,
-      2921,
-      2922,
-      2924,
-      2925,
-      2926,
-      2927,
-      2928,
-      2929,
-      2930,
-      2931,
-      2932,
-      2934,
-      2938,
-      2947,
-      2949,
-      2952,
-      2953,
-      2960,
-      2962,
-      2970,
-      2972,
-      2975,
-      2980,
-      2984,
-      2986,
-      2990,
-      2991,
-      2992,
-      2994,
-      2997,
-      2998
+      2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924, 2925,
+      2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947, 2949, 2952,
+      2953, 2960, 2962, 2970, 2972, 2975, 2980, 2984, 2986, 2990, 2991, 2992,
+      2994, 2997, 2998
     ]
     this.letter1 = String.fromCharCode(
       this.letters[random(0, this.letters.length)]
@@ -10549,6 +9923,1611 @@ class Harmonie {
         this.letter2 = String.fromCharCode(
           this.letters[random(0, this.letters.length)]
         )
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Portals {
+  constructor() {
+    this.cols = random(3, 13)
+    this.rows = random(3, 13)
+    this.width = random(20, w / this.cols + 3)
+    this.height = random(20, w / this.rows + 3)
+    this.round = random(0, 60)
+    this.rot = random(1, 33)
+
+    ctx.strokeStyle = randomColor(0, 255, 1, 1)
+    ctx.globalCompositeOperation = 'hard-light'
+    ctx.fillStyle = randomColor(0, 255, 0.45, 0.45)
+    ctx.globalAlpha = 0.6
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let row = 0; row <= this.rows; row++) {
+          for (let col = 0; col <= this.cols; col++) {
+            ctx.roundRect(
+              col * (w / this.cols),
+              row * (h / this.rows),
+              this.width,
+              this.height,
+              {
+                upperLeft: this.round,
+                upperRight: this.round,
+                lowerLeft: this.round,
+                lowerRight: this.round
+              },
+              true,
+              true
+            )
+          }
+        }
+      }
+      t++
+
+      if (t % (speed * 90) === 0) {
+        this.cols = random(3, 13)
+        this.rows = random(3, 13)
+        this.width = random(20, w / 8)
+        this.height = random(20, w / 8)
+        this.round = random(0, 60)
+        this.rot = random(1, 33)
+        ctx.strokeStyle = randomColor(0, 255, 1, 1)
+        ctx.fillStyle = randomColor(0, 255, 0.45, 0.45)
+      }
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Sandala {
+  constructor() {
+    this.cols = random(5, 12)
+    this.rows = random(5, 12)
+    this.letters = [
+      3201, 3202, 3203, 3204, 3206, 3207, 3208, 3209, 3212, 3214, 3215, 3218,
+      3219, 3221, 3222, 3223, 3226, 3227, 3228, 3231, 3232, 3234, 3236, 3238,
+      3244, 3248, 3249, 3250, 3254, 3255, 3260, 3261, 3263, 3270, 3294, 3298
+    ]
+
+    this.rot = random(1, 60)
+
+    ctx.strokeStyle = randomColor(0, 255, 1, 1)
+    ctx.globalCompositeOperation = 'soft-light'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let row = 0; row <= this.rows; row++) {
+          ctx.translate(w / 2, h / 2)
+          ctx.rotate((this.rot * Math.PI) / 180)
+          ctx.translate(-w / 2, -h / 2)
+          for (let col = 0; col <= this.cols; col++) {
+            ctx.strokeText(
+              String.fromCharCode(this.letters[random(0, this.letters.length)]),
+              row * (w / this.cols),
+              col * (h / this.rows)
+            )
+          }
+        }
+      }
+      t++
+      if (t % (speed * 80) === 0) {
+        this.cols = random(5, 12)
+        this.rows = random(5, 12)
+        this.rot = random(1, 60)
+        ctx.strokeStyle = randomColor(0, 255, 1, 1)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class GhostlyShapes {
+  constructor() {
+    this.blends = [
+      'source-atop',
+      'lighter',
+      'xor',
+      'multiply',
+      'screen',
+      'overlay',
+      'darken',
+      'lighten',
+      'color-dodge',
+      'color-burn',
+      'hard-light',
+      'soft-light',
+      'difference',
+      'exclusion',
+      'hue',
+      'saturation',
+      'color',
+      'luminosity'
+    ]
+    this.blend = this.blends[random(0, this.blends.length)]
+    this.cornersX = [0, w, w, 0]
+    this.cornersY = [0, 0, h, h]
+    this.cornerX = 0
+    this.cornerY = 0
+    this.rotation = random(1, 30)
+    this.radius = random(30, w)
+    ctx.fillStyle = randomColor(0, 255, 0.015, 0.05)
+    ctx.globalCompositeOperation = this.blend
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.arc(
+          this.cornersX[this.cornerX],
+          this.cornersY[this.cornerY],
+          this.radius,
+          Math.random(),
+          Math.random() * Math.PI,
+          true
+        )
+        this.cornerX =
+          this.cornerX + 1 >= this.cornersX.length ? 0 : this.cornerX + 1
+        this.cornerY =
+          this.cornerY + 1 >= this.cornersY.length ? 0 : this.cornerY + 1
+        ctx.fill()
+        ctx.beginPath()
+      }
+      t++
+      if (t % (speed * 130) === 0) {
+        this.blend = this.blends[random(0, this.blends.length)]
+        ctx.globalCompositeOperation = this.blend
+        this.radius = random(30, w)
+        this.rotation = random(1, 30)
+        ctx.beginPath()
+        ctx.strokeStyle = randomColor()
+        ctx.fillStyle = randomColor(0, 255, 0.015, 0.05)
+      }
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rotation * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class PsychoRainbow {
+  constructor() {
+    this.blends = ['hard-light', 'difference', 'color', 'luminosity']
+    this.blend = this.blends[random(0, this.blends.length)]
+
+    this.rows = random(3, 10)
+    this.rot = random(1, 50)
+    this.height = h / this.rows
+    this.colors = []
+    for (let i = 0; i <= this.rows; i++) {
+      this.colors.push(randomColor(0, 255, 0.1, 0.5))
+    }
+
+    ctx.globalCompositeOperation = this.blend
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i <= this.rows; i++) {
+          ctx.fillStyle = this.colors[i]
+          ctx.fillRect(-w, i * this.height, 3 * w, this.height)
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 100) === 0) {
+        this.rows = random(3, 10)
+        this.rot = random(1, 50)
+        this.height = h / this.rows
+        this.colors = []
+        for (let i = 0; i <= this.rows; i++) {
+          this.colors.push(randomColor(0, 255, 0.1, 0.5))
+        }
+      }
+      if (t % (speed * 700) === 0) {
+        this.blend = this.blends[random(0, this.blends.length)]
+        ctx.globalCompositeOperation = this.blend
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Hallucinate {
+  constructor() {
+    this.rows = random(3, 17)
+    this.rot = random(1, 180)
+    this.height = h / this.rows
+    this.colors = []
+    for (let i = 0; i <= this.rows; i++) {
+      this.colors.push(randomColor())
+    }
+
+    ctx.globalCompositeOperation = 'soft-light'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i <= this.rows; i++) {
+          ctx.fillStyle = this.colors[i]
+          ctx.fillRect(-w, i * this.height, 3 * w, this.height)
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 150) === 0) {
+        this.rows = random(3, 17)
+        this.rot = random(1, 180)
+        this.height = h / this.rows
+        this.colors = []
+        for (let i = 0; i <= this.rows; i++) {
+          this.colors.push(randomColor())
+        }
+      }
+      if (t % (speed * 750) === 0) {
+        ctx.clearRect(-w, -h, 3 * w, 3 * h)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Hive {
+  constructor() {
+    this.rows = random(3, 10)
+    this.height = h / this.rows
+    this.angles = [9, 10, 12, 16, 20, 30, 36, 45, 60]
+    this.rot = this.angles[random(1, this.angles.length)]
+
+    ctx.globalCompositeOperation = 'overlay'
+    ctx.strokeStyle = randomColor()
+    ctx.shadowColor = randomColor()
+    ctx.blur = 7
+    ctx.lineWidth = random(7, 18)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i <= this.rows; i++) {
+          ctx.strokeRect(
+            random(0, w),
+            i * this.height,
+            random(0, w),
+            this.height
+          )
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 125) === 0) {
+        ctx.shadowColor = randomColor()
+        this.rows = random(3, 10)
+        this.rot = this.angles[random(1, this.angles.length)]
+        this.height = h / this.rows
+        ctx.strokeStyle = randomColor()
+        ctx.globalCompositeOperation = 'overlay'
+      }
+      if (t % (speed * 500) === 0) {
+        ctx.globalCompositeOperation = 'difference'
+      }
+      if (t % (speed * 1500) === 0) {
+        ctx.globalCompositeOperation = 'hard-light'
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Boxes {
+  constructor() {
+    this.rows = random(3, 17)
+    this.height = h / this.rows
+    this.cols = random(3, 17)
+    this.width = w / this.cols
+    this.angles = [15, 20, 24, 30, 36, 45, 48, 72, 80, 90]
+    this.rot = this.angles[random(0, this.angles.length)]
+
+    ctx.strokeStyle = 'black'
+    ctx.fillStyle = randomColor(0, 255, 0.075, 0.075)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i <= this.rows; i++) {
+          ctx.fillRect(
+            i * this.width,
+            i * this.height,
+            this.width / 2,
+            this.height / 2
+          )
+          ctx.strokeRect(
+            i * this.width,
+            i * this.height,
+            this.width / 2,
+            this.height / 2
+          )
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 100) === 0) {
+        this.cols = random(3, 17)
+        this.width = w / this.cols
+        this.rows = random(3, 17)
+        this.height = h / this.rows
+      }
+      if (t % (speed * 200) === 0) {
+        this.rot = this.angles[random(0, this.angles.length)]
+      }
+      if (t % (speed * 400) === 0) {
+        ctx.fillStyle = randomColor(0, 255, 0.075, 0.075)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class DigitalArt {
+  constructor() {
+    this.x = random(75, w - 75)
+    this.y = random(30, h - 30)
+    this.rot = random(3, 40)
+    this.size = random(12, 36)
+
+    ctx.font = `${this.size}px serif`
+    ctx.fillStyle = randomColor()
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        let letter = t % 2 ? '0' : '1'
+        if (t % 2) {
+          ctx.font = `${this.size * 2}px serif`
+          ctx.textAlign = 'left'
+          ctx.textBaseline = 'top'
+          ctx.fillText(letter + '-', w / 2, h / 2)
+        } else {
+          ctx.font = `${this.size * 2}px serif`
+          ctx.textAlign = 'right'
+          ctx.textBaseline = 'bottom'
+          ctx.fillText(letter + '_', w / 2, h / 2)
+        }
+        ctx.font = `${this.size}px serif`
+        ctx.fillText(letter, this.x, this.y)
+      }
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      t++
+      if (t % (speed * 90) === 0) {
+        this.x = random(75, w - 75)
+        this.y = random(30, h - 30)
+        this.size = random(12, 36)
+        ctx.font = `${this.size}px serif`
+        ctx.fillStyle = randomColor()
+      }
+      if (t % (speed * 450) === 0) {
+        this.rot = random(3, 40)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Thread {
+  constructor() {
+    this.offset = random(30, h * 0.75)
+    this.speed = Math.random() * 40
+    this.angle = 0
+    this.radius = random(25, 350)
+    this.rotate = random(1, 35)
+
+    ctx.strokeStyle = randomColor()
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        const y = h / 2 + Math.sin(this.angle) * this.offset
+        ctx.beginPath()
+        ctx.arc(w / 2, y, this.radius, 0, 2 * Math.PI)
+        ctx.stroke()
+        this.angle += this.speed
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rotate)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 450) === 0) {
+        ctx.fillRect(-w, -h, 3 * w, 3 * h)
+        ctx.strokeStyle = randomColor()
+        this.angle = 0
+        this.rotate = random(1, 35)
+        this.radius = random(25, 350)
+        this.offset = random(30, h * 0.75)
+        this.speed = Math.random() * 40
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Helix {
+  constructor() {
+    this.offsetX = random(0, w * 0.75)
+    this.offsetY = random(0, h * 0.75)
+    this.speed = Math.random() * 10
+    this.angle = 0
+    this.radius = random(55, 275)
+
+    ctx.strokeStyle = randomColor(0, 255, 0.3, 0.3)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        const x = w / 2 + Math.cos(this.angle) * this.offsetX
+        const y = h / 2 + Math.sin(this.angle) * this.offsetY
+        ctx.beginPath()
+        ctx.arc(x, y, this.radius, 0, 2 * Math.PI)
+        ctx.stroke()
+        this.angle += this.speed
+      }
+      t++
+      if (t % (speed * 300) === 0) {
+        ctx.strokeStyle = randomColor(0, 255, 0.3, 0.3)
+        this.angle = 0
+        this.radius = random(55, 275)
+        this.offsetX = random(0, w * 0.75)
+        this.offsetY = random(0, h * 0.75)
+        this.speed = Math.random() * 10
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Slices {
+  constructor() {
+    this.offsetX = random(50, w / 2)
+    this.offsetY = random(50, h / 2)
+    this.speed = Math.random() * 2 - 1
+    this.angle = 0
+    this.slice = Math.random()
+    this.radius = random(30, 250)
+    this.rotate = random(1, 90)
+
+    ctx.strokeStyle = 'black'
+    ctx.fillStyle = randomColor(0, 255, 0.02, 0.09)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        const x = w / 2 + Math.sin(this.angle) * this.offsetX
+        const y = h / 2 + Math.cos(this.angle) * this.offsetY
+        ctx.beginPath()
+        ctx.arc(x, y, this.radius, 0, this.slice * Math.PI)
+        ctx.closePath()
+        ctx.stroke()
+        ctx.fill()
+        this.angle += this.speed
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rotate * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 360) === 0) {
+        ctx.fillStyle = randomColor(0, 255, 0.02, 0.09)
+        this.offsetX = random(50, w / 2)
+        this.offsetY = random(50, h / 2)
+        this.speed = Math.random() * 2 - 1
+        this.slice = Math.random()
+        this.angle = 0
+        this.radius = random(30, 250)
+        this.rotate = random(1, 90)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Records {
+  constructor() {
+    this.offset = random(50, 330)
+    this.speed = Math.random() * 7
+    this.angle = 0
+    this.radius = random(50, Math.min(w, h) / 2)
+    this.rotate = random(1, 45)
+
+    ctx.strokeStyle = ctx.fillStyle = randomColor()
+
+    ctx.lineWidth = 2
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.beginPath()
+        ctx.arc(w / 2, h / 2, this.radius, 0, Math.random() * Math.PI)
+        ctx.stroke()
+        this.angle += this.speed
+        this.radius = Math.abs(this.radius + Math.sin(this.angle) * this.offset)
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rotate)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 120) === 0) {
+        ctx.beginPath()
+        ctx.arc(w / 2, h / 2, this.radius, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.strokeStyle = ctx.fillStyle = randomColor()
+        this.angle = 0
+        this.rotate = random(1, 45)
+        this.radius = random(50, Math.min(w, h) / 2)
+        this.offset = random(50, 330)
+        this.speed = Math.random() * 7
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class LisaJou {
+  constructor() {
+    this.radiusX = random(100, w * 0.75)
+    this.radiusY = random(100, h * 0.75)
+    this.angleX = 0
+    this.angleY = 0
+    this.speedX = Math.random() * 3
+    this.speedY = Math.random() * 3
+    this.size = random(2, 13)
+
+    ctx.strokeStyle = 'black'
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, 0, w, h)
+    ctx.fillStyle = randomColor()
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        const x = w / 2 + Math.cos(this.angleX) * this.radiusX
+        const y = h / 2 + Math.sin(this.angleY) * this.radiusY
+        ctx.beginPath()
+        ctx.arc(x, y, this.size, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.stroke()
+        this.angleX += this.speedX
+        this.angleY += this.speedY
+      }
+      t++
+      if (t % (speed * 720) === 0) {
+        this.radiusX = random(100, w * 0.75)
+        this.radiusY = random(100, h * 0.75)
+        this.angleX = 0
+        this.angleY = 0
+        this.speedX = Math.random() * 3
+        this.speedY = Math.random() * 3
+        this.size = random(2, 13)
+        ctx.fillStyle = randomColor()
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Division {
+  constructor() {
+    this.radius = random(25, Math.min(w, h) / 2)
+    this.angle = 0
+    this.circles = random(5, 30)
+    this.size = random(3, 24)
+
+    ctx.strokeStyle = randomColor()
+    ctx.shadowColor = 'white'
+    ctx.fillStyle = randomColor()
+    ctx.shadowBlur = 7
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i < this.circles; i++) {
+          this.angle = (i * Math.PI * 2) / this.circles
+          const x = w / 2 + Math.cos(this.angle) * this.radius
+          const y = h / 2 + Math.sin(this.angle) * this.radius
+          ctx.beginPath()
+          ctx.arc(x, y, this.size, 0, 2 * Math.PI)
+          ctx.fill()
+          ctx.stroke()
+        }
+      }
+      t++
+      if (t % (speed * 40) === 0) {
+        this.radius = random(25, Math.min(w, h) / 2)
+        this.angle = 0
+        this.circles = random(5, 30)
+        this.size = random(3, 24)
+      }
+      if (t % (speed * 400) === 0) {
+        ctx.strokeStyle = randomColor()
+        ctx.fillStyle = randomColor()
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Blur {
+  constructor() {
+    this.radius = random(25, Math.max(w, h) / 2)
+    this.angle = 0
+    this.circles = random(8, 25)
+    this.size = random(8, 40)
+    this.factor = random(3, 20)
+    this.rotate = random(1, 71)
+
+    ctx.strokeStyle = randomColor(0, 255, 0.5, 1)
+    ctx.lineWidth = 0.25
+
+    speed *= 2
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i < this.circles * 2; i++) {
+          this.angle = (i * Math.PI * 2) / this.circles
+          const x = w / 2 + Math.cos(this.angle) * this.radius
+          const y = h / 2 + Math.sin(this.angle) * this.radius
+          ctx.beginPath()
+          ctx.arc(x, y, this.size + i * this.factor, 0, 2 * Math.PI)
+          ctx.stroke()
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rotate)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 90) === 0) {
+        this.radius = random(25, Math.max(w, h) / 2)
+        this.angle = 0
+        this.size = random(8, 40)
+        this.factor = random(3, 20)
+        this.rotate = random(1, 71)
+        this.circles = random(8, 25)
+        ctx.strokeStyle = randomColor(0, 255, 0.5, 1)
+      }
+      if (t % (speed * 630) === 0) {
+        ctx.strokeStyle = 'black'
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Trance {
+  constructor() {
+    this.radius = random(25, Math.max(w, h) / 2)
+    this.angle = 0
+    this.divisions = [2, 4, 6, 8, 10, 12]
+    this.squares = this.divisions[random(0, this.divisions.length)]
+    this.size = random(15, 220)
+    this.factor = random(2, 8)
+    this.rotate = random(1, 71)
+
+    ctx.strokeStyle = randomColor()
+    ctx.fillStyle = randomColor()
+    ctx.globalCompositeOperation = 'overlay'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i < this.squares; i++) {
+          this.angle = (i * Math.PI * 2) / this.squares
+          const x = w / 2 + Math.cos(this.angle) * this.radius
+          const y = h / 2 + Math.sin(this.angle) * this.radius
+          ctx.beginPath()
+          ctx.fillRect(
+            x - this.size / 4,
+            y - this.size / 4,
+            this.size / 2,
+            this.size / 2
+          )
+          ctx.strokeRect(
+            x - this.size / 2,
+            y - this.size / 2,
+            this.size,
+            this.size
+          )
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rotate)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 9) === 0) {
+        this.radius = random(25, Math.max(w, h) / 2)
+        this.angle = 0
+        this.size = random(15, 220)
+        this.rotate = random(1, 71)
+        this.squares = this.divisions[random(0, this.divisions.length)]
+        ctx.globalCompositeOperation = 'overlay'
+        ctx.fillStyle = randomColor()
+      }
+      if (t % (speed * 63) === 0) {
+        ctx.globalCompositeOperation = 'source-over'
+        ctx.strokeStyle = randomColor()
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Triangulate {
+  constructor() {
+    this.radius = random(60, Math.max(w, h) / 2)
+    this.angle = 0
+    this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12]
+    this.triangles = this.divisions[random(0, this.divisions.length)]
+    this.size = random(15, 100)
+    this.rotations = [
+      10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120
+    ]
+    this.rotate = this.rotations[random(0, this.rotations.length)]
+
+    ctx.strokeStyle = 'black'
+    ctx.fillStyle = randomColor(0, 255, 0.2, 0.45)
+    ctx.lineWidth = 3
+
+    this.drawTriangle = (x, y, i) => {
+      ctx.moveTo(x, y)
+      ctx.beginPath()
+      ctx.lineTo(x + this.size + i, y + i)
+      ctx.lineTo(x + i, y + this.size + i)
+      ctx.lineTo(x, y)
+      ctx.closePath()
+    }
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i < this.triangles; i++) {
+          this.angle = (i * Math.PI * 2) / this.triangles
+          const x = w / 2 + Math.cos(this.angle) * this.radius
+          const y = h / 2 + Math.sin(this.angle) * this.radius
+          this.drawTriangle(x, y, i)
+          ctx.fill()
+          ctx.stroke()
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rotate * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 60) === 0) {
+        this.size = random(15, 100)
+        this.triangles = this.divisions[random(0, this.divisions.length)]
+        ctx.fillStyle = randomColor(0, 255, 0.2, 0.45)
+        this.angle = 0
+        this.radius = random(60, Math.max(w, h) / 2)
+      }
+      if (t % (speed * 180) === 0) {
+        this.rotate = this.rotations[random(0, this.rotations.length)]
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Halfsies {
+  constructor() {
+    this.rot = random(3, 37)
+    this.radius = random(40, 400)
+    this.x = random(w / 2 - this.radius, w / 2 + this.radius)
+    this.y = random(h / 2 - this.radius, h / 2 + this.radius)
+    this.counter = false
+    this.width1 = random(2, 11)
+    this.width2 = random(2, 11)
+
+    this.draw = () => {
+      ctx.lineWidth = t % 2 ? this.width1 : this.width2
+      ctx.strokeStyle = t % 2 ? 'black' : 'white'
+      this.counter = t % 2 ? true : false
+      ctx.globalCompositeOperation = t % 2 ? 'source-over' : 'difference'
+      if (t % speed === 0) {
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI, this.counter)
+        ctx.stroke()
+        ctx.closePath()
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 120) === 0) {
+        this.radius = random(40, 400)
+        this.x = random(w / 2 - this.radius, w / 2 + this.radius)
+        this.y = random(h / 2 - this.radius, h / 2 + this.radius)
+        this.rot = random(3, 37)
+        this.width1 = random(2, 11)
+        this.width2 = random(2, 11)
+        ctx.beginPath()
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Loading {
+  constructor() {
+    this.rot = random(2, 45)
+    this.radius = random(30, Math.max(w, h) / 2)
+    this.counter = false
+    this.width1 = random(4, 51)
+    this.width2 = random(4, 51)
+    this.color = randomColor(60, 255, 0.75, 1)
+
+    this.draw = () => {
+      ctx.lineWidth = t % 2 ? this.width1 : this.width2
+      ctx.strokeStyle = t % 2 ? 'black' : this.color
+      ctx.globalCompositeOperation = t % 2 ? 'source-over' : 'difference'
+      this.counter = t % 2 ? true : false
+      if (t % speed === 0) {
+        ctx.beginPath()
+        ctx.arc(w / 2, h / 2, this.radius, 0, Math.PI, this.counter)
+        ctx.stroke()
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 45) === 0) {
+        this.radius = random(30, Math.max(w, h) / 2)
+        this.rot = random(2, 45)
+        this.width1 = random(4, 51)
+        this.width2 = random(4, 51)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Quadratic {
+  constructor() {
+    this.rot = random(4, 91)
+    this.startNum = random(5, 50)
+    this.firstDiff = random(10, 50)
+    this.secondDiff = random(3, 45)
+
+    this.nums = this.createSeq(this.startNum, this.firstDiff, this.secondDiff)
+
+    ctx.strokeStyle = randomColor(0, 255, 0.5, 1)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        this.nums.forEach((num) => {
+          return ctx.strokeRect(w / 2 - num / 2, h / 2 - num / 2, num, num)
+        })
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 90) === 0) {
+        ctx.beginPath()
+        ctx.strokeStyle = randomColor(0, 255, 0.5, 1)
+        this.startNum = random(5, 50)
+        this.firstDiff = random(10, 50)
+        this.secondDiff = random(3, 45)
+        this.nums = this.createSeq(
+          this.startNum,
+          this.firstDiff,
+          this.secondDiff
+        )
+      }
+      if (t % (speed * 180) === 0) {
+        this.rot = random(4, 91)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+
+  createSeq(startNum, firstDiff, secondDiff) {
+    const arr = [startNum]
+    while (startNum < Math.max(w, h)) {
+      startNum += firstDiff
+      firstDiff += secondDiff
+      arr.push(startNum)
+    }
+    return arr
+  }
+}
+
+class Hubble {
+  constructor() {
+    this.seq = this.createSeq(13)
+    this.index = 0
+    this.currentVal = this.seq[this.index]
+    this.rotate = random(1, 44)
+
+    ctx.fillStyle = randomColor(0, 255, 0.01, 0.05)
+    ctx.filter = 'blur(5px)'
+    ctx.globalCompositeOperation = 'hard-light'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.fillRect(w / 2, h / 2, this.currentVal * 3, this.currentVal * 3)
+        ctx.fillRect(w / 2, h / 2, this.currentVal * 3, -this.currentVal * 3)
+        ctx.fillRect(w / 2, h / 2, -this.currentVal * 3, this.currentVal * 3)
+        ctx.fillRect(w / 2, h / 2, -this.currentVal * 3, -this.currentVal * 3)
+        this.index++
+        if (this.index >= this.seq.length - 1) {
+          this.index = 0
+          this.rotate = random(1, 44)
+          ctx.fillStyle = randomColor(0, 255, 0.01, 0.05)
+        }
+        this.currentVal = this.seq[this.index]
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rotate)
+      ctx.translate(-w / 2, -h / 2)
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+
+  createSeq(num) {
+    const start = [0, 1]
+    const values = []
+    for (let i = 1; i <= num; i++) {
+      for (let j = 1; j <= num; j++) {
+        values.push(j * i * (start[start.length - 2] + start[start.length - 1]))
+      }
+    }
+    return values
+  }
+}
+
+class Vortrix {
+  constructor() {
+    this.x = random(0, w)
+    this.y = random(0, h)
+    this.size = random(60, 400)
+    this.rot = random(1, 60)
+
+    ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.5, 1)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)'
+    ctx.shadowBlur = 10
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        this.drawTriangle(this.x, this.y)
+        this.size--
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 360) === 0) {
+        this.x = random(0, w)
+        this.y = random(0, h)
+        this.size = random(60, 400)
+        this.rot = random(1, 60)
+        ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.5, 1)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+  drawTriangle = (x, y) => {
+    ctx.moveTo(x, y)
+    ctx.beginPath()
+    ctx.lineTo(x + this.size, y)
+    ctx.lineTo(x, y + this.size)
+    ctx.lineTo(x, y)
+    ctx.closePath()
+    ctx.fill()
+    ctx.stroke()
+  }
+}
+
+class VanishingPoint {
+  constructor() {
+    this.size = Math.min(w, h)
+    this.decrease = random(2, 11)
+    this.rot = random(1, 90)
+    this.color1 = randomColor(0, 255, 1, 1)
+    this.color2 = randomColor(0, 255, 1, 1)
+    this.color3 = randomColor(0, 255, 1, 1)
+    this.color4 = randomColor(0, 255, 1, 1)
+    this.colors = [this.color1, this.color2, this.color3, this.color4]
+
+    ctx.strokeStyle = 'black'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.fillStyle = this.colors[random(0, this.colors.length)]
+        this.drawTriangle(w / 2, h / 2)
+        this.size -= this.decrease
+        if (this.size - this.decrease <= 1) {
+          this.size = 1
+          this.decrease = 0
+          this.color1 = randomColor(0, 255, 1, 1)
+          this.color2 = randomColor(0, 255, 1, 1)
+          this.color3 = randomColor(0, 255, 1, 1)
+          this.color4 = randomColor(0, 255, 1, 1)
+          this.colors = [this.color1, this.color2, this.color3, this.color4]
+          this.rot = random(1, 90)
+          setTimeout(() => {
+            this.size = Math.min(w, h)
+            this.decrease = random(2, 11)
+          }, 3500)
+        }
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+  drawTriangle = (x, y) => {
+    ctx.moveTo(x, y)
+    ctx.beginPath()
+    ctx.lineTo(x + this.size, y)
+    ctx.lineTo(x, y + this.size)
+    ctx.lineTo(x, y)
+    ctx.closePath()
+    ctx.fill()
+    ctx.stroke()
+  }
+}
+
+class Cubist {
+  constructor() {
+    this.divisions = [2, 4, 8, 16]
+    this.width = w / this.divisions[random(0, this.divisions.length)]
+    this.height = h / this.divisions[random(0, this.divisions.length)]
+    this.cycles = 0
+    this.x = 0
+    this.y = 0
+    this.color1 = randomColor()
+    this.color2 = randomColor()
+    this.color3 = randomColor()
+    this.color4 = randomColor()
+
+    ctx.strokeStyle = 'black'
+    ctx.globalCompositeOperation = 'soft-light'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        if (stagger % 4 === 0) {
+          ctx.fillStyle = this.color1
+          this.drawTriangle(this.x, this.y)
+        }
+        if (stagger % 4 === 1) {
+          ctx.fillStyle = this.color2
+          this.drawTriangleReverse(this.x, this.y)
+        }
+        if (stagger % 4 === 2) {
+          ctx.fillStyle = this.color3
+          this.drawInverseTriangle(this.x, this.y)
+        }
+        if (stagger % 4 === 3) {
+          ctx.fillStyle = this.color4
+          this.drawInverseTriangleReverse(this.x, this.y)
+        }
+        this.x += this.width
+        if (this.x > w) {
+          this.y += this.height
+          this.x = 0
+        }
+        if (this.y > h) {
+          this.cycles++
+          this.y = 0
+          this.x = 0
+          this.width = w / this.divisions[random(0, this.divisions.length)]
+          this.height = h / this.divisions[random(0, this.divisions.length)]
+          this.color1 = randomColor()
+          this.color2 = randomColor()
+          this.color3 = randomColor()
+          this.color4 = randomColor()
+        }
+      }
+      t++
+      stagger++
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+
+  drawTriangle = (x, y) => {
+    ctx.moveTo(x, y)
+    ctx.beginPath()
+    ctx.lineTo(x + this.width, y)
+    ctx.lineTo(x, y + this.height)
+    ctx.lineTo(x, y)
+    ctx.closePath()
+    ctx.stroke()
+    ctx.fill()
+  }
+
+  drawTriangleReverse = (x, y) => {
+    ctx.moveTo(x + this.width, y)
+    ctx.beginPath()
+    ctx.lineTo(x, y + this.height)
+    ctx.lineTo(x + this.width, y + this.height)
+    ctx.lineTo(x + this.width, y)
+    ctx.closePath()
+    ctx.stroke()
+    ctx.fill()
+  }
+
+  drawInverseTriangle = (x, y) => {
+    ctx.moveTo(x, y)
+    ctx.beginPath()
+    ctx.lineTo(x + this.width, y + this.height)
+    ctx.lineTo(x + this.width, y)
+    ctx.lineTo(x, y)
+    ctx.closePath()
+    ctx.fill()
+    ctx.stroke()
+  }
+
+  drawInverseTriangleReverse = (x, y) => {
+    ctx.moveTo(x, y)
+    ctx.beginPath()
+    ctx.lineTo(x + this.width, y + this.height)
+    ctx.lineTo(x, y + this.height)
+    ctx.lineTo(x, y)
+    ctx.closePath()
+    ctx.fill()
+    ctx.stroke()
+  }
+}
+
+class Subwoofer {
+  constructor() {
+    this.size = random(15, 200)
+    this.factor = random(10, this.size)
+    this.divisor = random(1, 25)
+    this.color1 = randomColor()
+    this.color2 = randomColor()
+    this.color3 = randomColor()
+    this.color4 = randomColor()
+    this.color5 = randomColor()
+    this.colors = [
+      this.color1,
+      this.color2,
+      this.color3,
+      this.color4,
+      this.color5
+    ]
+    ctx.strokeStyle = 'white'
+    ctx.lineWidth = random(7, 70)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        for (let i = 0; i < 30; i++) {
+          ctx.strokeStyle = this.colors[i % 5]
+          ctx.beginPath()
+          ctx.arc(w / 2, h / 2, this.size + i * ctx.lineWidth, 0, 2 * Math.PI)
+          ctx.stroke()
+        }
+      }
+      t++
+      this.size = Math.max(
+        this.size + Math.sin(t / this.divisor) * this.factor,
+        1
+      )
+      if (t % (speed * 110) === 0) {
+        this.size = random(15, 200)
+        this.factor = random(10, this.size)
+        this.divisor = random(1, 25)
+        this.color1 = randomColor()
+        this.color2 = randomColor()
+        this.color3 = randomColor()
+        this.color4 = randomColor()
+        this.color5 = randomColor()
+        this.colors = [
+          this.color1,
+          this.color2,
+          this.color3,
+          this.color4,
+          this.color5
+        ]
+        ctx.lineWidth = random(7, 70)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class DeepSea {
+  constructor() {
+    this.rotations = [
+      4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 72, 90
+    ]
+    this.startX = random(0, w)
+    this.startY = random(0, h)
+    this.cp1x = random(0, w)
+    this.cp1y = random(0, h)
+    this.cp2x = random(0, w)
+    this.cp2y = random(0, h)
+    this.endX = random(0, w)
+    this.endY = random(0, h)
+    this.factor = random(180, 850)
+    this.factor2 = random(36, 170)
+    this.rot = this.rotations[random(0, this.rotations.length)]
+
+    ctx.strokeStyle = randomColor(50, 200, 0.35, 0.7)
+    ctx.shadowColor = 'randomColor(75, 200, 0.3, 0.5);'
+    ctx.lineWidth = 0.1
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.045)'
+    ctx.shadowBlur = 2
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.fillRect(-w, -h, 3 * w, 3 * h)
+        ctx.moveTo(this.startX, this.startY)
+        ctx.bezierCurveTo(
+          this.cp1x,
+          this.cp1y,
+          this.cp2x,
+          this.cp2y,
+          this.endX,
+          this.endY
+        )
+        ctx.stroke()
+        this.endX += Math.sin(t) * this.factor
+        this.endY += Math.cos(t) * this.factor
+        this.cp1x += Math.sin(t) * this.factor2
+        this.cp1y += Math.cos(t) * this.factor2
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate((this.rot * Math.PI) / 180)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 270) === 0) {
+        ctx.beginPath()
+        this.startX = random(0, w)
+        this.startY = random(0, h)
+        this.cp1x = random(0, w)
+        this.cp1y = random(0, h)
+        this.cp2x = random(0, w)
+        this.cp2y = random(0, h)
+        this.endX = random(0, w)
+        this.endY = random(0, h)
+        this.factor = random(180, 850)
+        this.factor2 = random(36, 170)
+        this.rot = this.rotations[random(0, this.rotations.length)]
+        ctx.strokeStyle = randomColor(50, 200, 0.35, 0.7)
+        ctx.shadowColor = randomColor(75, 255, 0.3, 0.5)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class SoapyBubbles {
+  constructor() {
+    this.size = random(5, 50)
+    this.length = Math.random() * 5 + 1
+    this.angle = Math.random() * (Math.PI / 4) + 0.1
+    this.rot = random(1, 61)
+    this.position = new Vector(0, 0)
+    this.velocity = new Vector(0, 0)
+    this.velocity.setLength(this.length)
+    this.velocity.setAngle(this.angle)
+
+    ctx.strokeStyle = ctx.shadowColor = randomColor(50, 255, 0.5, 1)
+    ctx.shadowBlur = 30
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.beginPath()
+        ctx.arc(
+          this.position.getX(),
+          this.position.getY(),
+          this.size,
+          0,
+          2 * Math.PI
+        )
+        ctx.stroke()
+        ctx.fill()
+        this.position.addTo(this.velocity)
+      }
+      t++
+      if (t % (speed * 320) === 0) {
+        this.size = random(5, 50)
+        this.length = Math.random() * 5 + 1
+        this.angle = Math.random() * (Math.PI / 4) + 0.1
+        this.rot = random(1, 61)
+        this.position = new Vector(0, 0)
+        this.velocity = new Vector(0, 0)
+        this.velocity.setLength(this.length)
+        this.velocity.setAngle(this.angle)
+
+        ctx.strokeStyle = ctx.shadowColor = randomColor(50, 255, 0.5, 1)
+      }
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Gridlock {
+  constructor() {
+    this.gap = random(5, 70)
+    this.inc = this.gap
+    ctx.strokeStyle = 'white'
+    let white = true
+    ctx.moveTo(this.gap, this.gap)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.lineTo(this.gap, h - this.gap)
+        ctx.stroke()
+        ctx.lineTo(w - this.gap, h - this.gap)
+        ctx.stroke()
+        ctx.lineTo(w - this.gap, this.gap)
+        ctx.stroke()
+        ctx.lineTo(this.gap + this.inc, this.gap)
+        ctx.stroke()
+        this.gap += this.inc
+      }
+      t++
+
+      if (t % (speed * 150) === 0) {
+        ctx.lineWidth = random(1, 7)
+        ctx.translate(w / 2, h / 2)
+        ctx.rotate(random(1, 99))
+        ctx.translate(-w / 2, -h / 2)
+        this.gap = random(5, 70)
+        this.inc = this.gap
+        ctx.beginPath()
+        white = !white
+        if (white) {
+          ctx.strokeStyle = 'white'
+        } else {
+          ctx.strokeStyle = 'black'
+        }
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class GiveNTake {
+  constructor() {
+    this.x1 = random(0, w)
+    this.x2 = random(0, w)
+    this.y1 = random(0, h)
+    this.y2 = random(0, h)
+    this.x3 = random(0, w)
+    this.x4 = random(0, w)
+    this.y3 = random(0, h)
+    this.y4 = random(0, h)
+    this.x5 = random(0, w)
+    this.x6 = random(0, w)
+    this.y5 = random(0, h)
+    this.y6 = random(0, h)
+    this.rotate = random(2, 100)
+    this.color1 = randomColor()
+    this.color2 = 'rgba(0, 0, 0, 0.5)'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.fillStyle = t % 2 ? this.color1 : this.color2
+        ctx.fillRect(this.x1++, this.y1, this.x2, this.y2)
+        ctx.fillStyle = this.color1
+
+        ctx.translate(w / 2, h / 2)
+        ctx.rotate((this.rotate * 180) / Math.PI)
+        ctx.fillRect(this.x3, this.y3--, this.x4, this.y4)
+        ctx.translate(-w / 2, -h / 2)
+        ctx.fillStyle = t % 2 ? this.color2 : this.color1
+        ctx.fillRect(this.x5, this.y5, this.x6++, this.y6)
+      }
+      t++
+      if (t % (speed * 250) === 0) {
+        ctx.beginPath()
+        this.rotate = random(2, 100)
+        this.color1 = randomColor()
+        this.x1 = random(0, w)
+        this.x2 = random(0, w)
+        this.y1 = random(0, h)
+        this.y2 = random(0, h)
+        this.x3 = random(0, w)
+        this.x4 = random(0, w)
+        this.y3 = random(0, h)
+        this.y4 = random(0, h)
+        this.x5 = random(0, w)
+        this.x6 = random(0, w)
+        this.y5 = random(0, h)
+        this.y6 = random(0, h)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Ethereal {
+  constructor() {
+    this.x1 = random(0, w)
+    this.y1 = random(0, h)
+    this.x2 = random(0, w)
+    this.y2 = random(0, h)
+    this.x3 = random(0, w)
+    this.y3 = random(0, h)
+    this.x4 = random(0, w)
+    this.y4 = random(0, h)
+    this.cp1x = random(this.x1, this.x2)
+    this.cp1y = random(this.y1, this.y2)
+    this.cp2x = random(this.x2, this.x3)
+    this.cp2y = random(this.y2, this.y3)
+    this.cp3x = random(this.x3, this.x4)
+    this.cp3y = random(this.y3, this.y4)
+    this.cp4x = random(this.x4, this.x1)
+    this.cp4y = random(this.y4, this.y1)
+    this.rot = random(1, 200)
+    this.maxAlpha = 0.08
+
+    this.color1 = randomColor(0, 255, 0.02, this.maxAlpha)
+    this.color2 = randomColor(0, 255, 0.02, this.maxAlpha)
+    this.color3 = randomColor(0, 255, 0.02, this.maxAlpha)
+    this.color4 = randomColor(0, 255, 0.02, this.maxAlpha)
+
+    ctx.strokeStyle = randomColor()
+    ctx.globalCompositeOperation = 'soft-light'
+    ctx.beginPath()
+    ctx.moveTo(this.x1, this.y1)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.beginPath()
+        ctx.fillStyle = this.color1
+        ctx.quadraticCurveTo(this.cp1x--, this.cp1y, this.x2, this.y2)
+        ctx.fill()
+        ctx.stroke()
+        ctx.fillStyle = this.color2
+        ctx.quadraticCurveTo(this.cp2x, this.cp2y--, this.x3, this.y3)
+        ctx.fill()
+        ctx.fillStyle = this.color3
+        ctx.quadraticCurveTo(this.cp3x, this.cp3y, this.x4--, this.y4)
+        ctx.fill()
+        ctx.fillStyle = this.color4
+        ctx.quadraticCurveTo(this.cp4x, this.cp4y, this.x1, this.y1--)
+        ctx.fill()
+        ctx.translate(w / 2, h / 2)
+        ctx.rotate(this.rot)
+        ctx.translate(-w / 2, -h / 2)
+      }
+      t++
+      this.cp1x = random(this.x1, this.x2)
+      this.cp1y = random(this.y1, this.y2)
+      this.cp2x = random(this.x2, this.x3)
+      this.cp2y = random(this.y2, this.y3)
+      this.cp3x = random(this.x3, this.x4)
+      this.cp3y = random(this.y3, this.y4)
+      this.cp4x = random(this.x4, this.x1)
+      this.cp4y = random(this.y4, this.y1)
+      if (t % (speed * 120) === 0) {
+        this.x1 = random(0, w)
+        this.y1 = random(0, h)
+        this.x2 = random(0, w)
+        this.y2 = random(0, h)
+        this.x3 = random(0, w)
+        this.y3 = random(0, h)
+        this.x4 = random(0, w)
+        this.y4 = random(0, h)
+        this.rot = random(1, 200)
+        ctx.strokeStyle = randomColor()
+        this.color1 = randomColor(0, 255, 0.02, this.maxAlpha)
+        this.color2 = randomColor(0, 255, 0.02, this.maxAlpha)
+        this.color3 = randomColor(0, 255, 0.02, this.maxAlpha)
+        this.color4 = randomColor(0, 255, 0.02, this.maxAlpha)
+      }
+      if (t % (speed * 360) === 0) {
+        this.maxAlpha += 0.01
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Glowsticks {
+  constructor() {
+    this.dist = random(10, 100)
+    this.x = random(0, w - this.dist)
+    this.y = random(this.dist, h)
+    this.rot = random(1, 200)
+
+    ctx.strokeStyle = ctx.shadowColor = randomColor()
+    ctx.shadowBlur = 5
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.moveTo(this.x++, this.y++)
+        ctx.lineTo(this.x + this.dist, this.y - this.dist)
+        ctx.stroke()
+        if (this.x > w) this.x = 0
+        if (this.x < 0) this.x = w - this.dist
+        if (this.y > h) this.y = this.dist
+        if (this.y < 0) this.x = h
+      }
+      t++
+      if (t % (speed * 900) === 0) {
+        ctx.beginPath()
+        ctx.clearRect(-w, -h, 3 * w, 3 * h)
+        ctx.strokeStyle = ctx.shadowColor = randomColor()
+        this.dist = random(10, 100)
+        this.x = random(0, w - this.dist)
+        this.y = random(this.dist, h)
+        this.rot = random(1, 200)
+      }
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class Mikado {
+  constructor() {
+    this.points = [
+      { x: 0, y: 0 },
+      { x: w / 4, y: 0 },
+      { x: w / 2, y: 0 },
+      { x: w * 0.75, y: 0 },
+      { x: w, y: 0 },
+      { x: w / 4, y: h / 4 },
+      { x: w / 4, y: h / 2 },
+      { x: w / 4, y: h * 0.75 },
+      { x: w / 4, y: h },
+      { x: w / 2, y: h / 4 },
+      { x: w / 2, y: h / 2 },
+      { x: w / 2, y: h * 0.75 },
+      { x: w / 2, y: h },
+      { x: w * 0.75, y: h / 4 },
+      { x: w * 0.75, y: h / 2 },
+      { x: w * 0.75, y: h * 0.75 },
+      { x: w * 0.75, y: h },
+      { x: w, y: h / 4 },
+      { x: w, y: h / 2 },
+      { x: w, y: h * 0.75 },
+      { x: w, y: h },
+      { x: 0, y: h / 4 },
+      { x: 0, y: h / 2 },
+      { x: 0, y: h * 0.75 },
+      { x: 0, y: h }
+    ]
+    this.point1 = this.points[random(0, this.points.length)]
+    this.point2 = this.points.filter(
+      (p) => p.x !== this.point1.x || p.y !== this.point1.y
+    )[random(0, this.points.length - 1)]
+    this.angle = random(6, 81)
+
+    ctx.strokeStyle = randomColor()
+    ctx.shadowColor = 'black'
+    ctx.shadowBlur = 14
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.moveTo(this.point1.x, this.point1.y)
+        ctx.lineTo(this.point2.x, this.point2.y)
+        ctx.stroke()
+      }
+      t++
+      if (t % (speed * 5) === 0) {
+        ctx.translate(w / 2, h / 2)
+        ctx.rotate((this.angle * Math.PI) / 180)
+        ctx.translate(-w / 2, -h / 2)
+      }
+      if (t % (speed * 300) === 0) {
+        ctx.beginPath()
+        ctx.strokeStyle = randomColor()
+        this.angle = random(6, 81)
+        this.point1 = this.points[random(0, this.points.length)]
+        this.point2 = this.points.filter(
+          (p) => p.x !== this.point1.x || p.y !== this.point1.y
+        )[random(0, this.points.length - 1)]
       }
       interval = requestAnimationFrame(this.draw)
     }
