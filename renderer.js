@@ -129,6 +129,8 @@ class Particle {
     this.velocity.setAngle(direction)
     this.gravity = new Vector(0, grav || 0)
     this.bounce = -1
+    this.friction = 1
+    this.mass = 1
   }
   accelerate(accel) {
     this.velocity.addTo(accel)
@@ -446,7 +448,11 @@ const ALGOS = [
   'give-n-take',
   'ethereal',
   'glowsticks',
-  'mikado'
+  'mikado',
+  'semi-rings',
+  'four-dee',
+  'spring-orbits',
+  'game-of-flies'
 ]
 // stores the last played algorithms
 let LAST_ALGOS = []
@@ -1525,6 +1531,30 @@ function chooseAlgos() {
       displayAlgos('MIKADO')
       ctx.save()
       runningAlgo = new Mikado()
+      runningAlgo.draw()
+      break
+    case 'semi-rings':
+      displayAlgos('SEMI RINGS')
+      ctx.save()
+      runningAlgo = new SemiRings()
+      runningAlgo.draw()
+      break
+    case 'four-dee':
+      displayAlgos('FOUR DEE')
+      ctx.save()
+      runningAlgo = new FourDee()
+      runningAlgo.draw()
+      break
+    case 'spring-orbits':
+      displayAlgos('SPRING ORBITS')
+      ctx.save()
+      runningAlgo = new SpringOrbits()
+      runningAlgo.draw()
+      break
+    case 'game-of-flies':
+      displayAlgos('GAME OF FLIES')
+      ctx.save()
+      runningAlgo = new GameOfFlies()
       runningAlgo.draw()
       break
   }
@@ -11506,7 +11536,8 @@ class Mikado {
 
     ctx.strokeStyle = randomColor()
     ctx.shadowColor = 'black'
-    ctx.shadowBlur = 14
+    ctx.shadowBlur = 15
+    ctx.lineWidth = 0.1
 
     this.draw = () => {
       if (t % speed === 0) {
@@ -11515,7 +11546,7 @@ class Mikado {
         ctx.stroke()
       }
       t++
-      if (t % (speed * 5) === 0) {
+      if (t % (speed * 3) === 0) {
         ctx.translate(w / 2, h / 2)
         ctx.rotate((this.angle * Math.PI) / 180)
         ctx.translate(-w / 2, -h / 2)
@@ -11528,6 +11559,222 @@ class Mikado {
         this.point2 = this.points.filter(
           (p) => p.x !== this.point1.x || p.y !== this.point1.y
         )[random(0, this.points.length - 1)]
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class SemiRings {
+  constructor() {
+    this.points = [
+      { x: 0, y: 0 },
+      { x: w / 4, y: 0 },
+      { x: w / 2, y: 0 },
+      { x: w * 0.75, y: 0 },
+      { x: w, y: 0 },
+      { x: w / 4, y: h / 4 },
+      { x: w / 4, y: h / 2 },
+      { x: w / 4, y: h * 0.75 },
+      { x: w / 4, y: h },
+      { x: w / 2, y: h / 4 },
+      { x: w / 2, y: h / 2 },
+      { x: w / 2, y: h * 0.75 },
+      { x: w / 2, y: h },
+      { x: w * 0.75, y: h / 4 },
+      { x: w * 0.75, y: h / 2 },
+      { x: w * 0.75, y: h * 0.75 },
+      { x: w * 0.75, y: h },
+      { x: w, y: h / 4 },
+      { x: w, y: h / 2 },
+      { x: w, y: h * 0.75 },
+      { x: w, y: h },
+      { x: 0, y: h / 4 },
+      { x: 0, y: h / 2 },
+      { x: 0, y: h * 0.75 },
+      { x: 0, y: h }
+    ]
+    this.point1 = this.points[random(0, this.points.length)]
+    this.point2 = this.points.filter(
+      (p) => p.x !== this.point1.x || p.y !== this.point1.y
+    )[random(0, this.points.length - 1)]
+    this.angle = random(1, 91)
+
+    ctx.strokeStyle = randomColor(20, 255, 0.33, 1)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.beginPath()
+        ctx.arc(this.point1.x, this.point1.y, random(10, 150), 0, Math.PI)
+        ctx.stroke()
+        this.point1 = this.points[random(0, this.points.length)]
+      }
+      t++
+      if (t % (speed * 300) === 0) {
+        ctx.beginPath()
+        ctx.strokeStyle = randomColor(20, 255, 0.33, 1)
+        this.angle = random(1, 91)
+        this.point1 = this.points[random(0, this.points.length)]
+        this.point2 = this.points.filter(
+          (p) => p.x !== this.point1.x || p.y !== this.point1.y
+        )[random(0, this.points.length - 1)]
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class FourDee {
+  constructor() {
+    this.springPoint = new Vector(w / 2, h / 2)
+    this.weight = new Particle(random(0, w), random(0, h), 0, 0)
+    this.weight.radius = 20
+    this.rot = random(-90, -1)
+    let k = 0.1
+
+    ctx.strokeStyle = randomColor()
+    ctx.fillStyle = randomColor(40, 255, 0.1, 0.25)
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        const distance = this.springPoint.subtract(this.weight.position)
+        const springForce = distance.multiply(k)
+        this.weight.velocity.addTo(springForce)
+        this.weight.update()
+        ctx.beginPath()
+        ctx.arc(
+          this.weight.position.getX(),
+          this.weight.position.getY(),
+          this.weight.radius,
+          0,
+          2 * Math.PI
+        )
+        ctx.fill()
+      }
+      t++
+      ctx.translate(w / 2, h / 2)
+      ctx.rotate(this.rot)
+      ctx.translate(-w / 2, -h / 2)
+      if (t % (speed * 540) === 0) {
+        ctx.fillStyle = 'black'
+        ctx.fillRect(-w, -h, 3 * w, 3 * h)
+        this.weight = new Particle(
+          random(0, w),
+          random(0, h),
+          random(-50, 50),
+          random(-360, 360)
+        )
+        this.weight.radius = 20
+        k = Math.random()
+        this.rot = random(-90, -1)
+        ctx.fillStyle = randomColor(40, 255, 0.1, 0.25)
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class SpringOrbits {
+  constructor() {
+    this.springPoint = new Vector(w / 2, h / 2)
+    this.weight = new Particle(
+      random(0, w),
+      random(0, h),
+      random(15, 120),
+      Math.random() * Math.PI * 2
+    )
+    this.weight.friction = 0.975
+    let k = 0.04
+
+    ctx.strokeStyle = ctx.shadowColor = randomColor()
+    ctx.shadowBlur = 2
+    ctx.lineWidth = 3
+    ctx.fillStyle = 'white'
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        const distance = this.springPoint.subtract(this.weight.position)
+        const springForce = distance.multiply(k)
+        this.weight.velocity.addTo(springForce)
+        this.weight.update()
+        ctx.beginPath()
+        ctx.arc(
+          this.springPoint.getX(),
+          this.springPoint.getY(),
+          8,
+          0,
+          2 * Math.PI
+        )
+        ctx.fill()
+        ctx.beginPath()
+        ctx.moveTo(this.weight.position.getX(), this.weight.position.getY())
+        ctx.lineTo(this.springPoint.getX(), this.springPoint.getY())
+        ctx.stroke()
+      }
+      t++
+      if (t % (speed * 180) === 0) {
+        this.weight = new Particle(
+          random(0, w),
+          random(0, h),
+          random(15, 120),
+          Math.random() * Math.PI * 2
+        )
+        this.weight.friction = 0.975
+        ctx.strokeStyle = ctx.shadowColor = randomColor()
+      }
+      interval = requestAnimationFrame(this.draw)
+    }
+  }
+}
+
+class GameOfFlies {
+  constructor() {
+    this.springPoint = new Vector(w / 2, h / 2)
+    this.p = new Particle(
+      random(0, w),
+      random(0, h),
+      random(5, 50),
+      Math.random() * Math.PI * 2
+    )
+    this.p.radius = random(3, 9)
+    this.p.color = randomColor(60, 255, 0.5, 1)
+    this.particles = [this.p]
+    let k = 0.14
+
+    ctx.fillStyle = this.color2
+
+    this.draw = () => {
+      if (t % speed === 0) {
+        ctx.fillStyle = 'rgba(0,0,0,0.14)'
+        ctx.fillRect(0, 0, w, h)
+        this.particles.forEach((prtcl) => {
+          const distance = this.springPoint.subtract(prtcl.position)
+          const springForce = distance.multiply(k)
+          prtcl.velocity.addTo(springForce)
+          prtcl.update()
+          ctx.beginPath()
+          ctx.arc(
+            prtcl.position.getX(),
+            prtcl.position.getY(),
+            prtcl.radius,
+            0,
+            2 * Math.PI
+          )
+          ctx.fillStyle = prtcl.color
+          ctx.fill()
+        })
+      }
+      t++
+      if (t % (speed * 130) === 0) {
+        const p = new Particle(
+          random(0, w),
+          random(0, h),
+          random(5, 50),
+          Math.random() * Math.PI * 2
+        )
+        p.radius = random(3, 9)
+        p.color = randomColor(60, 255, 0.5, 1)
+        this.particles.push(p)
       }
       interval = requestAnimationFrame(this.draw)
     }
