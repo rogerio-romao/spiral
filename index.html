@@ -1,113 +1,127 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <head>
+        <meta charset="UTF-8" />
+        <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule=""
-      src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"
-    ></script>
-    <link rel="stylesheet" href="style.css" />
-    <title>The Spiral</title>
-  </head>
-  <body>
-    <canvas id="canvas"></canvas>
-    <div id="hud">
-      <div id="msg"></div>
-      <div id="algos"></div>
-    </div>
-    <div id="help">
-      <div>
-        <h1>THE SPIRAL</h1>
-        <h4>Music Player / Visualizer v1.0.0</h4>
-        <h3>HELP SCREEN</h3>
-      </div>
-      <div class="text">
-        <p>Not indicated for people susceptible to rapid flashing lights.</p>
-        <p>
-          Best in <span class="keys">full-screen (press F key)</span> and
-          accompanied by your favorite music playlist. If key commands aren't
-          working click on screen first to focus it.
-        </p>
-        <p>
-          PLAYER:
-          <span class="keys">
-            Click Add Track(s) to select one or multiple audio files</span
-          >
-          from your device (as long as the device supports it). The files get
-          added to the playlist (scroll to see as only one gets shown to save
-          space). Use the controls to play, stop etc. and click on the progress
-          bar to skip.<span class="keys">
-            Use the P key to hide / show the player.</span
-          >
-          When a track is finished the next one will play and the playlist will
-          loop.
-        </p>
-        <p>
-          VISUALIZER: Spiral will do it's own thing or you can
-          <span class="keys"
-            >click, touch or press space bar to create a new spiral</span
-          >. Changes algorithm every 100 seconds by default,
-          <span class="keys">press I key to increase </span> by 10 seconds or
-          <span class="keys">D to decrease.</span> Or press
-          <span class="keys"
-            >M to toggle between auto-changing and manual mode.
-          </span>
-          These will take effect after the next change.
-        </p>
-        <p>
-          The algorithm name is displayed on screen when it changes.
-          <span class="keys"
-            >Press S for silence mode to toggle it on/off.
-          </span>
-        </p>
-        <p><span class="help">H to open / close the help screen.</span></p>
-      </div>
-    </div>
-
-    <div id="player">
-      <div id="picker">
-        <label id="click-label" for="input">Add Track(s)</label>
-        <input type="file" id="input" accept="audio/*" multiple />
-        <ol id="playlist"></ol>
-        <div id="controls">
-          <button id="prev">
-            <ion-icon name="play-skip-back-outline"></ion-icon>
-          </button>
-          <button id="play">
-            <ion-icon id="play-pause-icon" name="play-outline"></ion-icon>
-          </button>
-          <button id="stop">
-            <ion-icon name="stop-outline"></ion-icon>
-          </button>
-          <button id="next">
-            <ion-icon name="play-skip-forward-outline"></ion-icon>
-          </button>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <script
+            type="module"
+            src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+            nomodule=""
+            src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"
+        ></script>
+        <link rel="stylesheet" href="style.css" />
+        <title>The Spiral</title>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+        <canvas id="canvas2"></canvas>
+        <div id="hud">
+            <div id="msg"></div>
+            <div id="algos"></div>
         </div>
-      </div>
-      <div id="progress">
-        <progress id="progress-percent" max="100" value="0"></progress>
-      </div>
-    </div>
+        <div id="help">
+            <div>
+                <h1>THE SPIRAL</h1>
+                <h4>Music Player / Visualizer v1.0.0</h4>
+                <h3>HELP SCREEN</h3>
+            </div>
+            <div class="text">
+                <p>
+                    Not indicated for people susceptible to rapid flashing
+                    lights.
+                </p>
+                <p>
+                    Best in
+                    <span class="keys">full-screen (press F key)</span> and
+                    accompanied by your favorite music playlist. If key commands
+                    aren't working click on screen first to focus it.
+                </p>
+                <p>
+                    PLAYER:
+                    <span class="keys">
+                        Click Add Track(s) to select one or multiple audio
+                        files</span
+                    >
+                    from your device (as long as the device supports it). The
+                    files get added to the playlist (scroll to see as only one
+                    gets shown to save space). Use the controls to play, stop
+                    etc. and click on the progress bar to skip.<span
+                        class="keys"
+                    >
+                        Use the P key to hide / show the player.</span
+                    >
+                    When a track is finished the next one will play and the
+                    playlist will loop.
+                </p>
+                <p>
+                    VISUALIZER: Spiral will do it's own thing or you can
+                    <span class="keys"
+                        >click, touch or press space bar to create a new
+                        spiral</span
+                    >. Changes algorithm every 100 seconds by default,
+                    <span class="keys">press I key to increase </span> by 10
+                    seconds or <span class="keys">D to decrease.</span> Or press
+                    <span class="keys"
+                        >M to toggle between auto-changing and manual mode.
+                    </span>
+                    These will take effect after the next change.
+                </p>
+                <p>
+                    The algorithm name is displayed on screen when it changes.
+                    <span class="keys"
+                        >Press S for silence mode to toggle it on/off.
+                    </span>
+                </p>
+                <p>
+                    <span class="help">H to open / close the help screen.</span>
+                </p>
+            </div>
+        </div>
 
-    <audio id="audio"></audio>
+        <div id="player">
+            <div id="picker">
+                <label id="click-label" for="input">Add Track(s)</label>
+                <input type="file" id="input" accept="audio/*" multiple />
+                <ol id="playlist"></ol>
+                <div id="controls">
+                    <button id="prev">
+                        <ion-icon name="play-skip-back-outline"></ion-icon>
+                    </button>
+                    <button id="play">
+                        <ion-icon
+                            id="play-pause-icon"
+                            name="play-outline"
+                        ></ion-icon>
+                    </button>
+                    <button id="stop">
+                        <ion-icon name="stop-outline"></ion-icon>
+                    </button>
+                    <button id="next">
+                        <ion-icon name="play-skip-forward-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+            <div id="progress">
+                <progress id="progress-percent" max="100" value="0"></progress>
+            </div>
+        </div>
 
-    <!-- You can also require other files to run in this process -->
-    <script src="main.js"></script>
-    <script src="./renderer.js"></script>
-  </body>
+        <audio id="audio"></audio>
+
+        <!-- You can also require other files to run in this process -->
+        <script src="main.js"></script>
+        <script src="./renderer.js"></script>
+    </body>
 </html>

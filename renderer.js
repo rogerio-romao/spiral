@@ -6,6 +6,8 @@
 // process.
 'use strict'
 
+import gsap from 'gsap'
+
 // Extend Canvas with rounded rectangles
 CanvasRenderingContext2D.prototype.roundRect = function (
     x,
@@ -334,7 +336,9 @@ const utils = {
 
 // DOM References
 const canvas = document.querySelector('#canvas')
+const canvas2 = document.getElementById('canvas2')
 const ctx = canvas.getContext('2d')
+const ctx2 = canvas2.getContext('2d')
 const hud = document.querySelector('#hud')
 const msg = document.querySelector('#msg')
 const algosDisplay = document.querySelector('#algos')
@@ -342,8 +346,8 @@ const help = document.querySelector('#help')
 
 // VARIABLES
 // canvas to window size
-let w = (canvas.width = window.innerWidth)
-let h = (canvas.height = window.innerHeight)
+let w = (canvas.width = canvas2.width = window.innerWidth)
+let h = (canvas.height = canvas2.height = window.innerHeight)
 
 // time-frame
 let t = 0
@@ -12332,8 +12336,10 @@ function init() {
     // set the basic canvas settings
     ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8)
     ctx.fillStyle = randomColor(5, 255, 0.5, 0.5)
+    ctx2.clearRect(-w, -h, 3 * w, 3 * h)
     canvas.style.background = 'transparent'
     ctx.imageSmoothingQuality = 'high'
+    ctx2.imageSmoothingQuality = 'high'
     ctx.lineWidth = 1
     ctx.shadowBlur = 0
     ctx.save()
@@ -12341,8 +12347,8 @@ function init() {
     // LISTENERS
     //change canvas size on window resize
     window.addEventListener('resize', () => {
-        w = canvas.width = window.innerWidth
-        h = canvas.height = window.innerHeight
+        w = canvas.width = canvas2.width = window.innerWidth
+        h = canvas.height = canvas2.height = window.innerHeight
         canvas.click()
     })
     // keystroke listeners
@@ -12420,6 +12426,7 @@ canvas.addEventListener('click', () => {
     speed = random(2, 6)
     // canvas resets
     ctx.restore()
+    ctx2.clearRect(-w, -h, 3 * w, 3 * h)
     // picks a transition mode
     canvas.style.background = 'transparent'
     clearMethod()
@@ -12451,16 +12458,20 @@ function clearMethod() {
     // clears to black a portion of the screen based on the canvas size and its rotation at the moment
     if (pick < 0.25) {
         ctx.clearRect(0, 0, w, h)
+        ctx2.clearRect(0, 0, w, h)
         // makes semi-transparent a portion of the screen based on the canvas size and its rotation at the moment
     } else if (pick < 0.5) {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.75)'
         ctx.fillRect(0, 0, w, h)
+        ctx2.clearRect(0, 0, w, h)
     } else if (pick < 0.75) {
         // colors a portion of the screen based on the canvas size and its rotation at the moment, with random transparency
         ctx.fillStyle = randomColor(5, 255, 0.15, 0.9)
         ctx.fillRect(0, 0, w, h)
+        ctx2.clearRect(0, 0, w, h)
         // completely fills the screen with black
     } else {
+        ctx2.clearRect(0, 0, w, h)
         canvas.width = canvas.height = 0
         canvas.width = w
         canvas.height = h
