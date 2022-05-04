@@ -13,7 +13,10 @@ body {
     text-shadow: 1px 1px black, -1px -1px black;
 }
 
-#canvas {
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
     cursor: pointer;
 }
 
