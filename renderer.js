@@ -373,24 +373,16 @@ let msgTimer;
 
 // algorithms list
 const ALGOS = [
-    'squares',
-    'triangles',
-    'pentagons',
     'circles',
-    'hexagons',
-    'spiderwebs',
     'starbursts',
     'square-nebulas',
     'beziers-straight',
-    'beziers-chaos',
-    'kaleidoscopes',
     'orbits',
     'rims',
     'nebulas',
     'dysons',
     'discos',
     'neon-tartans',
-    'paintings',
     'dotted',
     'spiral-lines',
     'camouflage-postits',
@@ -400,12 +392,10 @@ const ALGOS = [
     'spiral-text',
     'alphabet-soup',
     'punctuation',
-    'stargate',
     'acceleration-mandala',
     'evolving-mandala',
     'the-iris',
     'quadrants',
-    'galaxy-attractor',
     'alien-flowers',
     'hyper-tunnel',
     'chalk-galaxy',
@@ -413,29 +403,21 @@ const ALGOS = [
     'rotation-patterns',
     'microscope',
     'spinner',
-    'flawed-mirror',
-    'the-platter',
     'space-gears',
-    'light-bringer',
     'counter-clock',
     'clock',
-    'cake-decorator',
-    'tribal-tatoo',
     'pseye',
     'nuclear-vortex',
-    'tricordion',
     'acid-stars',
     'vanishing-rays',
     'warp2001',
     'golden-spiral',
     'ghostly-creatures',
     'neural-slinky',
-    'carnival-ride',
     'porthole',
     'plaid',
     'three-d',
     'supernova',
-    'crosses-naughts',
     'organic',
     'ufos',
     'offsets',
@@ -453,7 +435,6 @@ const ALGOS = [
     'picnic',
     'behind-bars',
     'shadowy',
-    'mondrianacci',
     'radio-waves',
     'starship',
     'crystal-tiles',
@@ -462,9 +443,7 @@ const ALGOS = [
     'autumn',
     'polyhedra',
     'perspective',
-    'the-jester',
     'angel-hair',
-    'dreamcatcher',
     'sushi',
     'wormholes',
     'shells',
@@ -577,40 +556,10 @@ function chooseAlgos() {
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
     // setup the chosen algorithm
     switch (choose) {
-        case 'squares':
-            displayAlgos('SQUARES');
-            ctx.save();
-            runningAlgo = new Squares();
-            runningAlgo.draw();
-            break;
-        case 'triangles':
-            displayAlgos('TRIANGLES');
-            ctx.save();
-            runningAlgo = new Triangles();
-            runningAlgo.draw();
-            break;
-        case 'pentagons':
-            displayAlgos('PENTAGONS');
-            ctx.save();
-            runningAlgo = new Pentagons();
-            runningAlgo.draw();
-            break;
         case 'circles':
             displayAlgos('CIRCLES');
             ctx.save();
             runningAlgo = new Circles();
-            runningAlgo.draw();
-            break;
-        case 'hexagons':
-            displayAlgos('HEXAGONS');
-            ctx.save();
-            runningAlgo = new Hexagons();
-            runningAlgo.draw();
-            break;
-        case 'spiderwebs':
-            displayAlgos('SPIDERWEBS');
-            ctx.save();
-            runningAlgo = new Spiderwebs();
             runningAlgo.draw();
             break;
         case 'starbursts':
@@ -629,18 +578,6 @@ function chooseAlgos() {
             displayAlgos('STRAIGHT BEZIERS');
             ctx.save();
             runningAlgo = new BeziersStraight();
-            runningAlgo.draw();
-            break;
-        case 'beziers-chaos':
-            displayAlgos('CHAOS BEZIERS');
-            ctx.save();
-            runningAlgo = new BeziersChaos();
-            runningAlgo.draw();
-            break;
-        case 'kaleidoscopes':
-            displayAlgos('KALEIDOSCOPES');
-            ctx.save();
-            runningAlgo = new Kaleidoscopes();
             runningAlgo.draw();
             break;
         case 'orbits':
@@ -677,12 +614,6 @@ function chooseAlgos() {
             displayAlgos('NEON TARTAN');
             ctx.save();
             runningAlgo = new NeonTartans();
-            runningAlgo.draw();
-            break;
-        case 'paintings':
-            displayAlgos('PAINTING');
-            ctx.save();
-            runningAlgo = new Paintings();
             runningAlgo.draw();
             break;
         case 'dotted':
@@ -739,12 +670,6 @@ function chooseAlgos() {
             runningAlgo = new Punctuation();
             runningAlgo.draw();
             break;
-        case 'stargate':
-            displayAlgos('STARGATE');
-            ctx.save();
-            runningAlgo = new Stargate();
-            runningAlgo.draw();
-            break;
         case 'acceleration-mandala':
             displayAlgos('ACCELERATION MANDALA');
             ctx.save();
@@ -767,12 +692,6 @@ function chooseAlgos() {
             displayAlgos('QUADRANTS');
             ctx.save();
             runningAlgo = new Quadrants();
-            runningAlgo.draw();
-            break;
-        case 'galaxy-attractor':
-            displayAlgos('GALAXY ATTRACTOR');
-            ctx.save();
-            runningAlgo = new GalaxyAttractor();
             runningAlgo.draw();
             break;
         case 'alien-flowers':
@@ -817,28 +736,10 @@ function chooseAlgos() {
             runningAlgo = new Spinner();
             runningAlgo.draw();
             break;
-        case 'flawed-mirror':
-            displayAlgos('FLAWED MIRROR');
-            ctx.save();
-            runningAlgo = new FlawedMirror();
-            runningAlgo.draw();
-            break;
-        case 'the-platter':
-            displayAlgos('THE PLATTER');
-            ctx.save();
-            runningAlgo = new ThePlatter();
-            runningAlgo.draw();
-            break;
         case 'space-gears':
             displayAlgos('SPACE GEARS');
             ctx.save();
             runningAlgo = new SpaceGears();
-            runningAlgo.draw();
-            break;
-        case 'light-bringer':
-            displayAlgos('LIGHT BRINGER');
-            ctx.save();
-            runningAlgo = new LightBringer();
             runningAlgo.draw();
             break;
         case 'counter-clock':
@@ -853,18 +754,6 @@ function chooseAlgos() {
             runningAlgo = new Clock();
             runningAlgo.draw();
             break;
-        case 'cake-decorator':
-            displayAlgos('CAKE DECORATOR');
-            ctx.save();
-            runningAlgo = new CakeDecorator();
-            runningAlgo.draw();
-            break;
-        case 'tribal-tatoo':
-            displayAlgos('TRIBAL TATOO');
-            ctx.save();
-            runningAlgo = new TribalTatoo();
-            runningAlgo.draw();
-            break;
         case 'pseye':
             displayAlgos('PSEYE');
             ctx.save();
@@ -875,12 +764,6 @@ function chooseAlgos() {
             displayAlgos('NUCLEAR VORTEX');
             ctx.save();
             runningAlgo = new NuclearVortex();
-            runningAlgo.draw();
-            break;
-        case 'tricordion':
-            displayAlgos('TRICORDION');
-            ctx.save();
-            runningAlgo = new Tricordion();
             runningAlgo.draw();
             break;
         case 'acid-stars':
@@ -919,12 +802,6 @@ function chooseAlgos() {
             runningAlgo = new GoldenSpiral();
             runningAlgo.draw();
             break;
-        case 'carnival-ride':
-            displayAlgos('CARNIVAL RIDE');
-            ctx.save();
-            runningAlgo = new CarnivalRide();
-            runningAlgo.draw();
-            break;
         case 'porthole':
             displayAlgos('PORTHOLE');
             ctx.save();
@@ -947,12 +824,6 @@ function chooseAlgos() {
             displayAlgos('SUPERNOVA');
             ctx.save();
             runningAlgo = new Supernova();
-            runningAlgo.draw();
-            break;
-        case 'crosses-naughts':
-            displayAlgos('CROSSES NAUGHTS');
-            ctx.save();
-            runningAlgo = new CrossesNaughts();
             runningAlgo.draw();
             break;
         case 'organic':
@@ -1057,12 +928,6 @@ function chooseAlgos() {
             runningAlgo = new Shadowy();
             runningAlgo.draw();
             break;
-        case 'mondrianacci':
-            displayAlgos('MONDRIANACCI');
-            ctx.save();
-            runningAlgo = new Mondrianacci();
-            runningAlgo.draw();
-            break;
         case 'radio-waves':
             displayAlgos('RADIO WAVES');
             ctx.save();
@@ -1111,22 +976,10 @@ function chooseAlgos() {
             runningAlgo = new Perspective();
             runningAlgo.draw();
             break;
-        case 'the-jester':
-            displayAlgos('THE JESTER');
-            ctx.save();
-            runningAlgo = new TheJester();
-            runningAlgo.draw();
-            break;
         case 'angel-hair':
             displayAlgos('ANGEL HAIR');
             ctx.save();
             runningAlgo = new AngelHair();
-            runningAlgo.draw();
-            break;
-        case 'dreamcatcher':
-            displayAlgos('DREAMCATCHER');
-            ctx.save();
-            runningAlgo = new Dreamcatcher();
             runningAlgo.draw();
             break;
         case 'sushi':
@@ -1734,214 +1587,6 @@ function chooseAlgos() {
 
 // ALGORITHMS / SPIRALS CLASSES
 
-class Squares {
-    constructor() {
-        // vars
-        this.length = random(50, Math.min(w, h)) - 30;
-        this.maxLength = this.length;
-        this.gap = random(4, 100);
-        this.maxGap = this.gap;
-        this.rot1 = random(1, 6);
-        this.rot2 = random(1, 6);
-        this.rot3 = random(1, 6);
-        this.rand1 = random(1, 4);
-        this.rand2 = random(2, 5);
-        // set the color of the stroke
-        ctx.strokeStyle = randomColor(5, 255, 0.2, 0.2);
-
-        this.draw = () => {
-            // reverse and rotate motion when length gets to 0
-            if (this.length <= 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot1);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            // only runs on speed amount of frames
-            if (t % speed === 0) {
-                stagger %= 4;
-                ctx.beginPath();
-                // first step of the stagger sequence
-                if (stagger === 0) {
-                    ctx.lineTo(
-                        round(w / 2 + this.length),
-                        round(h / 2 - this.length)
-                    );
-                }
-                // second step of the stagger sequence
-                if (stagger === 1) {
-                    ctx.lineTo(
-                        round(w / 2 - this.length),
-                        round(h / 2 - this.length)
-                    );
-                }
-                // third step of the stagger sequence
-                if (stagger === 2) {
-                    ctx.lineTo(
-                        round(w / 2 - this.length),
-                        round(h / 2 + this.length)
-                    );
-                }
-                // last step of the stagger sequence
-                if (stagger === 3) {
-                    ctx.lineTo(
-                        round(w / 2 + this.length - this.gap),
-                        round(h / 2 + this.length)
-                    );
-                    this.length -= this.gap;
-                    // reverse and rotate and modify the sequence when length gets to max
-                    if (this.length < -this.maxLength) {
-                        ctx.translate(w / 2, h / 2);
-                        ctx.rotate(this.rot2);
-                        ctx.translate(-w / 2, -h / 2);
-                        ctx.beginPath();
-                        this.length = -this.length;
-                        this.gap -= Math.ceil(this.gap / 2) + this.rand1;
-                        // reset and increase the gap when it gets to 0
-                        if (this.gap <= 0) this.gap += this.maxGap + this.rand2;
-                    }
-                }
-                // rotation after each stagger step
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot3);
-                ctx.translate(-w / 2, -h / 2);
-                // stroke after each step
-                ctx.stroke();
-                stagger++;
-            }
-            //increase the time and call next frame
-            t++;
-            // change these settings every 200 cycles
-            if (t % (speed * 200) === 0) {
-                ctx.closePath();
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(5, 255, 0.2, 0.2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(random(0, 6) * Math.PI);
-                ctx.translate(-w / 2, -h / 2);
-                this.length += random(-5, 15);
-                this.maxLength += random(0, 20);
-                this.gap += random(0, 10);
-                this.maxGap += random(0, 20);
-            }
-            // draw next frame
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-// check comments on first class (squares) as these all basically work similarly
-class Triangles {
-    constructor() {
-        this.length = random(100, Math.min(w, h));
-        this.maxLength = 2 * this.length;
-        this.gap = random(4, 100);
-        this.maxGap = this.gap;
-        this.height = (Math.sqrt(3) / 2) * this.length;
-        this.rotate = random(3, 160);
-
-        ctx.strokeStyle = randomColor(5, 255, 0.25, 0.25);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 3;
-                ctx.beginPath;
-                if (stagger === 0) {
-                    ctx.lineTo(
-                        w / 2 + this.length / 2 - this.gap,
-                        h / 2 + (this.height / 3 - this.gap)
-                    );
-                }
-                if (stagger === 1) {
-                    ctx.lineTo(w / 2, h / 2 - this.length / 2);
-                }
-                if (stagger === 2) {
-                    this.length -= this.gap;
-                    if (Math.abs(this.length) >= this.maxLength)
-                        this.length = -this.length;
-                    this.height = (Math.sqrt(3) / 2) * this.length;
-                    ctx.lineTo(
-                        w / 2 - this.length / 2 + this.gap,
-                        h / 2 + (this.height / 3 - this.gap)
-                    );
-                }
-                ctx.stroke();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-                this.gap -= 2;
-                if (this.gap <= 0) this.gap += this.maxGap;
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                ctx.closePath();
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(5, 255, 0.25, 0.25);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(random(0, 7) * Math.PI);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Pentagons {
-    constructor() {
-        this.length = random(50, Math.floor(Math.min(w, h) / 2));
-        this.maxLength = this.length;
-        this.gap = random(2, 65);
-        this.maxGap = this.gap;
-        this.rot = random(2, 26);
-
-        ctx.strokeStyle = randomColor(5, 255, 0.3, 0.3);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 5;
-                ctx.beginPath;
-                if (stagger === 0) {
-                    ctx.lineTo(this.length * 1.55, this.length * 2.19);
-                }
-                if (stagger === 1) {
-                    ctx.lineTo(this.length * 1.91, this.length * 3.31);
-                }
-                if (stagger === 2) {
-                    ctx.lineTo(this.length * 3.09, this.length * 3.31);
-                }
-                if (stagger === 3) {
-                    ctx.lineTo(this.length * 3.45, this.length * 2.19);
-                }
-                if (stagger === 4) {
-                    ctx.lineTo(
-                        this.length * 2.5 + this.gap,
-                        this.length * 1.5 + this.gap
-                    );
-                    this.length -= this.gap;
-                    if (this.length <= 0) this.length = this.maxLength;
-                }
-                this.gap -= Math.round(this.gap / 2);
-                if (this.gap <= 0) this.gap = this.maxGap;
-                ctx.stroke();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot);
-                ctx.translate(-w / 2, -h / 2);
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 125) === 0) {
-                ctx.closePath();
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(5, 255, 0.3, 0.3);
-            }
-            if (t % (speed * 500) === 0) {
-                this.rot = random(2, 25);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Circles {
     constructor() {
         this.rot1 = random(1, 6);
@@ -2046,134 +1691,6 @@ class Circles {
                 this.rot3 = random(1, 11);
                 this.rot1 = random(2, 5);
                 this.rot2 = random(45, 359);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Hexagons {
-    constructor() {
-        this.length = random(20, Math.min(w, h));
-        this.maxLength = this.length;
-        this.gap = random(4, 45);
-        this.maxGap = this.gap;
-        this.rot1 = random(1, 6);
-        this.rot2 = (random(6, 180) * Math.PI) / 180;
-        this.rand1 = random(1, this.gap);
-        this.bw = true;
-
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = ctx.strokeStyle = randomColor(5, 255, 0.3, 0.3);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 6;
-                if (stagger === 0) {
-                    ctx.lineTo(this.length * 1.4, this.length * 1.03);
-                }
-                if (stagger === 1) {
-                    ctx.lineTo(this.length * 0.9, this.length * 1.9);
-                }
-                if (stagger === 2) {
-                    ctx.lineTo(this.length * 1.4, this.length * 2.77);
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot1);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                if (stagger === 3) {
-                    ctx.lineTo(this.length * 2.4, this.length * 2.77);
-                }
-                if (stagger === 4) {
-                    ctx.lineTo(this.length * 2.9, this.length * 1.9);
-                }
-                if (stagger === 5) {
-                    ctx.lineTo(
-                        this.length * 2.4 - this.gap,
-                        this.length * 1.03 + this.gap
-                    );
-                    this.length -= this.gap;
-                    if (this.length <= 0 - this.maxLength) {
-                        this.length = this.maxLength - 1;
-                        ctx.translate(w / 2, h / 2);
-                        ctx.rotate(this.rot2);
-                        ctx.translate(-w / 2, -h / 2);
-                    }
-                    if (this.length > Math.max(w, h)) this.length = 0;
-                    this.gap -= this.rand1;
-                    if (this.gap <= 0 - this.maxGap) {
-                        this.rand1 = random(1, this.maxGap);
-                        this.gap = this.maxGap;
-                    }
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot2);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                ctx.stroke();
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 200) === 0) {
-                ctx.closePath();
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    5,
-                    255,
-                    0.3,
-                    0.3
-                );
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((random(0, 26) * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-                this.gap = random(4, 45);
-                this.maxGap = this.gap;
-                this.length = random(20, Math.min(w, h));
-                this.maxLength = this.length;
-                this.rot2 = (random(6, 180) * Math.PI) / 180;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Spiderwebs {
-    constructor() {
-        this.length = random(3, Math.min(w, h) / 2);
-        this.maxLength = this.length;
-        this.gap = random(3, 30);
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor(5, 255, 0.9, 0.9);
-        ctx.shadowBlur = 5;
-
-        this.draw = () => {
-            ctx.beginPath();
-            if (t % speed === 0) {
-                ctx.lineTo(w / 2 + this.length, h / 2 - this.length);
-                ctx.lineTo(random(0, w), h / 2 - 2 * this.length);
-                ctx.stroke();
-                this.length -= this.gap;
-                if (this.length < -this.maxLength) {
-                    this.length = random(2, w / 2);
-                    this.maxLength = random(60, h);
-                    this.gap = random(2, 50);
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((random(-90, 90) * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                ctx.lineTo(w / 2, h / 2);
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    5,
-                    255,
-                    0.9,
-                    0.9
-                );
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((random(-14, 14) * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -2388,180 +1905,6 @@ class BeziersStraight {
                 ctx.rotate(random(0, 3) * Math.PI);
                 ctx.translate(-w / 2, -h / 2);
                 this.cp2Y = random(0, h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class BeziersChaos {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, w);
-        this.cp1X = random(0, w);
-        this.cp1Y = random(0, w);
-        this.cp2X = random(0, w);
-        this.cp2Y = random(0, w);
-        this.rot1 = random(1, 21);
-        this.rot2 = random(2, 8);
-        this.gap = random(4, 80);
-
-        ctx.strokeStyle = randomColor(5, 255, 0.2, 0.2);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 3;
-                if (stagger === 0) {
-                    ctx.bezierCurveTo(
-                        this.x,
-                        this.cp1Y,
-                        this.cp2X,
-                        this.cp2Y,
-                        this.cp1X,
-                        this.y
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.bezierCurveTo(
-                        this.cp2X,
-                        this.cp2Y,
-                        this.cp1X,
-                        this.cp1Y,
-                        this.x,
-                        this.y
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.bezierCurveTo(
-                        this.cp2Y,
-                        this.cp1X,
-                        this.cp1Y,
-                        this.cp2X,
-                        this.y,
-                        this.x
-                    );
-                    ctx.stroke();
-
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot1);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-            }
-            stagger++;
-            t++;
-            if (t % (speed * 20) === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(-this.rot2);
-                ctx.translate(-w / 2, -h / 2);
-                ctx.bezierCurveTo(
-                    this.y,
-                    this.cp2X,
-                    this.x,
-                    this.cp1X,
-                    this.cp2Y,
-                    this.cp1Y
-                );
-                ctx.stroke();
-                this.cp1X += this.gap;
-                this.cp2Y += this.gap;
-                this.rot2 = random(-15, 15);
-            }
-            if (t % (speed * 220) === 0) {
-                ctx.closePath();
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(5, 255, 0.2, 0.2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((random(15, 120) * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-                this.x += random(-10, 30);
-                this.y += random(-10, 30);
-                this.cp1X = random(0, 360);
-                this.cp2Y = random(5, h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Kaleidoscopes {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, w);
-        this.cp1X = random(0, w);
-        this.cp1Y = random(0, w);
-        this.cp2X = random(0, w);
-        this.cp2Y = random(0, w);
-        this.rot1 = random(1, 6);
-        this.rot2 = random(2, 6);
-        this.gap = random(4, 100);
-
-        ctx.strokeStyle = randomColor(5, 255, 0.75, 0.75);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 3;
-                ctx.beginPath();
-                if (stagger === 0) {
-                    ctx.bezierCurveTo(
-                        this.cp1X,
-                        this.cp1Y,
-                        this.cp2X,
-                        this.cp2Y,
-                        this.x,
-                        this.y
-                    );
-                }
-                if (stagger === 1) {
-                    if (Math.random() < 0.5) {
-                        ctx.moveTo(w / 2, h / 2);
-                    }
-                    ctx.bezierCurveTo(
-                        this.cp1X,
-                        this.cp1Y,
-                        this.cp2X,
-                        this.cp2Y,
-                        this.x,
-                        this.y
-                    );
-                }
-                if (stagger === 2) {
-                    ctx.bezierCurveTo(
-                        this.cp1X,
-                        this.cp1Y,
-                        this.cp2X,
-                        this.cp2Y,
-                        this.x,
-                        this.y
-                    );
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot2);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            ctx.stroke();
-            stagger++;
-            t++;
-            if (t % (speed * 160) === 0) {
-                ctx.moveTo(w / 2, h / 2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot1);
-                ctx.translate(-w / 2, -h / 2);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(5, 255, 0.75, 0.75);
-                this.cp1X = random(0, w);
-                this.cp1Y = random(0, h);
-                this.gap += random(-100, 100);
-                this.cp2X = this.cp1X + this.gap;
-                this.cp2Y = this.cp1Y + this.gap;
-                this.y = this.cp2Y + this.gap;
-                this.x = this.cp2X + this.gap;
-                this.rot2 = random(2, 6);
-                this.rot1 = random(-15, 15);
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -2895,65 +2238,6 @@ class NeonTartans {
             }
             this.lineX = random(0, h);
             this.lineY = random(0, w);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Paintings {
-    constructor() {
-        this.length = random(50, Math.min(w, h) / 1.5);
-        ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
-        ctx.fillStyle = randomColor(5, 255, 0.05, 0.05);
-        ctx.lineWidth = random(1, 40);
-
-        ctx.globalCompositeOperation = 'overlay';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 5;
-                if (stagger === 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(w / 2 - this.length / 2, h / 2);
-                    ctx.lineTo(w / 2, h / 2 - this.length / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.lineTo(w / 2 + this.length / 2, h / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.lineTo(w / 2, h / 2 + this.length / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 3) {
-                    ctx.lineTo(w / 2 - this.length / 2, h / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 4) {
-                    ctx.fill();
-                    this.length = random(0, w * 1.5);
-                    ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
-
-                    ctx.lineWidth = random(1, 40);
-                    ctx.fillStyle = randomColor(5, 255, 0.05, 0.05);
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate((random(-359, 359) * Math.PI) / 180);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 20) === 0) {
-                ctx.arc(w / 2, h / 2, this.length, 0, 360, true);
-                ctx.fillStyle = ctx.fillStyle = randomColor(5, 255, 0.8, 0.8);
-                ctx.stroke();
-                ctx.fill();
-                ctx.fillStyle = ctx.fillStyle = randomColor(5, 255, 0.05, 0.05);
-            }
-            if (t % (speed * 77) === 0) {
-                ctx.clearRect(w / 2, h / 2, this.length, this.length);
-            }
             interval = requestAnimationFrame(this.draw);
         };
     }
@@ -3879,37 +3163,6 @@ class Punctuation {
     }
 }
 
-class Stargate {
-    constructor() {
-        this.fontChange = random(15, 100);
-        this.rot1 = (random(2, 178) * Math.PI) / 180;
-        this.filter = true;
-
-        ctx.fillStyle = randomColor(0, 255, 0.8, 0.8);
-        ctx.font = `${random(25, 125)}px sans-serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillText(`*** ****  **** ** *`, w / 2, h / 2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot1);
-
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 90) === 0) {
-                this.fontChange = random(15, 100);
-                ctx.font = `${this.fontChange}px sans-serif`;
-                ctx.fillStyle = randomColor(0, 255, 0.8, 0.8);
-                this.rot1++;
-                ctx.filter = this.filter ? 'blur(3px)' : 'blur(0px)';
-                this.filter = !this.filter;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class AccelerationMandala {
     constructor() {
         this.letters = [
@@ -4093,47 +3346,6 @@ class Quadrants {
             if (t % (speed * 225) === 0) {
                 ctx.lineWidth = random(1, 40);
                 ctx.strokeStyle = ctx.fillStyle = 'black';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class GalaxyAttractor {
-    constructor() {
-        this.side = random(20, Math.max(w, h));
-        this.rotate = random(1, 359);
-        this.dash1 = random(1, 25);
-        this.dash2 = random(6, 60);
-
-        ctx.setLineDash([this.dash1, this.dash2]);
-        ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.3, 0.8);
-        ctx.shadowBlur = 8;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(random(0, w), random(0, h));
-                ctx.quadraticCurveTo(this.side, this.side, w / 2, h / 2);
-                ctx.stroke();
-                this.side = random(20, Math.max(w, h));
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 40) === 0) {
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    0,
-                    255,
-                    0.3,
-                    0.8
-                );
-            }
-            if (t % (speed * 400) === 0) {
-                this.dash1 = random(1, 25);
-                this.dash2 = random(6, 60);
-                ctx.setLineDash([this.dash1, this.dash2]);
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -4550,81 +3762,6 @@ class Spinner {
     }
 }
 
-class FlawedMirror {
-    constructor() {
-        this.letters = [
-            33, 34, 42, 43, 65, 90, 94, 166, 175, 177, 191, 192, 195, 198, 199,
-            204, 208, 210, 212, 247, 256, 294, 298
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.rotate = random(1, 23);
-        ctx.globalAlpha = 0.5;
-        ctx.font = random(60, 660) + 'px serif';
-        ctx.textAlign = 'center';
-        ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, w / 2, h / 2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.strokeText(this.letter, 0, 0);
-                ctx.translate(-w / 2, -h / 2);
-                this.rotate = random(1, 23);
-            }
-            t++;
-            if (t % (speed * 100) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 1, 1);
-                ctx.font = random(60, 660) + 'px serif';
-            }
-            if (t % (speed * 1000) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class ThePlatter {
-    constructor() {
-        this.letters = [
-            302, 306, 308, 310, 313, 323, 324, 325, 327, 328, 332, 336, 337,
-            345, 350, 354, 358, 363, 365, 366, 370, 371, 373, 375, 380, 381,
-            383, 388, 390, 399
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.rotate = (random(2, 358) * Math.PI) / 180;
-        ctx.font = random(125, 750) + 'px serif';
-        ctx.textAlign = 'center';
-        ctx.strokeStyle = randomColor(0, 255, 0.06, 0.06);
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, w / 2, h / 2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.strokeText(this.letter, 0, 0);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 180) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 0.06, 0.06);
-                ctx.font = random(125, 750) + 'px serif';
-                this.rotate = (random(2, 358) * Math.PI) / 180;
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                ctx.lineWidth = random(1, 15);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class SpaceGears {
     constructor() {
         this.letters = [
@@ -4654,55 +3791,6 @@ class SpaceGears {
             }
             if (t % (speed * 1260) === 0) {
                 this.rotate = (random(3, 357) * Math.PI) / 180;
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class LightBringer {
-    constructor() {
-        this.letters = [
-            501, 502, 503, 508, 509, 522, 525, 526, 528, 530, 533, 534, 538,
-            547, 558, 562, 567, 589
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.light = true;
-        this.rotate = (random(5, 355) * Math.PI) / 180;
-
-        ctx.font = random(30, 300) + 'px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.globalAlpha = 0.7;
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.fillStyle = randomColor(0, 255, 0.8, 0.8);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.fillText(
-                    '  ' + this.letter.repeat(3) + '  ' + this.letter.repeat(2),
-                    0,
-                    0
-                );
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 72) === 0) {
-                this.rotate = (random(5, 355) * Math.PI) / 180;
-                ctx.fillStyle = randomColor(0, 255, 0.8, 0.8);
-                ctx.font = random(30, 300) + 'px sans-serif';
-            }
-            if (t % (speed * 360) === 0) {
-                this.light = !this.light;
-                ctx.globalCompositeOperation = this.light
-                    ? 'lighter'
-                    : 'multiply';
                 this.letter = String.fromCharCode(
                     this.letters[random(0, this.letters.length)]
                 );
@@ -4836,158 +3924,6 @@ class Clock {
                 this.letter = String.fromCharCode(
                     this.letters[random(0, this.letters.length)]
                 );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class CakeDecorator {
-    constructor() {
-        this.letters = [
-            801, 803, 805, 808, 809, 810, 811, 812, 816, 817, 820, 822, 823,
-            826, 827, 829, 831, 832, 836, 837, 839, 840, 841, 843, 845, 846,
-            848, 850, 857, 858, 859, 860, 866, 894
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.fontSize = random(50, 350);
-        this.rotate = (random(5, 355) * Math.PI) / 180;
-
-        ctx.strokeStyle = randomColor(10, 255, 0.6, 0.9);
-        ctx.fillStyle = randomColor(10, 255, 0.1, 0.1);
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.font = 'bold ' + this.fontSize + 'px serif';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.strokeText(this.letter, w * 0.25, h * 0.25);
-                    ctx.fillText(this.letter, w * 0.25, h * 0.25);
-                }
-                if (stagger === 1) {
-                    ctx.strokeText(this.letter, w * 0.75, h * 0.25);
-                    ctx.fillText(this.letter, w * 0.75, h * 0.25);
-                }
-                if (stagger === 2) {
-                    ctx.strokeText(this.letter, w * 0.75, h * 0.75);
-                    ctx.fillText(this.letter, w * 0.75, h * 0.75);
-                }
-                if (stagger === 3) {
-                    ctx.strokeText(this.letter, w * 0.25, h * 0.75);
-                    ctx.fillText(this.letter, w * 0.25, h * 0.75);
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 60) === 0) {
-                ctx.strokeStyle = randomColor(10, 255, 0.4, 0.8);
-                ctx.fillStyle = randomColor(10, 255, 0.05, 0.05);
-                this.fontSize = random(50, 350);
-                ctx.font = 'bold ' + this.fontSize + 'px serif';
-            }
-            if (t % (speed * 360) === 0) {
-                this.rotate = (random(5, 355) * Math.PI) / 180;
-            }
-            if (t % (speed * 720) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class TribalTatoo {
-    constructor() {
-        this.letters = [
-            901, 903, 926, 931, 932, 933, 935, 938, 939, 943, 944, 947, 953,
-            954, 955, 964, 965, 967, 970, 978, 979, 983, 986, 987, 989, 990,
-            993, 995, 999
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.fontSize = random(50, 150);
-        this.rotations = [15, 30, 45, 72, 90];
-        this.rotate =
-            (this.rotations[random(0, this.rotations.length)] * Math.PI) / 180;
-
-        ctx.strokeStyle = randomColor(10, 255, 0.5, 0.8);
-        ctx.fillStyle = randomColor(10, 255, 0.5, 0.5);
-        ctx.lineWidth = 3;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.font = 'bold ' + this.fontSize + 'px serif';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 3;
-                if (stagger === 0) {
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.strokeText(
-                        (this.letter + ' ').repeat(5),
-                        w * 0.5,
-                        h * 0.333
-                    );
-                    ctx.fillText(
-                        (this.letter + ' ').repeat(5),
-                        w * 0.5,
-                        h * 0.333
-                    );
-                }
-                if (stagger === 1) {
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'top';
-                    ctx.strokeText(
-                        (this.letter + ' ').repeat(3),
-                        w * 0.333,
-                        h * 0.666
-                    );
-                    ctx.fillText(
-                        (this.letter + ' ').repeat(3),
-                        w * 0.333,
-                        h * 0.666
-                    );
-                }
-                if (stagger === 2) {
-                    ctx.textAlign = 'right';
-                    ctx.textBaseline = 'bottom';
-                    ctx.strokeText('   ' + this.letter, w * 0.666, h * 0.666);
-                    ctx.fillText('   ' + this.letter, w * 0.666, h * 0.666);
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 90) === 0) {
-                this.fontSize = random(50, 150);
-                ctx.font = 'bold ' + this.fontSize + 'px serif';
-                ctx.strokeStyle = randomColor(10, 255, 0.5, 0.8);
-                ctx.fillStyle = randomColor(10, 255, 0.5, 0.5);
-            }
-            if (t % (speed * 270) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            if (t % (speed * 540) === 0) {
-                this.rotate =
-                    (this.rotations[random(0, this.rotations.length)] *
-                        Math.PI) /
-                    180;
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -5131,67 +4067,6 @@ class NuclearVortex {
                 ];
                 this.col = 0;
                 ctx.strokeStyle = this.color1;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Tricordion {
-    constructor() {
-        this.side = random(15, 100);
-        this.change = random(1, 200);
-        this.rotate = random(3, 357);
-
-        ctx.globalAlpha = 0.2;
-        ctx.shadowColor = 'white';
-        ctx.shadowBlur = 60;
-        ctx.filter = 'saturation(0.45)';
-        ctx.lineWidth = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 3;
-                if (stagger === 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.lineTo(w / 2 - this.side / 2, h / 2 - this.side / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.lineTo(w / 2 + this.side / 2, h / 2 - this.side / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.lineTo(w / 2, h / 2);
-                    ctx.stroke();
-                    ctx.fill();
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate((this.rotate * Math.PI) / 180);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                stagger++;
-            }
-            this.side += this.change;
-            if (this.side > Math.max(w, h) || this.side < 5) {
-                this.change = -this.change;
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                if (Math.random() > 0.1) {
-                    ctx.shadowColor = ctx.strokeStyle = randomColor(
-                        20,
-                        175,
-                        0.5,
-                        1
-                    );
-                } else {
-                    ctx.shadowColor = 'white';
-                    ctx.strokeStyle = 'black';
-                }
-                this.side = random(15, 100);
-                this.rotate = random(3, 357);
-                this.change = random(1, 200);
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -5567,118 +4442,6 @@ class VanishingRays {
     }
 }
 
-class CarnivalRide {
-    constructor() {
-        this.letters = [
-            3103, 3104, 3105, 3107, 3108, 3109, 3111, 3112, 3114, 3115, 3118,
-            3119, 3122, 3128, 3129, 3133, 3136, 3157, 3162, 3174, 3175, 3176,
-            3179, 3183, 3192, 3193, 3194, 3199
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.fontSize = random(40, 280);
-        this.rot1 = random(1, 5);
-        this.rot2 = random(2, 6);
-        this.rot3 = random(3, 7);
-        this.rot4 = random(4, 8);
-        this.rot5 = random(-5, -1);
-
-        ctx.fillStyle = randomColor(0, 255, 0.4, 1);
-        ctx.strokeStyle = randomColor(10, 175, 0.5, 0.75);
-        ctx.shadowColor = 'black';
-        ctx.shadowOffsetX = 4;
-        ctx.shadowOffsetY = 4;
-        ctx.shadowBlur = 5;
-        ctx.lineWidth = random(15, 40);
-        ctx.textAlign = 'center';
-        ctx.font = this.fontSize + 'px serif';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 5;
-                if (stagger === 0) {
-                    ctx.save();
-                    ctx.translate(w * 0.25, h * 0.25);
-                    ctx.rotate(this.rot1);
-                    ctx.fillText(this.letter, w * 0.25, 0);
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.lineTo(w * 0.125, h * 0.125);
-                    ctx.stroke();
-                    ctx.translate(-w * 0.25, -h * 0.25);
-                    ctx.restore();
-                }
-                if (stagger === 1) {
-                    ctx.save();
-                    ctx.translate(w * 0.75, h * 0.25);
-                    ctx.rotate(this.rot2);
-                    ctx.fillText(this.letter, 0, h * 0.25);
-                    ctx.moveTo(w * 0.125, h / 2);
-                    ctx.lineTo(w * 0.875, h * 0.125);
-                    ctx.stroke();
-                    ctx.translate(-w * 0.75, -h * 0.25);
-                    ctx.restore();
-                }
-                if (stagger === 2) {
-                    ctx.save();
-                    ctx.translate(w * 0.75, h * 0.75);
-                    ctx.rotate(this.rot3);
-                    ctx.fillText(this.letter, w * 0.75, 0);
-                    ctx.moveTo(w / 2, h * 0.125);
-                    ctx.lineTo(w * 0.875, h * 0.875);
-                    ctx.stroke();
-                    ctx.translate(-w * 0.75, -h * 0.75);
-                    ctx.restore();
-                }
-                if (stagger === 3) {
-                    ctx.save();
-                    ctx.translate(w * 0.25, h * 0.75);
-                    ctx.rotate(this.rot4);
-                    ctx.fillText(this.letter, 0, h * 0.75);
-                    ctx.moveTo(w * 0.875, h / 2);
-                    ctx.lineTo(w * 0.875, h * 0.125);
-                    ctx.stroke();
-                    ctx.translate(-w * 0.25, -h * 0.75);
-                    ctx.restore();
-                }
-                if (stagger === 4) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot5);
-                    ctx.fillText(this.letter, 0, 0);
-                    ctx.translate(-w / 2, -h / 2);
-                    ctx.fillText(this.letter, w * 0.125, h * 0.125);
-                    ctx.fillText(this.letter, w * 0.875, h * 0.125);
-                    ctx.fillText(this.letter, w * 0.875, h * 0.875);
-                    ctx.fillText(this.letter, w * 0.875, h * 0.125);
-                    ctx.textAlign = 'center';
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 75) === 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(10, 175, 0.5, 0.75);
-                this.fontSize = random(40, 280);
-                ctx.font = this.fontSize + 'px serif';
-            }
-            if (t % (speed * 150) === 0) {
-                ctx.fillStyle = randomColor(0, 255, 0.4, 1);
-                this.rot1 = random(1, 5);
-                this.rot2 = random(2, 6);
-                this.rot3 = random(3, 7);
-                this.rot4 = random(4, 8);
-                this.rot5 = random(-5, -1);
-            }
-            if (t % (speed * 300) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Porthole {
     constructor() {
         this.angle = 1;
@@ -5795,7 +4558,7 @@ class ThreeD {
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
         );
-        this.fontSize = random(40, 200);
+        this.fontSize = random(12, 38);
         this.rot1 = random(-5, 5);
         this.rot2 = random(2, 11);
         this.rot3 = random(-8, 7);
@@ -5859,7 +4622,7 @@ class ThreeD {
             }
             t++;
             if (t % (speed * 75) === 0) {
-                this.fontSize = random(40, 200);
+                this.fontSize = random(12, 38);
                 ctx.font = this.fontSize + 'px serif';
             }
             if (t % (speed * 150) === 0) {
@@ -5921,38 +4684,6 @@ class Supernova {
                 this.rot = random(1, 20);
                 ctx.strokeStyle = randomColor(0, 255, 0.06, 0.12);
                 ctx.fillStyle = randomColor(0, 255, 0.03, 0.06);
-            }
-            t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class CrossesNaughts {
-    constructor() {
-        this.radius = random(20, 300);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.1, 0.5);
-        ctx.lineWidth = random(5, 30);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(w / 2, h / 2, this.radius, 0, 2 * Math.PI);
-                ctx.stroke();
-                if (this.radius % 2 === 0) {
-                    this.radius /= 2;
-                } else {
-                    this.radius = this.radius * 3 + 1;
-                }
-            }
-            if (this.radius === 1 || this.radius > Math.max(w, h) * 8) {
-                this.radius = random(20, 300);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.1, 0.5);
-                ctx.lineWidth = random(5, 30);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(Math.PI / 2);
-                ctx.translate(-w / 2, -h / 2);
             }
             t++;
             interval = requestAnimationFrame(this.draw);
@@ -6058,6 +4789,7 @@ class Offsets {
     constructor() {
         this.length = random(20, Math.max(w, h));
         this.rotate = random(7, 27);
+        this.isLighten = true;
 
         ctx.shadowColor = randomColor();
         ctx.shadowOffsetX = random(-200, 200);
@@ -6095,12 +4827,12 @@ class Offsets {
                 ctx.shadowOffsetY = random(-200, 200);
             }
             if (t % (speed * 400) === 0) {
+                this.isLighten = !this.isLigthen;
                 ctx.strokeStyle = randomColor(0, 255, 0.1, 0.1);
-                ctx.globalCompositeOperation = 'lighten';
+                ctx.globalCompositeOperation = this.isLighten
+                    ? 'lighten'
+                    : 'darken';
                 this.rotate = random(1, 37);
-            }
-            if (t % (speed * 800) === 0) {
-                ctx.globalCompositeOperation = 'darken';
             }
             stagger++;
             interval = requestAnimationFrame(this.draw);
@@ -7025,7 +5757,7 @@ class Shadowy {
             this.letters[random(0, this.letters.length)]
         );
         this.rotate = random(5, 355);
-        this.fontSize = random(34, 390);
+        this.fontSize = random(30, 100);
 
         ctx.font = `bold ${this.fontSize}px serif`;
         ctx.shadowColor = randomColor(55, 255, 0.7, 1);
@@ -7048,7 +5780,7 @@ class Shadowy {
             t++;
             if (t % (speed * 75) === 0) {
                 ctx.shadowColor = randomColor(55, 255, 0.7, 1);
-                this.fontSize = random(34, 390);
+                this.fontSize = random(30, 100);
                 ctx.font = `bold ${this.fontSize}px serif`;
                 this.rotate = random(5, 355);
             }
@@ -7060,48 +5792,6 @@ class Shadowy {
                 this.letter = String.fromCharCode(
                     this.letters[random(0, this.letters.length)]
                 );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Mondrianacci {
-    constructor() {
-        this.first = 0;
-        this.second = 1;
-        this.divisors = [2, 3, 4, 6, 8, 10, 12, 16];
-        this.divisor = this.divisors[random(0, this.divisors.length)];
-        this.seq = [this.first, this.second];
-
-        ctx.lineWidth = random(1, 6);
-        ctx.strokeStyle = randomColor(0, 255, 0.45, 1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                let side = this.seq[0] + this.seq[1];
-                this.seq.push(side);
-                this.seq.shift();
-                if (side > Math.max(w, h)) {
-                    this.first++;
-                    this.second++;
-                    this.seq = [this.first, this.second];
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(Math.PI / this.divisor);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                ctx.strokeRect(0, 0, side, side);
-            }
-            t++;
-            if (t % (speed * 240) === 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.45, 1);
-                this.divisor = this.divisors[random(0, this.divisors.length)];
-                ctx.lineWidth = random(1, 6);
-            }
-            if (t % (speed * 1200) === 0) {
-                this.first = 0;
-                this.second = 1;
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -7626,116 +6316,6 @@ class Wormholes {
             ctx.rotate(this.rotate);
             ctx.translate(-w / 2, -h / 2);
             t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Dreamcatcher {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.rotate = (random(1, 360) * Math.PI) / 180;
-
-        speed = 3;
-
-        ctx.strokeStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.moveTo(this.x2++, this.y3);
-                    ctx.lineTo(this.y1, this.x3);
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.moveTo(this.x1++, this.y1--);
-                    ctx.lineTo(this.x2, this.y2--);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.lineTo(this.x3++, this.y3--);
-                    ctx.stroke();
-                }
-                if (stagger === 3) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-            }
-            stagger++;
-            t++;
-            if (t % (speed * 720) === 0) {
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                ctx.beginPath();
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                this.rotate = (random(1, 360) * Math.PI) / 180;
-                ctx.strokeStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class TheJester {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.radius1 = random(3, 30);
-        this.radius2 = random(3, 30);
-        this.rotate = (random(1, 360) * Math.PI) / 180;
-
-        speed = 3;
-
-        ctx.strokeStyle = ctx.fillStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.arc(this.x1, this.y1, this.radius1, 0, 2 * Math.PI);
-                    ctx.fill();
-                }
-                if (stagger === 1) {
-                    ctx.moveTo(this.x1, this.y1);
-                    ctx.lineTo(this.x2, this.y2);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.arc(this.x2, this.y2, this.radius2, 0, 2 * Math.PI);
-                    ctx.fill();
-                }
-                if (stagger === 3) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-            }
-            stagger++;
-            t++;
-            if (t % (speed * 300) === 0) {
-                ctx.beginPath();
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.radius1 = random(3, 30);
-                this.radius2 = random(3, 30);
-                this.rotate = (random(1, 360) * Math.PI) / 180;
-                ctx.strokeStyle = ctx.fillStyle = randomColor();
-            }
             interval = requestAnimationFrame(this.draw);
         };
     }
@@ -13542,7 +12122,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new SpiralText();
+let runningAlgo = new Wormholes();
 runningAlgo.draw();
 
 // the click listener resets settings and draws a new spiral
