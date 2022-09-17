@@ -469,7 +469,6 @@ const ALGOS = [
     'unfocused',
     'matter',
     'seeds',
-    'rotunda',
     'crayon-funnel',
     'big-bangs',
     'nazca',
@@ -1130,12 +1129,6 @@ function chooseAlgos() {
             displayAlgos('SEEDS');
             ctx.save();
             runningAlgo = new Seeds();
-            runningAlgo.draw();
-            break;
-        case 'rotunda':
-            displayAlgos('ROTUNDA');
-            ctx.save();
-            runningAlgo = new Rotunda();
             runningAlgo.draw();
             break;
         case 'crayon-funnel':
@@ -7578,57 +7571,6 @@ class Seeds {
     }
 }
 
-class Rotunda {
-    constructor() {
-        this.x1 = random(0, w / 3);
-        this.y1 = random(0, h / 3);
-        this.radius1 = random(5, 150);
-        this.x2 = random(w / 3, w * 0.66);
-        this.y2 = random(w / 3, h * 0.66);
-        this.radius2 = random(5, 150);
-        this.x3 = random(w * 0.66, w);
-        this.y3 = random(h * 0.66, h);
-        this.radius3 = random(5, 150);
-        this.rotate = random(3, 31);
-
-        ctx.strokeStyle = randomColor(10, 255, 0.25, 0.5);
-        ctx.globalCompositeOperation = 'overlay';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x1, this.y1, this.radius1, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(this.x2, this.y2, this.radius2, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(this.x3, this.y3, this.radius3, 0, 2 * Math.PI);
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.x1 = random(0, w / 3);
-                this.y1 = random(0, h / 3);
-                this.radius1 = random(5, 150);
-                this.x2 = random(w / 3, w * 0.66);
-                this.y2 = random(w / 3, h * 0.66);
-                this.radius2 = random(5, 150);
-                this.x3 = random(w * 0.66, w);
-                this.y3 = random(h * 0.66, h);
-                this.radius3 = random(5, 150);
-                this.rotate = random(3, 31);
-                ctx.strokeStyle = randomColor(10, 255, 0.25, 0.5);
-                this.rotate = random(3, 31);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class CrayonFunnel {
     constructor() {
         this.x = random(w / 3, w * 0.66);
@@ -12043,6 +11985,7 @@ class Projecting {
 // initial setup of canvas settings and listeners
 function init() {
     // display some user tips on screen
+    canvas.focus();
     displayMsg('WELCOME');
     setTimeout(() => {
         displayMsg('PRESS H FOR HELP');
@@ -12122,7 +12065,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new Wormholes();
+let runningAlgo = new CrayonFunnel();
 runningAlgo.draw();
 
 // the click listener resets settings and draws a new spiral
@@ -12254,7 +12197,8 @@ const audio = document.getElementById('audio');
 const progress = document.getElementById('progress-percent');
 
 // initial settings
-let playerShow = true;
+let playerShow = false;
+player.style.display = 'none';
 let trackList = [];
 let currentSong = 0;
 let isPlaying = false;
