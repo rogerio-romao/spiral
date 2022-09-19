@@ -472,23 +472,17 @@ const ALGOS = [
     'crayon-funnel',
     'big-bangs',
     'nazca',
-    'clutch',
-    'torus',
-    'shapeshifter',
     'smooth',
     'encoded',
     'concentric',
     'glow',
     'onion',
-    'spheral',
     'blends',
     'snakes-ladders',
     'cornucopia',
     'cornucopia2',
     'germinate',
     'gas-clouds',
-    'duotone',
-    'crosshatch',
     'networks',
     'spikral',
     'fruits',
@@ -1149,24 +1143,6 @@ function chooseAlgos() {
             runningAlgo = new Nazca();
             runningAlgo.draw();
             break;
-        case 'clutch':
-            displayAlgos('CLUTCH');
-            ctx.save();
-            runningAlgo = new Clutch();
-            runningAlgo.draw();
-            break;
-        case 'torus':
-            displayAlgos('TORUS');
-            ctx.save();
-            runningAlgo = new Torus();
-            runningAlgo.draw();
-            break;
-        case 'shapeshifter':
-            displayAlgos('SHAPESHIFTER');
-            ctx.save();
-            runningAlgo = new Shapeshifter();
-            runningAlgo.draw();
-            break;
         case 'smooth':
             displayAlgos('SMOOTH');
             ctx.save();
@@ -1195,12 +1171,6 @@ function chooseAlgos() {
             displayAlgos('ONION');
             ctx.save();
             runningAlgo = new Onion();
-            runningAlgo.draw();
-            break;
-        case 'spheral':
-            displayAlgos('SPHERAL');
-            ctx.save();
-            runningAlgo = new Spheral();
             runningAlgo.draw();
             break;
         case 'blends':
@@ -1237,18 +1207,6 @@ function chooseAlgos() {
             displayAlgos('GAS CLOUDS');
             ctx.save();
             runningAlgo = new GasClouds();
-            runningAlgo.draw();
-            break;
-        case 'duotone':
-            displayAlgos('DUOTONE');
-            ctx.save();
-            runningAlgo = new Duotone();
-            runningAlgo.draw();
-            break;
-        case 'crosshatch':
-            displayAlgos('CROSSHATCH');
-            ctx.save();
-            runningAlgo = new Crosshatch();
             runningAlgo.draw();
             break;
         case 'networks':
@@ -7691,144 +7649,6 @@ class Nazca {
     }
 }
 
-class Clutch {
-    constructor() {
-        this.x1 = random(100, w - 100);
-        this.y1 = random(100, h - 100);
-        this.r1 = random(75, 360);
-        this.rotate = random(1, 10);
-        this.true = true;
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.65);
-        ctx.shadowBlur = 3;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(
-                    this.x1,
-                    this.y1,
-                    this.r1,
-                    Math.PI / (this.true ? 2 : 3),
-                    Math.PI / (this.true ? 3 : 2),
-                    this.true
-                );
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 225) === 0) {
-                this.x1 = random(100, w - 100);
-                this.y1 = random(100, h - 100);
-                this.r1 = random(75, 600);
-                this.true = !this.true;
-                this.rotate = random(1, 10);
-                ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.65);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Torus {
-    constructor() {
-        this.r1 = random(120, 500);
-        this.x1 = random(this.r1 / 2, w - this.r1 / 2);
-        this.y1 = random(this.r1 / 2, h - this.r1 / 2);
-        this.color1 = randomColor(0, 255, 0.06, 0.16);
-        this.rotate = random(6, 24);
-
-        ctx.strokeStyle = 'black';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rotate * Math.PI) / 180);
-                ctx.beginPath();
-                ctx.fillStyle = this.color1;
-                ctx.arc(this.x1, this.y1, this.r1, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 60) === 0) {
-                this.r1 = random(120, 500);
-                this.x1 = random(this.r1 / 2, w - this.r1 / 2);
-                this.y1 = random(this.r1 / 2, h - this.r1 / 2);
-                this.color1 = randomColor(0, 255, 0.06, 0.16);
-                this.rotate = random(6, 24);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Shapeshifter {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.x4 = random(0, w);
-        this.y4 = random(0, h);
-        this.rotate = (random(4, 87) * Math.PI) / 180;
-
-        ctx.strokeStyle = randomColor();
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.01);
-        ctx.shadowColor = 'black';
-        ctx.shadowBlur = 20;
-        ctx.moveTo(this.x1, this.y1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.lineTo(this.x2++, this.y2++);
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.lineTo(this.x3--, this.y3++);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.lineTo(this.x4--, this.y4--);
-                    ctx.stroke();
-                }
-                if (stagger === 3) {
-                    ctx.lineTo(this.x1++, this.y1--);
-                    ctx.stroke();
-                }
-            }
-            ctx.fill();
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 240) === 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.01);
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                this.x4 = random(0, w);
-                this.y4 = random(0, h);
-                this.rotate = (random(4, 87) * Math.PI) / 180;
-            }
-            stagger++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Smooth {
     constructor() {
         this.size = random(50, 500);
@@ -8049,42 +7869,6 @@ class Onion {
             }
             if (t % (speed * 540) === 0) {
                 this.angle = random(2, 50);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Spheral {
-    constructor() {
-        this.radius = random(50, 350);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.angle = random(1, 90);
-
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = ctx.shadowColor = randomColor();
-        ctx.shadowBlur = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.closePath();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.angle / 180) * Math.PI);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 90) === 0) {
-                this.radius = random(50, 350);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                ctx.beginPath();
-            }
-            if (t % (speed * 360) === 0) {
-                ctx.strokeStyle = ctx.shadowColor = randomColor();
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -8453,126 +8237,6 @@ class GasClouds {
             }
             ctx.translate(w / 2, h / 2);
             ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Duotone {
-    constructor() {
-        this.letters = [
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z'
-        ];
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.letter = this.letters[random(0, this.letters.length)];
-        this.fontSize = random(70, 550);
-        this.color1 = randomColor();
-        this.color2 = randomColor();
-        this.one = true;
-        this.rot = random(1, 100);
-
-        ctx.strokeStyle = this.color1;
-        ctx.fillStyle = this.color2;
-        ctx.textAlign = 'center';
-        ctx.font = `${this.fontSize}px sans-serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillText(this.letter, this.x, this.y);
-                ctx.strokeText(this.letter, this.x, this.y);
-            }
-            t++;
-            if (t % (speed * 120) === 0) {
-                this.letter = this.letters[random(0, this.letters.length)];
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.fontSize = random(70, 550);
-                ctx.font = `${this.fontSize}px sans-serif`;
-                if (this.one) {
-                    ctx.strokeStyle = this.color2;
-                    ctx.fillStyle = this.color1;
-                    this.one = !this.one;
-                } else {
-                    ctx.strokeStyle = this.color1;
-                    ctx.fillStyle = this.color2;
-                    this.one = !this.one;
-                }
-            }
-            if (t % (speed * 480) === 0) {
-                this.rot = random(1, 100);
-            }
-            if (t % (speed * 1920) === 0) {
-                this.color1 = randomColor();
-                this.color2 = randomColor();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Crosshatch {
-    constructor() {
-        this.x = random(0, w / 2);
-        this.y = random(0, h / 2);
-        this.length = random(32, 320);
-        this.rot = random(1, 30);
-        this.dash = random(5, 101);
-
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = randomColor();
-        ctx.setLineDash([this.dash, this.dash]);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeRect(this.x, this.y, this.length, this.length);
-            }
-            t++;
-            if (t % (speed * 120) === 0) {
-                this.x = random(0, w / 2);
-                this.y = random(0, h / 2);
-                this.length = random(32, 320);
-            }
-            if (t % (speed * 360) === 0) {
-                this.rot = random(1, 30);
-                this.dash = random(5, 101);
-                ctx.setLineDash([this.dash, this.dash]);
-            }
-            if (t % (speed * 720) === 0) {
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
             ctx.translate(-w / 2, -h / 2);
             interval = requestAnimationFrame(this.draw);
         };
@@ -12065,7 +11729,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new CrayonFunnel();
+let runningAlgo = new Networks();
 runningAlgo.draw();
 
 // the click listener resets settings and draws a new spiral
