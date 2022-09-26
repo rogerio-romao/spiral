@@ -411,7 +411,6 @@ const ALGOS = [
     'acid-stars',
     'vanishing-rays',
     'warp2001',
-    'golden-spiral',
     'ghostly-creatures',
     'neural-slinky',
     'porthole',
@@ -486,14 +485,11 @@ const ALGOS = [
     'networks',
     'spikral',
     'fruits',
-    'zentangles',
-    'zigzag',
     'typobrush',
     'veils',
     'harmonie',
     'portals',
     'sandala',
-    'ghostly-shapes',
     'psycho-rainbow',
     'hallucinate',
     'the-hive',
@@ -787,12 +783,6 @@ function chooseAlgos() {
             displayAlgos('WARP 2001');
             ctx.save();
             runningAlgo = new Warp2001();
-            runningAlgo.draw();
-            break;
-        case 'golden-spiral':
-            displayAlgos('GOLDEN SPIRAL');
-            ctx.save();
-            runningAlgo = new GoldenSpiral();
             runningAlgo.draw();
             break;
         case 'porthole':
@@ -1227,18 +1217,6 @@ function chooseAlgos() {
             runningAlgo = new Fruits();
             runningAlgo.draw();
             break;
-        case 'zentangles':
-            displayAlgos('ZENTANGLES');
-            ctx.save();
-            runningAlgo = new Zentangles();
-            runningAlgo.draw();
-            break;
-        case 'zigzag':
-            displayAlgos('ZIGZAG');
-            ctx.save();
-            runningAlgo = new Zigzag();
-            runningAlgo.draw();
-            break;
         case 'typobrush':
             displayAlgos('TYPOBRUSH');
             ctx.save();
@@ -1267,12 +1245,6 @@ function chooseAlgos() {
             displayAlgos('SANDALA');
             ctx.save();
             runningAlgo = new Sandala();
-            runningAlgo.draw();
-            break;
-        case 'ghostly-shapes':
-            displayAlgos('GHOSTLY SHAPES');
-            ctx.save();
-            runningAlgo = new GhostlyShapes();
             runningAlgo.draw();
             break;
         case 'psycho-rainbow':
@@ -4235,65 +4207,6 @@ class NeuralSlinky {
                 this.changeCp1y = random(-3, 3);
                 this.changeCp2x = random(-3, 3);
                 this.changeCp2y = random(-3, 3);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class GoldenSpiral {
-    constructor() {
-        this.letters = [
-            1701, 1703, 1704, 1705, 1706, 1707, 1712, 1713, 1714, 1718, 1722,
-            1723, 1724, 1726, 1727, 1728, 1729, 1731, 1734, 1736, 1737, 1744,
-            1746, 1748, 1749, 1750, 1752, 1755, 1758, 1759, 1760, 1761, 1763,
-            1768, 1769, 1770, 1771, 1773, 1774, 1776, 1777, 1779, 1781, 1784,
-            1788, 1789, 1790, 1792, 1793, 1794, 1795
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.x = 1;
-        this.y = 1;
-        this.fontSize = random(20, 80);
-        this.rotations = [
-            1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 16, 17, 19, 20, 21, 23, 24,
-            26, 27, 28, 29, 30, 32, 33, 34, 35, 36, 38, 39, 41, 42, 43, 45, 46,
-            47, 48, 50, 51, 52, 54, 55, 56, 57, 58, 59, 60, 64, 65, 66, 67, 69,
-            70, 73, 75, 76, 77, 78, 81, 82, 83, 84, 85, 88, 89
-        ];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-
-        ctx.strokeStyle = randomColor(0, 255, 0.6, 1);
-        ctx.textAligh = 'center';
-        ctx.font = 'bold ' + this.fontSize + 'px sans-serif';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.strokeText(this.letter, this.x, this.y);
-                ctx.rotate(this.rotations[random(0, this.rotations.length)]);
-                this.x *= 1.618;
-                this.y *= 1.618;
-                if (this.x > Math.max(w, h)) this.x = 1;
-                if (this.y > Math.max(w, h)) this.y = 1;
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.fontSize = random(20, 80);
-                ctx.font = 'bold ' + this.fontSize + 'px sans-serif';
-            }
-            if (t % (speed * 300) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 0.6, 1);
-            }
-            if (t % (speed * 600) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            if (t % (speed * 1200) === 0) {
-                this.rotate = this.rotations[random(0, this.rotations.length)];
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -8364,127 +8277,6 @@ class Fruits {
     }
 }
 
-class Zentangles {
-    constructor() {
-        this.x = random(0, w);
-        this.xmod = random(-10, 11);
-        this.y = random(0, h);
-        this.ymod = random(-10, 11);
-        this.cpx = random(0, w);
-        this.cpxmod = random(-10, 11);
-        this.cpy = random(0, h);
-        this.cpymod = random(-10, 11);
-        this.rot = random(1, 360);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.75, 1);
-        ctx.fillStyle = randomColor(0, 255, 0.1, 0.6);
-        ctx.lineWidth = 0.1;
-        ctx.moveTo(this.x, this.y);
-        ctx.fillRect(0, 0, w, h);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.quadraticCurveTo(this.cpx, this.cpy, this.x, this.y);
-                ctx.stroke();
-                this.x += this.xmod;
-                if (this.x < 0 || this.x > w) {
-                    this.xmod = -this.xmod;
-                }
-                this.y += this.ymod;
-                if (this.y < 0 || this.y > h) {
-                    this.ymod = -this.ymod;
-                }
-                this.cpx += this.cpxmod;
-                if (this.cpx < -2 * w || this.cpx > 2 * w) {
-                    this.cpxmod = -this.cpxmod;
-                }
-                this.cpy += this.cpymod;
-                if (this.cpy < -2 * h || this.cpy > 2 * h) {
-                    this.cpymod = -this.cpymod;
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 300) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                ctx.beginPath();
-                this.x = random(0, w);
-                this.xmod = random(-10, 11);
-                this.y = random(0, h);
-                this.ymod = random(-10, 11);
-                ctx.moveTo(this.x, this.y);
-                this.cpx = random(0, w);
-                this.cpxmod = random(-10, 11);
-                this.cpy = random(0, h);
-                this.cpymod = random(-10, 11);
-                this.rot = random(1, 360);
-                ctx.strokeStyle = randomColor(0, 255, 0.75, 1);
-                ctx.fillStyle = randomColor(0, 255, 0.1, 0.6);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Zigzag {
-    constructor() {
-        this.height = random(8, 64);
-        this.width = random(8, 64);
-        this.col = 0;
-        this.row = 0;
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.3, 1);
-        ctx.moveTo(0, this.height);
-        ctx.shadowBlur = 10;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.lineTo(
-                    this.width / 2 + this.col * this.width,
-                    this.row * this.height
-                );
-                ctx.lineTo(
-                    this.width + this.col * this.width,
-                    this.height + this.row * this.height
-                );
-                ctx.stroke();
-                this.col++;
-                if (this.col * this.width - this.col > w) {
-                    this.col = 0;
-                    this.row++;
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(Math.PI);
-                    ctx.translate(-w / 2, -h / 2);
-                    ctx.moveTo(
-                        this.col * this.width,
-                        this.row * this.height + this.height
-                    );
-                }
-                if (this.row * this.height - this.row > h) {
-                    this.row = 0;
-                    this.height = random(8, 64);
-                    this.width = random(8, 64);
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(Math.PI);
-                    ctx.translate(-w / 2, -h / 2);
-                    ctx.beginPath();
-                    ctx.moveTo(0, this.height);
-                    ctx.strokeStyle = ctx.shadowColor = randomColor(
-                        0,
-                        255,
-                        0.3,
-                        1
-                    );
-                }
-            }
-            t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Typobrush {
     constructor() {
         this.x = random(0, w);
@@ -8737,77 +8529,6 @@ class Sandala {
                 this.rot = random(1, 60);
                 ctx.strokeStyle = randomColor(0, 255, 1, 1);
             }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class GhostlyShapes {
-    constructor() {
-        this.blends = [
-            'source-atop',
-            'lighter',
-            'xor',
-            'multiply',
-            'screen',
-            'overlay',
-            'darken',
-            'lighten',
-            'color-dodge',
-            'color-burn',
-            'hard-light',
-            'soft-light',
-            'difference',
-            'exclusion',
-            'hue',
-            'saturation',
-            'color',
-            'luminosity'
-        ];
-        this.blend = this.blends[random(0, this.blends.length)];
-        this.cornersX = [0, w, w, 0];
-        this.cornersY = [0, 0, h, h];
-        this.cornerX = 0;
-        this.cornerY = 0;
-        this.rotation = random(1, 30);
-        this.radius = random(30, w);
-        ctx.fillStyle = randomColor(0, 255, 0.015, 0.05);
-        ctx.globalCompositeOperation = this.blend;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(
-                    this.cornersX[this.cornerX],
-                    this.cornersY[this.cornerY],
-                    this.radius,
-                    Math.random(),
-                    Math.random() * Math.PI,
-                    true
-                );
-                this.cornerX =
-                    this.cornerX + 1 >= this.cornersX.length
-                        ? 0
-                        : this.cornerX + 1;
-                this.cornerY =
-                    this.cornerY + 1 >= this.cornersY.length
-                        ? 0
-                        : this.cornerY + 1;
-                ctx.fill();
-                ctx.beginPath();
-            }
-            t++;
-            if (t % (speed * 130) === 0) {
-                this.blend = this.blends[random(0, this.blends.length)];
-                ctx.globalCompositeOperation = this.blend;
-                this.radius = random(30, w);
-                this.rotation = random(1, 30);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-                ctx.fillStyle = randomColor(0, 255, 0.015, 0.05);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotation * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
             interval = requestAnimationFrame(this.draw);
         };
     }
@@ -9206,7 +8927,7 @@ class LisaJou {
         this.size = random(2, 13);
 
         ctx.strokeStyle = 'black';
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = randomColor();
         ctx.fillRect(0, 0, w, h);
         ctx.fillStyle = randomColor();
 
@@ -9483,6 +9204,8 @@ class Loading {
         this.width1 = random(4, 51);
         this.width2 = random(4, 51);
         this.color = randomColor(60, 255, 0.75, 1);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(-w, -h, w * 3, h * 3);
 
         this.draw = () => {
             ctx.lineWidth = t % 2 ? this.width1 : this.width2;
@@ -11729,7 +11452,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new Networks();
+let runningAlgo = new NeuralSlinky();
 runningAlgo.draw();
 
 // the click listener resets settings and draws a new spiral
