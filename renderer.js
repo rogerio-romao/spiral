@@ -412,7 +412,6 @@ const ALGOS = [
     'vanishing-rays',
     'warp2001',
     'ghostly-creatures',
-    'neural-slinky',
     'porthole',
     'plaid',
     'three-d',
@@ -510,13 +509,11 @@ const ALGOS = [
     'hubble',
     'vortrix',
     'vanishing-point',
-    'cubist',
     'subwoofer',
     'deep-sea',
     'soapy-bubbles',
     'gridlock',
     'give-n-take',
-    'ethereal',
     'glowsticks',
     'mikado',
     'semi-rings',
@@ -765,12 +762,6 @@ function chooseAlgos() {
             displayAlgos('GHOSTLY CREATURES');
             ctx.save();
             runningAlgo = new GhostlyCreatures();
-            runningAlgo.draw();
-            break;
-        case 'neural-slinky':
-            displayAlgos('NEURAL SLINKY');
-            ctx.save();
-            runningAlgo = new NeuralSlinky();
             runningAlgo.draw();
             break;
         case 'vanishing-rays':
@@ -1367,12 +1358,6 @@ function chooseAlgos() {
             runningAlgo = new VanishingPoint();
             runningAlgo.draw();
             break;
-        case 'cubist':
-            displayAlgos('CUBIST');
-            ctx.save();
-            runningAlgo = new Cubist();
-            runningAlgo.draw();
-            break;
         case 'subwoofer':
             displayAlgos('SUBWOOFER');
             ctx.save();
@@ -1401,12 +1386,6 @@ function chooseAlgos() {
             displayAlgos("GIVE 'N TAKE");
             ctx.save();
             runningAlgo = new GiveNTake();
-            runningAlgo.draw();
-            break;
-        case 'ethereal':
-            displayAlgos('ETHEREAL');
-            ctx.save();
-            runningAlgo = new Ethereal();
             runningAlgo.draw();
             break;
         case 'glowsticks':
@@ -4124,89 +4103,6 @@ class GhostlyCreatures {
                 this.changeCp1y = this.values[random(0, this.values.length)];
                 this.changeCp2x = this.values[random(0, this.values.length)];
                 this.changeCp2y = this.values[random(0, this.values.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class NeuralSlinky {
-    constructor() {
-        this.rx = random(0, w);
-        this.ry = random(0, h);
-        this.cp1x = random(0, w);
-        this.cp1y = random(0, h);
-        this.cp2x = random(0, w);
-        this.cp2y = random(0, h);
-        this.changeRx = random(-3, 3);
-        this.changeRy = random(-3, 3);
-        this.changeCp1x = random(-3, 3);
-        this.changeCp1y = random(-3, 3);
-        this.changeCp2x = random(-3, 3);
-        this.changeCp2y = random(-3, 3);
-
-        canvas.style.backgroundColor = 'white';
-        ctx.shadowColor = randomColor(100, 255, 0.7, 1);
-        ctx.strokeStyle = 'rgba(0,0,0,0.7)';
-        ctx.shadowBlur = 3;
-        ctx.moveTo(this.rx, this.ry);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.shadowColor = randomColor(100, 255, 0.7, 1);
-                ctx.bezierCurveTo(
-                    this.cp1x,
-                    this.cp1y,
-                    this.cp2x,
-                    this.cp2y,
-                    this.rx,
-                    this.ry
-                );
-                ctx.stroke();
-            }
-            this.rx += this.changeRx;
-            if (this.rx < 0 || this.rx > w) {
-                this.changeRx = -this.changeRx;
-            }
-            this.ry += this.changeRy;
-            if (this.ry < 0 || this.ry > h) {
-                this.changeRy = -this.changeRy;
-            }
-            this.cp1x += this.changeCp1x;
-            if (this.cp1x < 0 || this.cp1x > w) {
-                this.changeCp1x = -this.changeCp1x;
-            }
-            this.cp1y += this.changeCp1y;
-            if (this.cp1y < 0 || this.cp1y > w) {
-                this.changeCp1y = -this.changeCp1y;
-            }
-            this.cp2x += this.changeCp2x;
-            if (this.cp2x < 0 || this.cp2x > h) {
-                this.changeCp2x = -this.changeCp2x;
-            }
-            this.cp2y += this.changeCp2y;
-            if (this.cp2y < 0 || this.cp2y > h) {
-                this.changeCp2y = -this.changeCp2y;
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                ctx.beginPath();
-                ctx.shadowColor = randomColor(100, 255, 0.7, 1);
-
-                this.rx = random(0, w);
-                this.ry = random(0, h);
-                ctx.moveTo(this.rx, this.ry);
-                this.cp1x = random(0, w);
-                this.cp1y = random(0, h);
-                this.cp2x = random(0, w);
-                this.cp2y = random(0, h);
-                this.changeRx = random(-3, 3);
-                this.changeRy = random(-3, 3);
-                this.changeCp1x = random(-3, 3);
-                this.changeCp1y = random(-3, 3);
-                this.changeCp2x = random(-3, 3);
-                this.changeCp2y = random(-3, 3);
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -9458,110 +9354,6 @@ class VanishingPoint {
     };
 }
 
-class Cubist {
-    constructor() {
-        this.divisions = [2, 4, 8, 16];
-        this.width = w / this.divisions[random(0, this.divisions.length)];
-        this.height = h / this.divisions[random(0, this.divisions.length)];
-        this.cycles = 0;
-        this.x = 0;
-        this.y = 0;
-        this.color1 = randomColor();
-        this.color2 = randomColor();
-        this.color3 = randomColor();
-        this.color4 = randomColor();
-
-        ctx.strokeStyle = 'black';
-        ctx.globalCompositeOperation = 'soft-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                if (stagger % 4 === 0) {
-                    ctx.fillStyle = this.color1;
-                    this.drawTriangle(this.x, this.y);
-                }
-                if (stagger % 4 === 1) {
-                    ctx.fillStyle = this.color2;
-                    this.drawTriangleReverse(this.x, this.y);
-                }
-                if (stagger % 4 === 2) {
-                    ctx.fillStyle = this.color3;
-                    this.drawInverseTriangle(this.x, this.y);
-                }
-                if (stagger % 4 === 3) {
-                    ctx.fillStyle = this.color4;
-                    this.drawInverseTriangleReverse(this.x, this.y);
-                }
-                this.x += this.width;
-                if (this.x > w) {
-                    this.y += this.height;
-                    this.x = 0;
-                }
-                if (this.y > h) {
-                    this.cycles++;
-                    this.y = 0;
-                    this.x = 0;
-                    this.width =
-                        w / this.divisions[random(0, this.divisions.length)];
-                    this.height =
-                        h / this.divisions[random(0, this.divisions.length)];
-                    this.color1 = randomColor();
-                    this.color2 = randomColor();
-                    this.color3 = randomColor();
-                    this.color4 = randomColor();
-                }
-            }
-            t++;
-            stagger++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    drawTriangle = (x, y) => {
-        ctx.moveTo(x, y);
-        ctx.beginPath();
-        ctx.lineTo(x + this.width, y);
-        ctx.lineTo(x, y + this.height);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-    };
-
-    drawTriangleReverse = (x, y) => {
-        ctx.moveTo(x + this.width, y);
-        ctx.beginPath();
-        ctx.lineTo(x, y + this.height);
-        ctx.lineTo(x + this.width, y + this.height);
-        ctx.lineTo(x + this.width, y);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-    };
-
-    drawInverseTriangle = (x, y) => {
-        ctx.moveTo(x, y);
-        ctx.beginPath();
-        ctx.lineTo(x + this.width, y + this.height);
-        ctx.lineTo(x + this.width, y);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-    };
-
-    drawInverseTriangleReverse = (x, y) => {
-        ctx.moveTo(x, y);
-        ctx.beginPath();
-        ctx.lineTo(x + this.width, y + this.height);
-        ctx.lineTo(x, y + this.height);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-    };
-}
-
 class Subwoofer {
     constructor() {
         this.size = random(15, 200);
@@ -9836,90 +9628,6 @@ class GiveNTake {
                 this.x6 = random(0, w);
                 this.y5 = random(0, h);
                 this.y6 = random(0, h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Ethereal {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.x4 = random(0, w);
-        this.y4 = random(0, h);
-        this.cp1x = random(this.x1, this.x2);
-        this.cp1y = random(this.y1, this.y2);
-        this.cp2x = random(this.x2, this.x3);
-        this.cp2y = random(this.y2, this.y3);
-        this.cp3x = random(this.x3, this.x4);
-        this.cp3y = random(this.y3, this.y4);
-        this.cp4x = random(this.x4, this.x1);
-        this.cp4y = random(this.y4, this.y1);
-        this.rot = random(1, 200);
-        this.maxAlpha = 0.08;
-
-        this.color1 = randomColor(0, 255, 0.02, this.maxAlpha);
-        this.color2 = randomColor(0, 255, 0.02, this.maxAlpha);
-        this.color3 = randomColor(0, 255, 0.02, this.maxAlpha);
-        this.color4 = randomColor(0, 255, 0.02, this.maxAlpha);
-
-        ctx.strokeStyle = randomColor();
-        ctx.globalCompositeOperation = 'soft-light';
-        ctx.beginPath();
-        ctx.moveTo(this.x1, this.y1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.fillStyle = this.color1;
-                ctx.quadraticCurveTo(this.cp1x--, this.cp1y, this.x2, this.y2);
-                ctx.fill();
-                ctx.stroke();
-                ctx.fillStyle = this.color2;
-                ctx.quadraticCurveTo(this.cp2x, this.cp2y--, this.x3, this.y3);
-                ctx.fill();
-                ctx.fillStyle = this.color3;
-                ctx.quadraticCurveTo(this.cp3x, this.cp3y, this.x4--, this.y4);
-                ctx.fill();
-                ctx.fillStyle = this.color4;
-                ctx.quadraticCurveTo(this.cp4x, this.cp4y, this.x1, this.y1--);
-                ctx.fill();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            this.cp1x = random(this.x1, this.x2);
-            this.cp1y = random(this.y1, this.y2);
-            this.cp2x = random(this.x2, this.x3);
-            this.cp2y = random(this.y2, this.y3);
-            this.cp3x = random(this.x3, this.x4);
-            this.cp3y = random(this.y3, this.y4);
-            this.cp4x = random(this.x4, this.x1);
-            this.cp4y = random(this.y4, this.y1);
-            if (t % (speed * 120) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                this.x4 = random(0, w);
-                this.y4 = random(0, h);
-                this.rot = random(1, 200);
-                ctx.strokeStyle = randomColor();
-                this.color1 = randomColor(0, 255, 0.02, this.maxAlpha);
-                this.color2 = randomColor(0, 255, 0.02, this.maxAlpha);
-                this.color3 = randomColor(0, 255, 0.02, this.maxAlpha);
-                this.color4 = randomColor(0, 255, 0.02, this.maxAlpha);
-            }
-            if (t % (speed * 360) === 0) {
-                this.maxAlpha += 0.01;
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -11452,7 +11160,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new NeuralSlinky();
+let runningAlgo = new Mikado();
 runningAlgo.draw();
 
 // the click listener resets settings and draws a new spiral
