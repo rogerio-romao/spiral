@@ -26,9 +26,7 @@ CanvasRenderingContext2D.prototype.roundRect = function (
         stroke = true;
     }
     if (typeof radius === 'object') {
-        for (let side in radius) {
-            cornerRadius[side] = radius[side];
-        }
+        for (const side in radius) cornerRadius[side] = radius[side];
     }
 
     this.beginPath();
@@ -309,8 +307,8 @@ const utils = {
     },
 
     roundToPlaces(value, places) {
-        const mult = Math.pow(10, places);
         return Math.round(value * mult) / mult;
+        const mult = Math.pow(10, places);
     },
 
     roundNearest(value, nearest) {
@@ -515,24 +513,21 @@ const ALGOS = [
     'gridlock',
     'give-n-take',
     'glowsticks',
-    'mikado',
     'semi-rings',
     'four-dee',
     'spring-orbits',
     'game-of-flies',
     'gravity-turbulence',
-    'flares',
     'pulsar',
     'shards',
     'coils',
     'mesmerize',
     'genesis-typewriter',
     'dye',
-    'planet-moss',
     'projecting'
 ];
 // stores the last played algorithms
-let LAST_ALGOS = [];
+const LAST_ALGOS = [];
 
 // choose a new algorithm that is not on the last x played
 function chooseAlgos() {
@@ -1394,12 +1389,6 @@ function chooseAlgos() {
             runningAlgo = new Glowsticks();
             runningAlgo.draw();
             break;
-        case 'mikado':
-            displayAlgos('MIKADO');
-            ctx.save();
-            runningAlgo = new Mikado();
-            runningAlgo.draw();
-            break;
         case 'semi-rings':
             displayAlgos('SEMI RINGS');
             ctx.save();
@@ -1428,12 +1417,6 @@ function chooseAlgos() {
             displayAlgos('GRAVITY TURBULENCE');
             ctx.save();
             runningAlgo = new GravityTurbulence();
-            runningAlgo.draw();
-            break;
-        case 'flares':
-            displayAlgos('FLARES');
-            ctx.save();
-            runningAlgo = new Flares();
             runningAlgo.draw();
             break;
         case 'pulsar':
@@ -1470,12 +1453,6 @@ function chooseAlgos() {
             displayAlgos('DYE');
             ctx.save();
             runningAlgo = new Dye();
-            runningAlgo.draw();
-            break;
-        case 'planet-moss':
-            displayAlgos('PLANET MOSS');
-            ctx.save();
-            runningAlgo = new PlanetMoss();
             runningAlgo.draw();
             break;
         case 'projecting':
@@ -9672,72 +9649,6 @@ class Glowsticks {
     }
 }
 
-class Mikado {
-    constructor() {
-        this.points = [
-            { x: 0, y: 0 },
-            { x: w / 4, y: 0 },
-            { x: w / 2, y: 0 },
-            { x: w * 0.75, y: 0 },
-            { x: w, y: 0 },
-            { x: w / 4, y: h / 4 },
-            { x: w / 4, y: h / 2 },
-            { x: w / 4, y: h * 0.75 },
-            { x: w / 4, y: h },
-            { x: w / 2, y: h / 4 },
-            { x: w / 2, y: h / 2 },
-            { x: w / 2, y: h * 0.75 },
-            { x: w / 2, y: h },
-            { x: w * 0.75, y: h / 4 },
-            { x: w * 0.75, y: h / 2 },
-            { x: w * 0.75, y: h * 0.75 },
-            { x: w * 0.75, y: h },
-            { x: w, y: h / 4 },
-            { x: w, y: h / 2 },
-            { x: w, y: h * 0.75 },
-            { x: w, y: h },
-            { x: 0, y: h / 4 },
-            { x: 0, y: h / 2 },
-            { x: 0, y: h * 0.75 },
-            { x: 0, y: h }
-        ];
-        this.point1 = this.points[random(0, this.points.length)];
-        this.point2 = this.points.filter(
-            p => p.x !== this.point1.x || p.y !== this.point1.y
-        )[random(0, this.points.length - 1)];
-        this.angle = random(6, 81);
-
-        ctx.strokeStyle = randomColor();
-        ctx.shadowColor = 'black';
-        ctx.shadowBlur = 15;
-        ctx.lineWidth = 0.1;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.point1.x, this.point1.y);
-                ctx.lineTo(this.point2.x, this.point2.y);
-                ctx.stroke();
-            }
-            t++;
-            if (t % (speed * 3) === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.angle * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            if (t % (speed * 300) === 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-                this.angle = random(6, 81);
-                this.point1 = this.points[random(0, this.points.length)];
-                this.point2 = this.points.filter(
-                    p => p.x !== this.point1.x || p.y !== this.point1.y
-                )[random(0, this.points.length - 1)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class SemiRings {
     constructor() {
         this.points = [
@@ -10059,91 +9970,6 @@ class GravityTurbulence {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
         ctx.fill();
-    }
-}
-
-class Flares {
-    constructor() {
-        this.cp1x = random(0, w);
-        this.cp1y = random(0, h);
-        this.cp2x = random(0, w);
-        this.cp2y = random(0, h);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.rot1 = random(1, 90);
-        this.rot2 = random(1, 90);
-        this.increment = random(10, 70);
-        this.flares = random(3, 15);
-        this.modes = [
-            'source-over',
-            'hard-light',
-            'soft-light',
-            'overlay',
-            'xor',
-            'difference',
-            'exclusion',
-            'lighten',
-            'darken',
-            'hue',
-            'color',
-            'luminosity',
-            'multiply',
-            'screen'
-        ];
-
-        ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-        ctx2.strokeStyle = randomColor(0, 255, 0.5, 1);
-        ctx.globalCompositeOperation = 'hard-light';
-        ctx2.globalCompositeOperation = 'soft-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i < this.flares; i++) {
-                    this.drawBezier(ctx, i * this.increment);
-                    this.drawBezier(ctx2, i * this.increment);
-                }
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot1);
-            ctx.translate(-w / 2, -h / 2);
-            ctx2.translate(w / 2, h / 2);
-            ctx2.rotate(this.rot2);
-            ctx2.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 180) === 0) {
-                this.cp1x = random(0, w);
-                this.cp1y = random(0, h);
-                this.cp2x = random(0, w);
-                this.cp2y = random(0, h);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.rot1 = random(1, 90);
-                this.rot2 = random(1, 90);
-                this.increment = random(10, 70);
-                this.flares = random(3, 15);
-                ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-                ctx2.strokeStyle = randomColor(0, 255, 0.5, 1);
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-                ctx2.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-    drawBezier(context, increment) {
-        context.beginPath();
-        context.moveTo(w / 2, h / 2);
-        context.bezierCurveTo(
-            this.cp1x + increment,
-            this.cp1y + increment,
-            this.cp2x + increment,
-            this.cp2y + increment,
-            this.x + increment,
-            this.y + increment
-        );
-        context.stroke();
-        context.closePath();
     }
 }
 
@@ -10872,113 +10698,6 @@ class Dye {
     }
 }
 
-class PlanetMoss {
-    constructor() {
-        this.tl = null;
-        this.letters = [
-            3501, 3502, 3503, 3504, 3505, 3511, 3521, 3523, 3530, 3571, 3572,
-            3585, 3588, 3589, 3591, 3598
-        ];
-        this.text = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.modes = [
-            'source-over',
-            'multiply',
-            'darken',
-            'lighten',
-            'xor',
-            'difference',
-            'exclusion',
-            'overlay',
-            'screen',
-            'hue',
-            'luminosity',
-            'color',
-            'saturation',
-            'soft-light',
-            'hard-light'
-        ];
-        this.rot1 = { rot: random(1, 90) };
-        this.rot2 = { rot: random(1, 90) };
-        this.pos1 = { x: random(0, w), y: random(0, h) };
-        this.pos2 = { x: random(0, w), y: random(0, h) };
-        this.fontsize = random(7, 25);
-
-        ctx.font = `${this.fontsize}px bold serif`;
-        ctx.strokeStyle = randomColor();
-        ctx.fillStyle = randomColor();
-        ctx.globalCompositeOperation = this.modes[random(0, this.modes.length)];
-
-        this.getTweens();
-
-        this.draw = () => {
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot1.rot);
-            ctx.fillRect(0, h / 2 - 1, w, h / 2 + 1);
-            ctx.translate(-w / 2, -h / 2);
-            ctx.fillText(this.text, this.pos1.x, this.pos1.y);
-            ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
-
-            t++;
-            if (t % (speed * 2400) === 0) {
-                this.text = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            if (t % 480 === 0) {
-                this.tl.kill();
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-                this.rot1 = { rot: random(1, 90) };
-                this.rot2 = { rot: random(1, 90) };
-                this.pos1 = { x: random(0, w), y: random(0, h) };
-                this.pos2 = { x: random(0, w), y: random(0, h) };
-                this.fontsize = random(7, 25);
-
-                ctx.font = `${this.fontsize}px bold serif`;
-
-                ctx.strokeStyle = randomColor();
-                ctx.fillStyle = randomColor();
-
-                this.getTweens();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    getTweens() {
-        this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true }
-        });
-        this.tl
-            .to(
-                this.rot1,
-                {
-                    duration: random(3, 8),
-                    rot: this.rot2.rot
-                },
-                '<'
-            )
-            .to(
-                this.pos1,
-                {
-                    duration: random(3, 13),
-                    x: this.pos2.x
-                },
-                '<'
-            )
-            .to(
-                this.pos1,
-                {
-                    duration: random(3, 10),
-                    y: this.pos2.y
-                },
-                '<'
-            );
-    }
-}
-
 class Projecting {
     constructor() {
         this.tl = null;
@@ -11160,7 +10879,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new Mikado();
+let runningAlgo = new Projecting();
 runningAlgo.draw();
 
 // the click listener resets settings and draws a new spiral
