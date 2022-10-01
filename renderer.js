@@ -361,6 +361,7 @@ let speed = 5;
 // for repeats
 let interval;
 let regen;
+let runningAlgo;
 let autoChange = 100;
 let manual = false;
 // hud messages
@@ -10254,7 +10255,7 @@ class Coils {
                 {
                     duration: this.dur4,
                     color: this.obj2.color,
-                    easing: 'linear',
+                    easing: 'power1',
                     onUpdate: () =>
                         (ctx.strokeStyle = ctx.shadowColor = this.obj1.color)
                 },
@@ -10398,7 +10399,7 @@ class Mesmerize {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, easing: 'linear' }
+            defaults: { repeat: -1, yoyo: true, easing: 'power1' }
         });
         this.tl
             .to(this.obj1, {
@@ -10879,8 +10880,7 @@ function init() {
 
 // run init and start a random class spiral
 init();
-let runningAlgo = new Projecting();
-runningAlgo.draw();
+chooseAlgos();
 
 // the click listener resets settings and draws a new spiral
 canvas.addEventListener('click', () => {
