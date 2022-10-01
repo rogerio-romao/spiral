@@ -58,71 +58,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (
     }
 };
 
-// Physics and math classes from Youtube channel Coding Math
-// Vector class
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    setPosX(value) {
-        this.x = value;
-    }
-    getX() {
-        return this.x;
-    }
-    setY(value) {
-        this.y = value;
-    }
-    getY() {
-        return this.y;
-    }
-    setAngle(angle) {
-        const length = this.getLength();
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
-    }
-    getAngle() {
-        return Math.atan2(this.y, this.x);
-    }
-    setLength(length) {
-        const angle = this.getAngle();
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
-    }
-    getLength() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-    add(v2) {
-        return new Vector(this.x + v2.getX(), this.y + v2.getY());
-    }
-    subtract(v2) {
-        return new Vector(this.x - v2.getX(), this.y - v2.getY());
-    }
-    multiply(val) {
-        return new Vector(this.x * val, this.y * val);
-    }
-    divide(val) {
-        return new Vector(this.x / val, this.y / val);
-    }
-    addTo(v2) {
-        this.x += v2.getX();
-        this.y += v2.getY();
-    }
-    subtractFrom(v2) {
-        this.x -= v2.getX();
-        this.y -= v2.getY();
-    }
-    multiplyBy(val) {
-        this.x *= val;
-        this.y *= val;
-    }
-    divideBy(val) {
-        this.x /= val;
-        this.y /= val;
-    }
-}
-
 // Particle class
 class Particle {
     constructor(x, y, speed, direction, grav = 0) {
@@ -9467,8 +9402,8 @@ class SoapyBubbles {
         this.length = Math.random() * 5 + 1;
         this.angle = Math.random() * (Math.PI / 4) + 0.1;
         this.rot = random(1, 61);
-        this.position = new Vector(0, 0);
-        this.velocity = new Vector(0, 0);
+        this.position = new Utils.Vector(0, 0);
+        this.velocity = new Utils.Vector(0, 0);
         this.velocity.setLength(this.length);
         this.velocity.setAngle(this.angle);
 
@@ -9496,8 +9431,8 @@ class SoapyBubbles {
                 this.length = Math.random() * 5 + 1;
                 this.angle = Math.random() * (Math.PI / 4) + 0.1;
                 this.rot = random(1, 61);
-                this.position = new Vector(0, 0);
-                this.velocity = new Vector(0, 0);
+                this.position = new Utils.Vector(0, 0);
+                this.velocity = new Utils.Vector(0, 0);
                 this.velocity.setLength(this.length);
                 this.velocity.setAngle(this.angle);
 
@@ -10230,14 +10165,14 @@ class Coils {
             .to(this.obj1, {
                 duration: this.dur1,
                 x: this.obj2.x,
-                easing: 'elastic'
+                ease: 'elastic'
             })
             .to(
                 this.obj1,
                 {
                     duration: this.dur2,
                     y: this.obj2.y,
-                    easing: 'bounce'
+                    ease: 'bounce'
                 },
                 '<'
             )
@@ -10246,7 +10181,7 @@ class Coils {
                 {
                     duration: this.dur3,
                     radius: this.obj2.radius,
-                    easing: 'back.out(3)'
+                    ease: 'back.out(3)'
                 },
                 '<'
             )
@@ -10255,7 +10190,7 @@ class Coils {
                 {
                     duration: this.dur4,
                     color: this.obj2.color,
-                    easing: 'power1',
+                    ease: 'power1',
                     onUpdate: () =>
                         (ctx.strokeStyle = ctx.shadowColor = this.obj1.color)
                 },
@@ -10399,7 +10334,7 @@ class Mesmerize {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, easing: 'power1' }
+            defaults: { repeat: -1, yoyo: true, ease: 'power1' }
         });
         this.tl
             .to(this.obj1, {
@@ -10538,7 +10473,7 @@ class GenesisTypewriter {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, easing: 'back.out(1.7)' }
+            defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' }
         });
         this.tl
             .to(
@@ -10656,7 +10591,7 @@ class Dye {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, easing: 'circ' }
+            defaults: { repeat: -1, yoyo: true, ease: 'circ' }
         });
         this.tl
             .to(

@@ -1,8 +1,8 @@
 const { contextBridge } = require('electron');
-const test = require('./test.js');
+const Vector = require('./Vector.js');
 
-contextBridge.exposeInMainWorld('test', {
-    test: test
+contextBridge.exposeInMainWorld('Utils', {
+    Vector
 });
 
 // All of the Node.js APIs are available in the preload process.
