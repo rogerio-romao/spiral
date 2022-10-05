@@ -1,8 +1,12 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
+
+// helpers
 const Vector = require('./Vector.js');
+const Particle = require('./Particle.js');
 
 contextBridge.exposeInMainWorld('Utils', {
-    Vector
+    Vector: () => ipcRenderer.send(Vector),
+    Particle: () => ipcRenderer.send(Particle)
 });
 
 // All of the Node.js APIs are available in the preload process.

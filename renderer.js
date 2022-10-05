@@ -58,103 +58,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (
     }
 };
 
-// Particle class
-class Particle {
-    constructor(x, y, speed, direction, grav = 0) {
-        this.x = x;
-        this.y = y;
-        this.vx = Math.cos(direction) * speed;
-        this.vy = Math.sin(direction) * speed;
-        this.gravity = grav;
-        this.bounce = -1;
-        this.friction = 1;
-        this.mass = 1;
-        this.springs = [];
-        this.gravitations = [];
-    }
-    accelerate(ax, ay) {
-        this.vx += ax;
-        this.vy += ay;
-    }
-    addGravitation(p) {
-        this.removeGravitation(p); // case it already exists
-        this.gravitations.push(p);
-    }
-    addSpring(point, k, length = 0) {
-        this.removeSpring(point); // case it already exists
-        this.springs.push({ point, k, length });
-    }
-    angleTo(p2) {
-        return Math.atan2(p2.y - this.y, p2.x - this.x);
-    }
-    distanceTo(p2) {
-        const dx = p2.x - this.x;
-        const dy = p2.y - this.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-    getHeading() {
-        return Math.atan2(this.vy, this.vx);
-    }
-    getSpeed() {
-        return Math.sqrt(this.vx ** 2 + this.vy ** 2);
-    }
-    gravitateTo(p2) {
-        const dx = p2.x - this.x;
-        const dy = p2.y - this.y;
-        const dSq = dx * dx + dy * dy;
-        const dist = Math.sqrt(dSq);
-        const force = p2.mass / dSq;
-        const ax = (dx / dist) * force;
-        const ay = (dy / dist) * force;
-
-        this.vx += ax;
-        this.vy += ay;
-    }
-    handleGravitations() {
-        this.gravitations.forEach(gravitation => this.gravitateTo(gravitation));
-    }
-    handleSprings() {
-        this.springs.forEach(spring =>
-            this.springTo(spring.point, spring.k, spring.length)
-        );
-    }
-    removeGravitation(p) {
-        const gravIndex = this.gravitations.findIndex(g => g === p);
-        this.gravitations.splice(gravIndex, 1);
-    }
-    removeSpring(point) {
-        const springIndex = this.springs.findIndex(s => s.point === point);
-        this.springs.splice(springIndex, 1);
-    }
-    setHeading(heading) {
-        const speed = this.getSpeed();
-        this.vx = Math.cos(heading) * speed;
-        this.vy = Math.sin(heading) * speed;
-    }
-    setSpeed(speed) {
-        const heading = this.getHeading();
-        this.vx = Math.cos(heading) * speed;
-        this.vy = Math.sin(heading) * speed;
-    }
-    springTo(point, k, length = 0) {
-        const dx = point.x - this.x;
-        const dy = point.y - this.y;
-        const distance = Math.hypot(dx, dy);
-        const springForce = (distance - length) * k;
-        this.vx += (dx / distance) * springForce;
-        this.vy += (dy / distance) * springForce;
-    }
-    update() {
-        this.handleSprings();
-        this.handleGravitations();
-        this.vx *= this.friction;
-        this.vy *= this.friction;
-        this.vy += this.gravity;
-        this.x += this.vx;
-        this.y += this.vy;
-    }
-}
-
 // Math utils
 const utils = {
     norm(value, min, max) {
@@ -9402,8 +9305,8 @@ class SoapyBubbles {
         this.length = Math.random() * 5 + 1;
         this.angle = Math.random() * (Math.PI / 4) + 0.1;
         this.rot = random(1, 61);
-        this.position = new Utils.Vector(0, 0);
-        this.velocity = new Utils.Vector(0, 0);
+        this.position = new window.Utils.Vector(0, 0);
+        this.velocity = new window.Utils.Vector(0, 0);
         this.velocity.setLength(this.length);
         this.velocity.setAngle(this.angle);
 
@@ -9653,7 +9556,12 @@ class SemiRings {
 class FourDee {
     constructor() {
         this.springPoint = { x: w / 2, y: h / 2 };
-        this.weight = new Particle(random(0, w), random(0, h), 0, 0);
+        this.weight = new window.Utils.Particle(
+            random(0, w),
+            random(0, h),
+            0,
+            0
+        );
         this.weight.radius = 20;
         this.rot = random(-90, -1);
         let k = 0.1;
@@ -9689,7 +9597,7 @@ class FourDee {
             if (t % (speed * 540) === 0) {
                 ctx.fillStyle = 'black';
                 ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.weight = new Particle(
+                this.weight = new window.Utils.Particle(
                     random(0, w),
                     random(0, h),
                     random(-50, 50),
@@ -9708,7 +9616,7 @@ class FourDee {
 class SpringOrbits {
     constructor() {
         this.springPoint = { x: w / 2, y: h / 2 };
-        this.weight = new Particle(
+        this.weight = new window.Utils.Particle(
             random(0, w),
             random(0, h),
             random(15, 120),
@@ -9749,7 +9657,7 @@ class SpringOrbits {
             }
             t++;
             if (t % (speed * 180) === 0) {
-                this.weight = new Particle(
+                this.weight = new window.Utils.Particle(
                     random(0, w),
                     random(0, h),
                     random(15, 120),
@@ -9766,7 +9674,7 @@ class SpringOrbits {
 class GameOfFlies {
     constructor() {
         this.springPoint = { x: w / 2, y: h / 2 };
-        this.p = new Particle(
+        this.p = new window.Utils.Particle(
             random(0, w),
             random(0, h),
             random(5, 50),
@@ -9801,7 +9709,7 @@ class GameOfFlies {
             }
             t++;
             if (t % (speed * 130) === 0) {
-                const p = new Particle(
+                const p = new window.Utils.Particle(
                     random(0, w),
                     random(0, h),
                     random(5, 50),
@@ -9818,8 +9726,18 @@ class GameOfFlies {
 
 class GravityTurbulence {
     constructor() {
-        this.sun1 = new Particle(150, 200, 1, Math.random() * Math.PI * 2);
-        this.sun2 = new Particle(w / 2, h / 2, 2, Math.random() * Math.PI * 2);
+        this.sun1 = new window.Utils.Particle(
+            150,
+            200,
+            1,
+            Math.random() * Math.PI * 2
+        );
+        this.sun2 = new window.Utils.Particle(
+            w / 2,
+            h / 2,
+            2,
+            Math.random() * Math.PI * 2
+        );
 
         this.particles = [];
         this.numParticles = 200;
@@ -9829,7 +9747,7 @@ class GravityTurbulence {
         this.sun2.radius = 30;
 
         for (let i = 0; i < this.numParticles; i++) {
-            const p = new Particle(
+            const p = new window.Utils.Particle(
                 utils.randomRange(0, w),
                 utils.randomRange(0, h),
                 utils.randomRange(7, 8),
