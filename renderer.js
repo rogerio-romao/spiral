@@ -308,7 +308,6 @@ const utils = {
 
     roundToPlaces(value, places) {
         return Math.round(value * mult) / mult;
-        const mult = Math.pow(10, places);
     },
 
     roundNearest(value, nearest) {
@@ -335,7 +334,7 @@ const utils = {
             (1 - t) * 3 * t * t * p2.y +
             t * t * t * p3.y;
         return pFinal;
-    }
+    },
 };
 
 // DOM References
@@ -352,6 +351,20 @@ const help = document.querySelector('#help');
 // canvas to window size
 let w = (canvas.width = canvas2.width = window.innerWidth);
 let h = (canvas.height = canvas2.height = window.innerHeight);
+
+// scale for retina
+// const scale = window.devicePixelRatio;
+// const rect = canvas.getBoundingClientRect();
+// canvas.width = rect.width * scale;
+// canvas.height = rect.height * scale;
+// ctx.scale(scale, scale);
+// canvas2.width = rect.width * scale;
+// canvas2.height = rect.height * scale;
+// ctx2.scale(scale, scale);
+// canvas.style.width = rect.width + 'px';
+// canvas.style.height = rect.height + 'px';
+// canvas2.style.width = rect.width + 'px';
+// canvas2.style.height = rect.height + 'px';
 
 // time-frame
 let t = 0;
@@ -525,14 +538,14 @@ const ALGOS = [
     'mesmerize',
     'genesis-typewriter',
     'dye',
-    'projecting'
+    'projecting',
 ];
 // stores the last played algorithms
 const LAST_ALGOS = [];
 
 // choose a new algorithm that is not on the last x played
 function chooseAlgos() {
-    let picks = ALGOS.filter(algo => !LAST_ALGOS.includes(algo));
+    let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     let choose = picks[random(0, picks.length)];
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -2269,7 +2282,7 @@ class CamouflagePostits {
             'lighten',
             'darken',
             'overlay',
-            'source-atop'
+            'source-atop',
         ];
 
         ctx.strokeStyle = 'white';
@@ -2330,7 +2343,7 @@ class TheBadge {
             'lighten',
             'darken',
             'overlay',
-            'source-atop'
+            'source-atop',
         ];
 
         ctx.strokeStyle = 'white';
@@ -2918,7 +2931,7 @@ class AlphabetSoup {
             1332, 1334, 1337, 1338, 1340, 1342, 1344, 1345, 1347, 1351, 1354,
             1359, 1361, 1362, 1363, 1364, 1365, 1367, 1369, 1370, 1371, 1372,
             1373, 1374, 1375, 1376, 1377, 1378, 1383, 1384, 1385, 1386, 1388,
-            1390, 1392, 1393, 1397, 1399, 1400
+            1390, 1392, 1393, 1397, 1399, 1400,
         ];
         this.letter1 = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -2996,7 +3009,7 @@ class Punctuation {
             '<>',
             '~',
             '`',
-            '.'
+            '.',
         ];
         this.letter = this.letters[random(0, this.letters.length)];
 
@@ -3048,7 +3061,7 @@ class AccelerationMandala {
         this.letters = [
             1002, 1006, 1031, 1033, 1039, 1046, 1054, 1064, 1078, 1092, 1912,
             1916, 1920, 1921, 1935, 1944, 1959, 1963, 1964, 1968, 1988, 1991,
-            1993, 1997, 12398
+            1993, 1997, 12398,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -3096,7 +3109,7 @@ class EvolvingMandala {
             1200, 1202, 1204, 1205, 1208, 1209, 1210, 1216, 1218, 1219, 1229,
             1231, 1233, 1234, 1237, 1238, 1240, 1242, 1244, 1246, 1249, 1251,
             1254, 1255, 1261, 1262, 1265, 1266, 1267, 1269, 1270, 1271, 1273,
-            1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400
+            1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -3239,7 +3252,7 @@ class AlienFlowers {
             'color-dodge',
             'multiply',
             'overlay',
-            'color-burn'
+            'color-burn',
         ];
 
         ctx.shadowColor = ctx.strokeStyle = randomColor(5, 255, 0.1, 0.1);
@@ -3395,7 +3408,7 @@ class ChalkGalaxy {
             1401, 1402, 1403, 1404, 1406, 1407, 1408, 1410, 1411, 1412, 1413,
             1414, 1415, 1417, 1418, 1425, 1426, 1427, 1428, 1429, 1430, 1431,
             1440, 1441, 1470, 1472, 1475, 1478, 1490, 1491, 1492, 1493, 1495,
-            1499, 1500, 10157
+            1499, 1500, 10157,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -3546,7 +3559,7 @@ class Microscope {
             'soft-light',
             'source-over',
             'luminosity',
-            'exclusion'
+            'exclusion',
         ];
 
         ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.5, 0.5);
@@ -3647,7 +3660,7 @@ class SpaceGears {
         this.letters = [
             402, 406, 407, 409, 410, 412, 414, 415, 418, 420, 423, 424, 425,
             428, 429, 430, 433, 437, 438, 439, 440, 443, 444, 448, 449, 450,
-            451, 458, 461, 474, 478, 480, 484, 488, 491, 494
+            451, 458, 461, 474, 478, 480, 484, 488, 491, 494,
         ];
         this.letter = String.fromCharCode(428);
         this.rotate = (random(3, 357) * Math.PI) / 180;
@@ -3685,7 +3698,7 @@ class CounterClock {
         this.letters = [
             607, 611, 615, 616, 617, 618, 619, 622, 625, 629, 632, 639, 643,
             650, 656, 662, 664, 676, 683, 684, 685, 688, 690, 691, 694, 697,
-            698, 699
+            698, 699,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -3748,14 +3761,14 @@ class Clock {
             'lighten',
             'darken',
             'overlay',
-            'source-over'
+            'source-over',
         ];
         this.letters = [
             701, 702, 703, 706, 707, 708, 710, 711, 712, 713, 714, 715, 716,
             717, 718, 719, 720, 721, 722, 724, 726, 727, 729, 730, 731, 732,
             733, 734, 735, 737, 740, 741, 744, 745, 746, 747, 749, 753, 754,
             756, 757, 758, 759, 760, 761, 762, 764, 766, 769, 771, 772, 776,
-            778, 781, 782, 784, 790, 794, 795, 796
+            778, 781, 782, 784, 790, 794, 795, 796,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -3816,7 +3829,7 @@ class Pseye {
             1502, 1505, 1509, 1510, 1511, 1512, 1513, 1520, 1522, 1524, 1540,
             1546, 1549, 1550, 1553, 1554, 1555, 1556, 1558, 1559, 1566, 1568,
             1569, 1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1583,
-            1584, 1586, 1587, 1590, 1593, 1597, 1598, 1599
+            1584, 1586, 1587, 1590, 1593, 1597, 1598, 1599,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -3896,7 +3909,7 @@ class NuclearVortex {
             'rgba(255, 255, 255, 0.5)',
             this.color3,
             this.color4,
-            'black'
+            'black',
         ];
         this.col = 0;
 
@@ -3943,7 +3956,7 @@ class NuclearVortex {
                     'rgba(255, 255, 255, 0.5)',
                     this.color3,
                     this.color4,
-                    'black'
+                    'black',
                 ];
                 this.col = 0;
                 ctx.strokeStyle = this.color1;
@@ -3965,7 +3978,7 @@ class AcidStars {
             1636, 1637, 1639, 1640, 1644, 1645, 1647, 1648, 1649, 1650, 1654,
             1656, 1659, 1660, 1663, 1664, 1665, 1666, 1667, 1668, 1670, 1671,
             1672, 1673, 1674, 1675, 1677, 1678, 1680, 1682, 1683, 1686, 1690,
-            1691, 1693, 1695, 1697
+            1691, 1693, 1695, 1697,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -4130,7 +4143,7 @@ class VanishingRays {
         this.letters = [
             1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829,
             1830, 1831, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872,
-            1873, 1877, 1879, 1883, 1884, 1888, 1890, 1894, 1899
+            1873, 1877, 1879, 1883, 1884, 1888, 1890, 1894, 1899,
         ];
         this.incAlpha = 0;
         this.letter = String.fromCharCode(
@@ -4291,7 +4304,7 @@ class ThreeD {
     constructor() {
         this.letters = [
             3044, 3045, 3046, 3047, 3048, 3052, 3054, 3057, 3059, 3063, 3077,
-            3079, 3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100
+            3079, 3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -4457,7 +4470,7 @@ class Organic {
                         upperLeft: this.rounded1,
                         upperRight: this.rounded2,
                         lowerLeft: this.rounded3,
-                        lowerRight: this.rounded4
+                        lowerRight: this.rounded4,
                     },
                     true,
                     true
@@ -4605,7 +4618,7 @@ class Rounded {
                         upperLeft: this.rounded1,
                         upperRight: this.rounded2,
                         lowerLeft: this.rounded3,
-                        lowerRight: this.rounded4
+                        lowerRight: this.rounded4,
                     },
                     true,
                     true
@@ -4661,7 +4674,7 @@ class Spikey {
                             upperLeft: this.rounded1++,
                             upperRight: this.rounded2++,
                             lowerLeft: this.rounded3++,
-                            lowerRight: this.rounded4++
+                            lowerRight: this.rounded4++,
                         },
                         false,
                         true
@@ -4680,7 +4693,7 @@ class Spikey {
                             upperLeft: this.rounded3--,
                             upperRight: this.rounded4--,
                             lowerLeft: this.rounded2--,
-                            lowerRight: this.rounded1--
+                            lowerRight: this.rounded1--,
                         },
                         false,
                         true
@@ -4753,7 +4766,7 @@ class Radiance {
                             upperLeft: this.rounded1,
                             upperRight: this.rounded1,
                             lowerLeft: this.rounded1,
-                            lowerRight: this.rounded1
+                            lowerRight: this.rounded1,
                         },
                         true,
                         true
@@ -4770,7 +4783,7 @@ class Radiance {
                             upperLeft: this.rounded2,
                             upperRight: this.rounded2,
                             lowerLeft: this.rounded2,
-                            lowerRight: this.rounded2
+                            lowerRight: this.rounded2,
                         },
                         true,
                         true
@@ -4787,7 +4800,7 @@ class Radiance {
                             upperLeft: this.rounded3,
                             upperRight: this.rounded3,
                             lowerLeft: this.rounded3,
-                            lowerRight: this.rounded3
+                            lowerRight: this.rounded3,
                         },
                         true,
                         true
@@ -4804,7 +4817,7 @@ class Radiance {
                             upperLeft: this.rounded4,
                             upperRight: this.rounded4,
                             lowerLeft: this.rounded4,
-                            lowerRight: this.rounded4
+                            lowerRight: this.rounded4,
                         },
                         true,
                         true
@@ -4892,7 +4905,7 @@ class Universe {
                             upperLeft: this.rounded1++,
                             upperRight: this.rounded1++,
                             lowerLeft: this.rounded1++,
-                            lowerRight: this.rounded1++
+                            lowerRight: this.rounded1++,
                         },
                         false,
                         true
@@ -4908,7 +4921,7 @@ class Universe {
                             upperLeft: this.rounded2++,
                             upperRight: this.rounded2++,
                             lowerLeft: this.rounded2++,
-                            lowerRight: this.rounded2++
+                            lowerRight: this.rounded2++,
                         },
                         false,
                         true
@@ -4924,7 +4937,7 @@ class Universe {
                             upperLeft: this.rounded3--,
                             upperRight: this.rounded3--,
                             lowerLeft: this.rounded3--,
-                            lowerRight: this.rounded3--
+                            lowerRight: this.rounded3--,
                         },
                         false,
                         true
@@ -4940,7 +4953,7 @@ class Universe {
                             upperLeft: this.rounded4++,
                             upperRight: this.rounded4++,
                             lowerLeft: this.rounded4--,
-                            lowerRight: this.rounded4--
+                            lowerRight: this.rounded4--,
                         },
                         false,
                         true
@@ -5022,7 +5035,7 @@ class ParallelUniverses {
                             upperLeft: this.rounded1++,
                             upperRight: this.rounded1++,
                             lowerLeft: this.rounded1++,
-                            lowerRight: this.rounded1++
+                            lowerRight: this.rounded1++,
                         },
                         true,
                         false
@@ -5039,7 +5052,7 @@ class ParallelUniverses {
                             upperLeft: this.rounded2++,
                             upperRight: this.rounded2++,
                             lowerLeft: this.rounded2++,
-                            lowerRight: this.rounded2++
+                            lowerRight: this.rounded2++,
                         },
                         true,
                         false
@@ -5056,7 +5069,7 @@ class ParallelUniverses {
                             upperLeft: this.rounded3--,
                             upperRight: this.rounded3--,
                             lowerLeft: this.rounded3--,
-                            lowerRight: this.rounded3--
+                            lowerRight: this.rounded3--,
                         },
                         true,
                         false
@@ -5073,7 +5086,7 @@ class ParallelUniverses {
                             upperLeft: this.rounded4++,
                             upperRight: this.rounded4++,
                             lowerLeft: this.rounded4--,
-                            lowerRight: this.rounded4--
+                            lowerRight: this.rounded4--,
                         },
                         true,
                         false
@@ -5489,7 +5502,7 @@ class Shadowy {
             3201, 3202, 3203, 3205, 3207, 3208, 3209, 3210, 3215, 3218, 3219,
             3223, 3225, 3231, 3235, 3236, 3238, 3246, 3247, 3249, 3250, 3254,
             3255, 3256, 3257, 3260, 3262, 3265, 3266, 3268, 3271, 3272, 3274,
-            3275, 3285, 3287, 3296, 3297
+            3275, 3285, 3287, 3296, 3297,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -5653,7 +5666,7 @@ class CrystalTiles {
             'difference',
             'saturation',
             'luminosity',
-            'overlay'
+            'overlay',
         ];
 
         ctx.strokeStyle = 'white';
@@ -5710,7 +5723,7 @@ class Wallpapering {
             'difference',
             'saturation',
             'luminosity',
-            'overlay'
+            'overlay',
         ];
 
         ctx.strokeStyle = 'black';
@@ -5844,7 +5857,7 @@ class Polyhedra {
         this.y = random(0, h);
         this.rotations = [
             1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 19, 20, 21, 23, 27,
-            28, 29
+            28, 29,
         ];
         this.rotate = this.rotations[random(0, this.rotations.length)];
 
@@ -6018,7 +6031,7 @@ class Wormholes {
             2101, 2102, 2103, 2104, 2108, 2109, 2110, 2116, 2117, 2119, 2121,
             2123, 2127, 2130, 2134, 2142, 2304, 2305, 2312, 2313, 2314, 2316,
             2317, 2318, 2319, 2320, 2325, 2328, 2330, 2336, 2349, 2352, 2353,
-            2361, 2362, 2365, 2367, 2368, 2383, 2385, 2390, 2391
+            2361, 2362, 2365, 2367, 2368, 2383, 2385, 2390, 2391,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -6064,7 +6077,7 @@ class Shells {
         this.letters = [
             2404, 2405, 2413, 2414, 2416, 2422, 2424, 2425, 2426, 2427, 2428,
             2429, 2431, 2432, 2434, 2435, 2438, 2439, 2443, 2444, 2448, 2451,
-            2452, 2454, 2455, 2462, 2464, 2467, 2472, 2479, 2480, 2489, 2492
+            2452, 2454, 2455, 2462, 2464, 2467, 2472, 2479, 2480, 2489, 2492,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -6330,7 +6343,7 @@ class Ourobouros {
         this.letters = [
             2503, 2504, 2508, 2509, 2510, 2519, 2527, 2528, 2529, 2530, 2531,
             2536, 2537, 2539, 2541, 2544, 2545, 2563, 2566, 2569, 2584, 2591,
-            2596
+            2596,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -6380,7 +6393,7 @@ class EpicRays {
         this.pointCy = random(0, h);
         this.rotations = [
             1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43
+            31, 32, 33, 34, 37, 38, 39, 41, 43,
         ];
         this.rotate = this.rotations[random(0, this.rotations.length)];
 
@@ -6444,7 +6457,7 @@ class Abstractions {
         this.pointCpCy = random(0, h);
         this.rotations = [
             1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43
+            31, 32, 33, 34, 37, 38, 39, 41, 43,
         ];
         this.rotate = this.rotations[random(0, this.rotations.length)];
 
@@ -6710,7 +6723,7 @@ class Mirage {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.ll,
-                        lowerRight: this.lr
+                        lowerRight: this.lr,
                     },
                     true,
                     false
@@ -6762,7 +6775,7 @@ class Majestic {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.ll,
-                        lowerRight: this.lr
+                        lowerRight: this.lr,
                     },
                     true,
                     true
@@ -6817,7 +6830,7 @@ class Wormhole {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.ll,
-                        lowerRight: this.lr
+                        lowerRight: this.lr,
                     },
                     true,
                     true
@@ -6873,7 +6886,7 @@ class Irradiate {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.ll,
-                        lowerRight: this.lr
+                        lowerRight: this.lr,
                     }
                 );
             }
@@ -6916,13 +6929,13 @@ class Entropy {
                     upperLeft: this.ul--,
                     upperRight: this.ur--,
                     lowerLeft: this.ll--,
-                    lowerRight: this.lr--
+                    lowerRight: this.lr--,
                 });
                 ctx.roundRect(w, h, this.height, this.width, {
                     upperLeft: this.lr,
                     upperRight: this.ll,
                     lowerLeft: this.ur,
-                    lowerRight: this.ul
+                    lowerRight: this.ul,
                 });
             }
             ctx.translate(w / 2, h / 2);
@@ -6973,14 +6986,14 @@ class Tripping {
                         upperLeft: this.ul--,
                         upperRight: this.ur--,
                         lowerLeft: this.ll--,
-                        lowerRight: this.lr--
+                        lowerRight: this.lr--,
                     }
                 );
                 ctx.roundRect(this.x2--, this.y2--, this.height, this.width, {
                     upperLeft: this.lr,
                     upperRight: this.ll,
                     lowerLeft: this.ur,
-                    lowerRight: this.ul
+                    lowerRight: this.ul,
                 });
             }
             ctx.translate(w / 2, h / 2);
@@ -7028,7 +7041,7 @@ class Progression {
                         upperLeft: this.round,
                         upperRight: this.round,
                         lowerLeft: this.round,
-                        lowerRight: this.round
+                        lowerRight: this.round,
                     },
                     true,
                     false
@@ -7079,7 +7092,7 @@ class Aperture {
                         upperLeft: this.round,
                         upperRight: this.round,
                         lowerLeft: this.round,
-                        lowerRight: this.round
+                        lowerRight: this.round,
                     },
                     true
                 );
@@ -7514,7 +7527,7 @@ class Concentric {
     constructor() {
         this.letters = [
             2605, 2608, 2617, 2626, 2632, 2635, 2641, 2652, 2654, 2662, 2663,
-            2667, 2670, 2676, 2677, 2691, 2694, 2695, 2696, 2700
+            2667, 2670, 2676, 2677, 2691, 2694, 2695, 2696, 2700,
         ];
         this.letter1 = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -7808,7 +7821,7 @@ class Cornucopia {
                         upperLeft: this.ul--,
                         upperRight: this.ur++,
                         lowerLeft: this.dl++,
-                        lowerRight: this.dr--
+                        lowerRight: this.dr--,
                     },
                     true,
                     false
@@ -7866,7 +7879,7 @@ class Cornucopia2 {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.dl,
-                        lowerRight: this.dr
+                        lowerRight: this.dr,
                     },
                     false,
                     true
@@ -7915,7 +7928,7 @@ class Germinate {
         this.rc = random(-7, 8);
         this.angles = [
             5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 32, 35, 36, 42, 44, 45, 48,
-            50, 55, 64, 65, 66, 70, 72, 75, 95, 100
+            50, 55, 64, 65, 66, 70, 72, 75, 95, 100,
         ];
         this.rotate = this.angles[random(0, this.angles.length)];
 
@@ -7934,7 +7947,7 @@ class Germinate {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.dl,
-                        lowerRight: this.dr
+                        lowerRight: this.dr,
                     },
                     false,
                     true
@@ -8001,7 +8014,7 @@ class GasClouds {
                         upperLeft: this.ul,
                         upperRight: this.ur,
                         lowerLeft: this.dl,
-                        lowerRight: this.dr
+                        lowerRight: this.dr,
                     },
                     true,
                     false
@@ -8159,7 +8172,7 @@ class Typobrush {
             2703, 2705, 2709, 2713, 2715, 2716, 2718, 2719, 2720, 2721, 2722,
             2725, 2726, 2731, 2732, 2735, 2738, 2739, 2741, 2742, 2743, 2745,
             2748, 2750, 2751, 2752, 2753, 2760, 2764, 2768, 2784, 2791, 2792,
-            2795, 2796, 2797, 2798, 2799, 2800
+            2795, 2796, 2797, 2798, 2799, 2800,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -8209,7 +8222,7 @@ class Veils {
         this.y = random(0, h);
         this.letters = [
             2801, 2817, 2819, 2822, 2824, 2827, 2832, 2835, 2837, 2849, 2855,
-            2856, 2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893
+            2856, 2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893,
         ];
         this.letter = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -8257,7 +8270,7 @@ class Harmonie {
             2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924,
             2925, 2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947,
             2949, 2952, 2953, 2960, 2962, 2970, 2972, 2975, 2980, 2984, 2986,
-            2990, 2991, 2992, 2994, 2997, 2998
+            2990, 2991, 2992, 2994, 2997, 2998,
         ];
         this.letter1 = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -8335,7 +8348,7 @@ class Portals {
                                 upperLeft: this.round,
                                 upperRight: this.round,
                                 lowerLeft: this.round,
-                                lowerRight: this.round
+                                lowerRight: this.round,
                             },
                             true,
                             true
@@ -8371,7 +8384,7 @@ class Sandala {
             3201, 3202, 3203, 3204, 3206, 3207, 3208, 3209, 3212, 3214, 3215,
             3218, 3219, 3221, 3222, 3223, 3226, 3227, 3228, 3231, 3232, 3234,
             3236, 3238, 3244, 3248, 3249, 3250, 3254, 3255, 3260, 3261, 3263,
-            3270, 3294, 3298
+            3270, 3294, 3298,
         ];
 
         this.rot = random(1, 60);
@@ -8983,7 +8996,7 @@ class Triangulate {
         this.triangles = this.divisions[random(0, this.divisions.length)];
         this.size = random(15, 100);
         this.rotations = [
-            10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120
+            10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120,
         ];
         this.rotate = this.rotations[random(0, this.rotations.length)];
 
@@ -9123,7 +9136,7 @@ class Quadratic {
 
         this.draw = () => {
             if (t % speed === 0) {
-                this.nums.forEach(num => {
+                this.nums.forEach((num) => {
                     return ctx.strokeRect(
                         w / 2 - num / 2,
                         h / 2 - num / 2,
@@ -9304,7 +9317,7 @@ class VanishingPoint {
                         this.color1,
                         this.color2,
                         this.color3,
-                        this.color4
+                        this.color4,
                     ];
                     this.rot = random(1, 90);
                     setTimeout(() => {
@@ -9347,7 +9360,7 @@ class Subwoofer {
             this.color2,
             this.color3,
             this.color4,
-            this.color5
+            this.color5,
         ];
         ctx.strokeStyle = 'white';
         ctx.lineWidth = random(7, 70);
@@ -9386,7 +9399,7 @@ class Subwoofer {
                     this.color2,
                     this.color3,
                     this.color4,
-                    this.color5
+                    this.color5,
                 ];
                 ctx.lineWidth = random(7, 70);
             }
@@ -9398,7 +9411,7 @@ class Subwoofer {
 class DeepSea {
     constructor() {
         this.rotations = [
-            4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 72, 90
+            4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 72, 90,
         ];
         this.startX = random(0, w);
         this.startY = random(0, h);
@@ -9677,11 +9690,11 @@ class SemiRings {
             { x: 0, y: h / 4 },
             { x: 0, y: h / 2 },
             { x: 0, y: h * 0.75 },
-            { x: 0, y: h }
+            { x: 0, y: h },
         ];
         this.point1 = this.points[random(0, this.points.length)];
         this.point2 = this.points.filter(
-            p => p.x !== this.point1.x || p.y !== this.point1.y
+            (p) => p.x !== this.point1.x || p.y !== this.point1.y
         )[random(0, this.points.length - 1)];
         this.angle = random(1, 91);
 
@@ -9707,7 +9720,7 @@ class SemiRings {
                 this.angle = random(1, 91);
                 this.point1 = this.points[random(0, this.points.length)];
                 this.point2 = this.points.filter(
-                    p => p.x !== this.point1.x || p.y !== this.point1.y
+                    (p) => p.x !== this.point1.x || p.y !== this.point1.y
                 )[random(0, this.points.length - 1)];
             }
             interval = requestAnimationFrame(this.draw);
@@ -9848,7 +9861,7 @@ class GameOfFlies {
             if (t % speed === 0) {
                 ctx.fillStyle = 'rgba(0,0,0,0.14)';
                 ctx.fillRect(0, 0, w, h);
-                this.particles.forEach(prtcl => {
+                this.particles.forEach((prtcl) => {
                     const dx = this.springPoint.x - prtcl.x;
                     const dy = this.springPoint.y - prtcl.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -9935,7 +9948,7 @@ class GravityTurbulence {
             if (this.sun2.y + this.sun2.radius < 0) {
                 this.sun2.y = h + this.sun2.radius;
             }
-            this.particles.forEach(particle => {
+            this.particles.forEach((particle) => {
                 particle.update();
                 this.drawPart(particle, 'white');
                 if (
@@ -10079,7 +10092,7 @@ class Shards {
             'color',
             'luminosity',
             'multiply',
-            'screen'
+            'screen',
         ];
 
         ctx.strokeStyle = randomColor(0, 255, 1, 1);
@@ -10158,13 +10171,13 @@ class Coils {
             x: 0,
             y: 0,
             radius: random(10, 35),
-            color: randomColor(60, 255, 0.6, 1)
+            color: randomColor(60, 255, 0.6, 1),
         };
         this.obj2 = {
             x: w / 2,
             y: h / 2,
             radius: random(30, 130),
-            color: randomColor(60, 255, 0.6, 1)
+            color: randomColor(60, 255, 0.6, 1),
         };
         this.dur1 = random(5, 20);
         this.dur2 = random(8, 30);
@@ -10205,13 +10218,13 @@ class Coils {
                     x: 0,
                     y: 0,
                     radius: random(10, 35),
-                    color: randomColor(60, 255, 0.6, 1)
+                    color: randomColor(60, 255, 0.6, 1),
                 };
                 this.obj2 = {
                     x: w / 2,
                     y: h / 2,
                     radius: random(30, 130),
-                    color: randomColor(60, 255, 0.6, 1)
+                    color: randomColor(60, 255, 0.6, 1),
                 };
                 this.dur1 = random(5, 20);
                 this.dur2 = random(8, 30);
@@ -10230,14 +10243,14 @@ class Coils {
             .to(this.obj1, {
                 duration: this.dur1,
                 x: this.obj2.x,
-                ease: 'elastic'
+                ease: 'elastic',
             })
             .to(
                 this.obj1,
                 {
                     duration: this.dur2,
                     y: this.obj2.y,
-                    ease: 'bounce'
+                    ease: 'bounce',
                 },
                 '<'
             )
@@ -10246,7 +10259,7 @@ class Coils {
                 {
                     duration: this.dur3,
                     radius: this.obj2.radius,
-                    ease: 'back.out(3)'
+                    ease: 'back.out(3)',
                 },
                 '<'
             )
@@ -10257,7 +10270,7 @@ class Coils {
                     color: this.obj2.color,
                     ease: 'power1',
                     onUpdate: () =>
-                        (ctx.strokeStyle = ctx.shadowColor = this.obj1.color)
+                        (ctx.strokeStyle = ctx.shadowColor = this.obj1.color),
                 },
                 '<'
             );
@@ -10297,7 +10310,7 @@ class Mesmerize {
             lowerLeft: this.ll1,
             lowerRight: this.lr1,
             color: this.color1,
-            fill: this.fill1
+            fill: this.fill1,
         };
         this.obj2 = {
             width: this.w2,
@@ -10309,7 +10322,7 @@ class Mesmerize {
             lowerLeft: this.ll2,
             lowerRight: this.lr2,
             color: this.color2,
-            fill: this.fill2
+            fill: this.fill2,
         };
 
         ctx.strokeStyle = this.obj1.color;
@@ -10328,7 +10341,7 @@ class Mesmerize {
                         upperLeft: this.obj1.upperLeft,
                         upperRight: this.obj1.upperRight,
                         lowerLeft: this.obj1.lowerLeft,
-                        lowerRight: this.obj1.lowerRight
+                        lowerRight: this.obj1.lowerRight,
                     },
                     true,
                     true
@@ -10372,7 +10385,7 @@ class Mesmerize {
                     lowerLeft: this.ll1,
                     lowerRight: this.lr1,
                     color: this.color1,
-                    fill: this.fill1
+                    fill: this.fill1,
                 };
                 this.obj2 = {
                     width: this.w2,
@@ -10384,7 +10397,7 @@ class Mesmerize {
                     lowerLeft: this.ll2,
                     lowerRight: this.lr2,
                     color: this.color2,
-                    fill: this.fill2
+                    fill: this.fill2,
                 };
 
                 this.rot = random(1, 199);
@@ -10399,18 +10412,18 @@ class Mesmerize {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'power1' }
+            defaults: { repeat: -1, yoyo: true, ease: 'power1' },
         });
         this.tl
             .to(this.obj1, {
                 duration: random(10, 100),
-                width: this.obj2.width
+                width: this.obj2.width,
             })
             .to(
                 this.obj1,
                 {
                     duration: random(10, 100),
-                    height: this.obj2.height
+                    height: this.obj2.height,
                 },
                 '<'
             )
@@ -10418,7 +10431,7 @@ class Mesmerize {
                 this.obj1,
                 {
                     duration: random(10, 100),
-                    x: this.obj2.x
+                    x: this.obj2.x,
                 },
                 '<'
             )
@@ -10426,7 +10439,7 @@ class Mesmerize {
                 this.obj1,
                 {
                     duration: random(10, 100),
-                    y: this.obj2.y
+                    y: this.obj2.y,
                 },
                 '<'
             )
@@ -10434,7 +10447,7 @@ class Mesmerize {
                 this.obj1,
                 {
                     duration: random(10, 100),
-                    upperLeft: this.obj2.upperLeft
+                    upperLeft: this.obj2.upperLeft,
                 },
                 '<'
             )
@@ -10442,7 +10455,7 @@ class Mesmerize {
                 this.obj1,
                 {
                     duration: random(10, 100),
-                    upperRight: this.obj2.upperRight
+                    upperRight: this.obj2.upperRight,
                 },
                 '<'
             )
@@ -10450,7 +10463,7 @@ class Mesmerize {
                 this.obj1,
                 {
                     duration: random(10, 100),
-                    lowerLeft: this.obj2.lowerLeft
+                    lowerLeft: this.obj2.lowerLeft,
                 },
                 '<'
             )
@@ -10458,7 +10471,7 @@ class Mesmerize {
                 this.obj1,
                 {
                     duration: random(1, 10),
-                    lowerRight: this.obj2.lowerRight
+                    lowerRight: this.obj2.lowerRight,
                 },
                 '<'
             )
@@ -10467,7 +10480,7 @@ class Mesmerize {
                 {
                     duration: random(2, 20),
                     color: this.obj2.color,
-                    onUpdate: () => (ctx.strokeStyle = this.obj1.color)
+                    onUpdate: () => (ctx.strokeStyle = this.obj1.color),
                 },
                 '<'
             )
@@ -10476,7 +10489,7 @@ class Mesmerize {
                 {
                     duration: random(2, 20),
                     fill: this.obj2.fill,
-                    onUpdate: () => (ctx.fillStyle = this.obj1.fill)
+                    onUpdate: () => (ctx.fillStyle = this.obj1.fill),
                 },
                 '<'
             );
@@ -10538,7 +10551,7 @@ class GenesisTypewriter {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' }
+            defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' },
         });
         this.tl
             .to(
@@ -10547,7 +10560,7 @@ class GenesisTypewriter {
                     duration: random(12, 40),
                     size: this.font2.size,
                     onUpdate: () =>
-                        (ctx.font = `${this.font1.size}px bold serif`)
+                        (ctx.font = `${this.font1.size}px bold serif`),
                 },
                 '<'
             )
@@ -10555,7 +10568,7 @@ class GenesisTypewriter {
                 this.pos1,
                 {
                     duration: random(15, 50),
-                    x: this.pos2.x
+                    x: this.pos2.x,
                 },
                 '<'
             )
@@ -10563,7 +10576,7 @@ class GenesisTypewriter {
                 this.pos1,
                 {
                     duration: random(15, 50),
-                    y: this.pos2.y
+                    y: this.pos2.y,
                 },
                 '<'
             )
@@ -10572,7 +10585,7 @@ class GenesisTypewriter {
                 {
                     duration: random(6, 14),
                     width: this.line2.width,
-                    onUpdate: () => (ctx.lineWidth = this.line1.width)
+                    onUpdate: () => (ctx.lineWidth = this.line1.width),
                 },
                 '<'
             );
@@ -10584,7 +10597,7 @@ class Dye {
         this.tl = null;
         this.letters = [
             3405, 3423, 3424, 3437, 3442, 3443, 3444, 3458, 3459, 3461, 3465,
-            3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493
+            3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493,
         ];
         this.text = String.fromCharCode(
             this.letters[random(0, this.letters.length)]
@@ -10656,7 +10669,7 @@ class Dye {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'circ' }
+            defaults: { repeat: -1, yoyo: true, ease: 'circ' },
         });
         this.tl
             .to(
@@ -10665,7 +10678,7 @@ class Dye {
                     duration: random(4, 10),
                     size: this.font2.size,
                     onUpdate: () =>
-                        (ctx.font = `${this.font1.size}px bold serif`)
+                        (ctx.font = `${this.font1.size}px bold serif`),
                 },
                 '<'
             )
@@ -10674,7 +10687,7 @@ class Dye {
                 {
                     duration: random(3, 13),
                     color: this.color3.color,
-                    onUpdate: () => (ctx.strokeStyle = this.color1.color)
+                    onUpdate: () => (ctx.strokeStyle = this.color1.color),
                 },
                 '<'
             )
@@ -10683,7 +10696,7 @@ class Dye {
                 {
                     duration: random(3, 10),
                     color: this.color1.color,
-                    onUpdate: () => (ctx.fillStyle = this.color2.color)
+                    onUpdate: () => (ctx.fillStyle = this.color2.color),
                 },
                 '<'
             )
@@ -10692,7 +10705,7 @@ class Dye {
                 {
                     duration: random(2, 10),
                     width: this.line2.width,
-                    onUpdate: () => (ctx.lineWidth = this.line1.width)
+                    onUpdate: () => (ctx.lineWidth = this.line1.width),
                 },
                 '<'
             );
@@ -10718,7 +10731,7 @@ class Projecting {
             'color',
             'saturation',
             'soft-light',
-            'hard-light'
+            'hard-light',
         ];
         this.rot1 = { rot: random(1, 90) };
         this.rot2 = { rot: random(1, 90) };
@@ -10764,13 +10777,13 @@ class Projecting {
 
     getTweens() {
         this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true }
+            defaults: { repeat: -1, yoyo: true },
         });
         this.tl.to(
             this.rot1,
             {
                 duration: random(3, 8),
-                rot: this.rot2.rot
+                rot: this.rot2.rot,
             },
             '<'
         );
@@ -10779,7 +10792,7 @@ class Projecting {
             {
                 duration: random(3, 10),
                 color: this.color2.color,
-                onUpdate: () => (ctx.fillStyle = this.color1.color)
+                onUpdate: () => (ctx.fillStyle = this.color1.color),
             },
             '<'
         );
@@ -10788,7 +10801,7 @@ class Projecting {
             {
                 duration: random(3, 10),
                 color: this.color4.color,
-                onUpdate: () => (ctx.shadowColor = this.color3.color)
+                onUpdate: () => (ctx.shadowColor = this.color3.color),
             },
             '<'
         );
@@ -10822,12 +10835,24 @@ function init() {
     // LISTENERS
     //change canvas size on window resize
     window.addEventListener('resize', () => {
-        w = canvas.width = canvas2.width = window.innerWidth;
-        h = canvas.height = canvas2.height = window.innerHeight;
+        const scale = 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * scale;
+        canvas.height = rect.height * scale;
+        w = canvas.width;
+        h = canvas.height;
+        ctx.scale(scale, scale);
+        canvas2.width = rect.width * scale;
+        canvas2.height = rect.height * scale;
+        ctx2.scale(scale, scale);
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
+        canvas2.style.width = rect.width + 'px';
+        canvas2.style.height = rect.height + 'px';
         canvas.click();
     });
     // keystroke listeners
-    window.addEventListener('keyup', e => {
+    window.addEventListener('keyup', (e) => {
         // spacebar listener creates new spiral
         if (e.keyCode === 32) {
             canvas.click();
