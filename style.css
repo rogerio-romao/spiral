@@ -20,11 +20,6 @@ canvas {
     cursor: pointer;
 }
 
-#canvas2 {
-    pointer-events: none;
-    display: none;
-}
-
 /* HUD */
 #hud {
     background: transparent;
