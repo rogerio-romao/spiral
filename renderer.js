@@ -339,9 +339,7 @@ const utils = {
 
 // DOM References
 const canvas = document.querySelector('#canvas');
-const canvas2 = document.getElementById('canvas2');
 const ctx = canvas.getContext('2d');
-const ctx2 = canvas2.getContext('2d');
 const hud = document.querySelector('#hud');
 const msg = document.querySelector('#msg');
 const algosDisplay = document.querySelector('#algos');
@@ -349,8 +347,8 @@ const help = document.querySelector('#help');
 
 // VARIABLES
 // canvas to window size
-let w = (canvas.width = canvas2.width = window.innerWidth);
-let h = (canvas.height = canvas2.height = window.innerHeight);
+let w = (canvas.width = window.innerWidth);
+let h = (canvas.height = window.innerHeight);
 
 // scale for retina
 // const scale = window.devicePixelRatio;
@@ -358,13 +356,8 @@ let h = (canvas.height = canvas2.height = window.innerHeight);
 // canvas.width = rect.width * scale;
 // canvas.height = rect.height * scale;
 // ctx.scale(scale, scale);
-// canvas2.width = rect.width * scale;
-// canvas2.height = rect.height * scale;
-// ctx2.scale(scale, scale);
 // canvas.style.width = rect.width + 'px';
 // canvas.style.height = rect.height + 'px';
-// canvas2.style.width = rect.width + 'px';
-// canvas2.style.height = rect.height + 'px';
 
 // time-frame
 let t = 0;
@@ -10000,26 +9993,21 @@ class Pulsar {
         this.pulse1 = random(50, 300);
         this.pulse2 = random(30, 200);
 
-        ctx.lineWidth = ctx2.lineWidth = 5;
+        ctx.lineWidth = 5;
         ctx.strokeStyle = ctx.shadowColor = randomColor();
-        ctx2.strokeStyle = ctx2.shadowColor = randomColor();
-        ctx.shadowBlur = ctx2.shadowBlur = 2;
+        ctx.shadowBlur = 2;
 
         this.draw = () => {
             if (t % speed === 0) {
                 ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                ctx2.clearRect(-w, -h, 3 * w, 3 * h);
                 for (let i = 0; i < 20; i++) {
                     this.drawBezier(ctx, i * 15);
-                    this.drawBezier(ctx2, i * -15);
+                    this.drawBezier(ctx, i * -15);
                 }
             }
             ctx.translate(w / 2, h / 2);
             ctx.rotate((this.rot1 * Math.PI) / 180);
             ctx.translate(-w / 2, -h / 2);
-            ctx2.translate(w / 2, h / 2);
-            ctx2.rotate((this.rot2 * Math.PI) / 180);
-            ctx2.translate(-w / 2, -h / 2);
             t++;
             if (t % (speed * 160) === 0) {
                 this.cp1x = random(0, w);
@@ -10033,7 +10021,6 @@ class Pulsar {
                 this.pulse1 = random(50, 300);
                 this.pulse2 = random(30, 200);
                 ctx.strokeStyle = ctx.shadowColor = randomColor();
-                ctx2.strokeStyle = ctx2.shadowColor = randomColor();
             }
             interval = requestAnimationFrame(this.draw);
         };
@@ -10096,29 +10083,19 @@ class Shards {
         ];
 
         ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        ctx2.strokeStyle = randomColor();
         ctx.globalCompositeOperation = this.modes[random(0, this.modes.length)];
-        ctx2.globalCompositeOperation =
-            this.modes[random(0, this.modes.length)];
-        ctx2.globalAlpha = 0.7;
 
         this.draw = () => {
             if (t % speed === 0) {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.01)';
-                ctx2.fillStyle = 'rgba(0, 0, 0, 0.01)';
                 ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                ctx2.fillRect(-w, -h, 3 * w, 3 * h);
                 ctx.fillStyle = this.color1;
-                this.drawTriangle(ctx);
-                ctx2.fillStyle = this.color2;
-                this.drawTriangle(ctx2);
+                this.drawTriangle();
             }
+
             ctx.translate(w / 2, h / 2);
             ctx.rotate(this.rot1);
             ctx.translate(-w / 2, -h / 2);
-            ctx2.translate(w / 2, h / 2);
-            ctx2.rotate(this.rot2);
-            ctx2.translate(-w / 2, -h / 2);
             t++;
             if (t % (speed * 150) === 0) {
                 this.c1x1 = random(0, w);
@@ -10135,33 +10112,24 @@ class Shards {
                 this.color2 = randomColor();
                 ctx.globalCompositeOperation =
                     this.modes[random(0, this.modes.length)];
-                ctx2.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
 
                 ctx.strokeStyle = randomColor(0, 255, 1, 1);
-                ctx2.strokeStyle = randomColor();
             }
             interval = requestAnimationFrame(this.draw);
         };
     }
-    drawTriangle(context) {
-        context.beginPath();
-        context.moveTo(w / 2 + Math.sin(t) * 100, h / 2 + Math.cos(t) * 100);
-        context === ctx && context.lineTo(this.c1x1, this.c1y1);
-        context === ctx2 && context.lineTo(this.c2x1, this.c2y1);
-        context === ctx && context.lineTo(this.c1x2, this.c1y2);
-        context === ctx2 && context.lineTo(this.c2x2, this.c2y2);
-        context.lineTo(
-            w / 2 +
-                Math.sin(t) *
-                    (context === ctx ? this.deviation1 : this.deviation2),
-            h / 2 +
-                Math.cos(t) *
-                    (context === ctx ? this.deviation1 : this.deviation2)
+    drawTriangle() {
+        ctx.beginPath();
+        ctx.moveTo(w / 2 + Math.sin(t) * 100, h / 2 + Math.cos(t) * 100);
+        ctx.lineTo(this.c1x1, this.c1y1);
+        ctx.lineTo(this.c1x2, this.c1y2);
+        ctx.lineTo(
+            w / 2 + Math.sin(t) * this.deviation1,
+            h / 2 + Math.cos(t) * this.deviation1
         );
-        context.stroke();
-        context.fill();
-        context.closePath();
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
     }
 }
 
@@ -10824,10 +10792,8 @@ function init() {
     // set the basic canvas settings
     ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
     ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
-    ctx2.clearRect(-w, -h, 3 * w, 3 * h);
     canvas.style.background = 'transparent';
     ctx.imageSmoothingQuality = 'high';
-    ctx2.imageSmoothingQuality = 'high';
     ctx.lineWidth = 1;
     ctx.shadowBlur = 0;
     ctx.save();
@@ -10842,13 +10808,8 @@ function init() {
         w = canvas.width;
         h = canvas.height;
         ctx.scale(scale, scale);
-        canvas2.width = rect.width * scale;
-        canvas2.height = rect.height * scale;
-        ctx2.scale(scale, scale);
         canvas.style.width = rect.width + 'px';
         canvas.style.height = rect.height + 'px';
-        canvas2.style.width = rect.width + 'px';
-        canvas2.style.height = rect.height + 'px';
         canvas.click();
     });
     // keystroke listeners
@@ -10925,7 +10886,6 @@ canvas.addEventListener('click', () => {
     speed = random(2, 6);
     // canvas resets
     ctx.restore();
-    ctx2.clearRect(-w, -h, 3 * w, 3 * h);
     // picks a transition mode
     canvas.style.background = 'transparent';
     clearMethod();
@@ -10962,20 +10922,16 @@ function clearMethod() {
     // clears to black a portion of the screen based on the canvas size and its rotation at the moment
     if (pick < 0.25) {
         ctx.clearRect(0, 0, w, h);
-        ctx2.clearRect(0, 0, w, h);
         // makes semi-transparent a portion of the screen based on the canvas size and its rotation at the moment
     } else if (pick < 0.5) {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         ctx.fillRect(0, 0, w, h);
-        ctx2.clearRect(0, 0, w, h);
     } else if (pick < 0.75) {
         // colors a portion of the screen based on the canvas size and its rotation at the moment, with random transparency
         ctx.fillStyle = randomColor(5, 255, 0.15, 0.9);
         ctx.fillRect(0, 0, w, h);
-        ctx2.clearRect(0, 0, w, h);
         // completely fills the screen with black
     } else {
-        ctx2.clearRect(0, 0, w, h);
         canvas.width = canvas.height = 0;
         canvas.width = w;
         canvas.height = h;
