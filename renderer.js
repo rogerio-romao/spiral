@@ -10815,39 +10815,39 @@ function init() {
     // keystroke listeners
     window.addEventListener('keyup', (e) => {
         // spacebar listener creates new spiral
-        if (e.keyCode === 32) {
+        if (e.code === 'Space') {
             canvas.click();
         }
         // f key for fullscreen
-        if (e.keyCode === 70) {
+        if (e.code === 'KeyF') {
             document.body.requestFullscreen();
         }
         // i key increases auto-change time
-        if (e.keyCode === 73) {
+        if (e.code === 'KeyI') {
             autoChange += 10;
             if (autoChange > 300) autoChange = 300;
             displayMsg(`Auto-change: ${autoChange}secs`);
         }
         // d key decreases auto-change time
-        if (e.keyCode === 68) {
+        if (e.code === 'KeyD') {
             autoChange -= 10;
             if (autoChange < 10) autoChange = 10;
             displayMsg(`Auto-change: ${autoChange}secs`);
         }
         // m key toggles manual mode
-        if (e.keyCode === 77) {
+        if (e.code === 'KeyM') {
             manual = !manual;
             displayMsg(manual ? 'Manual mode' : 'Auto mode');
         }
         // s key silences algorithm change messages
-        if (e.keyCode === 83) {
+        if (e.code === 'KeyS') {
             silent = !silent;
             displayMsg(silent ? 'Silent mode' : 'Display mode');
             algosDisplay.textContent = '';
             algosDisplay.style.display = 'none';
         }
         // h key toggles help screen view
-        if (e.keyCode === 72) {
+        if (e.code === 'KeyH') {
             helpView = !helpView;
             if (helpView) {
                 help.style.display = 'block';
@@ -11058,7 +11058,7 @@ function stopPlayback() {
         audio.currentTime = 0;
         isPlaying = false;
         playIcon.name = 'play-outline';
-        [...playlistEls].forEach(el => (el.style.color = '#555'));
+        [...playlistEls].forEach((el) => (el.style.color = '#555'));
         playlistEls[currentSong].style.color = 'rgba(255, 165, 0, 0.5)';
     } else {
         if (playlistEls) {
@@ -11125,7 +11125,7 @@ function scrub(e) {
 
 // helper function for styling the playlist after changes
 function updatePlaylistStyle() {
-    [...playlistEls].forEach(el => (el.style.color = '#555'));
+    [...playlistEls].forEach((el) => (el.style.color = '#555'));
     playlistEls[currentSong].style.color = 'orange';
     playlistEls[currentSong].scrollIntoView();
 }
@@ -11143,7 +11143,7 @@ window.addEventListener('keyup', hidePlayer);
 
 // hide/show the player with the p key
 function hidePlayer(e) {
-    if (e.keyCode === 80) {
+    if (e.code === 'KeyP') {
         if (playerShow) {
             playerShow = !playerShow;
             player.style.display = 'none';
