@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       electron:
-        specifier: ^33.2.1
-        version: 33.2.1
+        specifier: ^35.1.0
+        version: 35.1.0
       gsap:
         specifier: ^3.10.3
         version: 3.12.5
@@ -72,11 +72,8 @@ packages:
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
 
-  '@types/node@20.17.10':
-    resolution: {integrity: sha512-/jrvh5h6NXhEauFFexRin69nA0uHJ5gwk4iDivp/DeoEua3uwCUto6PC86IpRITBOs4+6i2I56K5x5b6WYGXHA==}
-
-  '@types/node@22.10.2':
-    resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
+  '@types/node@22.13.13':
+    resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
 
   '@types/responselike@1.0.3':
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
@@ -194,8 +191,8 @@ packages:
     deprecated: Please use @electron/packager moving forward. There is no API change, just a package name change
     hasBin: true
 
-  electron@33.2.1:
-    resolution: {integrity: sha512-SG/nmSsK9Qg1p6wAW+ZfqU+AV8cmXMTIklUL18NnOKfZLlum4ZsDoVdmmmlL39ZmeCaq27dr7CgslRPahfoVJg==}
+  electron@35.1.0:
+    resolution: {integrity: sha512-yHaKPlsgDgjkwsiXgJG5DAmr9BgD4wSxtDGL6aBmUaN7QTs6qppNgtGkjHsS/pXJb4ZZBIH4IpPAx9d59Epbeg==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -391,6 +388,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lowercase-keys@2.0.0:
     resolution: {integrity: sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==}
@@ -592,9 +590,6 @@ packages:
     resolution: {integrity: sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==}
     engines: {node: '>=10'}
 
-  undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
-
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
@@ -696,30 +691,26 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 22.10.2
+      '@types/node': 22.13.13
       '@types/responselike': 1.0.3
 
   '@types/http-cache-semantics@4.0.4': {}
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.13.13
 
-  '@types/node@20.17.10':
-    dependencies:
-      undici-types: 6.19.8
-
-  '@types/node@22.10.2':
+  '@types/node@22.13.13':
     dependencies:
       undici-types: 6.20.0
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.13.13
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.13.13
     optional: true
 
   '@xmldom/xmldom@0.8.10': {}
@@ -840,10 +831,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@33.2.1:
+  electron@35.1.0:
     dependencies:
       '@electron/get': 2.0.3
-      '@types/node': 20.17.10
+      '@types/node': 22.13.13
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -1263,8 +1254,6 @@ snapshots:
 
   type-fest@0.13.1:
     optional: true
-
-  undici-types@6.19.8: {}
 
   undici-types@6.20.0: {}
 
