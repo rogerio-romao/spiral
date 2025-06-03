@@ -1,6 +1,10 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
-const path = require('path')
+import { app, BrowserWindow } from 'electron';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory name equivalent to __dirname in CommonJS
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function createWindow() {
   // Create the browser window.
