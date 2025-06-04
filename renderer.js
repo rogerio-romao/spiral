@@ -1,4 +1,5 @@
 import BeziersStraight from './src/algos/BeziersStraight.js';
+import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
@@ -10,6 +11,7 @@ import Rims from './src/algos/Rims.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SquareNebulas from './src/algos/SquareNebulas.js';
 import Starbursts from './src/algos/Starbursts.js';
+import TheBadge from './src/algos/TheBadge.js';
 
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
@@ -542,7 +544,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'camouflage-postits';
+    let choose = 'beziers-straight';
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -623,13 +625,13 @@ function chooseAlgos() {
         case 'the-badge':
             displayAlgos('THE BADGE');
             ctx.save();
-            runningAlgo = new TheBadge();
+            runningAlgo = new TheBadge(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'black-white':
             displayAlgos('BLACK & WHITE');
             ctx.save();
-            runningAlgo = new BlacknWhite();
+            runningAlgo = new BlacknWhite(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'stained-glass':
@@ -1404,120 +1406,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class TheBadge {
-    constructor() {
-        this.length = random(50, Math.min(w, h) / 1.5);
-        this.rot1 = (random(0, 360) * Math.PI) / 180;
-        this.randCol = random(0, 255);
-        ctx.fillStyle = `rgb(${this.randCol + random(-28, 28)},${
-            this.randCol + random(-28, 28)
-        },${this.randCol + random(-28, 28)})`;
-        this.modes = [
-            'difference',
-            'soft-light',
-            'color',
-            'lighten',
-            'darken',
-            'overlay',
-            'source-atop',
-        ];
-
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 3;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillRect(
-                    w / 2 - this.length * 1.5,
-                    h / 2 - this.length * 1.5,
-                    3 * this.length,
-                    3 * this.length
-                );
-                ctx.strokeRect(
-                    w / 2 - this.length * 1.5,
-                    h / 2 - this.length * 1.5,
-                    3 * this.length,
-                    3 * this.length
-                );
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot1);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 25) === 0) {
-                this.length = random(5, Math.min(w, h) / 3);
-                this.randCol = random(0, 255);
-
-                ctx.fillStyle = `rgb(${this.randCol + random(-28, 28)},${
-                    this.randCol + random(-28, 28)
-                },${this.randCol + random(-28, 28)})`;
-            }
-            if (t % (speed * 50) === 0) {
-                this.rot1 = (random(0, 360) * Math.PI) / 180;
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length - 1)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class BlacknWhite {
-    constructor() {
-        this.length = random(50, Math.min(w, h) / 1.5);
-        this.height = this.length / random(1, 5);
-        this.modes = ['source-over', 'difference', 'destination-out'];
-
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 4;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.strokeRect(
-                        w / 2 - this.length / 2,
-                        h / 2 - this.height / 2,
-                        this.length,
-                        this.height
-                    );
-                    //
-                    this.length = random(20, Math.max(w, h));
-                    this.height = this.length / random(1, 5);
-                }
-                if (stagger === 1) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate((random(-180, 180) * Math.PI) / 180);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                if (stagger === 2) {
-                    ctx.arcTo(this.height, this.length, 0, h / 2, w / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 3) {
-                    ctx.arcTo(
-                        w / 2,
-                        h / 2,
-                        random(1, 10),
-                        this.height,
-                        this.length
-                    );
-                    ctx.stroke();
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 100) === 0) {
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class StainedGlass {
     constructor() {
         this.length = w / 6;
