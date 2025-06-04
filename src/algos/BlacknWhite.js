@@ -64,12 +64,12 @@ export default class BlacknWhite extends BaseAlgorithm {
                 this.stagger++;
             }
 
-            this.t++;
-
             if (this.t % (this.speed * 100) === 0) {
                 this.ctx.globalCompositeOperation =
-                    this.modes[this.random(0, this.modes.length)];
+                this.modes[this.random(0, this.modes.length)];
             }
+
+            this.t++;
 
             requestAnimationFrame(this.draw);
         };

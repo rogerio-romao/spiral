@@ -73,8 +73,6 @@ export default class BeziersStraight extends BaseAlgorithm {
             this.stagger++;
         }
 
-        this.t++;
-
         if (this.t % (this.speed * 280) === 0) {
             this.ctx.closePath();
             this.ctx.beginPath();
@@ -84,6 +82,8 @@ export default class BeziersStraight extends BaseAlgorithm {
             this.ctx.translate(-this.w / 2, -this.h / 2);
             this.cp2Y = this.random(0, this.h);
         }
+
+        this.t++;
 
         requestAnimationFrame(this.draw);
     };
