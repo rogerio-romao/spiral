@@ -8,6 +8,7 @@ import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
+import HyperTunnel from './src/algos/HyperTunnel.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
@@ -552,7 +553,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'alien-flowers'; // for testing purposes
+    let choose = 'hyper-tunnel'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -693,7 +694,7 @@ function chooseAlgos() {
         case 'hyper-tunnel':
             displayAlgos('HYPER TUNNEL');
             ctx.save();
-            runningAlgo = new HyperTunnel();
+            runningAlgo = new HyperTunnel(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'chalk-galaxy':
@@ -1414,59 +1415,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class HyperTunnel {
-    constructor() {
-        this.side = random(25, Math.min(w, h));
-        this.rotate = random(95, 175);
-        ctx.strokeStyle = randomColor(5, 255, 0.25, 0.25);
-
-        if (this.side > Math.min(w, h) / 2) {
-            ctx.fillStyle = randomColor(5, 255, 0.02, 0.02);
-        } else {
-            ctx.fillStyle = randomColor(5, 255, 0.2, 0.2);
-        }
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.moveTo(w / 2, h / 2);
-                ctx.lineTo(w / 2 - this.side / 2, h / 2 - this.side / 2);
-                ctx.stroke();
-                ctx.moveTo(w / 2, h / 2);
-                ctx.lineTo(w / 2 + this.side / 2, h / 2 - this.side / 2);
-                ctx.stroke();
-                ctx.lineTo(w / 2 - this.side / 2, h / 2 - this.side / 2);
-                ctx.stroke();
-                ctx.fill();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rotate * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * (360 / this.rotate)) === 0) {
-                this.side = random(25, Math.min(w, h));
-                ctx.strokeStyle = randomColor(5, 255, 0.25, 0.25);
-                if (this.side > Math.min(w, h) / 2) {
-                    ctx.fillStyle = randomColor(5, 255, 0.02, 0.02);
-                } else {
-                    ctx.fillStyle = randomColor(5, 255, 0.2, 0.2);
-                }
-            }
-            if (t % (speed * 75) === 0) {
-                this.rotate = random(95, 175);
-                this.side = random(25, Math.max(w, h));
-                ctx.strokeStyle = randomColor(5, 255, 0.25, 0.25);
-                if (this.side > Math.min(w, h) / 2) {
-                    ctx.fillStyle = randomColor(5, 255, 0.02, 0.02);
-                } else {
-                    ctx.fillStyle = randomColor(5, 255, 0.1, 0.1);
-                }
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class ChalkGalaxy {
     constructor() {
         this.letters = [
