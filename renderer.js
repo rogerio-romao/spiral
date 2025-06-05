@@ -17,6 +17,7 @@ import Patterns from './src/algos/Patterns.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Rims from './src/algos/Rims.js';
+import RotationPatterns from './src/algos/RotationPatterns.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
 import SquareNebulas from './src/algos/SquareNebulas.js';
@@ -555,7 +556,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'patterns'; // for testing purposes
+    let choose = 'rotation-patterns'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -714,7 +715,7 @@ function chooseAlgos() {
         case 'rotation-patterns':
             displayAlgos('ROTATION PATTERNS');
             ctx.save();
-            runningAlgo = new RotationPatterns();
+            runningAlgo = new RotationPatterns(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'microscope':
@@ -1417,53 +1418,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class RotationPatterns {
-    constructor() {
-        this.radiusX = random(10, 250);
-        this.radiusY = random(10, 250);
-        this.rows = Math.ceil(h / this.radiusY) + 5;
-        this.cols = Math.ceil(w / this.radiusX) + 5;
-        this.rotate = (random(1, 50) * Math.PI) / 180;
-
-        ctx.globalAlpha = 0.33;
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        ctx.fillStyle = randomColor(0, 255, 0.1, 0.5);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.strokeRect(
-                            this.radiusX * j,
-                            this.radiusY * i,
-                            this.radiusX,
-                            this.radiusY
-                        );
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 15) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 0.1, 0.5);
-            }
-            if (t % (speed * 45) === 0) {
-                this.radiusX = random(10, 250);
-                this.radiusY = random(10, 250);
-                this.rows = Math.ceil(h / this.radiusY) + 5;
-                this.cols = Math.ceil(w / this.radiusX) + 5;
-            }
-            if (t % (speed * 90) === 0) {
-                ctx.lineWidth = random(2, 9);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Microscope {
     constructor() {
         this.radiusX = random(35, 415);
