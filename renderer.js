@@ -1,3 +1,4 @@
+import AccelerationMandala from './src/algos/AccelerationMandala.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
@@ -8,6 +9,7 @@ import DysonSpheres from './src/algos/DysonSpheres.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
+import Punctuation from './src/algos/Punctuation.js';
 import Rims from './src/algos/Rims.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
@@ -547,7 +549,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'alphabet-soup'; // for testing purposes
+    let choose = 'evolving-mandala'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -658,19 +660,19 @@ function chooseAlgos() {
         case 'punctuation':
             displayAlgos('PUNCTUATION');
             ctx.save();
-            runningAlgo = new Punctuation();
+            runningAlgo = new Punctuation(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'acceleration-mandala':
             displayAlgos('ACCELERATION MANDALA');
             ctx.save();
-            runningAlgo = new AccelerationMandala();
+            runningAlgo = new AccelerationMandala(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'evolving-mandala':
             displayAlgos('EVOLVING MANDALA');
             ctx.save();
-            runningAlgo = new EvolvingMandala();
+            runningAlgo = new EvolvingMandala(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'quadrants':
@@ -1409,175 +1411,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Punctuation {
-    constructor() {
-        this.rot1 = (random(-359, -1) * Math.PI) / 180;
-        this.fontChange = random(35, 250);
-        this.letters = [
-            '|',
-            '(',
-            ')',
-            '-',
-            '_',
-            '{',
-            '}',
-            '[',
-            ']',
-            '\\',
-            ':',
-            '/',
-            '<>',
-            '~',
-            '`',
-            '.',
-        ];
-        this.letter = this.letters[random(0, this.letters.length)];
-
-        ctx.fillStyle = randomColor(0, 255, 0.66, 0.66);
-        ctx.font = `${random(15, 120)}px sans-serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot1);
-                    ctx.translate(-w / 2, -h / 2);
-                    ctx.fillText(this.letter, w / 2, h / 2);
-                }
-                if (stagger === 1) {
-                    ctx.fillText(`  ${this.letter}`, w / 2, h / 2);
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot1);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                if (stagger === 2) {
-                    ctx.fillText(`    ${this.letter}`, w / 2, h / 2);
-                }
-                if (stagger === 3) {
-                    ctx.fillText(`      ${this.letter}`, w / 2, h / 2);
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 100) === 0) {
-                this.rot1 = (random(-35, -10) * Math.PI) / 180;
-                this.fontChange = random(35, 250);
-                ctx.font = `${this.fontChange}px sans-serif`;
-            }
-            if (t % (speed * 200) === 0) {
-                ctx.fillStyle = randomColor(0, 255, 0.66, 0.66);
-            }
-            if (t % (speed * 400) === 0) {
-                this.letter = this.letters[random(0, this.letters.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class AccelerationMandala {
-    constructor() {
-        this.letters = [
-            1002, 1006, 1031, 1033, 1039, 1046, 1054, 1064, 1078, 1092, 1912,
-            1916, 1920, 1921, 1935, 1944, 1959, 1963, 1964, 1968, 1988, 1991,
-            1993, 1997, 12398,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.rot = 1;
-
-        ctx.strokeStyle = randomColor(12, 255, 0.33, 0.33);
-        ctx.font = `bold ${random(125, 550)}px sans-serif`;
-        ctx.textAlign = 'center';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, w / 2, h / 2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(((this.rot + 1) * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 45) === 0) {
-                this.rot++;
-            }
-            if (t % (speed * 90) === 0) {
-                ctx.strokeStyle = randomColor(12, 255, 0.33, 0.33);
-            }
-            if (t % (speed * 135) === 0) {
-                ctx.font = `bold ${random(125, 550)}px sans-serif`;
-            }
-            if (t % (speed * 360) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class EvolvingMandala {
-    constructor() {
-        this.letters = [
-            1101, 1102, 1103, 1104, 1107, 1111, 1114, 1115, 1116, 1118, 1120,
-            1121, 1123, 1126, 1127, 1130, 1133, 1135, 1136, 1137, 1139, 1140,
-            1141, 1144, 1146, 1148, 1152, 1154, 1155, 1156, 1160, 1161, 1168,
-            1169, 1174, 1176, 1180, 1185, 1187, 1188, 1194, 1197, 1198, 1199,
-            1200, 1202, 1204, 1205, 1208, 1209, 1210, 1216, 1218, 1219, 1229,
-            1231, 1233, 1234, 1237, 1238, 1240, 1242, 1244, 1246, 1249, 1251,
-            1254, 1255, 1261, 1262, 1265, 1266, 1267, 1269, 1270, 1271, 1273,
-            1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.rot = random(4, 356);
-
-        speed *= 2;
-        ctx.strokeStyle = randomColor(20, 255, 0.85, 0.85);
-        ctx.font = `bold ${random(70, 260)}px sans-serif`;
-        ctx.textAlign = 'center';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(
-                    this.letter + ' ' + this.letter + '  ' + this.letter,
-                    w / 2,
-                    h / 2
-                );
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rot * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 45) === 0) {
-                let pick = Math.random();
-                if (pick < 0.075) {
-                    ctx.strokeStyle = 'black';
-                } else if (pick < 0.15) {
-                    ctx.strokeStyle = 'white';
-                } else {
-                    ctx.strokeStyle = randomColor(20, 255, 0.85, 0.85);
-                }
-                this.rot += 2;
-            }
-            if (t % (speed * 90) === 0) {
-                ctx.font = `bold ${random(70, 260)}px sans-serif`;
-            }
-            if (t % (speed * 360) === 0) {
-                this.rot = random(4, 356);
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Quadrants {
     constructor() {
         this.radius = random(5, 250);
