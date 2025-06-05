@@ -9,6 +9,7 @@ import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
 import Rims from './src/algos/Rims.js';
 import SpiralLines from './src/algos/SpiralLines.js';
+import SpiralText from './src/algos/SpiralText.js';
 import SquareNebulas from './src/algos/SquareNebulas.js';
 import StainedGlass from './src/algos/StainedGlass.js';
 import Starbursts from './src/algos/Starbursts.js';
@@ -545,7 +546,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'stained-glass'; // for testing purposes
+    let choose = 'spiral-text'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -644,7 +645,7 @@ function chooseAlgos() {
         case 'spiral-text':
             displayAlgos('SPIRAL TEXT');
             ctx.save();
-            runningAlgo = new SpiralText();
+            runningAlgo = new SpiralText(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'alphabet-soup':
@@ -1407,56 +1408,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class SpiralText {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, w);
-        this.rot1 = (random(1, 20) * Math.PI) / 180;
-        this.picker = random(0, 11);
-
-        ctx.globalCompositeOperation = 'color';
-        ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        ctx.textAlign = 'center';
-        ctx.font = `bold ${random(10, 400)}px sans-serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText('SPIRAL', this.x, this.y);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rot1);
-                ctx.translate(-w / 2, -h / 2);
-                this.x = random(0, w);
-            }
-            t++;
-            if (t % (speed * 90) === 0) {
-                this.y = random(0, h);
-                this.picker = random(0, 11);
-                if (this.picker === 0) {
-                    ctx.strokeStyle = 'white';
-                } else if (this.picker === 1) {
-                    ctx.strokeStyle = 'black';
-                } else if (this.picker === 2 || this.picker === 3) {
-                    ctx.globalCompositeOperation = 'color-dodge';
-                } else if (this.picker === 4 || this.picker === 5) {
-                    ctx.globalCompositeOperation = 'source-over';
-                } else if (this.picker === 6) {
-                    ctx.globalCompositeOperation = 'darken';
-                } else if (this.picker === 7) {
-                    ctx.globalCompositeOperation = 'color-burn';
-                } else {
-                    ctx.globalCompositeOperation = 'color';
-                }
-                ctx.strokeStyle = randomColor(0, 255, 1, 1);
-                ctx.font = `bold ${random(10, 400)}px sans-serif`;
-            }
-            if (t % (speed * 180) === 0) {
-                this.rot1 = (random(1, 30) * Math.PI) / 180;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class AlphabetSoup {
     constructor() {
         this.rot1 = (random(8, 35) * Math.PI) / 180;
