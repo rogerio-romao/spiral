@@ -62,6 +62,6 @@ export default class SpiralText extends BA {
 
             this.t++;
 
-            this.interval = requestAnimationFrame(this.draw);
+            requestAnimationFrame(this.draw);
     }
 }
