@@ -1,4 +1,5 @@
 import AccelerationMandala from './src/algos/AccelerationMandala.js';
+import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
@@ -6,10 +7,12 @@ import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
+import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
 import Punctuation from './src/algos/Punctuation.js';
+import Quadrants from './src/algos/Quadrants.js';
 import Rims from './src/algos/Rims.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
@@ -549,7 +552,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'evolving-mandala'; // for testing purposes
+    let choose = 'alien-flowers'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -678,13 +681,13 @@ function chooseAlgos() {
         case 'quadrants':
             displayAlgos('QUADRANTS');
             ctx.save();
-            runningAlgo = new Quadrants();
+            runningAlgo = new Quadrants(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'alien-flowers':
             displayAlgos('ALIEN FLOWERS');
             ctx.save();
-            runningAlgo = new AlienFlowers();
+            runningAlgo = new AlienFlowers(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'hyper-tunnel':
@@ -1411,162 +1414,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Quadrants {
-    constructor() {
-        this.radius = random(5, 250);
-
-        ctx.strokeStyle = ctx.fillStyle = randomColor(0, 255, 0.3, 0.3);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 5;
-                if (stagger === 0) {
-                    ctx.arc(w / 4, h / 4, this.radius, 0, 360);
-                    ctx.stroke();
-                    ctx.beginPath();
-                }
-                if (stagger === 1) {
-                    ctx.arc(w * 0.75, h / 4, this.radius, 0, 360);
-                    ctx.stroke();
-                    ctx.beginPath();
-                }
-                if (stagger === 2) {
-                    ctx.arc(w / 4, h * 0.75, this.radius, 0, 360);
-                    ctx.stroke();
-                    ctx.beginPath();
-                }
-                if (stagger === 3) {
-                    ctx.arc(w * 0.75, h * 0.75, this.radius, 0, 360);
-                    ctx.stroke();
-                    ctx.beginPath();
-                }
-                if (stagger === 4) {
-                    ctx.arc(w / 2, h / 2, this.radius, 0, 360);
-                    ctx.stroke();
-                    ctx.beginPath();
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 15) === 0) {
-                this.radius = random(10, 350);
-            }
-            if (t % (speed * 45) === 0) {
-                ctx.strokeStyle = ctx.fillStyle = randomColor(0, 255, 0.3, 0.3);
-            }
-            if (t % (speed * 225) === 0) {
-                ctx.lineWidth = random(1, 40);
-                ctx.strokeStyle = ctx.fillStyle = 'black';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class AlienFlowers {
-    constructor() {
-        this.modes = [
-            'hard-light',
-            'color-dodge',
-            'multiply',
-            'overlay',
-            'color-burn',
-        ];
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor(5, 255, 0.1, 0.1);
-        ctx.shadowOffsetX = ctx.shadowOffsetY = ctx.lineWidth = random(3, 36);
-        ctx.lineJoin = 'bevel';
-        ctx.setLineDash([random(1, 100), random(5, 200)]);
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.lineCap = 'round';
-        ctx.shadowBlur = 5;
-        ctx.beginPath();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.bezierCurveTo(
-                        random(0, w / 2),
-                        random(0, h / 2),
-                        random(0, w / 4),
-                        random(0, h / 4),
-                        0,
-                        0
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.bezierCurveTo(
-                        random(w / 2, w),
-                        random(0, h / 2),
-                        random(w * 0.75, w),
-                        random(0, h * 0.25),
-                        w,
-                        0
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.bezierCurveTo(
-                        random(w / 2, w),
-                        random(h / 2, h),
-                        random(w * 0.75, w),
-                        random(h * 0.75, h),
-                        w,
-                        h
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 3) {
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.bezierCurveTo(
-                        random(0, w / 2),
-                        random(h / 2, h),
-                        random(0, w * 0.25),
-                        random(h * 0.75, h),
-                        0,
-                        h
-                    );
-                    ctx.stroke();
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 16) === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((random(1, 359) * 180) / Math.PI);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            if (t % (speed * 32) === 0) {
-                ctx.beginPath();
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-            }
-            if (t % (speed * 64) === 0) {
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    5,
-                    255,
-                    0.1,
-                    0.1
-                );
-                ctx.shadowOffsetX =
-                    ctx.shadowOffsetY =
-                    ctx.lineWidth =
-                        random(3, 36);
-            }
-            if (t % (speed * 256) === 0) {
-                ctx.setLineDash([random(1, 100), random(5, 200)]);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class HyperTunnel {
     constructor() {
         this.side = random(25, Math.min(w, h));

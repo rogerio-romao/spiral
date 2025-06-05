@@ -1,5 +1,16 @@
-class EvolvingMandala {
-    constructor() {
+import BA from '../BaseAlgorithm.js';
+
+export default class EvolvingMandala extends BA {
+    constructor(ctx, w, h) {
+        super(ctx, w, h);
+
+        this.initializeProperties();
+        this.setupDrawingStyles();
+
+        this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeProperties() {
         this.letters = [
             1101, 1102, 1103, 1104, 1107, 1111, 1114, 1115, 1116, 1118, 1120,
             1121, 1123, 1126, 1127, 1130, 1133, 1135, 1136, 1137, 1139, 1140,
@@ -11,48 +22,58 @@ class EvolvingMandala {
             1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
         ];
         this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
+            this.letters[BA.random(0, this.letters.length)]
         );
-        this.rot = random(4, 356);
 
-        speed *= 2;
-        ctx.strokeStyle = randomColor(20, 255, 0.85, 0.85);
-        ctx.font = `bold ${random(70, 260)}px sans-serif`;
-        ctx.textAlign = 'center';
+        this.rot = BA.random(4, 356);
+        this.speed *= 2;
+    }
 
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(
-                    this.letter + ' ' + this.letter + '  ' + this.letter,
-                    w / 2,
-                    h / 2
-                );
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rot * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = BA.randomColor(20, 255, 0.85, 0.85);
+        this.ctx.font = `bold ${BA.random(70, 260)}px sans-serif`;
+        this.ctx.textAlign = 'center';
+    }
+
+    draw() {
+        if (this.t % this.speed === 0) {
+            this.ctx.strokeText(
+                this.letter + ' ' + this.letter + '  ' + this.letter,
+                this.w / 2,
+                this.h / 2
+            );
+
+            this.ctx.translate(this.w / 2, this.h / 2);
+            this.ctx.rotate((this.rot * Math.PI) / 180);
+            this.ctx.translate(-this.w / 2, -this.h / 2);
+        }
+
+        if (this.t % (this.speed * 45) === 0) {
+            const pick = Math.random();
+            if (pick < 0.075) {
+                this.ctx.strokeStyle = 'black';
+            } else if (pick < 0.15) {
+                this.ctx.strokeStyle = 'white';
+            } else {
+                this.ctx.strokeStyle = BA.randomColor(20, 255, 0.85, 0.85);
             }
-            t++;
-            if (t % (speed * 45) === 0) {
-                let pick = Math.random();
-                if (pick < 0.075) {
-                    ctx.strokeStyle = 'black';
-                } else if (pick < 0.15) {
-                    ctx.strokeStyle = 'white';
-                } else {
-                    ctx.strokeStyle = randomColor(20, 255, 0.85, 0.85);
-                }
-                this.rot += 2;
-            }
-            if (t % (speed * 90) === 0) {
-                ctx.font = `bold ${random(70, 260)}px sans-serif`;
-            }
-            if (t % (speed * 360) === 0) {
-                this.rot = random(4, 356);
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
+
+            this.rot += 2;
+        }
+
+        if (this.t % (this.speed * 90) === 0) {
+            this.ctx.font = `bold ${BA.random(70, 260)}px sans-serif`;
+        }
+
+        if (this.t % (this.speed * 360) === 0) {
+            this.rot = BA.random(4, 356);
+            this.letter = String.fromCharCode(
+                this.letters[BA.random(0, this.letters.length)]
+            );
+        }
+
+        this.t++;
+
+        requestAnimationFrame(this.draw);
     }
 }
