@@ -13,6 +13,7 @@ import HyperTunnel from './src/algos/HyperTunnel.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
+import Patterns from './src/algos/Patterns.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Rims from './src/algos/Rims.js';
@@ -554,7 +555,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'chalk-galaxy'; // for testing purposes
+    let choose = 'patterns'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -707,7 +708,7 @@ function chooseAlgos() {
         case 'patterns':
             displayAlgos('PATTERNS');
             ctx.save();
-            runningAlgo = new Patterns();
+            runningAlgo = new Patterns(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'rotation-patterns':
@@ -1416,53 +1417,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Patterns {
-    constructor() {
-        this.radius = random(10, 250);
-        this.rows = Math.ceil(h / 100) + 2;
-        this.cols = Math.ceil(w / 100) + 2;
-
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.globalAlpha = 0.1;
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 3;
-        ctx.fillStyle = randomColor(0, 255, 0.05, 0.6);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.beginPath();
-                        ctx.arc(
-                            100 * j - 50,
-                            100 * i - 50,
-                            this.radius,
-                            0,
-                            2 * Math.PI
-                        );
-                        ctx.stroke();
-                        ctx.fill();
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 40) === 0) {
-                this.radius = random(10, 250);
-                ctx.globalCompositeOperation = 'xor';
-                ctx.strokeStyle = 'black';
-                ctx.fillStyle = randomColor(0, 255, 0.05, 0.6);
-                ctx.beginPath();
-                ctx.arc(w / 2, h / 2, this.radius * 3, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-                ctx.globalCompositeOperation = 'overlay';
-                ctx.strokeStyle = 'white';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class RotationPatterns {
     constructor() {
         this.radiusX = random(10, 250);
