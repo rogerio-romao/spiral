@@ -10,6 +10,7 @@ import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
+import Microscope from './src/algos/Microscope.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
@@ -556,7 +557,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'rotation-patterns'; // for testing purposes
+    let choose = 'microscope'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -721,7 +722,7 @@ function chooseAlgos() {
         case 'microscope':
             displayAlgos('MICROSCOPE');
             ctx.save();
-            runningAlgo = new Microscope();
+            runningAlgo = new Microscope(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'spinner':
@@ -1418,75 +1419,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Microscope {
-    constructor() {
-        this.radiusX = random(35, 415);
-        this.radiusY = random(35, 415);
-        this.rows = Math.ceil(h / this.radiusY) + 5;
-        this.cols = Math.ceil(w / this.radiusX) + 5;
-        this.rotate = random(1, 20);
-        this.modes = [
-            'xor',
-            'difference',
-            'hard-light',
-            'color-burn',
-            'color-dodge',
-            'lighten',
-            'darken',
-            'overlay',
-            'source-atop',
-            'soft-light',
-            'source-over',
-            'luminosity',
-            'exclusion',
-        ];
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.5, 0.5);
-        ctx.shadowBlur = 6;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.globalCompositeOperation =
-                        this.modes[random(0, this.modes.length)];
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.beginPath();
-                        ctx.ellipse(
-                            this.radiusX * j,
-                            this.radiusY * i,
-                            this.radiusX,
-                            this.radiusY,
-                            0,
-                            2 * Math.PI,
-                            false
-                        );
-                        ctx.stroke();
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 50) === 0) {
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    0,
-                    255,
-                    0.5,
-                    0.5
-                );
-            }
-            if (t % (speed * 100) === 0) {
-                this.radiusX = random(35, 415);
-                this.radiusY = random(35, 415);
-                this.rows = Math.ceil(h / this.radiusY) + 5;
-                this.cols = Math.ceil(w / this.radiusX) + 5;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Spinner {
     constructor() {
         this.color1 = randomColor(0, 255, 1, 1);
