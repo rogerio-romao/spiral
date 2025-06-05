@@ -1,6 +1,6 @@
-import BaseAlgorithm from '../BaseAlgorithm.js';
+import BA from '../BaseAlgorithm.js';
 
-export default class BeziersStraight extends BaseAlgorithm {
+export default class BeziersStraight extends BA {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class BeziersStraight extends BaseAlgorithm {
     }
 
     initializeProperties() {
-        this.x = this.random(0, this.w);
-        this.y = this.random(0, this.h);
-        this.cp1X = this.random(0, this.w);
-        this.cp1Y = this.random(0, this.h);
-        this.cp2X = this.random(0, this.w);
-        this.cp2Y = this.random(0, this.h);
-        this.rot = this.random(1, 21);
+        this.x = BA.random(0, this.w);
+        this.y = BA.random(0, this.h);
+        this.cp1X = BA.random(0, this.w);
+        this.cp1Y = BA.random(0, this.h);
+        this.cp2X = BA.random(0, this.w);
+        this.cp2Y = BA.random(0, this.h);
+        this.rot = BA.random(1, 21);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.randomColor(5, 255, 0.2, 0.2);
+        this.ctx.strokeStyle = BA.randomColor(5, 255, 0.2, 0.2);
     }
 
     draw() {
@@ -76,11 +76,11 @@ export default class BeziersStraight extends BaseAlgorithm {
         if (this.t % (this.speed * 280) === 0) {
             this.ctx.closePath();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = this.randomColor(5, 255, 0.2, 0.2);
+            this.ctx.strokeStyle = BA.randomColor(5, 255, 0.2, 0.2);
             this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.random(0, 3) * Math.PI);
+            this.ctx.rotate(BA.random(0, 3) * Math.PI);
             this.ctx.translate(-this.w / 2, -this.h / 2);
-            this.cp2Y = this.random(0, this.h);
+            this.cp2Y = BA.random(0, this.h);
         }
 
         this.t++;

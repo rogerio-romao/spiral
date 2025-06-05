@@ -1,6 +1,6 @@
-import BaseAlgorithm from '../BaseAlgorithm.js';
+import BA from '../BaseAlgorithm.js';
 
-export default class DysonSpheres extends BaseAlgorithm {
+export default class DysonSpheres extends BA {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,16 +11,16 @@ export default class DysonSpheres extends BaseAlgorithm {
     }
 
     initializeProperties() {
-        this.length = this.random(60, Math.max(this.h / 2, this.h - 60));
-        this.height = this.random(20, this.h / 2 - 40);
-        this.rot1 = this.random(1, 6);
+        this.length = BA.random(60, Math.max(this.h / 2, this.h - 60));
+        this.height = BA.random(20, this.h / 2 - 40);
+        this.rot1 = BA.random(1, 6);
     }
 
     setupDrawingStyles() {
         this.ctx.shadowBlur = 11;
         this.ctx.shadowOffsetX = 1;
         this.ctx.shadowOffsetY = 1;
-        this.ctx.shadowColor = this.ctx.strokeStyle = this.randomColor(
+        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
             5,
             255,
             0.33,
@@ -58,7 +58,7 @@ export default class DysonSpheres extends BaseAlgorithm {
                 this.ctx.shadowColor = this.ctx.strokeStyle = 'white';
             } else {
                 this.ctx.shadowBlur = 11;
-                this.ctx.shadowColor = this.ctx.strokeStyle = this.randomColor(
+                this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
                     5,
                     255,
                     0.33,
@@ -66,11 +66,11 @@ export default class DysonSpheres extends BaseAlgorithm {
                 );
             }
 
-            this.length = this.random(60, Math.max(this.h / 2, this.h - 60));
-            this.height = this.random(20, this.h / 2 - 40);
+            this.length = BA.random(60, Math.max(this.h / 2, this.h - 60));
+            this.height = BA.random(20, this.h / 2 - 40);
         }
 
-        this.rot1 = this.random(0, 360);
+        this.rot1 = BA.random(0, 360);
 
         this.t++;
 

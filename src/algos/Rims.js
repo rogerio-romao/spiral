@@ -1,6 +1,6 @@
-import BaseAlgorithm from '../BaseAlgorithm.js';
+import BA from '../BaseAlgorithm.js';
 
-export default class Rims extends BaseAlgorithm {
+export default class Rims extends BA {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,16 +11,16 @@ export default class Rims extends BaseAlgorithm {
     }
 
     initializeProperties() {
-        this.radius = this.random(30, this.h);
-        this.radius2 = this.random(10, this.radius);
-        this.rot1 = this.random(1, 6);
-        this.startAngle = this.random(0, 100);
-        this.endAngle = this.random(101, 360);
-        this.gap = this.random(4, 100);
+        this.radius = BA.random(30, this.h);
+        this.radius2 = BA.random(10, this.radius);
+        this.rot1 = BA.random(1, 6);
+        this.startAngle = BA.random(0, 100);
+        this.endAngle = BA.random(101, 360);
+        this.gap = BA.random(4, 100);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = this.randomColor(5, 255, 0.01, 0.01);
+        this.ctx.fillStyle = BA.randomColor(5, 255, 0.01, 0.01);
         this.ctx.strokeStyle = ' black';
     }
 
@@ -74,13 +74,13 @@ export default class Rims extends BaseAlgorithm {
 
         if (this.t % (this.speed * 150) === 0) {
             this.ctx.beginPath();
-            this.ctx.fillStyle = this.randomColor(5, 255, 0.01, 0.01);
-            this.radius = this.random(10, this.w);
-            this.radius2 = this.random(10, this.h);
-            this.startAngle = this.random(0, 50);
-            this.endAngle = this.random(51, 360);
-            this.gap = this.random(2, this.w / 4);
-            this.speed = this.random(1, 10);
+            this.ctx.fillStyle = BA.randomColor(5, 255, 0.01, 0.01);
+            this.radius = BA.random(10, this.w);
+            this.radius2 = BA.random(10, this.h);
+            this.startAngle = BA.random(0, 50);
+            this.endAngle = BA.random(51, 360);
+            this.gap = BA.random(2, this.w / 4);
+            this.speed = BA.random(1, 10);
         }
 
         this.t++;

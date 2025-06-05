@@ -1,6 +1,6 @@
-import BaseAlgorithm from '../BaseAlgorithm.js';
+import BA from '../BaseAlgorithm.js';
 
-export default class BlacknWhite extends BaseAlgorithm {
+export default class BlacknWhite extends BA {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,8 +11,8 @@ export default class BlacknWhite extends BaseAlgorithm {
     }
 
     initializeProperties() {
-        this.length = this.random(50, Math.min(this.w, this.h) / 1.5);
-        this.height = this.length / this.random(1, 5);
+        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
+        this.height = this.length / BA.random(1, 5);
     }
 
     setupDrawingStyles() {
@@ -35,13 +35,13 @@ export default class BlacknWhite extends BaseAlgorithm {
                     this.height
                 );
 
-                this.length = this.random(20, Math.max(this.w, this.h));
-                this.height = this.length / this.random(1, 5);
+                this.length = BA.random(20, Math.max(this.w, this.h));
+                this.height = this.length / BA.random(1, 5);
             }
 
             if (this.stagger === 1) {
                 this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate((this.random(-180, 180) * Math.PI) / 180);
+                this.ctx.rotate((BA.random(-180, 180) * Math.PI) / 180);
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
 
@@ -54,7 +54,7 @@ export default class BlacknWhite extends BaseAlgorithm {
                 this.ctx.arcTo(
                     this.w / 2,
                     this.h / 2,
-                    this.random(1, 10),
+                    BA.random(1, 10),
                     this.height,
                     this.length
                 );
@@ -66,7 +66,7 @@ export default class BlacknWhite extends BaseAlgorithm {
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.globalCompositeOperation =
-            this.modes[this.random(0, this.modes.length)];
+            this.modes[BA.random(0, this.modes.length)];
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BaseAlgorithm from '../BaseAlgorithm.js';
+import BA from '../BaseAlgorithm.js';
 
-export default class NeonTartans extends BaseAlgorithm {
+export default class NeonTartans extends BA {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -10,11 +10,11 @@ export default class NeonTartans extends BaseAlgorithm {
     }
 
     initializeProperties() {
-        this.lineX = this.random(0, this.h);
-        this.lineY = this.random(0, this.w);
-        this.length = this.random(50, Math.min(this.w, this.h) / 1.5);
-        this.color1 = this.randomColor();
-        this.color2 = this.randomColor();
+        this.lineX = BA.random(0, this.h);
+        this.lineY = BA.random(0, this.w);
+        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
+        this.color1 = BA.randomColor();
+        this.color2 = BA.randomColor();
     }
 
     draw() {
@@ -62,16 +62,16 @@ export default class NeonTartans extends BaseAlgorithm {
             this.ctx.translate(this.w / 2, this.h / 2);
             this.ctx.rotate((30 * Math.PI) / 180);
             this.ctx.translate(-this.w / 2, -this.h / 2);
-            this.length = this.random(30, this.h / 2);
+            this.length = BA.random(30, this.h / 2);
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.color1 = this.randomColor(0, 255, 1, 1);
-            this.color2 = this.randomColor(0, 255, 1, 1);
+            this.color1 = BA.randomColor(0, 255, 1, 1);
+            this.color2 = BA.randomColor(0, 255, 1, 1);
         }
 
-        this.lineX = this.random(0, this.h);
-        this.lineY = this.random(0, this.w);
+        this.lineX = BA.random(0, this.h);
+        this.lineY = BA.random(0, this.w);
 
         this.t++;
 
