@@ -15,6 +15,12 @@ export default class BaseAlgorithm {
         this.interval = null; // To store requestAnimationFrame ID
         this.speed = this.random(2, 6); // Default speed, can be overridden
         this.stagger = 0; // Used for staggered animations
+
+        this.draw = this.draw.bind(this); // Bind draw method to the instance
     }
 
+    draw() {
+        // This method should be overridden by subclasses
+        throw new Error('Draw method must be implemented by subclass');
+    }
 }

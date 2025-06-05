@@ -39,7 +39,7 @@ export default class CamouflagePostits extends BaseAlgorithm {
         this.ctx.moveTo(this.w / 2, this.h / 2);
     }
 
-    draw = () => {
+    draw() {
         if (this.t % this.speed === 0) {
             this.ctx.fillRect(this.x, this.y, this.length, this.length);
             this.x = this.random(0, this.w);
@@ -78,5 +78,5 @@ export default class CamouflagePostits extends BaseAlgorithm {
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }

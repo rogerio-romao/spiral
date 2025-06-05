@@ -24,7 +24,7 @@ export default class BeziersStraight extends BaseAlgorithm {
         this.ctx.strokeStyle = this.randomColor(5, 255, 0.2, 0.2);
     }
 
-    draw = () => {
+    draw() {
         if (this.t % this.speed === 0) {
             this.stagger = this.stagger % 3;
 
@@ -86,5 +86,5 @@ export default class BeziersStraight extends BaseAlgorithm {
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }

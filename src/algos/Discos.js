@@ -23,7 +23,7 @@ export default class Discos extends BaseAlgorithm {
         this.ctx.fillStyle = this.color1;
     }
 
-    draw = () => {
+    draw() {
         if (this.t % this.speed === 0) {
             this.stagger = this.stagger % 3;
 
@@ -90,5 +90,5 @@ export default class Discos extends BaseAlgorithm {
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }

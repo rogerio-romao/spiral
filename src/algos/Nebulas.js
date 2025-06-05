@@ -29,7 +29,7 @@ export default class Nebulas extends BaseAlgorithm {
         );
     }
 
-    draw = () => {
+    draw() {
         if (this.t % this.speed === 0) {
             this.ctx.lineWidth = this.random(1, 200);
             this.ctx.strokeRect(this.w / 2, this.h / 2, this.length, this.gap);
@@ -64,5 +64,5 @@ export default class Nebulas extends BaseAlgorithm {
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }

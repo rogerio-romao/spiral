@@ -28,7 +28,7 @@ export default class DysonSpheres extends BaseAlgorithm {
         );
     }
 
-    draw = () => {
+    draw() {
         if (this.t % this.speed === 0) {
             this.ctx.ellipse(
                 this.w / 2,
@@ -75,5 +75,5 @@ export default class DysonSpheres extends BaseAlgorithm {
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }

@@ -17,7 +17,7 @@ export default class NeonTartans extends BaseAlgorithm {
         this.color2 = this.randomColor();
     }
 
-    draw = () => {
+    draw() {
         if (this.t % this.speed === 0) {
             this.stagger = this.stagger % 3;
 
@@ -76,5 +76,5 @@ export default class NeonTartans extends BaseAlgorithm {
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }
