@@ -4,6 +4,7 @@ import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
+import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
@@ -553,7 +554,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'hyper-tunnel'; // for testing purposes
+    let choose = 'chalk-galaxy'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -700,7 +701,7 @@ function chooseAlgos() {
         case 'chalk-galaxy':
             displayAlgos('CHALK GALAXY');
             ctx.save();
-            runningAlgo = new ChalkGalaxy();
+            runningAlgo = new ChalkGalaxy(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'patterns':
@@ -1415,49 +1416,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class ChalkGalaxy {
-    constructor() {
-        this.letters = [
-            1401, 1402, 1403, 1404, 1406, 1407, 1408, 1410, 1411, 1412, 1413,
-            1414, 1415, 1417, 1418, 1425, 1426, 1427, 1428, 1429, 1430, 1431,
-            1440, 1441, 1470, 1472, 1475, 1478, 1490, 1491, 1492, 1493, 1495,
-            1499, 1500, 10157,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.rotate = random(1, 179);
-        ctx.strokeStyle = randomColor(150, 255, 0.25, 0.25);
-        ctx.font = `${random(100, 500)}px bold`;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-        ctx.fillRect(0, 0, w, h);
-        this.draw = this.draw.bind(this);
-    }
-    draw() {
-        if (t % speed === 0) {
-            ctx.strokeText(this.letter, w / 2, h / 2);
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-        }
-        t++;
-        if (t % (speed * 100) === 0) {
-            ctx.strokeStyle = randomColor(170, 255, 0.2, 0.2);
-            ctx.font = `${random(100, 600)}px bold`;
-        }
-        if (t % (speed * 500) === 0) {
-            ctx.strokeStyle = randomColor(0, 115, 0.2, 0.2);
-            this.rotate = random(1, 179);
-        }
-        if (t % (speed * 1000) === 0) {
-            this.letter = String.fromCharCode(
-                this.letters[random(0, this.letters.length)]
-            );
-        }
-        interval = requestAnimationFrame(this.draw);
-    }
-}
-
 class Patterns {
     constructor() {
         this.radius = random(10, 250);
