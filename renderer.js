@@ -5,6 +5,7 @@ import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
+import CounterClock from './src/algos/CounterClock.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
@@ -559,7 +560,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'space-gears'; // for testing purposes
+    let choose = 'counter-clock'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -742,7 +743,7 @@ function chooseAlgos() {
         case 'counter-clock':
             displayAlgos('COUNTER CLOCK');
             ctx.save();
-            runningAlgo = new CounterClock();
+            runningAlgo = new CounterClock(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'clock':
@@ -1421,61 +1422,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class CounterClock {
-    constructor() {
-        this.letters = [
-            607, 611, 615, 616, 617, 618, 619, 622, 625, 629, 632, 639, 643,
-            650, 656, 662, 664, 676, 683, 684, 685, 688, 690, 691, 694, 697,
-            698, 699,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.color = randomColor(0, 255, 1, 1);
-        this.rotate = (8 * Math.PI) / 180;
-
-        ctx.font = random(75, 750) + 'px sans-serif';
-        ctx.lineWidth = 2;
-        ctx.textAlign = 'center';
-        ctx.shadowColor = ctx.strokeStyle = this.color;
-        ctx.shadowBlur = 3;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.strokeText('   ' + this.letter, 0, 0);
-                ctx.rotate(-this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-                ctx.beginPath();
-            }
-            t++;
-            if (t % (speed * 45) === 0) {
-                ctx.font = random(75, 750) + 'px sans-serif';
-                let col = Math.random();
-                if (col < 0.125) {
-                    ctx.lineWidth = 1;
-                    ctx.shadowBlur = 5;
-                    this.color = 'white';
-                } else if (col < 0.25) {
-                    ctx.lineWidth = 3;
-                    this.color = 'black';
-                } else {
-                    ctx.shadowBlur = 3;
-                    ctx.lineWidth = 2;
-                    this.color = randomColor();
-                }
-                ctx.shadowColor = ctx.strokeStyle = this.color;
-            }
-            if (t % (speed * 450) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Clock {
     constructor() {
         this.modes = [
