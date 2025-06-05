@@ -19,6 +19,8 @@ import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
+import SpaceGears from './src/algos/SpaceGears.js';
+import Spinner from './src/algos/Spinner.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
 import SquareNebulas from './src/algos/SquareNebulas.js';
@@ -557,7 +559,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'microscope'; // for testing purposes
+    let choose = 'space-gears'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -728,13 +730,13 @@ function chooseAlgos() {
         case 'spinner':
             displayAlgos('SPINNER');
             ctx.save();
-            runningAlgo = new Spinner();
+            runningAlgo = new Spinner(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'space-gears':
             displayAlgos('SPACE GEARS');
             ctx.save();
-            runningAlgo = new SpaceGears();
+            runningAlgo = new SpaceGears(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'counter-clock':
@@ -1419,91 +1421,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Spinner {
-    constructor() {
-        this.color1 = randomColor(0, 255, 1, 1);
-        this.color2 = randomColor(0, 255, 1, 1);
-        this.side = Math.min(w, h);
-        this.gap1 = random(15, 150);
-        this.gap2 = random(-150, -15);
-        ctx.fillStyle = this.color1;
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.gap1 * Math.PI) / 180);
-                ctx.lineWidth = 2;
-                ctx.globalCompositeOperation = 'hard-light';
-                ctx.globalAlpha = 0.08;
-                ctx.shadowColor = ctx.fillStyle = this.color1;
-                ctx.shadowBlur = 8;
-                ctx.fillRect(
-                    w / 2 - this.side / 2,
-                    h / 2 - this.side / 2,
-                    this.side,
-                    this.side
-                );
-                ctx.translate(-w / 2, -h / 2);
-                ctx.lineWidth = 3;
-                ctx.globalAlpha = 0.2;
-                ctx.shadowBlur = 0;
-                ctx.globalCompositeOperation = 'difference';
-                ctx.fillStyle = this.color2;
-                ctx.fillRect(w / 2, h / 2, this.gap1 * 2, this.gap2 * 2);
-            }
-            t++;
-            if (t % (speed * 50) === 0) {
-                this.side = random(200, Math.max(w, h) / 2);
-                this.gap1 = random(15, 150);
-                this.gap2 = random(-150, -15);
-                this.color2 = randomColor(0, 255, 1, 1);
-            }
-            if (t % (speed * 100) === 0) {
-                ctx.beginPath();
-                this.color1 = randomColor(0, 255, 1, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class SpaceGears {
-    constructor() {
-        this.letters = [
-            402, 406, 407, 409, 410, 412, 414, 415, 418, 420, 423, 424, 425,
-            428, 429, 430, 433, 437, 438, 439, 440, 443, 444, 448, 449, 450,
-            451, 458, 461, 474, 478, 480, 484, 488, 491, 494,
-        ];
-        this.letter = String.fromCharCode(428);
-        this.rotate = (random(3, 357) * Math.PI) / 180;
-        ctx.font = random(100, 700) + 'px serif';
-
-        ctx.strokeStyle = randomColor(0, 255, 0.6, 0.6);
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.textAlign = 'left';
-                ctx.strokeText(' ' + this.letter.repeat(3), 0, 0);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.textAlign = 'center';
-                ctx.strokeText(this.letter, 0, 0);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 120) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 0.6, 0.6);
-                ctx.font = random(100, 700) + 'px serif';
-            }
-            if (t % (speed * 1260) === 0) {
-                this.rotate = (random(3, 357) * Math.PI) / 180;
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class CounterClock {
     constructor() {
         this.letters = [
