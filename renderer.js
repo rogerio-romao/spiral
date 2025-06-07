@@ -1,10 +1,12 @@
 import AccelerationMandala from './src/algos/AccelerationMandala.js';
+import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
+import Clock from './src/algos/Clock.js';
 import CounterClock from './src/algos/CounterClock.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
@@ -16,6 +18,7 @@ import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Orbits from './src/algos/Orbits.js';
 import Patterns from './src/algos/Patterns.js';
+import Plaid from './src/algos/Plaid.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Rims from './src/algos/Rims.js';
@@ -28,6 +31,9 @@ import SquareNebulas from './src/algos/SquareNebulas.js';
 import StainedGlass from './src/algos/StainedGlass.js';
 import Starbursts from './src/algos/Starbursts.js';
 import TheBadge from './src/algos/TheBadge.js';
+import ThreeD from './src/algos/ThreeD.js';
+import VanishingRays from './src/algos/VanishingRays.js';
+import Warp2001 from './src/algos/Warp2001.js';
 
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
@@ -560,7 +566,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'counter-clock'; // for testing purposes
+    let choose = 'three-d'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -749,37 +755,37 @@ function chooseAlgos() {
         case 'clock':
             displayAlgos('CLOCK');
             ctx.save();
-            runningAlgo = new Clock();
+            runningAlgo = new Clock(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'acid-stars':
             displayAlgos('ACID STARS');
             ctx.save();
-            runningAlgo = new AcidStars();
-            runningAlgo.draw();
-            break;
-        case 'vanishing-rays':
-            displayAlgos('VANISHING RAYS');
-            ctx.save();
-            runningAlgo = new VanishingRays();
+            runningAlgo = new AcidStars(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'warp2001':
             displayAlgos('WARP 2001');
             ctx.save();
-            runningAlgo = new Warp2001();
+            runningAlgo = new Warp2001(ctx, w, h);
+            runningAlgo.draw();
+            break;
+        case 'vanishing-rays':
+            displayAlgos('VANISHING RAYS');
+            ctx.save();
+            runningAlgo = new VanishingRays(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'plaid':
             displayAlgos('PLAID');
             ctx.save();
-            runningAlgo = new Plaid();
+            runningAlgo = new Plaid(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'three-d':
             displayAlgos('THREE D');
             ctx.save();
-            runningAlgo = new ThreeD();
+            runningAlgo = new ThreeD(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'supernova':
@@ -1422,396 +1428,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Clock {
-    constructor() {
-        this.modes = [
-            'xor',
-            'difference',
-            'hard-light',
-            'exclusion',
-            'multiply',
-            'color-burn',
-            'color-dodge',
-            'lighten',
-            'darken',
-            'overlay',
-            'source-over',
-        ];
-        this.letters = [
-            701, 702, 703, 706, 707, 708, 710, 711, 712, 713, 714, 715, 716,
-            717, 718, 719, 720, 721, 722, 724, 726, 727, 729, 730, 731, 732,
-            733, 734, 735, 737, 740, 741, 744, 745, 746, 747, 749, 753, 754,
-            756, 757, 758, 759, 760, 761, 762, 764, 766, 769, 771, 772, 776,
-            778, 781, 782, 784, 790, 794, 795, 796,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.color = randomColor(0, 255, 0.66, 0.66);
-        this.rotate = (18 * Math.PI) / 180;
-
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.font = random(60, 600) + 'px sans-serif';
-        ctx.lineWidth = 3;
-        ctx.textAlign = 'center';
-        ctx.shadowColor = ctx.strokeStyle = this.color;
-        ctx.shadowBlur = 8;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.strokeText('  ' + this.letter, 0, 0);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-                ctx.beginPath();
-            }
-            t++;
-            if (t % (speed * 40) === 0) {
-                ctx.font = random(60, 600) + 'px sans-serif';
-                let col = Math.random();
-                if (col < 0.15) {
-                    ctx.lineWidth = 2;
-                    ctx.shadowBlur = 12;
-                    this.color = 'rgba(255, 255, 255, 0.5)';
-                } else if (col < 0.3) {
-                    ctx.lineWidth = 5;
-                    this.color = 'rgba(0, 0, 0, 0.5)';
-                } else {
-                    ctx.shadowBlur = 8;
-                    ctx.lineWidth = 3;
-                    this.color = randomColor(0, 255, 0.66, 0.66);
-                }
-                ctx.shadowColor = ctx.strokeStyle = this.color;
-            }
-            if (t % (speed * 120) === 0) {
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-            }
-            if (t % (speed * 200) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class AcidStars {
-    constructor() {
-        this.side = random(30, 300);
-        this.change = this.side / 1.618;
-        this.rotate = random(2, 44);
-        this.fontSize = random(12, 20);
-        this.letters = [
-            1606, 1607, 1608, 1610, 1611, 1613, 1614, 1616, 1618, 1619, 1621,
-            1622, 1623, 1624, 1627, 1628, 1629, 1631, 1632, 1633, 1634, 1635,
-            1636, 1637, 1639, 1640, 1644, 1645, 1647, 1648, 1649, 1650, 1654,
-            1656, 1659, 1660, 1663, 1664, 1665, 1666, 1667, 1668, 1670, 1671,
-            1672, 1673, 1674, 1675, 1677, 1678, 1680, 1682, 1683, 1686, 1690,
-            1691, 1693, 1695, 1697,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        ctx.font = this.fontSize + 'px serif';
-        ctx.shadowColor = ctx.fillStyle = randomColor(0, 255, 1);
-        ctx.shadowBlur = 15;
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 3;
-                if (stagger === 0) {
-                    ctx.fillText(this.letter, w / 2 + this.side / 2, h / 2);
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.fillText(this.letter, w / 2, h / 2 - this.side / 2);
-                }
-                if (stagger === 2) {
-                    ctx.translate(w / 2, h / 2);
-
-                    ctx.rotate((-this.rotate * Math.PI) / 180);
-                    ctx.fillText(this.letter, w / 2 - this.side / 2, h / 2);
-                    ctx.stroke();
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                stagger++;
-            }
-            this.side += this.change;
-            if (this.side > Math.max(w, h) || this.side < 5) {
-                this.change = -this.change;
-            }
-            t++;
-            if (t % (speed * 240) === 0) {
-                this.rotate = random(2, 44);
-                ctx.beginPath();
-                ctx.shadowColor = ctx.fillStyle = randomColor(0, 255, 1);
-                this.side = random(30, 300);
-                this.change = this.side / 1.618;
-                this.fontSize = random(12, 20);
-                ctx.font = this.fontSize + 'px serif';
-            }
-            if (t % (speed * 720) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Warp2001 {
-    constructor() {
-        this.x = 1;
-        this.y = 1;
-        this.rotate = (random(5, 355) * Math.PI) / 180;
-
-        ctx.strokeStyle = randomColor();
-        ctx.shadowColor = 'black';
-        ctx.shadowBlur = 3;
-        ctx.lineWidth = random(5, 45);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.moveTo(this.x, this.y);
-                this.x *= 1.618;
-                this.y *= 1.618;
-                if (this.x >= Math.max(w, h)) {
-                    this.x = 1;
-                    this.y = 1;
-                }
-                ctx.lineTo(this.x, this.y);
-                ctx.stroke();
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 180) === 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-                ctx.lineWidth = random(5, 45);
-                this.rotate = (random(5, 355) * Math.PI) / 180;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class VanishingRays {
-    constructor() {
-        this.letters = [
-            1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829,
-            1830, 1831, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872,
-            1873, 1877, 1879, 1883, 1884, 1888, 1890, 1894, 1899,
-        ];
-        this.incAlpha = 0;
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.angle = 1;
-        this.rotations = [20, 24, 30, 36, 40, 45, 60, 72, 80];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-        this.fontSize = random(30, 500);
-        ctx.fillStyle = randomColor(50, 200, 0.0025, 0.0025);
-        ctx.strokeStyle = randomColor(0, 255, 0.8, 0.8);
-        ctx.font = `bold ${this.fontSize}px sans-serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                if (t % 6 === 0) {
-                    ctx.fillRect(0, 0, w, h);
-                }
-                ctx.strokeText(this.letter.repeat(15), w / 2, h / 2);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(((this.rotate * Math.PI) / 180) * this.angle);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * (1440 / this.rotate)) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 0.8, 0.8);
-                this.fontSize = random(30, 500);
-                ctx.font = `bold ${this.fontSize}px sans-serif`;
-                this.angle *= -1;
-            }
-            if (t % (speed * 360) === 0) {
-                ctx.fillStyle = randomColor(
-                    0,
-                    255,
-                    0.006 + this.incAlpha,
-                    0.006 + this.incAlpha
-                );
-                this.incAlpha += 0.002;
-            }
-            if (t % (speed * 720) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Plaid {
-    constructor() {
-        this.side1 = random(20, 300);
-        this.side2 = random(20, 300);
-        this.rows = Math.ceil(h / 100) + 2;
-        this.cols = Math.ceil(w / 100) + 2;
-
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.globalAlpha = 0.3;
-        ctx.fillStyle = randomColor(10, 255, 0.2, 0.7);
-        ctx.strokeStyle = randomColor(10, 255, 0.2, 0.7);
-        ctx.lineWidth = random(1, 13);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate((45 * Math.PI) / 180);
-                    ctx.translate(-w / 2, -h / 2);
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.beginPath();
-                        ctx.strokeRect(
-                            150 * j - 150,
-                            150 * i - 150,
-                            this.side1,
-                            this.side2
-                        );
-                        ctx.fillRect(
-                            150 * j - 150,
-                            150 * i - 150,
-                            this.side1,
-                            this.side2
-                        );
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 30) === 0) {
-                this.side1 = random(20, 300);
-                this.side2 = random(20, 300);
-                ctx.lineWidth = random(1, 13);
-                ctx.globalCompositeOperation = 'overlay';
-                ctx.fillStyle = randomColor(10, 255, 0.2, 0.7);
-            }
-            if (t % (speed * 60) === 0) {
-                ctx.strokeStyle = randomColor(10, 255, 0.2, 0.7);
-            }
-            if (t * (speed * 90) === 0) {
-                ctx.globalCompositeOperation = 'source-over';
-            }
-            if (t % (speed * 150) === 0) {
-                ctx.globalCompositeOperation = 'color';
-            }
-            if (t % (speed * 240) === 0) {
-                ctx.globalCompositeOperation = 'luminosity';
-            }
-            if (t % (speed * 570) === 0) {
-                ctx.globalCompositeOperation = 'hue';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class ThreeD {
-    constructor() {
-        this.letters = [
-            3044, 3045, 3046, 3047, 3048, 3052, 3054, 3057, 3059, 3063, 3077,
-            3079, 3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.fontSize = random(24, 80);
-        this.rot1 = random(-5, 5);
-        this.rot2 = random(2, 11);
-        this.rot3 = random(-8, 7);
-        this.rot4 = random(4, 18);
-        this.rot5 = random(-15, -2);
-
-        ctx.fillStyle = randomColor(0, 255, 0.5, 1);
-        ctx.shadowColor = 'black';
-        ctx.shadowOffsetX = 4;
-        ctx.shadowOffsetY = 4;
-        ctx.shadowBlur = 5;
-        ctx.textAlign = 'center';
-        ctx.font = this.fontSize + 'px sans-serif';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 5;
-                if (stagger === 0) {
-                    ctx.save();
-                    ctx.translate(w * 0.25, h * 0.25);
-                    ctx.rotate(this.rot1);
-                    ctx.fillText(this.letter, w * 0.25, 0);
-                    ctx.translate(-w * 0.25, -h * 0.25);
-                    ctx.restore();
-                }
-                if (stagger === 1) {
-                    ctx.save();
-                    ctx.translate(w * 0.75, h * 0.25);
-                    ctx.rotate(this.rot2);
-                    ctx.fillText(this.letter, 0, h * 0.25);
-                    ctx.translate(-w * 0.75, -h * 0.25);
-                    ctx.restore();
-                }
-                if (stagger === 2) {
-                    ctx.save();
-                    ctx.translate(w * 0.75, h * 0.75);
-                    ctx.rotate(this.rot3);
-                    ctx.fillText(this.letter, w * 0.75, 0);
-                    ctx.translate(-w * 0.75, -h * 0.75);
-                    ctx.restore();
-                }
-                if (stagger === 3) {
-                    ctx.save();
-                    ctx.translate(w * 0.25, h * 0.75);
-                    ctx.rotate(this.rot4);
-                    ctx.fillText(this.letter, 0, h * 0.75);
-                    ctx.translate(-w * 0.25, -h * 0.75);
-                    ctx.restore();
-                }
-                if (stagger === 4) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot5);
-                    ctx.fillText(this.letter, 0, 0);
-                    ctx.fillText(this.letter, w * 0.125, h * 0.125);
-                    ctx.fillText(this.letter, w * 0.875, h * 0.125);
-                    ctx.fillText(this.letter, w * 0.875, h * 0.875);
-                    ctx.translate(-w / 2, -h / 2);
-                    ctx.fillText(this.letter, w * 0.875, h * 0.125);
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 75) === 0) {
-                this.fontSize = random(24, 80);
-                ctx.font = this.fontSize + 'px serif';
-            }
-            if (t % (speed * 150) === 0) {
-                ctx.fillStyle = randomColor(0, 255, 0.5, 1);
-                this.rot1 = random(-5, 5);
-                this.rot2 = random(2, 11);
-                this.rot3 = random(-8, 7);
-                this.rot4 = random(4, 18);
-                this.rot5 = random(-15, -2);
-            }
-            if (t % (speed * 300) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Supernova {
     constructor() {
         this.fib = [0, +Math.random().toFixed(3)];
