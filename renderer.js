@@ -23,10 +23,12 @@ import Patterns from './src/algos/Patterns.js';
 import Plaid from './src/algos/Plaid.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
+import Radiance from './src/algos/Radiance.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
 import SpaceGears from './src/algos/SpaceGears.js';
+import Spikey from './src/algos/Spikey.js';
 import Spinner from './src/algos/Spinner.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
@@ -37,6 +39,7 @@ import Supernova from './src/algos/Supernova.js';
 import TheBadge from './src/algos/TheBadge.js';
 import ThreeD from './src/algos/ThreeD.js';
 import UFOs from './src/algos/Ufos.js';
+import Universe from './src/algos/Universe.js';
 import VanishingRays from './src/algos/VanishingRays.js';
 import Warp2001 from './src/algos/Warp2001.js';
 
@@ -571,7 +574,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'rounded'; // for testing purposes
+    let choose = 'universe'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -826,19 +829,19 @@ function chooseAlgos() {
         case 'spikey':
             displayAlgos('SPIKEY');
             ctx.save();
-            runningAlgo = new Spikey();
+            runningAlgo = new Spikey(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'radiance':
             displayAlgos('RADIANCE');
             ctx.save();
-            runningAlgo = new Radiance();
+            runningAlgo = new Radiance(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'universe':
             displayAlgos('UNIVERSE');
             ctx.save();
-            runningAlgo = new Universe();
+            runningAlgo = new Universe(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'parallel-universes':
@@ -1433,359 +1436,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Spikey {
-    constructor() {
-        this.rounded1 = random(75, 475);
-        this.rounded2 = random(75, 475);
-        this.rounded3 = random(75, 475);
-        this.rounded4 = random(75, 475);
-        this.side1 = random(0, w);
-        this.side2 = random(0, h);
-        this.side3 = random(0, w);
-        this.side4 = random(0, h);
-        this.rotate = (random(2, 358) * Math.PI) / 180;
-
-        ctx.beginPath();
-        ctx.moveTo(w / 2, h / 2);
-        ctx.strokeStyle = randomColor(60, 255, 1, 1);
-        ctx.lineWidth = 0.1;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 2;
-                if (stagger === 0) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.roundRect(
-                        this.side1--,
-                        this.side2--,
-                        this.side1--,
-                        this.side2--,
-                        {
-                            upperLeft: this.rounded1++,
-                            upperRight: this.rounded2++,
-                            lowerLeft: this.rounded3++,
-                            lowerRight: this.rounded4++,
-                        },
-                        false,
-                        true
-                    );
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                if (stagger === 1) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.roundRect(
-                        this.side3++,
-                        this.side4++,
-                        this.side3++,
-                        this.side4++,
-                        {
-                            upperLeft: this.rounded3--,
-                            upperRight: this.rounded4--,
-                            lowerLeft: this.rounded2--,
-                            lowerRight: this.rounded1--,
-                        },
-                        false,
-                        true
-                    );
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                stagger++;
-            }
-            t++;
-            if (t % (speed * 400) === 0) {
-                canvas.width = canvas.height = 0;
-                canvas.width = w;
-                canvas.height = h;
-                this.rounded1 = random(75, 475);
-                this.rounded2 = random(75, 475);
-                this.rounded3 = random(75, 475);
-                this.rounded4 = random(75, 475);
-                this.side1 = random(0, w / 4);
-                this.side2 = random(0, h / 4);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.15, 0.6);
-                this.rotate = (random(2, 358) * Math.PI) / 180;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Radiance {
-    constructor() {
-        this.rounded1 = random(15, 50);
-        this.rounded2 = random(15, 50);
-        this.rounded3 = random(15, 50);
-        this.rounded4 = random(15, 50);
-        this.x1 = random(0, w / 2);
-        this.y1 = random(0, h / 2);
-        this.x2 = random(w / 2, w);
-        this.y2 = random(0, h / 2);
-        this.x3 = random(w / 2, w);
-        this.y3 = random(h / 2, h);
-        this.x4 = random(0, w / 2);
-        this.y4 = random(h / 2, h);
-        this.side1 = random(60, w / 2);
-        this.side2 = random(60, h / 2);
-        this.side3 = random(60, w / 2);
-        this.side4 = random(60, h / 2);
-        this.side5 = random(60, w / 2);
-        this.side6 = random(60, h / 2);
-        this.side7 = random(60, w / 2);
-        this.side8 = random(60, h / 2);
-        this.color1 = randomColor();
-        this.color2 = randomColor();
-        this.color3 = randomColor();
-        this.color4 = randomColor();
-        this.rotate = random(1, 11);
-
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.strokeStyle = this.color1;
-                    ctx.roundRect(
-                        this.x1,
-                        this.y1,
-                        this.side1,
-                        this.side2,
-                        {
-                            upperLeft: this.rounded1,
-                            upperRight: this.rounded1,
-                            lowerLeft: this.rounded1,
-                            lowerRight: this.rounded1,
-                        },
-                        true,
-                        true
-                    );
-                }
-                if (stagger === 1) {
-                    ctx.strokeStyle = this.color2;
-                    ctx.roundRect(
-                        this.x2,
-                        this.y2,
-                        this.side3,
-                        this.side4,
-                        {
-                            upperLeft: this.rounded2,
-                            upperRight: this.rounded2,
-                            lowerLeft: this.rounded2,
-                            lowerRight: this.rounded2,
-                        },
-                        true,
-                        true
-                    );
-                }
-                if (stagger === 2) {
-                    ctx.strokeStyle = this.color3;
-                    ctx.roundRect(
-                        this.x3,
-                        this.y3,
-                        this.side5,
-                        this.side6,
-                        {
-                            upperLeft: this.rounded3,
-                            upperRight: this.rounded3,
-                            lowerLeft: this.rounded3,
-                            lowerRight: this.rounded3,
-                        },
-                        true,
-                        true
-                    );
-                }
-                if (stagger === 3) {
-                    ctx.strokeStyle = this.color4;
-                    ctx.roundRect(
-                        this.x4,
-                        this.y4,
-                        this.side7,
-                        this.side8,
-                        {
-                            upperLeft: this.rounded4,
-                            upperRight: this.rounded4,
-                            lowerLeft: this.rounded4,
-                            lowerRight: this.rounded4,
-                        },
-                        true,
-                        true
-                    );
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 500) === 0) {
-                this.rounded1 = random(15, 50);
-                this.rounded2 = random(15, 50);
-                this.rounded3 = random(15, 50);
-                this.rounded4 = random(15, 50);
-                this.x1 = random(0, w / 2);
-                this.y1 = random(0, h / 2);
-                this.x2 = random(w / 2, w);
-                this.y2 = random(0, h / 2);
-                this.x3 = random(w / 2, w);
-                this.y3 = random(h / 2, h);
-                this.x4 = random(0, w / 2);
-                this.y4 = random(h / 2, h);
-                this.side1 = random(60, w / 2);
-                this.side2 = random(60, h / 2);
-                this.side3 = random(60, w / 2);
-                this.side4 = random(60, h / 2);
-                this.side5 = random(60, w / 2);
-                this.side6 = random(60, h / 2);
-                this.side7 = random(60, w / 2);
-                this.side8 = random(60, h / 2);
-                this.color1 = randomColor();
-                this.color2 = randomColor();
-                this.color3 = randomColor();
-                this.color4 = randomColor();
-
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-            }
-            if (t % (speed * 1500) === 0) {
-                this.rotate = random(1, 11);
-            }
-            stagger++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Universe {
-    constructor() {
-        this.rounded1 = random(5, 250);
-        this.rounded2 = random(5, 250);
-        this.rounded3 = random(5, 250);
-        this.rounded4 = random(5, 250);
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.x4 = random(0, w);
-        this.y4 = random(0, h);
-        this.side1 = random(20, w);
-        this.side2 = random(20, h);
-        this.side3 = random(20, w);
-        this.side4 = random(20, h);
-        this.side5 = random(20, w);
-        this.side6 = random(20, h);
-        this.side7 = random(20, w);
-        this.side8 = random(20, h);
-        this.rotate = random(1, 11);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.roundRect(
-                        this.x1++,
-                        this.y1++,
-                        this.side1++,
-                        this.side2++,
-                        {
-                            upperLeft: this.rounded1++,
-                            upperRight: this.rounded1++,
-                            lowerLeft: this.rounded1++,
-                            lowerRight: this.rounded1++,
-                        },
-                        false,
-                        true
-                    );
-                }
-                if (stagger === 1) {
-                    ctx.roundRect(
-                        this.x2--,
-                        this.y2--,
-                        this.side3--,
-                        this.side4--,
-                        {
-                            upperLeft: this.rounded2++,
-                            upperRight: this.rounded2++,
-                            lowerLeft: this.rounded2++,
-                            lowerRight: this.rounded2++,
-                        },
-                        false,
-                        true
-                    );
-                }
-                if (stagger === 2) {
-                    ctx.roundRect(
-                        this.x3++,
-                        this.y3++,
-                        this.side5++,
-                        this.side6++,
-                        {
-                            upperLeft: this.rounded3--,
-                            upperRight: this.rounded3--,
-                            lowerLeft: this.rounded3--,
-                            lowerRight: this.rounded3--,
-                        },
-                        false,
-                        true
-                    );
-                }
-                if (stagger === 3) {
-                    ctx.roundRect(
-                        this.x4,
-                        this.y4,
-                        this.side7,
-                        this.side8,
-                        {
-                            upperLeft: this.rounded4++,
-                            upperRight: this.rounded4++,
-                            lowerLeft: this.rounded4--,
-                            lowerRight: this.rounded4--,
-                        },
-                        false,
-                        true
-                    );
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 250) === 0) {
-                this.rounded1 = random(15, 50);
-                this.rounded2 = random(15, 50);
-                this.rounded3 = random(15, 50);
-                this.rounded4 = random(15, 50);
-                this.x1 = random(0, w / 2);
-                this.y1 = random(0, h / 2);
-                this.x2 = random(w / 2, w);
-                this.y2 = random(0, h / 2);
-                this.x3 = random(w / 2, w);
-                this.y3 = random(h / 2, h);
-                this.x4 = random(0, w / 2);
-                this.y4 = random(h / 2, h);
-                this.side1 = random(60, w / 2);
-                this.side2 = random(60, h / 2);
-                this.side3 = random(60, w / 2);
-                this.side4 = random(60, h / 2);
-                this.side5 = random(60, w / 2);
-                this.side6 = random(60, h / 2);
-                this.side7 = random(60, w / 2);
-                this.side8 = random(60, h / 2);
-                this.rotate = random(1, 11);
-                ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-            }
-            stagger++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class ParallelUniverses {
     constructor() {
         this.rounded1 = random(5, 250);
