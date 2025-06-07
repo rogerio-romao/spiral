@@ -2,6 +2,7 @@ import AccelerationMandala from './src/algos/AccelerationMandala.js';
 import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
+import Atom from './src/algos/Atom.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
@@ -19,6 +20,7 @@ import NeonTartans from './src/algos/NeonTartans.js';
 import Offsets from './src/algos/Offsets.js';
 import Orbits from './src/algos/Orbits.js';
 import Organic from './src/algos/Organic.js';
+import ParallelUniverses from './src/algos/ParallelUniverses.js';
 import Patterns from './src/algos/Patterns.js';
 import Plaid from './src/algos/Plaid.js';
 import Punctuation from './src/algos/Punctuation.js';
@@ -574,7 +576,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'universe'; // for testing purposes
+    let choose = 'atom'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -847,13 +849,13 @@ function chooseAlgos() {
         case 'parallel-universes':
             displayAlgos('PARALLEL UNIVERSES');
             ctx.save();
-            runningAlgo = new ParallelUniverses();
+            runningAlgo = new ParallelUniverses(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'atom':
             displayAlgos('ATOM');
             ctx.save();
-            runningAlgo = new Atom();
+            runningAlgo = new Atom(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'geometer':
@@ -1436,178 +1438,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class ParallelUniverses {
-    constructor() {
-        this.rounded1 = random(5, 250);
-        this.rounded2 = random(5, 250);
-        this.rounded3 = random(5, 250);
-        this.rounded4 = random(5, 250);
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.x4 = random(0, w);
-        this.y4 = random(0, h);
-        this.side1 = random(20, w);
-        this.side2 = random(20, h);
-        this.side3 = random(20, w);
-        this.side4 = random(20, h);
-        this.side5 = random(20, w);
-        this.side6 = random(20, h);
-        this.side7 = random(20, w);
-        this.side8 = random(20, h);
-        this.rotate = random(1, 11);
-        this.color1 = randomColor(0, 255, 0.05, 0.1);
-        this.color2 = randomColor(0, 255, 0.05, 0.1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.fillStyle = this.color1;
-                    ctx.roundRect(
-                        this.x1++,
-                        this.y1++,
-                        this.side1++,
-                        this.side2++,
-                        {
-                            upperLeft: this.rounded1++,
-                            upperRight: this.rounded1++,
-                            lowerLeft: this.rounded1++,
-                            lowerRight: this.rounded1++,
-                        },
-                        true,
-                        false
-                    );
-                }
-                if (stagger === 1) {
-                    ctx.fillStyle = this.color2;
-                    ctx.roundRect(
-                        this.x2--,
-                        this.y2--,
-                        this.side3--,
-                        this.side4--,
-                        {
-                            upperLeft: this.rounded2++,
-                            upperRight: this.rounded2++,
-                            lowerLeft: this.rounded2++,
-                            lowerRight: this.rounded2++,
-                        },
-                        true,
-                        false
-                    );
-                }
-                if (stagger === 2) {
-                    ctx.fillStyle = this.color1;
-                    ctx.roundRect(
-                        this.x3++,
-                        this.y3++,
-                        this.side5++,
-                        this.side6++,
-                        {
-                            upperLeft: this.rounded3--,
-                            upperRight: this.rounded3--,
-                            lowerLeft: this.rounded3--,
-                            lowerRight: this.rounded3--,
-                        },
-                        true,
-                        false
-                    );
-                }
-                if (stagger === 3) {
-                    ctx.fillStyle = this.color2;
-                    ctx.roundRect(
-                        this.x4,
-                        this.y4,
-                        this.side7,
-                        this.side8,
-                        {
-                            upperLeft: this.rounded4++,
-                            upperRight: this.rounded4++,
-                            lowerLeft: this.rounded4--,
-                            lowerRight: this.rounded4--,
-                        },
-                        true,
-                        false
-                    );
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 200) === 0) {
-                this.rounded1 = random(5, 250);
-                this.rounded2 = random(5, 250);
-                this.rounded3 = random(5, 250);
-                this.rounded4 = random(5, 250);
-                this.x1 = random(0, w / 2);
-                this.y1 = random(0, h / 2);
-                this.x2 = random(w / 2, w);
-                this.y2 = random(0, h / 2);
-                this.x3 = random(w / 2, w);
-                this.y3 = random(h / 2, h);
-                this.x4 = random(0, w / 2);
-                this.y4 = random(h / 2, h);
-                this.side1 = random(20, w);
-                this.side2 = random(20, h);
-                this.side3 = random(20, w);
-                this.side4 = random(20, h);
-                this.side5 = random(20, w);
-                this.side6 = random(20, h);
-                this.side7 = random(20, w);
-                this.side8 = random(20, h);
-                this.rotate = random(1, 11);
-                this.color1 = randomColor(0, 255, 0.05, 0.1);
-                this.color2 = randomColor(0, 255, 0.05, 0.1);
-            }
-            stagger++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
-class Atom {
-    constructor() {
-        this.change = 0;
-        this.rate = random(5, 105);
-        this.rotate = random(5, 24);
-
-        ctx.shadowBlur = 2;
-        ctx.shadowColor = 'black';
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = randomColor(65, 255, 0.5, 1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.lineTo(w / 2 + this.change, h / 2);
-                ctx.stroke();
-                this.change += this.rate;
-                if (
-                    Math.abs(this.change) >
-                    Math.max(w / 2, h / 2 || this.change + this.rate <= 0)
-                ) {
-                    this.rate = -this.rate;
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rotate * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 450) === 0) {
-                this.change = 0;
-                this.rate = random(5, 105);
-                this.rotate = random(5, 24);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(65, 255, 0.5, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Geometer {
     constructor() {
         this.change = 0;
