@@ -16,6 +16,7 @@ import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
+import Maelstrom from './src/algos/Maelstrom.js';
 import Microscope from './src/algos/Microscope.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
@@ -578,7 +579,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'comets'; // for testing purposes
+    let choose = 'maelstrom'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -875,7 +876,7 @@ function chooseAlgos() {
         case 'maelstrom':
             displayAlgos('MAELSTROM');
             ctx.save();
-            runningAlgo = new Maelstrom();
+            runningAlgo = new Maelstrom(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'maelstrom2':
@@ -1440,43 +1441,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Maelstrom {
-    constructor() {
-        this.cp1 = random(0, w);
-        this.cp2 = random(0, h);
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.angle = random(1, 200);
-
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = randomColor(0, 255, 0.7, 1);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.225)';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(w / 2, h / 2);
-                ctx.quadraticCurveTo(this.cp1, this.cp2, this.x1++, this.y1++);
-                ctx.stroke();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.angle * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 300) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.cp1 = random(0, w);
-                this.cp2 = random(0, h);
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.angle = random(1, 200);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.7, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Maelstrom2 {
     constructor() {
         this.cp1 = random(0, w);
