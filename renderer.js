@@ -8,6 +8,7 @@ import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Clock from './src/algos/Clock.js';
+import Comets from './src/algos/Comets.js';
 import CounterClock from './src/algos/CounterClock.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
@@ -577,7 +578,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'geometer'; // for testing purposes
+    let choose = 'comets'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -868,7 +869,7 @@ function chooseAlgos() {
         case 'comets':
             displayAlgos('COMETS');
             ctx.save();
-            runningAlgo = new Comets();
+            runningAlgo = new Comets(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'maelstrom':
@@ -1439,51 +1440,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Comets {
-    constructor() {
-        this.change = 0;
-        this.rate = random(1, 7);
-        this.rotate = random(3, 13);
-
-        speed = 1;
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor();
-        ctx.lineWidth = random(3, 12);
-        ctx.shadowBlur = ctx.lineWidth;
-        ctx.beginPath();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.lineTo(w / 2 + this.change, h / 2);
-                }
-                if (stagger === 1) {
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    this.change += this.rate;
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate((this.rotate * Math.PI) / 180);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-            }
-            t++;
-            if (t % (speed * 720) === 0) {
-                this.change = 0;
-                ctx.lineWidth = random(3, 12);
-                ctx.shadowBlur = ctx.lineWidth;
-                this.rate = random(1, 7);
-                this.rotate = random(3, 13);
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor();
-            }
-            stagger++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Maelstrom {
     constructor() {
         this.cp1 = random(0, w);
