@@ -25,6 +25,7 @@ import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
+import Rounded from './src/algos/Rounded.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spinner from './src/algos/Spinner.js';
 import SpiralLines from './src/algos/SpiralLines.js';
@@ -570,7 +571,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'offsets'; // for testing purposes
+    let choose = 'rounded'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -819,7 +820,7 @@ function chooseAlgos() {
         case 'rounded':
             displayAlgos('ROUNDED');
             ctx.save();
-            runningAlgo = new Rounded();
+            runningAlgo = new Rounded(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'spikey':
@@ -1432,57 +1433,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Rounded {
-    constructor() {
-        this.rounded1 = random(15, 50);
-        this.rounded2 = random(15, 50);
-        this.rounded3 = random(15, 50);
-        this.rounded4 = random(15, 50);
-        this.side1 = random(0, w / 4);
-        this.side2 = random(0, h / 4);
-        this.rotate = (random(1, 359) * Math.PI) / 180;
-
-        ctx.strokeStyle = randomColor(50, 255, 0.5, 1);
-        ctx.filter = 'contrast(2)';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.roundRect(
-                    this.side1,
-                    this.side2,
-                    this.side1,
-                    this.side2,
-                    {
-                        upperLeft: this.rounded1,
-                        upperRight: this.rounded2,
-                        lowerLeft: this.rounded3,
-                        lowerRight: this.rounded4,
-                    },
-                    true,
-                    true
-                );
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 125) === 0) {
-                this.rounded1 = random(15, 50);
-                this.rounded2 = random(15, 50);
-                this.rounded3 = random(15, 50);
-                this.rounded4 = random(15, 50);
-                this.side1 = random(0, w / 4);
-                this.side2 = random(0, h / 4);
-                this.rotate = (random(1, 359) * Math.PI) / 180;
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(50, 255, 0.5, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Spikey {
     constructor() {
         this.rounded1 = random(75, 475);
