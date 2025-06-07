@@ -17,6 +17,7 @@ import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Maelstrom from './src/algos/Maelstrom.js';
+import Maelstrom2 from './src/algos/Maelstrom2.js';
 import Microscope from './src/algos/Microscope.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
@@ -579,7 +580,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'maelstrom'; // for testing purposes
+    let choose = 'maelstrom2'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -882,7 +883,7 @@ function chooseAlgos() {
         case 'maelstrom2':
             displayAlgos('MAELSTROM 2');
             ctx.save();
-            runningAlgo = new Maelstrom2();
+            runningAlgo = new Maelstrom2(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'lollipottery':
@@ -1441,67 +1442,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Maelstrom2 {
-    constructor() {
-        this.cp1 = random(0, w);
-        this.cp2 = random(0, h);
-        this.alter1 = random(-5, 5);
-        this.alter2 = random(-5, 5);
-        this.alter3 = random(-5, 5);
-        this.alter4 = random(-5, 5);
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.angle = random(10, 350);
-
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = randomColor(0, 255, 0.8, 1);
-        ctx.fillStyle = randomColor(0, 160, 0.05, 0.15);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(w / 2, h / 2);
-                ctx.quadraticCurveTo(this.cp1, this.cp2, this.x1, this.y1);
-                this.cp1 += this.alter1;
-                if (this.cp1 > 2 * w || this.cp1 < -w) {
-                    this.alter1 = -this.alter1;
-                }
-                this.cp2 += this.alter2;
-                if (this.cp2 > 2 * h || this.cp2 < -h) {
-                    this.alter2 = -this.alter2;
-                }
-                this.x1 += this.alter3;
-                if (this.x1 > 2 * w || this.x1 < -w) {
-                    this.alter3 = -this.alter3;
-                }
-                this.y1 += this.alter4;
-                if (this.y1 > 2 * h || this.y1 < -h) {
-                    this.alter4 = -this.alter4;
-                }
-                ctx.stroke();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.angle * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 240) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.cp1 = random(0, w);
-                this.cp2 = random(0, h);
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.alter1 = random(-5, 5);
-                this.alter2 = random(-5, 5);
-                this.alter3 = random(-5, 5);
-                this.alter4 = random(-5, 5);
-                this.angle = random(10, 350);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.8, 1);
-                ctx.fillStyle = randomColor(0, 160, 0.05, 0.15);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
 
 class Lollipottery {
     constructor() {
