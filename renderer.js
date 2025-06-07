@@ -13,6 +13,7 @@ import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
+import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Microscope from './src/algos/Microscope.js';
 import Nebulas from './src/algos/Nebulas.js';
@@ -576,7 +577,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'atom'; // for testing purposes
+    let choose = 'geometer'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -861,7 +862,7 @@ function chooseAlgos() {
         case 'geometer':
             displayAlgos('GEOMETER');
             ctx.save();
-            runningAlgo = new Geometer();
+            runningAlgo = new Geometer(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'comets':
@@ -1438,56 +1439,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Geometer {
-    constructor() {
-        this.change = 0;
-        this.rate = random(25, 250);
-        this.rotate = random(23, 179);
-
-        ctx.shadowColor = 'black';
-        ctx.strokeStyle = randomColor();
-        ctx.lineWidth = random(2, 7);
-        ctx.shadowBlur = 1;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.lineTo(w / 2 + this.change, h / 2 + this.change);
-                ctx.stroke();
-                this.change += this.rate;
-                if (
-                    Math.abs(this.change + this.rate) >
-                    Math.max(w / 2, h / 2 || this.change + this.rate <= 0)
-                ) {
-                    this.rate = -this.rate;
-                }
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rotate * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 180) === 0) {
-                this.change = 0;
-                this.rate = random(25, 250);
-                this.rotate = random(23, 179);
-                ctx.beginPath();
-                ctx.lineWidth = random(2, 7);
-                let color = Math.random();
-                if (color < 0.2) {
-                    ctx.strokeStyle = 'white';
-                    ctx.shadowColor = 'black';
-                } else if (color < 0.4) {
-                    ctx.strokeStyle = 'black';
-                    ctx.shadowColor = 'white';
-                } else {
-                    ctx.strokeStyle = randomColor();
-                    ctx.shadowColor = 'black';
-                }
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Comets {
     constructor() {
         this.change = 0;
