@@ -53,6 +53,7 @@ import StainedGlass from './src/algos/StainedGlass.js';
 import Starbursts from './src/algos/Starbursts.js';
 import Starship from './src/algos/Starship.js';
 import Supernova from './src/algos/Supernova.js';
+import Sushi from './src/algos/Sushi.js';
 import TheBadge from './src/algos/TheBadge.js';
 import ThreeD from './src/algos/ThreeD.js';
 import UFOs from './src/algos/Ufos.js';
@@ -592,7 +593,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'angel-hair'; // for testing purposes
+    let choose = 'wormholes'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -911,14 +912,12 @@ function chooseAlgos() {
         case 'sushi':
             displayAlgos('SUSHI');
             ctx.save();
-            runningAlgo = new Sushi();
-            runningAlgo.draw();
+            runningAlgo = new Sushi(ctx, w, h);
             break;
         case 'wormholes':
             displayAlgos('WORMHOLES');
             ctx.save();
-            runningAlgo = new Wormholes();
-            runningAlgo.draw();
+            runningAlgo = new Wormholes(ctx, w, h);
             break;
         case 'solar':
             displayAlgos('SOLAR');
@@ -1392,46 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Sushi {
-    constructor() {
-        this.radius = 40;
-        this.gap = 4;
-        this.rows = Math.round(h / (this.radius + this.gap));
-        this.cols = Math.round(w / (this.radius + this.gap));
-
-        ctx.strokeStyle = 'white';
-        ctx.globalCompositeOperation = 'difference';
-        ctx.lineWidth = random(3, 17);
-        ctx.fillStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.beginPath();
-                        ctx.arc(
-                            100 * j - 50,
-                            100 * i - 50,
-                            this.radius,
-                            Math.random(),
-                            Math.random() * 2 * Math.PI
-                        );
-                        ctx.stroke();
-                        ctx.fill();
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 30) === 0) {
-                this.radius = random(10, 46);
-                ctx.lineWidth = random(3, 17);
-                ctx.fillStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Wormholes {
     constructor() {
         this.letters = [
