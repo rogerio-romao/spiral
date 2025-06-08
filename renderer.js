@@ -33,6 +33,7 @@ import Plaid from './src/algos/Plaid.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Radiance from './src/algos/Radiance.js';
+import RadioWaves from './src/algos/RadioWaves.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
@@ -583,7 +584,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'behind-bars'; // for testing purposes
+    let choose = 'radio-waves'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -910,7 +911,7 @@ function chooseAlgos() {
         case 'radio-waves':
             displayAlgos('RADIO WAVES');
             ctx.save();
-            runningAlgo = new RadioWaves();
+            runningAlgo = new RadioWaves(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'starship':
@@ -1445,54 +1446,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class RadioWaves {
-    constructor() {
-        this.first = 0;
-        this.second = 1;
-        this.divisors = [2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 20, 24, 30, 36];
-        this.divisor = this.divisors[random(0, this.divisors.length)];
-        this.posX = this.divisors[random(0, this.divisors.length)];
-        this.posY = this.divisors[random(0, this.divisors.length)];
-        this.seq = [this.first, this.second];
-
-        ctx.globalCompositeOperation = 'copy';
-        ctx.shadowColor = ctx.strokeStyle = randomColor(30, 255, 1, 1);
-        ctx.shadowBlur = 2;
-        ctx.lineWidth = 0.5;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                let radius = this.seq[0] + this.seq[1];
-                this.seq.push(radius);
-                this.seq.shift();
-                if (radius > Math.max(w, h)) {
-                    this.first++;
-                    this.second++;
-                    this.seq = [this.first, this.second];
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(Math.PI / this.divisor);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                ctx.arc(w / this.posX, h / this.posY, radius, 0, 2 * Math.PI);
-                ctx.stroke();
-            }
-            t++;
-            if (t % (speed * 360) === 0) {
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(30, 255, 1, 1);
-                this.divisor = this.divisors[random(0, this.divisors.length)];
-                this.posX = this.divisors[random(0, this.divisors.length)];
-                this.posY = this.divisors[random(0, this.divisors.length)];
-            }
-            if (t % (speed * 1440) === 0) {
-                this.first = 0;
-                this.second = 1;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Starship {
     constructor() {
         this.first = 0;
