@@ -61,6 +61,7 @@ import Universe from './src/algos/Universe.js';
 import VanishingRays from './src/algos/VanishingRays.js';
 import Wallpapering from './src/algos/Wallpapering.js';
 import Warp2001 from './src/algos/Warp2001.js';
+import Wormholes from './src/algos/Wormholes.js';
 
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
@@ -922,8 +923,7 @@ function chooseAlgos() {
         case 'solar':
             displayAlgos('SOLAR');
             ctx.save();
-            runningAlgo = new Solar();
-            runningAlgo.draw();
+            runningAlgo = new Solar(ctx, w, h);
             break;
         case 'fluor':
             displayAlgos('FLUOR');
@@ -1391,55 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Wormholes {
-    constructor() {
-        this.letters = [
-            2101, 2102, 2103, 2104, 2108, 2109, 2110, 2116, 2117, 2119, 2121,
-            2123, 2127, 2130, 2134, 2142, 2304, 2305, 2312, 2313, 2314, 2316,
-            2317, 2318, 2319, 2320, 2325, 2328, 2330, 2336, 2349, 2352, 2353,
-            2361, 2362, 2365, 2367, 2368, 2383, 2385, 2390, 2391,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.size = 15;
-        this.change = 2;
-        this.rotate = random(1, 22);
-
-        ctx.textAlign = 'center';
-        ctx.fillStyle = randomColor(0, 255, 0.05, 0.15);
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
-        ctx.font = `${this.size}px sans-serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillText(this.letter, w / 2, h / 2);
-                ctx.strokeText(this.letter, w / 2, h / 2);
-            }
-            this.size += this.change;
-            ctx.font = `${this.size}px sans-serif`;
-            if (ctx.measureText(this.letter).width > w / 2) {
-                this.change *= -1;
-            }
-            if (ctx.measureText(this.letter).width < 5) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.rotate = random(1, 22);
-                this.change *= -1;
-                ctx.fillStyle = randomColor(0, 255, 0.05, 0.15);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Solar {
     constructor() {
         this.x1 = random(0, w);
