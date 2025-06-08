@@ -3,6 +3,7 @@ import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import Atom from './src/algos/Atom.js';
+import BehindBars from './src/algos/BehindBars.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
@@ -582,7 +583,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'picnic'; // for testing purposes
+    let choose = 'behind-bars'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -903,7 +904,7 @@ function chooseAlgos() {
         case 'behind-bars':
             displayAlgos('BEHIND BARS');
             ctx.save();
-            runningAlgo = new BehindBars();
+            runningAlgo = new BehindBars(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'radio-waves':
@@ -1444,51 +1445,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class BehindBars {
-    constructor() {
-        this.rows = Math.ceil(h / 50) + 2;
-        this.cols = Math.ceil(w / 50) + 2;
-        this.rotate = random(1, 60);
-
-        ctx.strokeStyle = randomColor();
-        ctx.lineWidth = random(3, 75);
-        ctx.shadowColor = randomColor();
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.shadowBlur = ctx.lineWidth > 30 ? 30 : ctx.lineWidth;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'bevel';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.beginPath();
-                        ctx.moveTo(200 * j - 200, 200 * i - 200);
-                        ctx.lineTo(200 * j, 200 * i);
-                        ctx.stroke();
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 15) === 0) {
-                ctx.globalCompositeOperation = 'overlay';
-                ctx.strokeStyle = randomColor();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            if (t % (speed * 180) === 0) {
-                ctx.globalCompositeOperation = 'source-over';
-                this.rotate = random(1, 60);
-                ctx.lineWidth = random(3, 75);
-                ctx.shadowBlur = ctx.lineWidth > 30 ? 30 : ctx.lineWidth;
-                ctx.shadowColor = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class RadioWaves {
     constructor() {
         this.first = 0;
