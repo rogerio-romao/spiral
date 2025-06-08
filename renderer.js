@@ -2,6 +2,7 @@ import AccelerationMandala from './src/algos/AccelerationMandala.js';
 import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
+import AngelHair from './src/algos/AngelHair.js';
 import Atom from './src/algos/Atom.js';
 import Autumn from './src/algos/Autumn.js';
 import BehindBars from './src/algos/BehindBars.js';
@@ -591,7 +592,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'perspective'; // for testing purposes
+    let choose = 'angel-hair'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1391,65 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class AngelHair {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.rotate = random(2, 359);
-        this.radius1 = random(20, 300);
-        this.radius2 = random(20, 300);
-
-        speed = 3;
-
-        ctx.lineWidth = 0.25;
-        ctx.setLineDash([1, 4]);
-        ctx.strokeStyle = randomColor(120, 255, 0.66, 0.95);
-        ctx.globalCompositeOperation = 'hard-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.moveTo(this.y2, this.x1);
-                }
-                if (stagger === 1) {
-                    ctx.arcTo(w / 2, h, this.x1, this.y1, this.radius1);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.arcTo(w, h / 2, this.x2, this.y2, this.radius2);
-                    ctx.stroke();
-                }
-                if (stagger === 3) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-            }
-            stagger++;
-            t++;
-            if (t % (speed * 360) === 0) {
-                ctx.beginPath();
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.radius1 = random(20, 300);
-                this.radius2 = random(20, 300);
-                this.rotate = (random(2, 359) * Math.PI) / 180;
-                if (Math.random() < 0.075) {
-                    ctx.strokeStyle = 'white';
-                } else {
-                    ctx.strokeStyle = randomColor(120, 255, 0.66, 0.95);
-                }
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Sushi {
     constructor() {
         this.radius = 40;
