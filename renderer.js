@@ -11,6 +11,7 @@ import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Clock from './src/algos/Clock.js';
 import Comets from './src/algos/Comets.js';
 import CounterClock from './src/algos/CounterClock.js';
+import CrystalTiles from './src/algos/CrystalTiles.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
@@ -585,7 +586,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'starship'; // for testing purposes
+    let choose = 'crystal-tiles'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -924,7 +925,7 @@ function chooseAlgos() {
         case 'crystal-tiles':
             displayAlgos('CRYSTAL TILES');
             ctx.save();
-            runningAlgo = new CrystalTiles();
+            runningAlgo = new CrystalTiles(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'wallpapering':
@@ -1447,65 +1448,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class CrystalTiles {
-    constructor() {
-        this.gray = random(50, 215);
-        this.y = 0;
-        this.x = 0;
-        this.size = random(50, 150);
-        this.rotate = random(1, 15);
-        this.modes = [
-            'source-over',
-            'lighter',
-            'xor',
-            'overlay',
-            'multiply',
-            'screen',
-            'overlay',
-            'darken',
-            'lighten',
-            'color-dodge',
-            'color-burn',
-            'hard-light',
-            'overlay',
-            'soft-light',
-            'difference',
-            'saturation',
-            'luminosity',
-            'overlay',
-        ];
-
-        ctx.strokeStyle = 'white';
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.lineWidth = random(1, 4);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeRect(this.x, this.y, this.size, this.size);
-                ctx.fillStyle = randomColor();
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-                this.x += this.size;
-                if (this.x > w) {
-                    this.x = 0;
-                    this.y += this.size;
-                }
-                if (this.y > h) {
-                    this.x = 0;
-                    this.y = 0;
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                    this.size = random(35, 150);
-                    ctx.globalCompositeOperation =
-                        this.modes[random(0, this.modes.length)];
-                }
-            }
-            t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Wallpapering {
     constructor() {
         this.y = 0;
