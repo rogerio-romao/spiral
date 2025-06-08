@@ -16,6 +16,7 @@ import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
+import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
 import Microscope from './src/algos/Microscope.js';
@@ -580,7 +581,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'maelstrom2'; // for testing purposes
+    let choose = 'lollipottery'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -889,7 +890,7 @@ function chooseAlgos() {
         case 'lollipottery':
             displayAlgos('LOLLIPOTTERY');
             ctx.save();
-            runningAlgo = new Lollipottery();
+            runningAlgo = new Lollipottery(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'picnic':
@@ -1442,48 +1443,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-
-class Lollipottery {
-    constructor() {
-        this.radius = random(50, Math.max(w, h) / 2);
-        this.alter = random(-50, 50);
-
-        ctx.lineWidth = random(2, 14);
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.strokeStyle = randomColor();
-        ctx.shadowColor = randomColor();
-        ctx.shadowBlur = 4;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(w / 2, h / 2, this.radius, 0, 2 * Math.PI);
-                this.radius += this.alter;
-                if (this.radius > Math.max(w, h) || this.radius <= 40) {
-                    this.radius = random(50, Math.max(w, h) / 2);
-                    this.alter = random(-50, 50);
-                    ctx.lineWidth = random(2, 14);
-                }
-                ctx.stroke();
-                ctx.beginPath();
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.radius = random(50, Math.max(w, h));
-                this.alter = random(-50, 50);
-                ctx.lineWidth = random(1, 12);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-                ctx.shadowColor = randomColor();
-                ctx.globalCompositeOperation = 'overlay';
-            }
-            if (t % (speed * 600) === 0) {
-                ctx.globalCompositeOperation = 'source-over';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Picnic {
     constructor() {
         this.radius = random(10, 450);
