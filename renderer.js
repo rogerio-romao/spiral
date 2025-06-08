@@ -27,6 +27,7 @@ import Orbits from './src/algos/Orbits.js';
 import Organic from './src/algos/Organic.js';
 import ParallelUniverses from './src/algos/ParallelUniverses.js';
 import Patterns from './src/algos/Patterns.js';
+import Picnic from './src/algos/Picnic.js';
 import Plaid from './src/algos/Plaid.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
@@ -581,7 +582,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'lollipottery'; // for testing purposes
+    let choose = 'picnic'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -896,7 +897,7 @@ function chooseAlgos() {
         case 'picnic':
             displayAlgos('PICNIC');
             ctx.save();
-            runningAlgo = new Picnic();
+            runningAlgo = new Picnic(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'behind-bars':
@@ -1443,56 +1444,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Picnic {
-    constructor() {
-        this.radius = random(10, 450);
-        this.rows = Math.ceil(h / 150) + 2;
-        this.cols = Math.ceil(w / 150) + 2;
-
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = randomColor(10, 255, 0.2, 0.5);
-        ctx.lineWidth = random(1, 25);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    for (let j = 0; j <= this.cols; j++) {
-                        ctx.beginPath();
-                        ctx.arc(
-                            225 * j - 225,
-                            225 * i - 225,
-                            this.radius,
-                            0,
-                            2 * Math.PI
-                        );
-                        ctx.stroke();
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 30) === 0) {
-                this.radius = random(10, 450);
-                ctx.lineWidth = random(1, 25);
-                ctx.strokeStyle = randomColor(10, 255, 0.2, 0.5);
-                ctx.globalCompositeOperation = 'source-over';
-            }
-            if (t * (speed * 90) === 0) {
-                ctx.globalCompositeOperation = 'overlay';
-            }
-            if (t % (speed * 150) === 0) {
-                ctx.globalCompositeOperation = 'color';
-            }
-            if (t % (speed * 240) === 0) {
-                ctx.globalCompositeOperation = 'luminosity';
-            }
-            if (t % (speed * 570) === 0) {
-                ctx.globalCompositeOperation = 'hue';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class BehindBars {
     constructor() {
         this.rows = Math.ceil(h / 50) + 2;
