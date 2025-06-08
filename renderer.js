@@ -33,6 +33,7 @@ import Patterns from './src/algos/Patterns.js';
 import Picnic from './src/algos/Picnic.js';
 import PietriDish from './src/algos/PietriDish.js';
 import Plaid from './src/algos/Plaid.js';
+import Polyhedra from './src/algos/Polyhedra.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Radiance from './src/algos/Radiance.js';
@@ -589,7 +590,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'autumn'; // for testing purposes
+    let choose = 'perspective'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -893,13 +894,12 @@ function chooseAlgos() {
         case 'polyhedra':
             displayAlgos('POLYHEDRA');
             ctx.save();
-            runningAlgo = new Polyhedra();
+            runningAlgo = new Polyhedra(ctx, w, h);
             break;
         case 'perspective':
             displayAlgos('PERSPECTIVE');
             ctx.save();
-            runningAlgo = new Perspective();
-            runningAlgo.draw();
+            runningAlgo = new Perspective(ctx, w, h);
             break;
         case 'angel-hair':
             displayAlgos('ANGEL HAIR');
@@ -1391,39 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Polyhedra {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.rotations = [
-            1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 19, 20, 21, 23, 27,
-            28, 29,
-        ];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.lineTo(this.x, this.y);
-                ctx.fill();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 60) === 0) {
-                this.x = random(0, w);
-                this.y = random(0, h);
-                ctx.beginPath();
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-                this.rotate = this.rotations[random(0, this.rotations.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Perspective {
     constructor() {
         this.color1 = randomColor();
