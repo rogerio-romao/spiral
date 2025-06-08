@@ -30,6 +30,7 @@ import Orbits from './src/algos/Orbits.js';
 import Organic from './src/algos/Organic.js';
 import ParallelUniverses from './src/algos/ParallelUniverses.js';
 import Patterns from './src/algos/Patterns.js';
+import Perspective from './src/algos/Perspective.js';
 import Picnic from './src/algos/Picnic.js';
 import PietriDish from './src/algos/PietriDish.js';
 import Plaid from './src/algos/Plaid.js';
@@ -904,8 +905,7 @@ function chooseAlgos() {
         case 'angel-hair':
             displayAlgos('ANGEL HAIR');
             ctx.save();
-            runningAlgo = new AngelHair();
-            runningAlgo.draw();
+            runningAlgo = new AngelHair(ctx, w, h);
             break;
         case 'sushi':
             displayAlgos('SUSHI');
@@ -1391,49 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Perspective {
-    constructor() {
-        this.color1 = randomColor();
-        this.color2 = randomColor();
-        this.skewX = Math.random(0, 255, 0.2, 0.6);
-        this.skewY = Math.random(0, 255, 0.2, 0.6);
-        this.size = 20;
-
-        ctx.fillStyle = this.color1;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.setTransform(2, this.skewX, this.skewY, 2, 0, 0);
-                ctx.fillStyle = this.color1;
-                ctx.fillRect(
-                    Math.round(random(-200, w) / this.size) * this.size,
-                    Math.round(random(-260, h) / this.size) * this.size,
-                    this.size,
-                    this.size
-                );
-                ctx.fill();
-                ctx.fillStyle = this.color2;
-                ctx.fillRect(
-                    Math.round(random(-200, w) / this.size) * this.size,
-                    Math.round(random(-260, h) / this.size) * this.size,
-                    this.size,
-                    this.size
-                );
-                ctx.fill();
-            }
-            t++;
-            if (t % (speed * 2000) === 0) {
-                ctx.clearRect(-200, -200, w, h);
-                this.color1 = randomColor(0, 255, 0.2, 0.6);
-                this.color2 = randomColor(0, 255, 0.2, 0.6);
-                this.skewX = Math.random();
-                this.skewY = Math.random();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class AngelHair {
     constructor() {
         this.x1 = random(0, w);
