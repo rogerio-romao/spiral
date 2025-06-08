@@ -3,6 +3,7 @@ import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import Atom from './src/algos/Atom.js';
+import Autumn from './src/algos/Autumn.js';
 import BehindBars from './src/algos/BehindBars.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
@@ -1390,42 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Autumn {
-    constructor() {
-        this.y = 0;
-        this.x = 0;
-        this.size = random(13, 110);
-        this.rotate = random(1, 90);
-
-        ctx.fillStyle = randomColor(0, 255, 0.1, 0.6);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI);
-                ctx.fill();
-                this.x += this.size;
-                if (this.x > w) {
-                    this.x = 0;
-                    this.y += this.size;
-                    this.size = random(15, 110);
-                }
-                if (this.y > h) {
-                    this.x = 0;
-                    this.y = 0;
-                    this.rotate = random(1, 90);
-                    ctx.fillStyle = randomColor(0, 255, 0.1, 0.6);
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Polyhedra {
     constructor() {
         this.x = random(0, w);
