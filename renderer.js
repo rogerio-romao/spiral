@@ -53,6 +53,7 @@ import ThreeD from './src/algos/ThreeD.js';
 import UFOs from './src/algos/Ufos.js';
 import Universe from './src/algos/Universe.js';
 import VanishingRays from './src/algos/VanishingRays.js';
+import Wallpapering from './src/algos/Wallpapering.js';
 import Warp2001 from './src/algos/Warp2001.js';
 
 // This file is required by the index.html file and will
@@ -586,7 +587,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'crystal-tiles'; // for testing purposes
+    let choose = 'pietri-dish'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -596,361 +597,301 @@ function chooseAlgos() {
             displayAlgos('STARBURSTS');
             ctx.save();
             runningAlgo = new Starbursts(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'square-nebulas':
             displayAlgos('SQUARE NEBULAS');
             ctx.save();
             runningAlgo = new SquareNebulas(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'beziers-straight':
             displayAlgos('STRAIGHT BEZIERS');
             ctx.save();
             runningAlgo = new BeziersStraight(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'orbits':
             displayAlgos('ORBITS');
             ctx.save();
             runningAlgo = new Orbits(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'rims':
             displayAlgos('RIMS');
             ctx.save();
             runningAlgo = new Rims(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'nebulas':
             displayAlgos('NEBULA');
             ctx.save();
             runningAlgo = new Nebulas(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'dysons':
             displayAlgos('DYSON SPHERES');
             ctx.save();
             runningAlgo = new DysonSpheres(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'discos':
             displayAlgos('DISCO');
             ctx.save();
             runningAlgo = new Discos(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'neon-tartans':
             displayAlgos('NEON TARTAN');
             ctx.save();
             runningAlgo = new NeonTartans(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'dotted':
             displayAlgos('DOTTED');
             ctx.save();
             runningAlgo = new Dotted(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'spiral-lines':
             displayAlgos('SPIRAL LINES');
             ctx.save();
             runningAlgo = new SpiralLines(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'camouflage-postits':
             displayAlgos('CAMOUFLAGE POST-ITS');
             ctx.save();
             runningAlgo = new CamouflagePostits(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'the-badge':
             displayAlgos('THE BADGE');
             ctx.save();
             runningAlgo = new TheBadge(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'black-white':
             displayAlgos('BLACK & WHITE');
             ctx.save();
             runningAlgo = new BlacknWhite(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'stained-glass':
             displayAlgos('STAINED GLASS');
             ctx.save();
             runningAlgo = new StainedGlass(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'spiral-text':
             displayAlgos('SPIRAL TEXT');
             ctx.save();
             runningAlgo = new SpiralText(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'alphabet-soup':
             displayAlgos('ALPHABET SOUP');
             ctx.save();
             runningAlgo = new AlphabetSoup(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'punctuation':
             displayAlgos('PUNCTUATION');
             ctx.save();
             runningAlgo = new Punctuation(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'acceleration-mandala':
             displayAlgos('ACCELERATION MANDALA');
             ctx.save();
             runningAlgo = new AccelerationMandala(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'evolving-mandala':
             displayAlgos('EVOLVING MANDALA');
             ctx.save();
             runningAlgo = new EvolvingMandala(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'quadrants':
             displayAlgos('QUADRANTS');
             ctx.save();
             runningAlgo = new Quadrants(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'alien-flowers':
             displayAlgos('ALIEN FLOWERS');
             ctx.save();
             runningAlgo = new AlienFlowers(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'hyper-tunnel':
             displayAlgos('HYPER TUNNEL');
             ctx.save();
             runningAlgo = new HyperTunnel(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'chalk-galaxy':
             displayAlgos('CHALK GALAXY');
             ctx.save();
             runningAlgo = new ChalkGalaxy(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'patterns':
             displayAlgos('PATTERNS');
             ctx.save();
             runningAlgo = new Patterns(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'rotation-patterns':
             displayAlgos('ROTATION PATTERNS');
             ctx.save();
             runningAlgo = new RotationPatterns(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'microscope':
             displayAlgos('MICROSCOPE');
             ctx.save();
             runningAlgo = new Microscope(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'spinner':
             displayAlgos('SPINNER');
             ctx.save();
             runningAlgo = new Spinner(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'space-gears':
             displayAlgos('SPACE GEARS');
             ctx.save();
             runningAlgo = new SpaceGears(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'counter-clock':
             displayAlgos('COUNTER CLOCK');
             ctx.save();
             runningAlgo = new CounterClock(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'clock':
             displayAlgos('CLOCK');
             ctx.save();
             runningAlgo = new Clock(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'acid-stars':
             displayAlgos('ACID STARS');
             ctx.save();
             runningAlgo = new AcidStars(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'warp2001':
             displayAlgos('WARP 2001');
             ctx.save();
             runningAlgo = new Warp2001(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'vanishing-rays':
             displayAlgos('VANISHING RAYS');
             ctx.save();
             runningAlgo = new VanishingRays(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'plaid':
             displayAlgos('PLAID');
             ctx.save();
             runningAlgo = new Plaid(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'three-d':
             displayAlgos('THREE D');
             ctx.save();
             runningAlgo = new ThreeD(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'supernova':
             displayAlgos('SUPERNOVA');
             ctx.save();
             runningAlgo = new Supernova(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'organic':
             displayAlgos('ORGANIC');
             ctx.save();
             runningAlgo = new Organic(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'ufos':
             displayAlgos('UFOs');
             ctx.save();
             runningAlgo = new UFOs(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'offsets':
             displayAlgos('OFFSETS');
             ctx.save();
             runningAlgo = new Offsets(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'rounded':
             displayAlgos('ROUNDED');
             ctx.save();
             runningAlgo = new Rounded(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'spikey':
             displayAlgos('SPIKEY');
             ctx.save();
             runningAlgo = new Spikey(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'radiance':
             displayAlgos('RADIANCE');
             ctx.save();
             runningAlgo = new Radiance(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'universe':
             displayAlgos('UNIVERSE');
             ctx.save();
             runningAlgo = new Universe(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'parallel-universes':
             displayAlgos('PARALLEL UNIVERSES');
             ctx.save();
             runningAlgo = new ParallelUniverses(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'atom':
             displayAlgos('ATOM');
             ctx.save();
             runningAlgo = new Atom(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'geometer':
             displayAlgos('GEOMETER');
             ctx.save();
             runningAlgo = new Geometer(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'comets':
             displayAlgos('COMETS');
             ctx.save();
             runningAlgo = new Comets(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'maelstrom':
             displayAlgos('MAELSTROM');
             ctx.save();
             runningAlgo = new Maelstrom(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'maelstrom2':
             displayAlgos('MAELSTROM 2');
             ctx.save();
             runningAlgo = new Maelstrom2(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'lollipottery':
             displayAlgos('LOLLIPOTTERY');
             ctx.save();
             runningAlgo = new Lollipottery(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'picnic':
             displayAlgos('PICNIC');
             ctx.save();
             runningAlgo = new Picnic(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'behind-bars':
             displayAlgos('BEHIND BARS');
             ctx.save();
             runningAlgo = new BehindBars(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'radio-waves':
             displayAlgos('RADIO WAVES');
             ctx.save();
             runningAlgo = new RadioWaves(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'starship':
             displayAlgos('STARSHIP');
             ctx.save();
             runningAlgo = new Starship(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'crystal-tiles':
             displayAlgos('CRYSTAL TILES');
             ctx.save();
             runningAlgo = new CrystalTiles(ctx, w, h);
-            runningAlgo.draw();
             break;
         case 'wallpapering':
             displayAlgos('WALLPAPERING');
             ctx.save();
-            runningAlgo = new Wallpapering();
-            runningAlgo.draw();
+            runningAlgo = new Wallpapering(ctx, w, h);
             break;
         case 'pietri-dish':
             displayAlgos('PIETRI DISH');
             ctx.save();
-            runningAlgo = new PietriDish();
-            runningAlgo.draw();
+            runningAlgo = new PietriDish(ctx, w, h);
             break;
         case 'autumn':
             displayAlgos('AUTUMN');
             ctx.save();
             runningAlgo = new Autumn();
-            runningAlgo.draw();
             break;
         case 'polyhedra':
             displayAlgos('POLYHEDRA');
             ctx.save();
             runningAlgo = new Polyhedra();
-            runningAlgo.draw();
             break;
         case 'perspective':
             displayAlgos('PERSPECTIVE');
@@ -1448,60 +1389,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Wallpapering {
-    constructor() {
-        this.y = 0;
-        this.x = 0;
-        this.size = random(50, 200);
-        this.modes = [
-            'source-over',
-            'lighter',
-            'xor',
-            'overlay',
-            'multiply',
-            'screen',
-            'overlay',
-            'darken',
-            'lighten',
-            'color-dodge',
-            'color-burn',
-            'hard-light',
-            'overlay',
-            'soft-light',
-            'difference',
-            'saturation',
-            'luminosity',
-            'overlay',
-        ];
-
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 3;
-        ctx.globalCompositeOperation = 'overlay';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeRect(this.x, this.y, this.size, this.size);
-                ctx.fillStyle = randomColor();
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-                this.x += this.size;
-                if (this.x > w) {
-                    this.x = 0;
-                    this.y += this.size;
-                }
-                if (this.y > h) {
-                    this.x = 0;
-                    this.y = 0;
-                    this.size = random(35, 200);
-                    ctx.globalCompositeOperation =
-                        this.modes[random(0, this.modes.length)];
-                }
-            }
-            t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class PietriDish {
     constructor() {
         this.y = 0;
