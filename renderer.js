@@ -30,6 +30,7 @@ import Organic from './src/algos/Organic.js';
 import ParallelUniverses from './src/algos/ParallelUniverses.js';
 import Patterns from './src/algos/Patterns.js';
 import Picnic from './src/algos/Picnic.js';
+import PietriDish from './src/algos/PietriDish.js';
 import Plaid from './src/algos/Plaid.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
@@ -587,7 +588,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'pietri-dish'; // for testing purposes
+    let choose = 'autumn'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -886,7 +887,7 @@ function chooseAlgos() {
         case 'autumn':
             displayAlgos('AUTUMN');
             ctx.save();
-            runningAlgo = new Autumn();
+            runningAlgo = new Autumn(ctx, w, h);
             break;
         case 'polyhedra':
             displayAlgos('POLYHEDRA');
@@ -1389,67 +1390,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class PietriDish {
-    constructor() {
-        this.y = 0;
-        this.x = 0;
-        this.size = random(15, 115);
-        this.rotate = random(1, 90);
-
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.shadowColor = randomColor(100, 255, 0.75, 1);
-        ctx.fillStyle = randomColor();
-        ctx.strokeStyle = randomColor();
-        ctx.lineWidth = random(2, 18);
-        ctx.shadowBlur = 35;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(
-                    this.x - this.size / 2,
-                    this.y - this.size / 2,
-                    this.size / 2,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.stroke();
-                ctx.fill();
-                this.x += this.size;
-                if (this.x > w) {
-                    this.x = 0;
-                    this.y += this.size;
-                }
-                if (this.y > h) {
-                    this.x = 0;
-                    this.y = 0;
-                    this.size = random(15, 115);
-                }
-            }
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.rotate = random(1, 90);
-                ctx.lineWidth = random(2, 18);
-                if (Math.random() < 0.2) {
-                    ctx.fillStyle = 'black';
-                } else {
-                    ctx.fillStyle = randomColor();
-                }
-                ctx.shadowColor = randomColor(100, 255, 0.75, 1);
-            }
-            if (t % (speed * 450) === 0) {
-                ctx.beginPath();
-                this.size = random(15, 85);
-                ctx.strokeStyle = randomColor();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Autumn {
     constructor() {
         this.y = 0;
