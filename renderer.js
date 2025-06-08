@@ -45,6 +45,7 @@ import SpiralText from './src/algos/SpiralText.js';
 import SquareNebulas from './src/algos/SquareNebulas.js';
 import StainedGlass from './src/algos/StainedGlass.js';
 import Starbursts from './src/algos/Starbursts.js';
+import Starship from './src/algos/Starship.js';
 import Supernova from './src/algos/Supernova.js';
 import TheBadge from './src/algos/TheBadge.js';
 import ThreeD from './src/algos/ThreeD.js';
@@ -584,7 +585,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'radio-waves'; // for testing purposes
+    let choose = 'starship'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -917,7 +918,7 @@ function chooseAlgos() {
         case 'starship':
             displayAlgos('STARSHIP');
             ctx.save();
-            runningAlgo = new Starship();
+            runningAlgo = new Starship(ctx, w, h);
             runningAlgo.draw();
             break;
         case 'crystal-tiles':
@@ -1446,50 +1447,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Starship {
-    constructor() {
-        this.first = 0;
-        this.second = 1;
-        this.divisors = [2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 20, 24, 30, 36];
-        this.divisor = this.divisors[random(0, this.divisors.length)];
-        this.seq = [this.first, this.second];
-
-        ctx.globalCompositeOperation = 'hard-light';
-        ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.6, 1);
-        ctx.shadowBlur = 2;
-        ctx.lineWidth = 0.5;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                let radius = this.seq[0] + this.seq[1];
-                this.seq.push(radius);
-                this.seq.shift();
-                if (radius > Math.max(w, h)) {
-                    this.first++;
-                    this.second++;
-                    this.seq = [this.first, this.second];
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(Math.PI / this.divisor);
-                    ctx.translate(-w / 2, -h / 2);
-                }
-                ctx.arc(w / 2, h / 2, radius, 0, 2 * Math.PI);
-                ctx.stroke();
-            }
-            t++;
-            if (t % (speed * 240) === 0) {
-                ctx.beginPath();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.6, 1);
-                this.divisor = this.divisors[random(0, this.divisors.length)];
-            }
-            if (t % (speed * 1200) === 0) {
-                this.first = 0;
-                this.second = 1;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class CrystalTiles {
     constructor() {
         this.gray = random(50, 215);
