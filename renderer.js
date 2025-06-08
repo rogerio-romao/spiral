@@ -43,6 +43,7 @@ import RadioWaves from './src/algos/RadioWaves.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
+import Solar from './src/algos/Solar.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spikey from './src/algos/Spikey.js';
 import Spinner from './src/algos/Spinner.js';
@@ -594,7 +595,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'wormholes'; // for testing purposes
+    let choose = 'solar'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1391,41 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Solar {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.rotate = random(1, 359);
-
-        ctx.strokeStyle = randomColor();
-        ctx.globalCompositeOperation = 'hard-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(0, 0);
-                ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, w, h);
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 120) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.rotate = random(1, 359);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Fluor {
     constructor() {
         this.x1 = random(0, w);
