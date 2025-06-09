@@ -72,6 +72,7 @@ import Universe from './src/algos/Universe.js';
 import VanishingRays from './src/algos/VanishingRays.js';
 import Wallpapering from './src/algos/Wallpapering.js';
 import Warp2001 from './src/algos/Warp2001.js';
+import Wormhole from './src/algos/Wormhole.js';
 import Wormholes from './src/algos/Wormholes.js';
 
 // This file is required by the index.html file and will
@@ -1391,64 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Wormhole {
-    constructor() {
-        this.x = random(50, w - 50);
-        this.y = random(50, h - 50);
-        this.width = random(30, w);
-        this.height = random(30, h);
-        this.ul = random(10, 50);
-        this.ur = random(10, 50);
-        this.ll = random(10, 50);
-        this.lr = random(10, 50);
-        this.rotate = random(1, 44);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.2, 0.5);
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.01);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.ll,
-                        lowerRight: this.lr,
-                    },
-                    true,
-                    true
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            this.width++;
-            this.height++;
-            this.ul++;
-            this.ur++;
-            t++;
-            if (t % (speed * 360) === 0) {
-                this.width = random(30, w);
-                this.height = random(30, h);
-                this.x = random(50, w - 50);
-                this.y = random(50, h - 50);
-                this.ul = random(10, 50);
-                this.ur = random(10, 50);
-                this.ll = random(10, 50);
-                this.lr = random(10, 50);
-                this.rotate = random(1, 44);
-                ctx.strokeStyle = randomColor(0, 255, 0.2, 0.5);
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.01);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Irradiate {
     constructor() {
         this.width = random(50, w / 2);

@@ -1,0 +1,76 @@
+import BA from '../BaseAlgorithm.js';
+
+export default class Wormhole extends BA {
+    constructor(ctx, w, h) {
+        super(ctx, w, h);
+
+        this.initializeProperties();
+        this.setupDrawingStyles();
+
+        this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeProperties() {
+        this.x = BA.random(50, this.w - 50);
+        this.y = BA.random(50, this.h - 50);
+        this.width = BA.random(30, this.w);
+        this.height = BA.random(30, this.h);
+        this.ul = BA.random(10, 50);
+        this.ur = BA.random(10, 50);
+        this.ll = BA.random(10, 50);
+        this.lr = BA.random(10, 50);
+        this.rotate = BA.random(1, 44);
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.2, 0.5);
+        this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.01);
+    }
+
+    draw() {
+        if (this.t % this.speed === 0) {
+            this.ctx.roundRect(
+                this.x,
+                this.y,
+                this.width,
+                this.height,
+                {
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
+                    lowerLeft: this.ll,
+                    lowerRight: this.lr,
+                },
+                true,
+                true
+            );
+        }
+
+        this.ctx.translate(this.w / 2, this.h / 2);
+        this.ctx.rotate(this.rotate);
+        this.ctx.translate(-this.w / 2, -this.h / 2);
+
+        this.width++;
+        this.height++;
+        this.ul++;
+        this.ur++;
+
+        if (this.t % (this.speed * 360) === 0) {
+            this.width = BA.random(30, this.w);
+            this.height = BA.random(30, this.h);
+            this.x = BA.random(50, this.w - 50);
+            this.y = BA.random(50, this.h - 50);
+            this.ul = BA.random(10, 50);
+            this.ur = BA.random(10, 50);
+            this.ll = BA.random(10, 50);
+            this.lr = BA.random(10, 50);
+            this.rotate = BA.random(1, 44);
+
+            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.2, 0.5);
+            this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.01);
+        }
+
+        this.t++;
+
+        requestAnimationFrame(this.draw);
+    }
+}
