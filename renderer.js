@@ -57,6 +57,7 @@ import Starship from './src/algos/Starship.js';
 import Supernova from './src/algos/Supernova.js';
 import Sushi from './src/algos/Sushi.js';
 import TheBadge from './src/algos/TheBadge.js';
+import TheFan from './src/algos/TheFan.js';
 import ThreeD from './src/algos/ThreeD.js';
 import UFOs from './src/algos/Ufos.js';
 import Universe from './src/algos/Universe.js';
@@ -596,7 +597,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'fluor'; // for testing purposes
+    let choose = 'the-fan'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -935,8 +936,7 @@ function chooseAlgos() {
         case 'the-fan':
             displayAlgos('THE FAN');
             ctx.save();
-            runningAlgo = new TheFan();
-            runningAlgo.draw();
+            runningAlgo = new TheFan(ctx, w, h);
             break;
         case 'fade-in':
             displayAlgos('FADE IN');
@@ -1392,59 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class TheFan {
-    constructor() {
-        this.x1 = random(0, w / 2);
-        this.y1 = random(0, h / 2);
-        this.x2 = random(w / 2, w);
-        this.y2 = random(h / 2, h);
-        this.ox = random(0, w / 2);
-        this.oy = random(0, h / 2);
-        this.dx = random(w / 2, w);
-        this.dy = random(h / 2, h);
-        this.rotate = random(1, 359);
-
-        ctx.strokeStyle = randomColor();
-        ctx.globalCompositeOperation = 'luminosity';
-        ctx.filter = 'saturate(500%)';
-        ctx.shadowColor = 'black';
-        ctx.shadowBlur = 4;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.ox++, this.oy);
-                ctx.bezierCurveTo(
-                    this.x1,
-                    this.y1,
-                    this.x2,
-                    this.y2,
-                    this.dx,
-                    this.dy++
-                );
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 240) === 0) {
-                this.x1 = random(0, w / 2);
-                this.y1 = random(0, h / 2);
-                this.x2 = random(w / 2, w);
-                this.y2 = random(h / 2, h);
-                this.ox = random(0, w / 2);
-                this.oy = random(0, h / 2);
-                this.dx = random(w / 2, w);
-                this.dy = random(h / 2, h);
-                this.rotate = random(1, 359);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class FadeIn {
     constructor() {
         this.x1 = random(0, w);
