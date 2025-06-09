@@ -1,3 +1,4 @@
+import Abstractions from './src/algos/Abstractions.js';
 import AccelerationMandala from './src/algos/AccelerationMandala.js';
 import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
@@ -600,7 +601,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'epic-rays'; // for testing purposes
+    let choose = 'abstractions'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -959,8 +960,7 @@ function chooseAlgos() {
         case 'abstractions':
             displayAlgos('ABSTRACTIONS');
             ctx.save();
-            runningAlgo = new Abstractions();
-            runningAlgo.draw();
+            runningAlgo = new Abstractions(ctx, w, h);
             break;
         case 'chillout':
             displayAlgos('CHILL OUT');
@@ -1392,99 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Abstractions {
-    constructor() {
-        this.pointAx = random(0, w);
-        this.pointAy = random(0, h);
-        this.pointCpAx = random(0, w);
-        this.pointCpAy = random(0, h);
-        this.pointBx = random(0, w);
-        this.pointBy = random(0, h);
-        this.pointCpBx = random(0, w);
-        this.pointCpBy = random(0, h);
-        this.pointCx = random(0, w);
-        this.pointCy = random(0, h);
-        this.pointCpCx = random(0, w);
-        this.pointCpCy = random(0, h);
-        this.rotations = [
-            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43,
-        ];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-
-        speed = 3;
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor(0, 255, 0.25, 0.45);
-        ctx.shadowBlur = 3;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.pointCx, this.pointCy);
-                    ctx.quadraticCurveTo(
-                        this.pointCpAx,
-                        this.pointCpAy,
-                        this.pointAx,
-                        this.pointAy
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.pointAx, this.pointAy);
-                    ctx.quadraticCurveTo(
-                        this.pointCpBx,
-                        this.pointCpBy,
-                        this.pointBx,
-                        this.pointBy
-                    );
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.pointBx, this.pointBy);
-                    ctx.quadraticCurveTo(
-                        this.pointCpCx,
-                        this.pointCpCy,
-                        this.pointCx,
-                        this.pointCy
-                    );
-                    ctx.stroke();
-                }
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            stagger++;
-            t++;
-            if (t % (speed * 180) === 0) {
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    0,
-                    255,
-                    0.25,
-                    0.45
-                );
-                this.pointAx = random(0, w);
-                this.pointAy = random(0, h);
-                this.pointCpAx = random(0, w);
-                this.pointCpAy = random(0, h);
-                this.pointBx = random(0, w);
-                this.pointBy = random(0, h);
-                this.pointCpBx = random(0, w);
-                this.pointCpBy = random(0, h);
-                this.pointCx = random(0, w);
-                this.pointCy = random(0, h);
-                this.pointCpCx = random(0, w);
-                this.pointCpCy = random(0, h);
-                this.rotate = this.rotations[random(0, this.rotations.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Chillout {
     constructor() {
         this.x1 = random(0, w);
