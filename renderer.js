@@ -31,6 +31,7 @@ import NeonTartans from './src/algos/NeonTartans.js';
 import Offsets from './src/algos/Offsets.js';
 import Orbits from './src/algos/Orbits.js';
 import Organic from './src/algos/Organic.js';
+import Ourobouros from './src/algos/Ourobouros.js';
 import ParallelUniverses from './src/algos/ParallelUniverses.js';
 import Patterns from './src/algos/Patterns.js';
 import Perspective from './src/algos/Perspective.js';
@@ -598,7 +599,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'fade-in'; // for testing purposes
+    let choose = 'ourobouros'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -947,8 +948,7 @@ function chooseAlgos() {
         case 'ourobouros':
             displayAlgos('OUROBOUROS');
             ctx.save();
-            runningAlgo = new Ourobouros();
-            runningAlgo.draw();
+            runningAlgo = new Ourobouros(ctx, w, h);
             break;
         case 'epic-rays':
             displayAlgos('EPIC RAYS');
@@ -1392,51 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Ourobouros {
-    constructor() {
-        this.letters = [
-            2503, 2504, 2508, 2509, 2510, 2519, 2527, 2528, 2529, 2530, 2531,
-            2536, 2537, 2539, 2541, 2544, 2545, 2563, 2566, 2569, 2584, 2591,
-            2596,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.x = random(100, w - 100);
-        this.y = random(100, h - 100);
-        this.rotate = random(4, 30);
-
-        ctx.globalCompositeOperation = 'difference';
-        ctx.lineWidth = 20;
-        ctx.font = `${random(40, 300)}px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.strokeStyle = randomColor(0, 255, 0.08, 0.4);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, this.x, this.y);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 80) === 0) {
-                this.x = random(100, w - 100);
-                this.y = random(100, h - 100);
-                ctx.font = `${random(40, 300)}px sans-serif`;
-                this.rotate = random(4, 30);
-                ctx.strokeStyle = randomColor(0, 255, 0.08, 0.4);
-            }
-            if (t % (speed * 1000) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class EpicRays {
     constructor() {
         this.pointAx = random(0, w);
