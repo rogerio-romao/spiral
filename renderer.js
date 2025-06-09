@@ -11,6 +11,7 @@ import BeziersStraight from './src/algos/BeziersStraight.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
+import Chillout from './src/algos/Chillout.js';
 import Clock from './src/algos/Clock.js';
 import Comets from './src/algos/Comets.js';
 import CounterClock from './src/algos/CounterClock.js';
@@ -601,7 +602,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'abstractions'; // for testing purposes
+    let choose = 'chillout'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -965,8 +966,7 @@ function chooseAlgos() {
         case 'chillout':
             displayAlgos('CHILL OUT');
             ctx.save();
-            runningAlgo = new Chillout();
-            runningAlgo.draw();
+            runningAlgo = new Chillout(ctx, w, h);
             break;
         case 'swirls':
             displayAlgos('SWIRLS');
@@ -1392,47 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Chillout {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.rotate = random(1, 10);
-
-        ctx.lineWidth = random(1, 5);
-        ctx.strokeStyle = randomColor(0, 255, 0.4, 1);
-        ctx.filter = 'saturate(17.5%)';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.x3, this.y3);
-                ctx.quadraticCurveTo(this.x2, this.y2, this.x1, this.y1);
-                ctx.stroke();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 80) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                ctx.beginPath();
-                ctx.lineWidth = random(1, 5);
-                ctx.strokeStyle = randomColor(0, 255, 0.4, 1);
-                this.rotate = random(1, 10);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Swirls {
     constructor() {
         this.x1 = random(0, w);
