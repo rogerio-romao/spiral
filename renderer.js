@@ -61,6 +61,7 @@ import Starbursts from './src/algos/Starbursts.js';
 import Starship from './src/algos/Starship.js';
 import Supernova from './src/algos/Supernova.js';
 import Sushi from './src/algos/Sushi.js';
+import Swirls from './src/algos/Swirls.js';
 import TheBadge from './src/algos/TheBadge.js';
 import TheFan from './src/algos/TheFan.js';
 import ThreeD from './src/algos/ThreeD.js';
@@ -602,7 +603,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'chillout'; // for testing purposes
+    let choose = 'swirls'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -971,8 +972,7 @@ function chooseAlgos() {
         case 'swirls':
             displayAlgos('SWIRLS');
             ctx.save();
-            runningAlgo = new Swirls();
-            runningAlgo.draw();
+            runningAlgo = new Swirls(ctx, w, h);
             break;
         case 'mirage':
             displayAlgos('MIRAGE');
@@ -1392,47 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Swirls {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.rotate = random(1, 10);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.5, 0.8);
-        ctx.lineWidth = 0.4;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.x3, this.y3);
-                ctx.quadraticCurveTo(this.x2, this.y2, this.x1, this.y1);
-                ctx.stroke();
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(this.rotate);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 240) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                ctx.beginPath();
-
-                ctx.strokeStyle = randomColor(0, 255, 0.5, 0.8);
-
-                this.rotate = random(1, 10);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Mirage {
     constructor() {
         this.width = random(100, w);
