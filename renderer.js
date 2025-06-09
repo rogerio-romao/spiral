@@ -17,6 +17,7 @@ import CrystalTiles from './src/algos/CrystalTiles.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
+import EpicRays from './src/algos/EpicRays.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
@@ -599,7 +600,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'ourobouros'; // for testing purposes
+    let choose = 'epic-rays'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -953,8 +954,7 @@ function chooseAlgos() {
         case 'epic-rays':
             displayAlgos('EPIC RAYS');
             ctx.save();
-            runningAlgo = new EpicRays();
-            runningAlgo.draw();
+            runningAlgo = new EpicRays(ctx, w, h);
             break;
         case 'abstractions':
             displayAlgos('ABSTRACTIONS');
@@ -1392,64 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class EpicRays {
-    constructor() {
-        this.pointAx = random(0, w);
-        this.pointAy = random(0, h);
-        this.pointBx = random(0, w);
-        this.pointBy = random(0, h);
-        this.pointCx = random(0, w);
-        this.pointCy = random(0, h);
-        this.rotations = [
-            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43,
-        ];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-
-        ctx.strokeStyle = randomColor(40, 255, 0.25, 0.5);
-        speed = 3;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                stagger = stagger % 4;
-                if (stagger === 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(w / 2, h / 2);
-                    ctx.lineTo(this.pointAx, this.pointAy);
-                    ctx.stroke();
-                }
-                if (stagger === 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.pointAx, this.pointAy);
-                    ctx.lineTo(this.pointBx, this.pointBy);
-                    ctx.stroke();
-                }
-                if (stagger === 2) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.pointBx, this.pointBy);
-                    ctx.lineTo(this.pointCx, this.pointCy);
-                    ctx.stroke();
-                }
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            stagger++;
-            t++;
-            if (t % (speed * 300) === 0) {
-                ctx.strokeStyle = randomColor(40, 255, 0.25, 0.5);
-                this.pointAx = random(0, w);
-                this.pointAy = random(0, h);
-                this.pointBx = random(0, w);
-                this.pointBy = random(0, h);
-                this.pointCx = random(0, w);
-                this.pointCy = random(0, h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Abstractions {
     constructor() {
         this.pointAx = random(0, w);
