@@ -29,6 +29,7 @@ import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
 import Microscope from './src/algos/Microscope.js';
+import Mirage from './src/algos/Mirage.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Offsets from './src/algos/Offsets.js';
@@ -603,7 +604,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'swirls'; // for testing purposes
+    let choose = 'majestic'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -977,14 +978,12 @@ function chooseAlgos() {
         case 'mirage':
             displayAlgos('MIRAGE');
             ctx.save();
-            runningAlgo = new Mirage();
-            runningAlgo.draw();
+            runningAlgo = new Mirage(ctx, w, h);
             break;
         case 'majestic':
             displayAlgos('MAJESTIC');
             ctx.save();
-            runningAlgo = new Majestic();
-            runningAlgo.draw();
+            runningAlgo = new Majestic(ctx, w, h);
             break;
         case 'wormhole':
             displayAlgos('WORMHOLE');
@@ -1392,55 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Mirage {
-    constructor() {
-        this.width = random(100, w);
-        this.height = random(100, h);
-        this.ul = random(10, 300);
-        this.ur = random(10, 300);
-        this.ll = random(10, 300);
-        this.lr = random(10, 300);
-        this.rotate = random(1, 50);
-
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    w / 2 - this.width / 2,
-                    h / 2 - this.height / 2,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.ll,
-                        lowerRight: this.lr,
-                    },
-                    true,
-                    false
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 200) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.width = random(100, w);
-                this.height = random(100, h);
-                this.ul = random(10, 300);
-                this.ur = random(10, 300);
-                this.ll = random(10, 300);
-                this.lr = random(10, 300);
-                this.rotate = random(1, 50);
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Majestic {
     constructor() {
         this.x = random(0, w);
