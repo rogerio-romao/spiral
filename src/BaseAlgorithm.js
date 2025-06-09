@@ -18,7 +18,7 @@ export default class BaseAlgorithm {
         this.h = h;
 
         // Common properties that many algorithms might use
-        this.t = 0; // Time variable or frame counter
+        this.t = 1; // Time variable or frame counter
         this.interval = null; // To store requestAnimationFrame ID
         this.speed = BaseAlgorithm.random(2, 6); // Use static method instead
         this.stagger = 0; // Used for staggered animations

@@ -18,6 +18,7 @@ import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
+import Fluor from './src/algos/Fluor.js';
 import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Lollipottery from './src/algos/Lollipottery.js';
@@ -595,7 +596,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'solar'; // for testing purposes
+    let choose = 'fluor'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -929,8 +930,7 @@ function chooseAlgos() {
         case 'fluor':
             displayAlgos('FLUOR');
             ctx.save();
-            runningAlgo = new Fluor();
-            runningAlgo.draw();
+            runningAlgo = new Fluor(ctx, w, h);
             break;
         case 'the-fan':
             displayAlgos('THE FAN');
@@ -1392,58 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Fluor {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.ox = random(0, w);
-        this.oy = random(0, h);
-        this.dx = random(0, w);
-        this.dy = random(0, h);
-        this.rotate = random(1, 359);
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor();
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.lineWidth = 2;
-        ctx.shadowBlur = 4;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.ox, this.oy);
-                ctx.bezierCurveTo(
-                    this.x1,
-                    this.y1,
-                    this.x2,
-                    this.y2,
-                    this.dx,
-                    this.dy
-                );
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 180) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.ox = random(0, w);
-                this.oy = random(0, h);
-                this.dx = random(0, w);
-                this.dy = random(0, h);
-                this.rotate = random(1, 359);
-                ctx.beginPath();
-                ctx.strokeStyle = ctx.shadowColor = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class TheFan {
     constructor() {
         this.x1 = random(0, w / 2);
