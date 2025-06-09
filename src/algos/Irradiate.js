@@ -1,0 +1,65 @@
+import BA from '../BaseAlgorithm.js';
+
+export default class Irradiate extends BA {
+    constructor(ctx, w, h) {
+        super(ctx, w, h);
+
+        this.initializeProperties();
+        this.setupDrawingStyles();
+
+        this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeProperties() {
+        this.width = BA.random(50, this.w / 2);
+        this.height = BA.random(50, this.h / 2);
+        this.rotate = BA.random(1, 181);
+        this.ul = BA.random(10, Math.min(this.w, this.h));
+        this.ur = BA.random(10, Math.min(this.w, this.h));
+        this.ll = BA.random(10, Math.min(this.w, this.h));
+        this.lr = BA.random(10, Math.min(this.w, this.h));
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.33);
+        this.ctx.globalCompositeOperation = 'hard-light';
+    }
+
+    draw() {
+        if (this.t % this.speed === 0) {
+            this.ctx.roundRect(
+                this.w / 2 - this.width / 2,
+                this.h / 2 - this.height / 2,
+                this.width,
+                this.height,
+                {
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
+                    lowerLeft: this.ll,
+                    lowerRight: this.lr,
+                }
+            );
+        }
+
+        this.ctx.translate(this.w / 2, this.h / 2);
+        this.ctx.rotate(this.rotate);
+        this.ctx.translate(-this.w / 2, -this.h / 2);
+
+        if (this.t % (this.speed * 150) === 0) {
+            this.width = BA.random(50, this.w / 2);
+            this.height = BA.random(50, this.h / 2);
+            this.rotate = BA.random(1, 181);
+            this.ul = BA.random(10, Math.min(this.w, this.h));
+            this.ur = BA.random(10, Math.min(this.w, this.h));
+            this.ll = BA.random(10, Math.min(this.w, this.h));
+            this.lr = BA.random(10, Math.min(this.w, this.h));
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.33);
+        }
+
+        this.t++;
+
+        this.interval = requestAnimationFrame(this.draw);
+    }
+}

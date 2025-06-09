@@ -25,6 +25,7 @@ import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
 import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
+import Irradiate from './src/algos/Irradiate.js';
 import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
@@ -606,7 +607,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'wormhole'; // for testing purposes
+    let choose = 'irradiate'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -995,8 +996,7 @@ function chooseAlgos() {
         case 'irradiate':
             displayAlgos('IRRADIATE');
             ctx.save();
-            runningAlgo = new Irradiate();
-            runningAlgo.draw();
+            runningAlgo = new Irradiate(ctx, w, h);
             break;
         case 'entropy':
             displayAlgos('ENTROPY');
@@ -1392,54 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Irradiate {
-    constructor() {
-        this.width = random(50, w / 2);
-        this.height = random(50, h / 2);
-        this.rotate = random(1, 181);
-        this.ul = random(10, Math.min(w, h));
-        this.ur = random(10, Math.min(w, h));
-        this.ll = random(10, Math.min(w, h));
-        this.lr = random(10, Math.min(w, h));
-
-        ctx.strokeStyle = randomColor(0, 255, 0.33);
-        ctx.globalCompositeOperation = 'hard-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    w / 2 - this.width / 2,
-                    h / 2 - this.height / 2,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.ll,
-                        lowerRight: this.lr,
-                    }
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 150) === 0) {
-                ctx.beginPath();
-                this.width = random(50, w / 2);
-                this.height = random(50, h / 2);
-                this.rotate = random(1, 181);
-                this.ul = random(10, Math.min(w, h));
-                this.ur = random(10, Math.min(w, h));
-                this.ll = random(10, Math.min(w, h));
-                this.lr = random(10, Math.min(w, h));
-                ctx.strokeStyle = randomColor(0, 255, 0.33);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Entropy {
     constructor() {
         this.width = random(50, w);
