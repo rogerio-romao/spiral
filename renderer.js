@@ -18,6 +18,7 @@ import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
+import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
 import Geometer from './src/algos/Geometer.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
@@ -597,7 +598,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'the-fan'; // for testing purposes
+    let choose = 'fade-in'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -941,8 +942,7 @@ function chooseAlgos() {
         case 'fade-in':
             displayAlgos('FADE IN');
             ctx.save();
-            runningAlgo = new FadeIn();
-            runningAlgo.draw();
+            runningAlgo = new FadeIn(ctx, w, h);
             break;
         case 'ourobouros':
             displayAlgos('OUROBOUROS');
@@ -1392,81 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class FadeIn {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.c1 = random(-2, 2);
-        this.c2 = random(-2, 2);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.c3 = random(-2, 2);
-        this.c4 = random(-2, 2);
-        this.ox = random(0, w);
-        this.oy = random(0, h);
-        this.c5 = random(-2, 2);
-        this.c6 = random(-2, 2);
-        this.dx = random(0, w);
-        this.dy = random(0, h);
-        this.c7 = random(-2, 2);
-        this.c8 = random(-2, 2);
-        this.rotate = random(1, 359);
-
-        ctx.strokeStyle = randomColor();
-        ctx.lineWidth = 0.2;
-        ctx.globalAlpha = 0.15;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.ox, this.oy);
-                this.ox += this.c1;
-                this.oy += this.c2;
-                ctx.bezierCurveTo(
-                    this.x1,
-                    this.y1,
-                    this.x2,
-                    this.y2,
-                    this.dx,
-                    this.dy
-                );
-                this.x1 += this.c3;
-                this.y1 += this.c4;
-                this.x2 += this.c5;
-                this.y2 += this.c6;
-                this.dx += this.c7;
-                this.dy += this.c8;
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.c1 = random(-2, 2);
-                this.c2 = random(-2, 2);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.c3 = random(-2, 2);
-                this.c4 = random(-2, 2);
-                this.ox = random(0, w);
-                this.oy = random(0, h);
-                this.c5 = random(-2, 2);
-                this.c6 = random(-2, 2);
-                this.dx = random(0, w);
-                this.dy = random(0, h);
-                this.c7 = random(-2, 2);
-                this.c8 = random(-2, 2);
-                this.rotate = random(1, 359);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Ourobouros {
     constructor() {
         this.letters = [
