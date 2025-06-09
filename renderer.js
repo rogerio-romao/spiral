@@ -28,6 +28,7 @@ import HyperTunnel from './src/algos/HyperTunnel.js';
 import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
+import Majestic from './src/algos/Majestic.js';
 import Microscope from './src/algos/Microscope.js';
 import Mirage from './src/algos/Mirage.js';
 import Nebulas from './src/algos/Nebulas.js';
@@ -604,7 +605,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'majestic'; // for testing purposes
+    let choose = 'wormhole'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -988,8 +989,7 @@ function chooseAlgos() {
         case 'wormhole':
             displayAlgos('WORMHOLE');
             ctx.save();
-            runningAlgo = new Wormhole();
-            runningAlgo.draw();
+            runningAlgo = new Wormhole(ctx, w, h);
             break;
         case 'irradiate':
             displayAlgos('IRRADIATE');
@@ -1391,66 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Majestic {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.width = random(30, w - 100);
-        this.height = random(30, h - 100);
-        this.ul = random(10, w);
-        this.ur = random(10, h);
-        this.ll = random(10, h);
-        this.lr = random(10, w);
-        this.rotations = [
-            1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22,
-            23, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42,
-            43, 44, 45,
-        ];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-
-        ctx.strokeStyle = randomColor();
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.ll,
-                        lowerRight: this.lr,
-                    },
-                    true,
-                    true
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 180) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.width = random(30, w - 100);
-                this.height = random(30, h - 100);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.ul = random(10, w);
-                this.ur = random(10, h);
-                this.ll = random(10, h);
-                this.lr = random(10, w);
-                this.rotate = this.rotations[random(0, this.rotations.length)];
-                ctx.strokeStyle = randomColor();
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Wormhole {
     constructor() {
         this.x = random(50, w - 50);
