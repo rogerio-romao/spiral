@@ -46,6 +46,7 @@ import Picnic from './src/algos/Picnic.js';
 import PietriDish from './src/algos/PietriDish.js';
 import Plaid from './src/algos/Plaid.js';
 import Polyhedra from './src/algos/Polyhedra.js';
+import Progression from './src/algos/Progression.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Radiance from './src/algos/Radiance.js';
@@ -609,7 +610,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'tripping'; // for testing purposes
+    let choose = 'progression'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1013,8 +1014,7 @@ function chooseAlgos() {
         case 'progression':
             displayAlgos('PROGRESSION');
             ctx.save();
-            runningAlgo = new Progression();
-            runningAlgo.draw();
+            runningAlgo = new Progression(ctx, w, h);
             break;
         case 'aperture':
             displayAlgos('APERTURE');
@@ -1392,49 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Progression {
-    constructor() {
-        this.width = random(40, w);
-        this.height = random(40, h);
-        this.round = random(1, 350);
-        this.rotate = random(1, 180);
-
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.03);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    w / 2,
-                    h / 2,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.round,
-                        upperRight: this.round,
-                        lowerLeft: this.round,
-                        lowerRight: this.round,
-                    },
-                    true,
-                    false
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 180) === 0) {
-                this.width = random(40, w);
-                this.height = random(40, h);
-                this.round = random(1, 350);
-                this.rotate = random(1, 180);
-                ctx.beginPath();
-                ctx.fillStyle = randomColor(0, 255, 0.01, 0.03);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Aperture {
     constructor() {
         this.x = w / 2;
