@@ -69,6 +69,7 @@ import Swirls from './src/algos/Swirls.js';
 import TheBadge from './src/algos/TheBadge.js';
 import TheFan from './src/algos/TheFan.js';
 import ThreeD from './src/algos/ThreeD.js';
+import Tripping from './src/algos/Tripping.js';
 import UFOs from './src/algos/Ufos.js';
 import Universe from './src/algos/Universe.js';
 import VanishingRays from './src/algos/VanishingRays.js';
@@ -608,7 +609,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'entropy'; // for testing purposes
+    let choose = 'tripping'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1007,8 +1008,7 @@ function chooseAlgos() {
         case 'tripping':
             displayAlgos('TRIPPING');
             ctx.save();
-            runningAlgo = new Tripping();
-            runningAlgo.draw();
+            runningAlgo = new Tripping(ctx, w, h);
             break;
         case 'progression':
             displayAlgos('PROGRESSION');
@@ -1392,69 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Tripping {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.width = random(50, w);
-        this.height = random(50, h);
-        this.rotate = random(1, 360);
-        this.ul = random(10, Math.max(w, h));
-        this.ur = random(10, Math.max(w, h));
-        this.ll = random(10, Math.max(w, h));
-        this.lr = random(10, Math.max(w, h));
-
-        ctx.strokeStyle = randomColor(0, 255, 0.25, 0.5);
-        ctx.lineWidth = 0.5;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.x1++,
-                    this.y1++,
-                    this.width++,
-                    this.height++,
-                    {
-                        upperLeft: this.ul--,
-                        upperRight: this.ur--,
-                        lowerLeft: this.ll--,
-                        lowerRight: this.lr--,
-                    }
-                );
-                ctx.roundRect(this.x2--, this.y2--, this.height, this.width, {
-                    upperLeft: this.lr,
-                    upperRight: this.ll,
-                    lowerLeft: this.ur,
-                    lowerRight: this.ul,
-                });
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 500) === 0) {
-                ctx.beginPath();
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.width = random(50, w);
-                this.height = random(50, h);
-                this.rotate = random(1, 360);
-                this.ul = random(10, Math.max(w, h));
-                this.ur = random(10, Math.max(w, h));
-                this.ll = random(10, Math.max(w, h));
-                this.lr = random(10, Math.max(w, h));
-                ctx.strokeStyle = randomColor(0, 255, 0.25, 0.5);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Progression {
     constructor() {
         this.width = random(40, w);
