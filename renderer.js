@@ -74,6 +74,7 @@ import ThreeD from './src/algos/ThreeD.js';
 import Tripping from './src/algos/Tripping.js';
 import UFOs from './src/algos/Ufos.js';
 import Universe from './src/algos/Universe.js';
+import Upholstery from './src/algos/Upholstery.js';
 import VanishingRays from './src/algos/VanishingRays.js';
 import Wallpapering from './src/algos/Wallpapering.js';
 import Warp2001 from './src/algos/Warp2001.js';
@@ -611,7 +612,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'aperture'; // for testing purposes
+    let choose = 'upholstery'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1025,8 +1026,7 @@ function chooseAlgos() {
         case 'upholstery':
             displayAlgos('UPHOLSTERY');
             ctx.save();
-            runningAlgo = new Upholstery();
-            runningAlgo.draw();
+            runningAlgo = new Upholstery(ctx, w, h);
             break;
         case 'unfocused':
             displayAlgos('UNFOCUSED');
@@ -1392,49 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Upholstery {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.rotate = random(1, 55);
-        this.dash1 = random(1, 15);
-        this.dash2 = random(20, 40);
-        this.dash3 = random(1, 50);
-
-        ctx.strokeStyle = randomColor(50, 255, 1, 1);
-        ctx.setLineDash([this.dash1, this.dash2, this.dash3]);
-        ctx.globalCompositeOperation = 'overlay';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.x1, this.y1);
-                ctx.lineTo(this.x2, this.y2);
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 120) === 0) {
-                this.dash1 = random(1, 15);
-                this.dash2 = random(20, 40);
-                this.dash3 = random(1, 50);
-                ctx.setLineDash([this.dash1, this.dash2, this.dash3]);
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(50, 255, 1, 1);
-                this.rotate = random(1, 55);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Unfocused {
     constructor() {
         this.x1 = random(0, w);
