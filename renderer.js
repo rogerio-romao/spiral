@@ -19,6 +19,7 @@ import CrystalTiles from './src/algos/CrystalTiles.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
+import Entropy from './src/algos/Entropy.js';
 import EpicRays from './src/algos/EpicRays.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
@@ -607,7 +608,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'irradiate'; // for testing purposes
+    let choose = 'entropy'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1001,8 +1002,7 @@ function chooseAlgos() {
         case 'entropy':
             displayAlgos('ENTROPY');
             ctx.save();
-            runningAlgo = new Entropy();
-            runningAlgo.draw();
+            runningAlgo = new Entropy(ctx, w, h);
             break;
         case 'tripping':
             displayAlgos('TRIPPING');
@@ -1392,59 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Entropy {
-    constructor() {
-        this.width = random(50, w);
-        this.height = random(50, h);
-        this.rotate = random(1, 181);
-        this.ul = random(10, Math.min(w, h));
-        this.ur = random(10, Math.min(w, h));
-        this.ll = random(10, Math.min(w, h));
-        this.lr = random(10, Math.min(w, h));
-
-        ctx.strokeStyle = randomColor(0, 255, 1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(0, 0, this.width++, this.height++, {
-                    upperLeft: this.ul--,
-                    upperRight: this.ur--,
-                    lowerLeft: this.ll--,
-                    lowerRight: this.lr--,
-                });
-                ctx.roundRect(w, h, this.height, this.width, {
-                    upperLeft: this.lr,
-                    upperRight: this.ll,
-                    lowerLeft: this.ur,
-                    lowerRight: this.ul,
-                });
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 405) === 0) {
-                ctx.beginPath();
-                this.width = random(50, w);
-                this.height = random(50, h);
-                this.rotate = random(1, 181);
-                this.ul = random(10, Math.min(w, h));
-                this.ur = random(10, Math.min(w, h));
-                this.ll = random(10, Math.min(w, h));
-                this.lr = random(10, Math.min(w, h));
-                let colorRoll = Math.random();
-                ctx.strokeStyle =
-                    colorRoll < 0.1
-                        ? 'black'
-                        : colorRoll < 0.2
-                        ? 'white'
-                        : randomColor(0, 255, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Tripping {
     constructor() {
         this.x1 = random(0, w);
