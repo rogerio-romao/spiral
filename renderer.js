@@ -73,6 +73,7 @@ import TheFan from './src/algos/TheFan.js';
 import ThreeD from './src/algos/ThreeD.js';
 import Tripping from './src/algos/Tripping.js';
 import UFOs from './src/algos/Ufos.js';
+import Unfocused from './src/algos/Unfocused.js';
 import Universe from './src/algos/Universe.js';
 import Upholstery from './src/algos/Upholstery.js';
 import VanishingRays from './src/algos/VanishingRays.js';
@@ -612,7 +613,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'upholstery'; // for testing purposes
+    let choose = 'unfocused'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1031,8 +1032,7 @@ function chooseAlgos() {
         case 'unfocused':
             displayAlgos('UNFOCUSED');
             ctx.save();
-            runningAlgo = new Unfocused();
-            runningAlgo.draw();
+            runningAlgo = new Unfocused(ctx, w, h);
             break;
         case 'matter':
             displayAlgos('MATTER');
@@ -1392,62 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Unfocused {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.radius1 = random(5, 55);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.radius2 = random(5, 55);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.radius3 = random(5, 55);
-        this.rotate = random(1, 61);
-
-        ctx.fillStyle = randomColor(10, 255, 0.1, 0.1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x1, this.y1, this.radius1, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(this.x2, this.y2, this.radius2, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(this.x3, this.y3, this.radius3, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 20) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.radius1 = random(5, 55);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.radius2 = random(5, 55);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                this.radius3 = random(5, 55);
-                ctx.fillStyle = randomColor(10, 255, 0.1, 0.1);
-            }
-            if (t % (speed * 100) === 0) {
-                this.rotate = random(1, 61);
-            }
-            if (t % (speed * 500) === 0) {
-                ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                ctx.fillStyle = randomColor(10, 255, 0.1, 0.1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Matter {
     constructor() {
         this.x1 = random(0, w);
