@@ -4,6 +4,7 @@ import AcidStars from './src/algos/AcidStars.js';
 import AlienFlowers from './src/algos/AlienFlowers.js';
 import AlphabetSoup from './src/algos/AlphabetSoup.js';
 import AngelHair from './src/algos/AngelHair.js';
+import Aperture from './src/algos/Aperture.js';
 import Atom from './src/algos/Atom.js';
 import Autumn from './src/algos/Autumn.js';
 import BehindBars from './src/algos/BehindBars.js';
@@ -610,7 +611,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'progression'; // for testing purposes
+    let choose = 'aperture'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1019,8 +1020,7 @@ function chooseAlgos() {
         case 'aperture':
             displayAlgos('APERTURE');
             ctx.save();
-            runningAlgo = new Aperture();
-            runningAlgo.draw();
+            runningAlgo = new Aperture(ctx, w, h);
             break;
         case 'upholstery':
             displayAlgos('UPHOLSTERY');
@@ -1392,69 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Aperture {
-    constructor() {
-        this.x = w / 2;
-        this.y = random(100, h - 100);
-        this.width = random(100, w - 100);
-        this.height = random(100, h - 100);
-        this.round = random(5, 100);
-        this.white = true;
-        this.rotate = random(1, 70);
-        this.incX = Math.random();
-        this.incH = Math.random();
-
-        ctx.strokeStyle = 'white';
-        ctx.fillStyle = 'black';
-        ctx.globalAlpha = 0.75;
-        ctx.lineWidth = 4;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.round,
-                        upperRight: this.round,
-                        lowerLeft: this.round,
-                        lowerRight: this.round,
-                    },
-                    true
-                );
-            }
-            this.x += this.incX;
-            this.height += this.incH;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 300) === 0) {
-                ctx.beginPath();
-                if (this.white) {
-                    ctx.strokeStyle = 'black';
-                    ctx.fillStyle = 'white';
-                } else {
-                    ctx.strokeStyle = 'white';
-                    ctx.fillStyle = 'black';
-                }
-                this.white = !this.white;
-                this.x = w / 2;
-                this.y = random(100, h - 100);
-                this.rotate = random(1, 70);
-                this.width = random(100, w - 100);
-                this.height = random(100, h - 100);
-                this.round = random(5, 100);
-                this.incX = Math.random();
-                this.incH = Math.random();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Upholstery {
     constructor() {
         this.x1 = random(0, w);
