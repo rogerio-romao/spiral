@@ -11,6 +11,7 @@ import BehindBars from './src/algos/BehindBars.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BigBangs from './src/algos/BigBangs.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
+import Blends from './src/algos/Blends.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Chillout from './src/algos/Chillout.js';
@@ -623,7 +624,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'onion'; // for testing purposes
+    let choose = 'blends'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1097,8 +1098,7 @@ function chooseAlgos() {
         case 'blends':
             displayAlgos('BLENDS');
             ctx.save();
-            runningAlgo = new Blends();
-            runningAlgo.draw();
+            runningAlgo = new Blends(ctx, w, h);
             break;
         case 'snakes-ladders':
             displayAlgos("SNAKES 'N LADDERS");
@@ -1392,69 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Blends {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.length = random(30, 250);
-        this.shape1 = () =>
-            ctx.fillRect(this.x++, this.y, this.length++, this.length);
-        this.shape2 = () =>
-            ctx.arc(this.x2, this.y2++, this.length, 0, 2 * Math.PI);
-        this.shape3 = () => {
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x2, this.y2);
-        };
-        this.currentShape = random(0, 3);
-        this.rotation = random(2, 140);
-        this.color1 = randomColor(0, 255, 0.025, 0.075);
-        this.color2 = randomColor(0, 255, 0.025, 0.075);
-
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                if (this.currentShape === 0) {
-                    ctx.fillStyle = this.color2;
-                    this.shape1();
-                } else if (this.currentShape === 1) {
-                    ctx.fillStyle = this.color1;
-                    ctx.beginPath();
-                    this.shape2();
-                    ctx.fill();
-                } else {
-                    ctx.strokeStyle = this.color2;
-                    ctx.beginPath();
-                    this.shape3();
-                    ctx.stroke();
-                }
-                this.currentShape++;
-                if (this.currentShape > 2) this.currentShape = 0;
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate((this.rotation * Math.PI) / 180);
-                ctx.translate(-w / 2, -h / 2);
-            }
-            t++;
-            if (t % (speed * 270) === 0) {
-                this.rotation = random(2, 140);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.length = random(30, 250);
-                ctx.beginPath();
-                this.color1 = randomColor(0, 255, 0.025, 0.075);
-                this.color2 = randomColor(0, 255, 0.025, 0.075);
-                ctx.strokeStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class SnakesLadders {
     constructor() {
         this.div = random(3, 17);
