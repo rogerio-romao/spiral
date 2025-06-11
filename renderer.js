@@ -33,6 +33,7 @@ import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
 import Geometer from './src/algos/Geometer.js';
+import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
@@ -1391,79 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Germinate {
-    constructor() {
-        this.width = random(35, w * 0.8);
-        this.height = random(35, h * 0.8);
-        this.ul = random(4, 115);
-        this.ur = random(4, 115);
-        this.dl = random(4, 115);
-        this.dr = random(4, 115);
-        this.wc = random(-5, 6);
-        this.hc = random(-5, 6);
-        this.rc = random(-7, 8);
-        this.angles = [
-            5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 32, 35, 36, 42, 44, 45, 48,
-            50, 55, 64, 65, 66, 70, 72, 75, 95, 100,
-        ];
-        this.rotate = this.angles[random(0, this.angles.length)];
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 1, 1);
-        ctx.fillStyle = randomColor(0, 255, 0.2, 0.2);
-        ctx.shadowBlur = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    w / 2,
-                    h / 2,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.dl,
-                        lowerRight: this.dr,
-                    },
-                    false,
-                    true
-                );
-            }
-            t++;
-            if (t % (speed * 4) === 0) {
-                this.ul += this.rc;
-                this.ur += this.wc;
-                this.dr += this.hc;
-                this.dl -= this.rc;
-            }
-            if (t % (speed * 12) === 0) {
-                this.width -= this.wc;
-                this.height += this.hc;
-            }
-            if (t % (speed * 280) === 0) {
-                ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 1, 1);
-                ctx.fillStyle = randomColor(0, 255, 0.2, 0.2);
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.width = random(35, w * 0.8);
-                this.height = random(35, h * 0.8);
-                this.ul = random(4, 115);
-                this.ur = random(4, 115);
-                this.dl = random(4, 115);
-                this.dr = random(4, 115);
-                this.wc = random(-5, 6);
-                this.hc = random(-5, 6);
-                this.rc = random(-7, 8);
-
-                this.rotate = this.angles[random(0, this.angles.length)];
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class GasClouds {
     constructor() {
         this.width = random(0, w / 2);
