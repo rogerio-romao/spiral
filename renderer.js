@@ -32,6 +32,7 @@ import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
 import Majestic from './src/algos/Majestic.js';
+import Matter from './src/algos/Matter.js';
 import Microscope from './src/algos/Microscope.js';
 import Mirage from './src/algos/Mirage.js';
 import Nebulas from './src/algos/Nebulas.js';
@@ -613,7 +614,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'unfocused'; // for testing purposes
+    let choose = 'seeds'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1037,14 +1038,12 @@ function chooseAlgos() {
         case 'matter':
             displayAlgos('MATTER');
             ctx.save();
-            runningAlgo = new Matter();
-            runningAlgo.draw();
+            runningAlgo = new Matter(ctx, w, h);
             break;
         case 'seeds':
             displayAlgos('SEEDS');
             ctx.save();
-            runningAlgo = new Seeds();
-            runningAlgo.draw();
+            runningAlgo = new Seeds(ctx, w, h);
             break;
         case 'crayon-funnel':
             displayAlgos('CRAYON FUNNEL');
@@ -1392,64 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Matter {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.radius1 = random(5, 150);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.radius2 = random(5, 150);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-        this.radius3 = random(5, 150);
-        this.rotations = [
-            1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22,
-            23, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42,
-            43, 44, 45,
-        ];
-        this.rotate =
-            this.rotations[Math.floor(Math.random() * this.rotations.length)];
-
-        ctx.fillStyle = randomColor(10, 255, 0.02, 0.07);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x1, this.y1, this.radius1, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(this.x2, this.y2, this.radius2, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(this.x3, this.y3, this.radius3, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 120) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.radius1 = random(5, 150);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.radius2 = random(5, 150);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                this.radius3 = random(5, 150);
-                ctx.fillStyle = randomColor(10, 255, 0.02, 0.07);
-                this.rotate =
-                    this.rotations[
-                        Math.floor(Math.random() * this.rotations.length)
-                    ];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Seeds {
     constructor() {
         this.x1 = random(0, w);
