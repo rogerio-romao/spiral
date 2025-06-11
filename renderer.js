@@ -16,6 +16,7 @@ import Chillout from './src/algos/Chillout.js';
 import Clock from './src/algos/Clock.js';
 import Comets from './src/algos/Comets.js';
 import CounterClock from './src/algos/CounterClock.js';
+import CrayonFunnel from './src/algos/CrayonFunnel.js';
 import CrystalTiles from './src/algos/CrystalTiles.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
@@ -615,7 +616,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'seeds'; // for testing purposes
+    let choose = 'crayon-funnel'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1049,8 +1050,7 @@ function chooseAlgos() {
         case 'crayon-funnel':
             displayAlgos('CRAYON FUNNEL');
             ctx.save();
-            runningAlgo = new CrayonFunnel();
-            runningAlgo.draw();
+            runningAlgo = new CrayonFunnel(ctx, w, h);
             break;
         case 'big-bangs':
             displayAlgos('BIG BANGS');
@@ -1392,49 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class CrayonFunnel {
-    constructor() {
-        this.x = random(w / 3, w * 0.66);
-        this.y = random(w / 3, h * 0.66);
-        this.inc = random(1, 6);
-        this.radius = random(5, 60);
-        this.rotate = random(1, 150);
-
-        ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        ctx.lineWidth = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                this.radius += this.inc;
-                ctx.stroke();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 180) === 0) {
-                this.x = random(w / 3, w * 0.66);
-                this.y = random(w / 3, h * 0.66);
-                this.radius = random(5, 60);
-                this.inc = random(1, 6);
-                this.rotate = random(1, 150);
-                if (Math.random() < 0.5) {
-                    if (Math.random() < 0.5) {
-                        ctx.strokeStyle = 'white';
-                    } else {
-                        ctx.strokeStyle = 'black';
-                    }
-                } else {
-                    ctx.strokeStyle = randomColor(0, 255, 1, 1);
-                }
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class BigBangs {
     constructor() {
         this.r = 1;
