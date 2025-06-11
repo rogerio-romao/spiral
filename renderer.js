@@ -44,6 +44,7 @@ import Nazca from './src/algos/Nazca.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Offsets from './src/algos/Offsets.js';
+import Onion from './src/algos/Onion.js';
 import Orbits from './src/algos/Orbits.js';
 import Organic from './src/algos/Organic.js';
 import Ourobouros from './src/algos/Ourobouros.js';
@@ -622,7 +623,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'glow'; // for testing purposes
+    let choose = 'onion'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1091,8 +1092,7 @@ function chooseAlgos() {
         case 'onion':
             displayAlgos('ONION');
             ctx.save();
-            runningAlgo = new Onion();
-            runningAlgo.draw();
+            runningAlgo = new Onion(ctx, w, h);
             break;
         case 'blends':
             displayAlgos('BLENDS');
@@ -1392,43 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Onion {
-    constructor() {
-        this.radius = random(45, 500);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.angle = random(2, 50);
-
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = randomColor(0, 255, 0.005, 0.015);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-                ctx.closePath();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.angle / 180) * Math.PI);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 135) === 0) {
-                this.radius = random(50, 500);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                ctx.beginPath();
-                ctx.fillStyle = randomColor(0, 255, 0.005, 0.015);
-            }
-            if (t % (speed * 540) === 0) {
-                this.angle = random(2, 50);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Blends {
     constructor() {
         this.x = random(0, w);
