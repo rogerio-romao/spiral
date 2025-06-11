@@ -60,6 +60,7 @@ import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
 import Seeds from './src/algos/Seeds.js';
+import Smooth from './src/algos/Smooth.js';
 import Solar from './src/algos/Solar.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spikey from './src/algos/Spikey.js';
@@ -618,7 +619,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'nazca'; // for testing purposes
+    let choose = 'smooth'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1067,8 +1068,7 @@ function chooseAlgos() {
         case 'smooth':
             displayAlgos('SMOOTH');
             ctx.save();
-            runningAlgo = new Smooth();
-            runningAlgo.draw();
+            runningAlgo = new Smooth(ctx, w, h);
             break;
         case 'encoded':
             displayAlgos('ENCODED');
@@ -1392,35 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Smooth {
-    constructor() {
-        this.size = random(50, 500);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.rot = random(1, 11);
-
-        ctx.fillStyle = randomColor(0, 255, 0.03, 0.08);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 60) === 0) {
-                this.size = random(50, 500);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                ctx.fillStyle = randomColor(0, 255, 0.03, 0.08);
-                this.rot = random(1, 11);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Encoded {
     constructor() {
         this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
