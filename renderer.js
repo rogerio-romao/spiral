@@ -22,6 +22,7 @@ import CrystalTiles from './src/algos/CrystalTiles.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
+import Encoded from './src/algos/Encoded.js';
 import Entropy from './src/algos/Entropy.js';
 import EpicRays from './src/algos/EpicRays.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
@@ -619,7 +620,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'smooth'; // for testing purposes
+    let choose = 'encoded'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1073,8 +1074,7 @@ function chooseAlgos() {
         case 'encoded':
             displayAlgos('ENCODED');
             ctx.save();
-            runningAlgo = new Encoded();
-            runningAlgo.draw();
+            runningAlgo = new Encoded(ctx, w, h);
             break;
         case 'concentric':
             displayAlgos('CONCENTRIC');
@@ -1392,51 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Encoded {
-    constructor() {
-        this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
-        this.letter = this.letters[random(0, this.letters.length)];
-        this.size = random(100, 600);
-        this.rot = (random(1, 360) * Math.PI) / 180;
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
-        this.angle = this.angles[random(0, this.angles.length)];
-
-        ctx.shadowColor = ctx.strokeStyle = randomColor(30, 255, 0.2, 0.6);
-        ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        ctx.font = `bold ${this.size}px serif`;
-        ctx.textAlign = 'center';
-        ctx.shadowBlur = 10;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, this.x, this.y);
-                ctx.fillText(this.letter, this.x, this.y);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.angle * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 72) === 0) {
-                this.letter = this.letters[random(0, this.letters.length)];
-                this.size = random(100, 600);
-                this.rot = (random(1, 360) * Math.PI) / 180;
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    30,
-                    255,
-                    0.2,
-                    0.6
-                );
-                ctx.font = `bold ${this.size}px serif`;
-                this.x = random(0, w);
-                this.y = random(0, h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Concentric {
     constructor() {
         this.letters = [
