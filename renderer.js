@@ -19,6 +19,7 @@ import Clock from './src/algos/Clock.js';
 import Comets from './src/algos/Comets.js';
 import Concentric from './src/algos/Concentric.js';
 import Cornucopia from './src/algos/Cornucopia.js';
+import Cornucopia2 from './src/algos/Cornucopia2.js';
 import CounterClock from './src/algos/CounterClock.js';
 import CrayonFunnel from './src/algos/CrayonFunnel.js';
 import CrystalTiles from './src/algos/CrystalTiles.js';
@@ -626,7 +627,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'cornucopia'; // for testing purposes
+    let choose = 'germinate'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1115,14 +1116,12 @@ function chooseAlgos() {
         case 'cornucopia2':
             displayAlgos('CORNUCOPIA 2');
             ctx.save();
-            runningAlgo = new Cornucopia2();
-            runningAlgo.draw();
+            runningAlgo = new Cornucopia2(ctx, w, h);
             break;
         case 'germinate':
             displayAlgos('GERMINATE');
             ctx.save();
-            runningAlgo = new Germinate();
-            runningAlgo.draw();
+            runningAlgo = new Germinate(ctx, w, h);
             break;
         case 'gas-clouds':
             displayAlgos('GAS CLOUDS');
@@ -1392,72 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Cornucopia2 {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.width = random(35, 440);
-        this.height = random(35, 350);
-        this.ul = random(4, 135);
-        this.ulc = random(-5, 5);
-        this.ur = random(4, 135);
-        this.urc = random(-5, 5);
-        this.dl = random(4, 135);
-        this.dlc = random(-5, 5);
-        this.dr = random(4, 135);
-        this.drc = random(-5, 5);
-        this.rotate = random(1, 75);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.75, 1);
-        ctx.fillStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.dl,
-                        lowerRight: this.dr,
-                    },
-                    false,
-                    true
-                );
-                this.ul += this.ulc;
-                this.ur += this.urc;
-                this.dl += this.dlc;
-                this.dr += this.drc;
-            }
-            t++;
-            if (t % (speed * 450) === 0) {
-                ctx.strokeStyle = randomColor(0, 255, 0.75, 1);
-                ctx.fillStyle = randomColor();
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.width = random(35, 440);
-                this.height = random(35, 350);
-                this.ul = random(4, 135);
-                this.ulc = random(-5, 5);
-                this.urc = random(-5, 5);
-                this.dlc = random(-5, 5);
-                this.drc = random(-5, 5);
-                this.ur = random(4, 135);
-                this.dl = random(4, 135);
-                this.dr = random(4, 135);
-                this.rotate = random(1, 75);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Germinate {
     constructor() {
         this.width = random(35, w * 0.8);
