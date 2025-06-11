@@ -30,6 +30,7 @@ import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
 import Geometer from './src/algos/Geometer.js';
+import Glow from './src/algos/Glow.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
 import Lollipottery from './src/algos/Lollipottery.js';
@@ -1391,47 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Glow {
-    constructor() {
-        this.margin1 = random(25, w / 4);
-        this.margin2 = random(25, w / 4);
-        this.color1 = randomColor(0, 255, 0.05, 0.2);
-        this.color2 = randomColor(0, 255, 0.05, 0.2);
-        this.rot = random(1, 60);
-        this.modes = ['color', 'source-over', 'overlay', 'soft-light'];
-
-        ctx.strokeStyle = 'white';
-        ctx.globalCompositeOperation = 'color';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillStyle = this.color1;
-                ctx.fillRect(0, 0, w / 2 + this.margin1, h);
-                ctx.fillStyle = this.color2;
-                ctx.fillRect(w / 2 - this.margin2, 0, w, h);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 60) === 0) {
-                this.margin1 = random(25, w / 4);
-                this.color1 = randomColor(0, 255, 0.05, 0.2);
-            }
-            if (t % (speed * 90) === 0) {
-                this.margin2 = random(25, w / 4);
-                this.color2 = randomColor(0, 255, 0.05, 0.2);
-            }
-            if (t % (speed * 180) === 0) {
-                this.rot = random(1, 60);
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Onion {
     constructor() {
         this.radius = random(45, 500);
