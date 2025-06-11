@@ -16,6 +16,7 @@ import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Chillout from './src/algos/Chillout.js';
 import Clock from './src/algos/Clock.js';
 import Comets from './src/algos/Comets.js';
+import Concentric from './src/algos/Concentric.js';
 import CounterClock from './src/algos/CounterClock.js';
 import CrayonFunnel from './src/algos/CrayonFunnel.js';
 import CrystalTiles from './src/algos/CrystalTiles.js';
@@ -620,7 +621,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'encoded'; // for testing purposes
+    let choose = 'glow'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1079,14 +1080,12 @@ function chooseAlgos() {
         case 'concentric':
             displayAlgos('CONCENTRIC');
             ctx.save();
-            runningAlgo = new Concentric();
-            runningAlgo.draw();
+            runningAlgo = new Concentric(ctx, w, h);
             break;
         case 'glow':
             displayAlgos('GLOW');
             ctx.save();
-            runningAlgo = new Glow();
-            runningAlgo.draw();
+            runningAlgo = new Glow(ctx, w, h);
             break;
         case 'onion':
             displayAlgos('ONION');
@@ -1392,80 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Concentric {
-    constructor() {
-        this.letters = [
-            2605, 2608, 2617, 2626, 2632, 2635, 2641, 2652, 2654, 2662, 2663,
-            2667, 2670, 2676, 2677, 2691, 2694, 2695, 2696, 2700,
-        ];
-        this.letter1 = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.letter2 = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.letter3 = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.letter4 = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.size = random(25, 160);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
-        this.angle = this.angles[random(0, this.angles.length)];
-
-        ctx.globalCompositeOperation = 'soft-light';
-        ctx.shadowColor = ctx.strokeStyle = randomColor();
-        ctx.fillStyle = randomColor();
-        ctx.font = `bold ${this.size}px serif`;
-        ctx.textAlign = 'center';
-        ctx.shadowBlur = 7;
-        ctx.lineWidth = 5;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(
-                    `${this.letter1}   ${this.letter2}   ${this.letter3}   ${this.letter4}`,
-                    this.x,
-                    this.y
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.angle);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.letter1 = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                this.letter2 = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                this.letter3 = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                this.letter4 = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                this.size = random(25, 160);
-                ctx.fillStyle = randomColor();
-                ctx.shadowColor = ctx.strokeStyle = randomColor(
-                    30,
-                    255,
-                    0.2,
-                    0.6
-                );
-                ctx.font = `bold ${this.size}px serif`;
-                this.x = random(0, w);
-                this.y = random(0, h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Glow {
     constructor() {
         this.margin1 = random(25, w / 4);
