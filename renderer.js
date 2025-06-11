@@ -66,6 +66,7 @@ import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
 import Seeds from './src/algos/Seeds.js';
 import Smooth from './src/algos/Smooth.js';
+import SnakesLadders from './src/algos/SnakesLadders.js';
 import Solar from './src/algos/Solar.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spikey from './src/algos/Spikey.js';
@@ -624,7 +625,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'blends'; // for testing purposes
+    let choose = 'snakes-ladders'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1103,8 +1104,7 @@ function chooseAlgos() {
         case 'snakes-ladders':
             displayAlgos("SNAKES 'N LADDERS");
             ctx.save();
-            runningAlgo = new SnakesLadders();
-            runningAlgo.draw();
+            runningAlgo = new SnakesLadders(ctx, w, h);
             break;
         case 'cornucopia':
             displayAlgos('CORNUCOPIA');
@@ -1392,63 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class SnakesLadders {
-    constructor() {
-        this.div = random(3, 17);
-        this.div2 = random(3, 17);
-        this.colSize = w / this.div;
-        this.rowSize = h / this.div2;
-        this.currCol = 0;
-        this.currRow = 0;
-        this.rotate = random(1, 83);
-
-        ctx.fillStyle = randomColor(0, 255, 0.12, 0.37);
-        ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.65, 1);
-        ctx.shadowBlur = 3;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeRect(
-                    this.colSize * this.currCol,
-                    this.rowSize * this.currRow,
-                    this.colSize,
-                    this.rowSize
-                );
-                this.currCol++;
-                if (this.currCol > this.div - 1) {
-                    this.currCol = 0;
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rotate);
-                    ctx.translate(-w / 2, -h / 2);
-                    this.currRow++;
-                    if (this.currRow > this.div2 - 1) {
-                        this.currRow = 0;
-                    }
-                }
-            }
-            t++;
-
-            if (t % (speed * 720) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.rotate = random(1, 83);
-                this.div = random(3, 17);
-                this.div2 = random(3, 17);
-                this.colSize = w / this.div;
-                this.rowSize = h / this.div2;
-                ctx.beginPath();
-                ctx.fillStyle = randomColor(0, 255, 0.12, 0.37);
-                ctx.strokeStyle = ctx.shadowColor = randomColor(
-                    0,
-                    255,
-                    0.65,
-                    1
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Cornucopia {
     constructor() {
         this.x = random(0, w);
