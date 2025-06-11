@@ -56,6 +56,7 @@ import RadioWaves from './src/algos/RadioWaves.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
+import Seeds from './src/algos/Seeds.js';
 import Solar from './src/algos/Solar.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spikey from './src/algos/Spikey.js';
@@ -1391,60 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Seeds {
-    constructor() {
-        this.x1 = random(0, w);
-        this.y1 = random(0, h);
-        this.x2 = random(0, w);
-        this.y2 = random(0, h);
-        this.x3 = random(0, w);
-        this.y3 = random(0, h);
-
-        this.rotate = random(10, 101);
-
-        ctx.fillStyle =
-            ctx.strokeStyle =
-            ctx.shadowColor =
-                randomColor(40, 255, 0.65, 1);
-        ctx.shadowBlur = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x1++, this.y1--, 5, 0, 0.5 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(this.x2--, this.y2++, 10, 0, 0.5 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(this.x3++, this.y3, 15, 0, 0.5 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 360) === 0) {
-                this.x1 = random(0, w);
-                this.y1 = random(0, h);
-                this.x2 = random(0, w);
-                this.y2 = random(0, h);
-                this.x3 = random(0, w);
-                this.y3 = random(0, h);
-                ctx.fillStyle =
-                    ctx.strokeStyle =
-                    ctx.shadowColor =
-                        randomColor(40, 255, 0.65, 1);
-                this.rotate = random(10, 101);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class CrayonFunnel {
     constructor() {
         this.x = random(w / 3, w * 0.66);
