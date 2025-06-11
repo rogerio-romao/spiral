@@ -9,6 +9,7 @@ import Atom from './src/algos/Atom.js';
 import Autumn from './src/algos/Autumn.js';
 import BehindBars from './src/algos/BehindBars.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
+import BigBangs from './src/algos/BigBangs.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
@@ -616,7 +617,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'crayon-funnel'; // for testing purposes
+    let choose = 'big-bangs'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1055,8 +1056,7 @@ function chooseAlgos() {
         case 'big-bangs':
             displayAlgos('BIG BANGS');
             ctx.save();
-            runningAlgo = new BigBangs();
-            runningAlgo.draw();
+            runningAlgo = new BigBangs(ctx, w, h);
             break;
         case 'nazca':
             displayAlgos('NAZCA');
@@ -1392,41 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class BigBangs {
-    constructor() {
-        this.r = 1;
-        this.i = random(5, 30);
-        this.a = random(1, 180);
-
-        ctx.fillStyle = randomColor(0, 255, 0.02, 0.05);
-        ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-        ctx.globalCompositeOperation = 'hard-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(w / 2, h / 2, this.r, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.stroke();
-                this.r += this.i;
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.a * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (this.r > Math.max(w, h)) {
-                ctx.fillStyle = randomColor(0, 255, 0.02, 0.05);
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.a = random(1, 180);
-                this.r = 1;
-                this.i = random(5, 30);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Nazca {
     constructor() {
         this.r = 1;
