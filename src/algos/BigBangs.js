@@ -42,8 +42,8 @@ export default class BigBangs extends BA {
 
             this.ctx.fillStyle = BA.randomColor(0, 255, 0.02, 0.05);
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.beginPath();
             this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 1);
+            this.ctx.beginPath();
         }
 
         this.t++;

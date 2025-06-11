@@ -37,6 +37,7 @@ import Majestic from './src/algos/Majestic.js';
 import Matter from './src/algos/Matter.js';
 import Microscope from './src/algos/Microscope.js';
 import Mirage from './src/algos/Mirage.js';
+import Nazca from './src/algos/Nazca.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
 import Offsets from './src/algos/Offsets.js';
@@ -617,7 +618,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'big-bangs'; // for testing purposes
+    let choose = 'nazca'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1061,8 +1062,7 @@ function chooseAlgos() {
         case 'nazca':
             displayAlgos('NAZCA');
             ctx.save();
-            runningAlgo = new Nazca();
-            runningAlgo.draw();
+            runningAlgo = new Nazca(ctx, w, h);
             break;
         case 'smooth':
             displayAlgos('SMOOTH');
@@ -1392,48 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Nazca {
-    constructor() {
-        this.r = 1;
-        this.i = random(13, 60);
-        this.a = random(1, 180);
-        this.modes = ['soft-light', 'overlay', 'color'];
-        this.cycles = 0;
-
-        ctx.fillStyle = randomColor(0, 255, 0.15, 0.55);
-        ctx.strokeStyle = randomColor(0, 255, 0.75, 1);
-        ctx.globalCompositeOperation = 'soft-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(w / 2, h / 2, this.r, 0, Math.random() * Math.PI);
-                ctx.fill();
-                ctx.stroke();
-                this.r += this.i;
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(-this.a);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (this.r > Math.max(w, h)) {
-                this.cycles++;
-                if (this.cycles % 10 === 0) {
-                    ctx.globalCompositeOperation =
-                        this.modes[random(0, this.modes.length)];
-                }
-                ctx.lineWidth = random(1, 7);
-                ctx.fillStyle = randomColor(0, 255, 0.15, 0.55);
-                this.a = random(1, 180);
-                this.r = 1;
-                this.i = random(13, 60);
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.75, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Smooth {
     constructor() {
         this.size = random(50, 500);
