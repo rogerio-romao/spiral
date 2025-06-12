@@ -72,6 +72,7 @@ import RadioWaves from './src/algos/RadioWaves.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
+import Sandala from './src/algos/Sandala.js';
 import Seeds from './src/algos/Seeds.js';
 import Smooth from './src/algos/Smooth.js';
 import SnakesLadders from './src/algos/SnakesLadders.js';
@@ -636,7 +637,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'portals'; // for testing purposes
+    let choose = 'sandala'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1175,8 +1176,7 @@ function chooseAlgos() {
         case 'sandala':
             displayAlgos('SANDALA');
             ctx.save();
-            runningAlgo = new Sandala();
-            runningAlgo.draw();
+            runningAlgo = new Sandala(ctx, w, h);
             break;
         case 'psycho-rainbow':
             displayAlgos('PSYCHO RAINBOW');
@@ -1392,51 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Sandala {
-    constructor() {
-        this.cols = random(5, 12);
-        this.rows = random(5, 12);
-        this.letters = [
-            3201, 3202, 3203, 3204, 3206, 3207, 3208, 3209, 3212, 3214, 3215,
-            3218, 3219, 3221, 3222, 3223, 3226, 3227, 3228, 3231, 3232, 3234,
-            3236, 3238, 3244, 3248, 3249, 3250, 3254, 3255, 3260, 3261, 3263,
-            3270, 3294, 3298,
-        ];
-
-        this.rot = random(1, 60);
-
-        ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        ctx.globalCompositeOperation = 'soft-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let row = 0; row <= this.rows; row++) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate((this.rot * Math.PI) / 180);
-                    ctx.translate(-w / 2, -h / 2);
-                    for (let col = 0; col <= this.cols; col++) {
-                        ctx.strokeText(
-                            String.fromCharCode(
-                                this.letters[random(0, this.letters.length)]
-                            ),
-                            row * (w / this.cols),
-                            col * (h / this.rows)
-                        );
-                    }
-                }
-            }
-            t++;
-            if (t % (speed * 80) === 0) {
-                this.cols = random(5, 12);
-                this.rows = random(5, 12);
-                this.rot = random(1, 60);
-                ctx.strokeStyle = randomColor(0, 255, 1, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class PsychoRainbow {
     constructor() {
         this.blends = ['hard-light', 'difference', 'color', 'luminosity'];
