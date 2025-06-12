@@ -66,6 +66,6 @@ export default class GasClouds extends BA {
 
         this.t++;
 
-        requestAnimationFrame(this.draw.bind(this));
+        requestAnimationFrame(this.draw);
     }
 }

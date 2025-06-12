@@ -48,6 +48,7 @@ import Mirage from './src/algos/Mirage.js';
 import Nazca from './src/algos/Nazca.js';
 import Nebulas from './src/algos/Nebulas.js';
 import NeonTartans from './src/algos/NeonTartans.js';
+import Networks from './src/algos/Networks.js';
 import Offsets from './src/algos/Offsets.js';
 import Onion from './src/algos/Onion.js';
 import Orbits from './src/algos/Orbits.js';
@@ -629,7 +630,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'gas-clouds'; // for testing purposes
+    let choose = 'networks'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1133,8 +1134,7 @@ function chooseAlgos() {
         case 'networks':
             displayAlgos('NETWORKS');
             ctx.save();
-            runningAlgo = new Networks();
-            runningAlgo.draw();
+            runningAlgo = new Networks(ctx, w, h);
             break;
         case 'spikral':
             displayAlgos('SPIKRAL');
@@ -1392,49 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Networks {
-    constructor() {
-        this.drawAmount = 0.01;
-        this.x = w / 2;
-        this.y = h / 2;
-        this.rot = random(1, 71);
-        this.size = random(30, 200);
-        this.sizeIncrease = Math.random() * random(0, 5);
-
-        ctx.strokeStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(
-                    this.x,
-                    this.y,
-                    this.size,
-                    0,
-                    this.drawAmount * Math.PI * 2
-                );
-                this.drawAmount += 0.001;
-                this.size += this.sizeIncrease;
-                ctx.stroke();
-                ctx.beginPath();
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 480) === 0) {
-                ctx.strokeStyle = randomColor();
-                this.drawAmount = 0.01;
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.rot = random(1, 71);
-                this.size = random(30, 200);
-                this.sizeIncrease = Math.random() * random(0, 5);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Spikral {
     constructor() {
         this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
