@@ -32,6 +32,7 @@ import EpicRays from './src/algos/EpicRays.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
+import Fruits from './src/algos/Fruits.js';
 import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
@@ -631,7 +632,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'spikral'; // for testing purposes
+    let choose = 'fruits'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1145,8 +1146,7 @@ function chooseAlgos() {
         case 'fruits':
             displayAlgos('FRUITS');
             ctx.save();
-            runningAlgo = new Fruits();
-            runningAlgo.draw();
+            runningAlgo = new Fruits(ctx, w, h);
             break;
         case 'typobrush':
             displayAlgos('TYPOBRUSH');
@@ -1392,52 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Fruits {
-    constructor() {
-        this.row = 0;
-        this.col = 0;
-        this.cellSizes = [50, 100, 150, 200, 250, 300];
-        this.cell = this.cellSizes[random(0, this.cellSizes.length)];
-        this.size = random(10, 100);
-
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = randomColor(0, 255, 0.1, 0.33);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(
-                    this.col * this.cell - this.cell,
-                    this.row * this.cell - this.cell,
-                    this.size,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.stroke();
-                ctx.fill();
-                ctx.beginPath();
-
-                this.col++;
-                if (this.col * this.cell - this.cell * 2 > w) {
-                    this.col = 0;
-                    this.row++;
-                }
-                if (this.row * this.cell - this.cell * 2 > h) {
-                    ctx.beginPath();
-                    this.col = 0;
-                    this.row = 0;
-                    this.cell =
-                        this.cellSizes[random(0, this.cellSizes.length)];
-                    this.size = random(10, 100);
-                    ctx.beginPath();
-                    ctx.fillStyle = randomColor(0, 255, 0.1, 0.33);
-                }
-            }
-            t++;
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Typobrush {
     constructor() {
         this.x = random(0, w);
