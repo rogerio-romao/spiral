@@ -91,6 +91,7 @@ import TheBadge from './src/algos/TheBadge.js';
 import TheFan from './src/algos/TheFan.js';
 import ThreeD from './src/algos/ThreeD.js';
 import Tripping from './src/algos/Tripping.js';
+import Typobrush from './src/algos/Typobrush.js';
 import UFOs from './src/algos/Ufos.js';
 import Unfocused from './src/algos/Unfocused.js';
 import Universe from './src/algos/Universe.js';
@@ -632,7 +633,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'fruits'; // for testing purposes
+    let choose = 'typobrush'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1151,8 +1152,7 @@ function chooseAlgos() {
         case 'typobrush':
             displayAlgos('TYPOBRUSH');
             ctx.save();
-            runningAlgo = new Typobrush();
-            runningAlgo.draw();
+            runningAlgo = new Typobrush(ctx, w, h);
             break;
         case 'veils':
             displayAlgos('VEILS');
@@ -1392,58 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Typobrush {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.letters = [
-            2703, 2705, 2709, 2713, 2715, 2716, 2718, 2719, 2720, 2721, 2722,
-            2725, 2726, 2731, 2732, 2735, 2738, 2739, 2741, 2742, 2743, 2745,
-            2748, 2750, 2751, 2752, 2753, 2760, 2764, 2768, 2784, 2791, 2792,
-            2795, 2796, 2797, 2798, 2799, 2800,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.size = 20;
-        this.sizeInc = random(1, 6);
-        this.rot = random(1, 400);
-
-        ctx.strokeStyle = randomColor(0, 255, 0.33, 0.33);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-        ctx.textAlign = 'center';
-        ctx.font = `${this.size}px serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, this.x, this.y);
-                ctx.font = `${this.size}px serif`;
-                this.size += this.sizeInc;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 150) === 0) {
-                this.size = 20;
-                ctx.font = `${this.size}px serif`;
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.rot = random(1, 400);
-                this.sizeInc = random(1, 6);
-                ctx.strokeStyle = randomColor(0, 255, 0.33, 0.33);
-            }
-            if (t % (speed * 1500) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Veils {
     constructor() {
         this.x = random(0, w);
