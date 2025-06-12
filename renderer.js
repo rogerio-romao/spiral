@@ -75,6 +75,7 @@ import SnakesLadders from './src/algos/SnakesLadders.js';
 import Solar from './src/algos/Solar.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spikey from './src/algos/Spikey.js';
+import Spikral from './src/algos/Spikral.js';
 import Spinner from './src/algos/Spinner.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
@@ -630,7 +631,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'networks'; // for testing purposes
+    let choose = 'spikral'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1139,8 +1140,7 @@ function chooseAlgos() {
         case 'spikral':
             displayAlgos('SPIKRAL');
             ctx.save();
-            runningAlgo = new Spikral();
-            runningAlgo.draw();
+            runningAlgo = new Spikral(ctx, w, h);
             break;
         case 'fruits':
             displayAlgos('FRUITS');
@@ -1392,38 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Spikral {
-    constructor() {
-        this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
-        this.rot = random(1, 22);
-        this.size = random(25, 100);
-
-        ctx.fillStyle = randomColor(0, 255, 0.25, 1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.arc(w / 2, h / 2, this.size, 0, this.fillAmount);
-                this.size *= 1.05;
-                ctx.fill();
-                ctx.beginPath();
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(-this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 150) === 0) {
-                ctx.fillStyle = randomColor(0, 255, 0.25, 1);
-                this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
-                this.size = random(25, 100);
-            }
-            if (t % (speed * 1500) === 0) {
-                this.rot = random(1, 22);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Fruits {
     constructor() {
         this.row = 0;
