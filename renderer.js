@@ -97,6 +97,7 @@ import Unfocused from './src/algos/Unfocused.js';
 import Universe from './src/algos/Universe.js';
 import Upholstery from './src/algos/Upholstery.js';
 import VanishingRays from './src/algos/VanishingRays.js';
+import Veils from './src/algos/Veils.js';
 import Wallpapering from './src/algos/Wallpapering.js';
 import Warp2001 from './src/algos/Warp2001.js';
 import Wormhole from './src/algos/Wormhole.js';
@@ -633,7 +634,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'typobrush'; // for testing purposes
+    let choose = 'veils'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1157,8 +1158,7 @@ function chooseAlgos() {
         case 'veils':
             displayAlgos('VEILS');
             ctx.save();
-            runningAlgo = new Veils();
-            runningAlgo.draw();
+            runningAlgo = new Veils(ctx, w, h);
             break;
         case 'harmonie':
             displayAlgos('HARMONIE');
@@ -1392,52 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Veils {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.letters = [
-            2801, 2817, 2819, 2822, 2824, 2827, 2832, 2835, 2837, 2849, 2855,
-            2856, 2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893,
-        ];
-        this.letter = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.rot = 1;
-        ctx.strokeStyle = randomColor(0, 255, 0.5, 0.5);
-        ctx.textAlign = 'center';
-        this.size = random(30, 400);
-        ctx.font = `${this.size}px serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.strokeText(this.letter, this.x, this.y);
-
-                this.size += 2;
-                ctx.font = `${this.size}px serif`;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 540) === 0) {
-                this.letter = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                this.size = random(30, 400);
-                ctx.font = `${this.size}px serif`;
-                this.x = random(0, w);
-                this.y = random(0, h);
-                ctx.strokeStyle = randomColor(0, 255, 0.5, 0.5);
-            }
-            if (t % (speed * 1620) === 0) {
-                this.rot++;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Harmonie {
     constructor() {
         this.x = random(40, w - 40);
