@@ -63,6 +63,7 @@ import Picnic from './src/algos/Picnic.js';
 import PietriDish from './src/algos/PietriDish.js';
 import Plaid from './src/algos/Plaid.js';
 import Polyhedra from './src/algos/Polyhedra.js';
+import Portals from './src/algos/Portals.js';
 import Progression from './src/algos/Progression.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
@@ -635,7 +636,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'harmonie'; // for testing purposes
+    let choose = 'portals'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1169,8 +1170,7 @@ function chooseAlgos() {
         case 'portals':
             displayAlgos('PORTALS');
             ctx.save();
-            runningAlgo = new Portals();
-            runningAlgo.draw();
+            runningAlgo = new Portals(ctx, w, h);
             break;
         case 'sandala':
             displayAlgos('SANDALA');
@@ -1392,61 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Portals {
-    constructor() {
-        this.cols = random(3, 13);
-        this.rows = random(3, 13);
-        this.width = random(20, w / this.cols + 3);
-        this.height = random(20, w / this.rows + 3);
-        this.round = random(0, 60);
-        this.rot = random(1, 33);
-
-        ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        ctx.globalCompositeOperation = 'hard-light';
-        ctx.fillStyle = randomColor(0, 255, 0.45, 0.45);
-        ctx.globalAlpha = 0.6;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let row = 0; row <= this.rows; row++) {
-                    for (let col = 0; col <= this.cols; col++) {
-                        ctx.roundRect(
-                            col * (w / this.cols),
-                            row * (h / this.rows),
-                            this.width,
-                            this.height,
-                            {
-                                upperLeft: this.round,
-                                upperRight: this.round,
-                                lowerLeft: this.round,
-                                lowerRight: this.round,
-                            },
-                            true,
-                            true
-                        );
-                    }
-                }
-            }
-            t++;
-
-            if (t % (speed * 90) === 0) {
-                this.cols = random(3, 13);
-                this.rows = random(3, 13);
-                this.width = random(20, w / 8);
-                this.height = random(20, w / 8);
-                this.round = random(0, 60);
-                this.rot = random(1, 33);
-                ctx.strokeStyle = randomColor(0, 255, 1, 1);
-                ctx.fillStyle = randomColor(0, 255, 0.45, 0.45);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Sandala {
     constructor() {
         this.cols = random(5, 12);
