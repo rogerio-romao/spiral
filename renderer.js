@@ -37,6 +37,7 @@ import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
+import Harmonie from './src/algos/Harmonie.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
 import Lollipottery from './src/algos/Lollipottery.js';
@@ -634,7 +635,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'veils'; // for testing purposes
+    let choose = 'harmonie'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1163,8 +1164,7 @@ function chooseAlgos() {
         case 'harmonie':
             displayAlgos('HARMONIE');
             ctx.save();
-            runningAlgo = new Harmonie();
-            runningAlgo.draw();
+            runningAlgo = new Harmonie(ctx, w, h);
             break;
         case 'portals':
             displayAlgos('PORTALS');
@@ -1392,65 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Harmonie {
-    constructor() {
-        this.x = random(40, w - 40);
-        this.y = random(25, h - 25);
-        this.letters = [
-            2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924,
-            2925, 2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947,
-            2949, 2952, 2953, 2960, 2962, 2970, 2972, 2975, 2980, 2984, 2986,
-            2990, 2991, 2992, 2994, 2997, 2998,
-        ];
-        this.letter1 = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.letter2 = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        );
-        this.size = random(20, 55);
-        this.rot = 23;
-
-        ctx.strokeStyle = randomColor(35, 210, 0.2, 0.65);
-        ctx.fillStyle = randomColor(35, 210, 0.2, 0.65);
-        ctx.textAlign = 'center';
-        ctx.font = `${this.size}px serif`;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                if (t % 2) {
-                    ctx.strokeText(this.letter1, this.x, this.y);
-                } else {
-                    ctx.fillText(this.letter2, this.x, this.y);
-                }
-                ctx.font = `${this.size}px serif`;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 180) === 0) {
-                this.size = random(20, 55);
-                ctx.font = `${this.size}px serif`;
-                this.x = random(40, w - 40);
-                this.y = random(25, h - 25);
-                this.rot = random(1, 400);
-                ctx.strokeStyle = randomColor(35, 210, 0.2, 0.65);
-                ctx.fillStyle = randomColor(35, 210, 0.2, 0.65);
-            }
-            if (t % (speed * 900) === 0) {
-                this.letter1 = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-                this.letter2 = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                );
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Portals {
     constructor() {
         this.cols = random(3, 13);
