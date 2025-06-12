@@ -32,6 +32,7 @@ import EpicRays from './src/algos/EpicRays.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
+import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
@@ -628,7 +629,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'germinate'; // for testing purposes
+    let choose = 'gas-clouds'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1127,8 +1128,7 @@ function chooseAlgos() {
         case 'gas-clouds':
             displayAlgos('GAS CLOUDS');
             ctx.save();
-            runningAlgo = new GasClouds();
-            runningAlgo.draw();
+            runningAlgo = new GasClouds(ctx, w, h);
             break;
         case 'networks':
             displayAlgos('NETWORKS');
@@ -1392,61 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class GasClouds {
-    constructor() {
-        this.width = random(0, w / 2);
-        this.height = random(0, h / 2);
-        this.ul = random(0, 300);
-        this.ur = random(0, 300);
-        this.dl = random(0, 300);
-        this.dr = random(0, 300);
-        this.x = 0;
-        this.y = 0;
-        this.rotate = random(1, 200);
-
-        ctx.strokeStyle = randomColor(0, 150, 0.2, 0.5);
-        ctx.fillStyle = randomColor(25, 255, 0.02, 0.04);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.x++,
-                    this.y++,
-                    this.width,
-                    this.height,
-                    {
-                        upperLeft: this.ul,
-                        upperRight: this.ur,
-                        lowerLeft: this.dl,
-                        lowerRight: this.dr,
-                    },
-                    true,
-                    false
-                );
-            }
-            t++;
-
-            if (t % (speed * 240) === 0) {
-                ctx.strokeStyle = randomColor(0, 150, 0.2, 0.5);
-                ctx.fillStyle = randomColor(25, 255, 0.02, 0.04);
-                this.width = random(0, w / 2);
-                this.height = random(0, h / 2);
-                this.ul = random(0, 300);
-                this.ur = random(0, 300);
-                this.dl = random(0, 300);
-                this.dr = random(0, 300);
-                this.x = 0;
-                this.y = 0;
-                this.rotate = random(1, 200);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Networks {
     constructor() {
         this.drawAmount = 0.01;
