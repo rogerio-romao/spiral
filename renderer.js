@@ -37,6 +37,7 @@ import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
+import Hallucinate from './src/algos/Hallucinate.js';
 import Harmonie from './src/algos/Harmonie.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
@@ -1391,46 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Hallucinate {
-    constructor() {
-        this.rows = random(3, 17);
-        this.rot = random(1, 180);
-        this.height = h / this.rows;
-        this.colors = [];
-        for (let i = 0; i <= this.rows; i++) {
-            this.colors.push(randomColor());
-        }
-
-        ctx.globalCompositeOperation = 'soft-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.fillStyle = this.colors[i];
-                    ctx.fillRect(-w, i * this.height, 3 * w, this.height);
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 150) === 0) {
-                this.rows = random(3, 17);
-                this.rot = random(1, 180);
-                this.height = h / this.rows;
-                this.colors = [];
-                for (let i = 0; i <= this.rows; i++) {
-                    this.colors.push(randomColor());
-                }
-            }
-            if (t % (speed * 750) === 0) {
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Hive {
     constructor() {
         this.rows = random(3, 10);
