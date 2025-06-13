@@ -12,6 +12,7 @@ import BeziersStraight from './src/algos/BeziersStraight.js';
 import BigBangs from './src/algos/BigBangs.js';
 import BlacknWhite from './src/algos/BlackNWhite.js';
 import Blends from './src/algos/Blends.js';
+import Boxes from './src/algos/Boxes.js';
 import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Chillout from './src/algos/Chillout.js';
@@ -640,7 +641,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'the-hive'; // for testing purposes
+    let choose = 'boxes'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1199,8 +1200,7 @@ function chooseAlgos() {
         case 'boxes':
             displayAlgos('BOXES');
             ctx.save();
-            runningAlgo = new Boxes();
-            runningAlgo.draw();
+            runningAlgo = new Boxes(ctx, w, h);
             break;
         case 'digital-art':
             displayAlgos('DIGITAL ART');
@@ -1392,56 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Boxes {
-    constructor() {
-        this.rows = random(3, 17);
-        this.height = h / this.rows;
-        this.cols = random(3, 17);
-        this.width = w / this.cols;
-        this.angles = [15, 20, 24, 30, 36, 45, 48, 72, 80, 90];
-        this.rot = this.angles[random(0, this.angles.length)];
-
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = randomColor(0, 255, 0.075, 0.075);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.fillRect(
-                        i * this.width,
-                        i * this.height,
-                        this.width / 2,
-                        this.height / 2
-                    );
-                    ctx.strokeRect(
-                        i * this.width,
-                        i * this.height,
-                        this.width / 2,
-                        this.height / 2
-                    );
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 100) === 0) {
-                this.cols = random(3, 17);
-                this.width = w / this.cols;
-                this.rows = random(3, 17);
-                this.height = h / this.rows;
-            }
-            if (t % (speed * 200) === 0) {
-                this.rot = this.angles[random(0, this.angles.length)];
-            }
-            if (t % (speed * 400) === 0) {
-                ctx.fillStyle = randomColor(0, 255, 0.075, 0.075);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class DigitalArt {
     constructor() {
         this.x = random(75, w - 75);
