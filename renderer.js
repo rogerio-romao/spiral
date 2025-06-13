@@ -74,6 +74,7 @@ import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Radiance from './src/algos/Radiance.js';
 import RadioWaves from './src/algos/RadioWaves.js';
+import Records from './src/algos/Records.js';
 import Rims from './src/algos/Rims.js';
 import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
@@ -644,7 +645,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'slices'; // for testing purposes
+    let choose = 'records'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1223,8 +1224,7 @@ function chooseAlgos() {
         case 'records':
             displayAlgos('RECORDS');
             ctx.save();
-            runningAlgo = new Records();
-            runningAlgo.draw();
+            runningAlgo = new Records(ctx, w, h);
             break;
         case 'lisajou':
             displayAlgos('LISA JOU');
@@ -1392,48 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Records {
-    constructor() {
-        this.offset = random(50, 330);
-        this.speed = Math.random() * 7;
-        this.angle = 0;
-        this.radius = random(50, Math.min(w, h) / 2);
-        this.rotate = random(1, 45);
-
-        ctx.strokeStyle = ctx.fillStyle = randomColor();
-
-        ctx.lineWidth = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(w / 2, h / 2, this.radius, 0, Math.random() * Math.PI);
-                ctx.stroke();
-                this.angle += this.speed;
-                this.radius = Math.abs(
-                    this.radius + Math.sin(this.angle) * this.offset
-                );
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 120) === 0) {
-                ctx.beginPath();
-                ctx.arc(w / 2, h / 2, this.radius, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.strokeStyle = ctx.fillStyle = randomColor();
-                this.angle = 0;
-                this.rotate = random(1, 45);
-                this.radius = random(50, Math.min(w, h) / 2);
-                this.offset = random(50, 330);
-                this.speed = Math.random() * 7;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class LisaJou {
     constructor() {
         this.radiusX = random(100, w * 0.75);
