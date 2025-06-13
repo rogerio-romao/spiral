@@ -79,6 +79,7 @@ import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
 import Sandala from './src/algos/Sandala.js';
 import Seeds from './src/algos/Seeds.js';
+import Slices from './src/algos/Slices.js';
 import Smooth from './src/algos/Smooth.js';
 import SnakesLadders from './src/algos/SnakesLadders.js';
 import Solar from './src/algos/Solar.js';
@@ -643,7 +644,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'thread'; // for testing purposes
+    let choose = 'slices'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1217,8 +1218,7 @@ function chooseAlgos() {
         case 'slices':
             displayAlgos('SLICES');
             ctx.save();
-            runningAlgo = new Slices();
-            runningAlgo.draw();
+            runningAlgo = new Slices(ctx, w, h);
             break;
         case 'records':
             displayAlgos('RECORDS');
@@ -1392,49 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Slices {
-    constructor() {
-        this.offsetX = random(50, w / 2);
-        this.offsetY = random(50, h / 2);
-        this.speed = Math.random() * 2 - 1;
-        this.angle = 0;
-        this.slice = Math.random();
-        this.radius = random(40, 220);
-        this.rotate = random(1, 90);
-
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = randomColor(0, 255, 0.2, 0.9);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                const x = w / 2 + Math.sin(this.angle) * this.offsetX;
-                const y = h / 2 + Math.cos(this.angle) * this.offsetY;
-                ctx.beginPath();
-                ctx.arc(x, y, this.radius, 0, this.slice * Math.PI);
-                ctx.closePath();
-                ctx.stroke();
-                ctx.fill();
-                this.angle += this.speed;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 360) === 0) {
-                ctx.fillStyle = randomColor(0, 255, 0.2, 0.9);
-                this.offsetX = random(50, w / 2);
-                this.offsetY = random(50, h / 2);
-                this.speed = Math.random() * 2 - 1;
-                this.slice = Math.random();
-                this.angle = 0;
-                this.radius = random(40, 220);
-                this.rotate = random(1, 90);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Records {
     constructor() {
         this.offset = random(50, 330);
