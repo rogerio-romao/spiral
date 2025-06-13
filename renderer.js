@@ -65,6 +65,7 @@ import Plaid from './src/algos/Plaid.js';
 import Polyhedra from './src/algos/Polyhedra.js';
 import Portals from './src/algos/Portals.js';
 import Progression from './src/algos/Progression.js';
+import PsychoRainbow from './src/algos/PsychoRainbow.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Radiance from './src/algos/Radiance.js';
@@ -637,7 +638,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'sandala'; // for testing purposes
+    let choose = 'hallucinate'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1181,14 +1182,12 @@ function chooseAlgos() {
         case 'psycho-rainbow':
             displayAlgos('PSYCHO RAINBOW');
             ctx.save();
-            runningAlgo = new PsychoRainbow();
-            runningAlgo.draw();
+            runningAlgo = new PsychoRainbow(ctx, w, h);
             break;
         case 'hallucinate':
             displayAlgos('HALLUCINATE');
             ctx.save();
-            runningAlgo = new Hallucinate();
-            runningAlgo.draw();
+            runningAlgo = new Hallucinate(ctx, w, h);
             break;
         case 'the-hive':
             displayAlgos('THE HIVE');
@@ -1392,50 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class PsychoRainbow {
-    constructor() {
-        this.blends = ['hard-light', 'difference', 'color', 'luminosity'];
-        this.blend = this.blends[random(0, this.blends.length)];
-
-        this.rows = random(3, 10);
-        this.rot = random(1, 50);
-        this.height = h / this.rows;
-        this.colors = [];
-        for (let i = 0; i <= this.rows; i++) {
-            this.colors.push(randomColor(0, 255, 0.1, 0.5));
-        }
-
-        ctx.globalCompositeOperation = this.blend;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.fillStyle = this.colors[i];
-                    ctx.fillRect(-w, i * this.height, 3 * w, this.height);
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 100) === 0) {
-                this.rows = random(3, 10);
-                this.rot = random(1, 50);
-                this.height = h / this.rows;
-                this.colors = [];
-                for (let i = 0; i <= this.rows; i++) {
-                    this.colors.push(randomColor(0, 255, 0.1, 0.5));
-                }
-            }
-            if (t % (speed * 700) === 0) {
-                this.blend = this.blends[random(0, this.blends.length)];
-                ctx.globalCompositeOperation = this.blend;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Hallucinate {
     constructor() {
         this.rows = random(3, 17);
