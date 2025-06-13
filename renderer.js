@@ -97,6 +97,7 @@ import Sushi from './src/algos/Sushi.js';
 import Swirls from './src/algos/Swirls.js';
 import TheBadge from './src/algos/TheBadge.js';
 import TheFan from './src/algos/TheFan.js';
+import Thread from './src/algos/Thread.js';
 import ThreeD from './src/algos/ThreeD.js';
 import Tripping from './src/algos/Tripping.js';
 import Typobrush from './src/algos/Typobrush.js';
@@ -642,7 +643,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'digital-art'; // for testing purposes
+    let choose = 'thread'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1211,8 +1212,7 @@ function chooseAlgos() {
         case 'thread':
             displayAlgos('THREAD');
             ctx.save();
-            runningAlgo = new Thread();
-            runningAlgo.draw();
+            runningAlgo = new Thread(ctx, w, h);
             break;
         case 'slices':
             displayAlgos('SLICES');
@@ -1392,43 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Thread {
-    constructor() {
-        this.offset = random(30, h * 0.75);
-        this.speed = Math.random() * 40;
-        this.angle = 0;
-        this.radius = random(25, 350);
-        this.rotate = random(1, 35);
-
-        ctx.strokeStyle = randomColor(20, 255, 0.15, 1);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                const y = h / 2 + Math.sin(this.angle) * this.offset;
-                ctx.beginPath();
-                ctx.arc(w / 2, y, this.radius, 0, 2 * Math.PI);
-                ctx.stroke();
-                this.angle += this.speed;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 450) === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                ctx.strokeStyle = randomColor(20, 255, 0.15, 1);
-                this.angle = 0;
-                this.rotate = random(1, 35);
-                this.radius = random(25, 350);
-                this.offset = random(30, h * 0.75);
-                this.speed = Math.random() * 40;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Slices {
     constructor() {
         this.offsetX = random(50, w / 2);
