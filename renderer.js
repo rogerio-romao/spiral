@@ -39,6 +39,7 @@ import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
 import Hallucinate from './src/algos/Hallucinate.js';
 import Harmonie from './src/algos/Harmonie.js';
+import Hive from './src/algos/Hive.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
 import Lollipottery from './src/algos/Lollipottery.js';
@@ -639,7 +640,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'hallucinate'; // for testing purposes
+    let choose = 'the-hive'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1193,8 +1194,7 @@ function chooseAlgos() {
         case 'the-hive':
             displayAlgos('THE HIVE');
             ctx.save();
-            runningAlgo = new Hive();
-            runningAlgo.draw();
+            runningAlgo = new Hive(ctx, w, h);
             break;
         case 'boxes':
             displayAlgos('BOXES');
@@ -1392,53 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Hive {
-    constructor() {
-        this.rows = random(3, 10);
-        this.height = h / this.rows;
-        this.angles = [9, 10, 12, 16, 20, 30, 36, 45, 60];
-        this.rot = this.angles[random(1, this.angles.length)];
-
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.strokeStyle = randomColor();
-        ctx.shadowColor = randomColor();
-        ctx.blur = 7;
-        ctx.lineWidth = random(7, 18);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i <= this.rows; i++) {
-                    ctx.strokeRect(
-                        random(0, w),
-                        i * this.height,
-                        random(0, w),
-                        this.height
-                    );
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 125) === 0) {
-                ctx.shadowColor = randomColor();
-                this.rows = random(3, 10);
-                this.rot = this.angles[random(1, this.angles.length)];
-                this.height = h / this.rows;
-                ctx.strokeStyle = randomColor();
-                ctx.globalCompositeOperation = 'overlay';
-            }
-            if (t % (speed * 500) === 0) {
-                ctx.globalCompositeOperation = 'difference';
-            }
-            if (t % (speed * 1500) === 0) {
-                ctx.globalCompositeOperation = 'hard-light';
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Boxes {
     constructor() {
         this.rows = random(3, 17);
