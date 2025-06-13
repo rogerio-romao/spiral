@@ -44,6 +44,7 @@ import Harmonie from './src/algos/Harmonie.js';
 import Hive from './src/algos/Hive.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
+import LisaJou from './src/algos/LisaJou.js';
 import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
@@ -645,7 +646,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'records'; // for testing purposes
+    let choose = 'lisajou'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1229,8 +1230,7 @@ function chooseAlgos() {
         case 'lisajou':
             displayAlgos('LISA JOU');
             ctx.save();
-            runningAlgo = new LisaJou();
-            runningAlgo.draw();
+            runningAlgo = new LisaJou(ctx, w, h);
             break;
         case 'division':
             displayAlgos('DIVISION');
@@ -1392,50 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class LisaJou {
-    constructor() {
-        this.radiusX = random(100, w * 0.75);
-        this.radiusY = random(100, h * 0.75);
-        this.angleX = 0;
-        this.angleY = 0;
-        this.speedX = Math.random() * 3;
-        this.speedY = Math.random() * 3;
-        this.size = random(2, 16);
-
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = randomColor();
-        ctx.fillRect(0, 0, w, h);
-        ctx.fillStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                const x = w / 2 + Math.cos(this.angleX) * this.radiusX;
-                const y = h / 2 + Math.sin(this.angleY) * this.radiusY;
-                ctx.beginPath();
-                ctx.arc(x, y, this.size, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.stroke();
-                this.angleX += this.speedX;
-                this.angleY += this.speedY;
-            }
-            t++;
-            if (t % (speed * 720) === 0) {
-                ctx.fillStyle = randomColor();
-                ctx.fillRect(0, 0, w, h);
-                this.radiusX = random(100, w * 0.75);
-                this.radiusY = random(100, h * 0.75);
-                this.angleX = 0;
-                this.angleY = 0;
-                this.speedX = Math.random() * 3;
-                this.speedY = Math.random() * 3;
-                this.size = random(2, 16);
-                ctx.fillStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Division {
     constructor() {
         this.radius = random(25, Math.min(w, h) / 2);
