@@ -24,6 +24,7 @@ import Cornucopia2 from './src/algos/Cornucopia2.js';
 import CounterClock from './src/algos/CounterClock.js';
 import CrayonFunnel from './src/algos/CrayonFunnel.js';
 import CrystalTiles from './src/algos/CrystalTiles.js';
+import DigitalArt from './src/algos/DigitalArt.js';
 import Discos from './src/algos/Discos.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
@@ -641,7 +642,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'boxes'; // for testing purposes
+    let choose = 'digital-art'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1205,8 +1206,7 @@ function chooseAlgos() {
         case 'digital-art':
             displayAlgos('DIGITAL ART');
             ctx.save();
-            runningAlgo = new DigitalArt();
-            runningAlgo.draw();
+            runningAlgo = new DigitalArt(ctx, w, h);
             break;
         case 'thread':
             displayAlgos('THREAD');
@@ -1392,52 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class DigitalArt {
-    constructor() {
-        this.x = random(75, w - 75);
-        this.y = random(30, h - 30);
-        this.rot = random(3, 40);
-        this.size = random(12, 36);
-
-        ctx.font = `${this.size}px serif`;
-        ctx.fillStyle = randomColor();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                let letter = t % 2 ? '0' : '1';
-                if (t % 2) {
-                    ctx.font = `${this.size * 2}px serif`;
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'top';
-                    ctx.fillText(letter + '-', w / 2, h / 2);
-                } else {
-                    ctx.font = `${this.size * 2}px serif`;
-                    ctx.textAlign = 'right';
-                    ctx.textBaseline = 'bottom';
-                    ctx.fillText(letter + '_', w / 2, h / 2);
-                }
-                ctx.font = `${this.size}px serif`;
-                ctx.fillText(letter, this.x, this.y);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 90) === 0) {
-                this.x = random(75, w - 75);
-                this.y = random(30, h - 30);
-                this.size = random(12, 36);
-                ctx.font = `${this.size}px serif`;
-                ctx.fillStyle = randomColor();
-            }
-            if (t % (speed * 450) === 0) {
-                this.rot = random(3, 40);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Thread {
     constructor() {
         this.offset = random(30, h * 0.75);
