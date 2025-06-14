@@ -91,6 +91,7 @@ import Seeds from './src/algos/Seeds.js';
 import Slices from './src/algos/Slices.js';
 import Smooth from './src/algos/Smooth.js';
 import SnakesLadders from './src/algos/SnakesLadders.js';
+import SoapyBubbles from './src/algos/SoapyBubbles.js';
 import Solar from './src/algos/Solar.js';
 import SpaceGears from './src/algos/SpaceGears.js';
 import Spikey from './src/algos/Spikey.js';
@@ -185,71 +186,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (
         this.fill();
     }
 };
-
-// Physics and math classes from Youtube channel Coding Math
-// Vector class
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    setPosX(value) {
-        this.x = value;
-    }
-    getX() {
-        return this.x;
-    }
-    setY(value) {
-        this.y = value;
-    }
-    getY() {
-        return this.y;
-    }
-    setAngle(angle) {
-        const length = this.getLength();
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
-    }
-    getAngle() {
-        return Math.atan2(this.y, this.x);
-    }
-    setLength(length) {
-        const angle = this.getAngle();
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
-    }
-    getLength() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-    add(v2) {
-        return new Vector(this.x + v2.getX(), this.y + v2.getY());
-    }
-    subtract(v2) {
-        return new Vector(this.x - v2.getX(), this.y - v2.getY());
-    }
-    multiply(val) {
-        return new Vector(this.x * val, this.y * val);
-    }
-    divide(val) {
-        return new Vector(this.x / val, this.y / val);
-    }
-    addTo(v2) {
-        this.x += v2.getX();
-        this.y += v2.getY();
-    }
-    subtractFrom(v2) {
-        this.x -= v2.getX();
-        this.y -= v2.getY();
-    }
-    multiplyBy(val) {
-        this.x *= val;
-        this.y *= val;
-    }
-    divideBy(val) {
-        this.x /= val;
-        this.y /= val;
-    }
-}
 
 // Particle class
 class Particle {
@@ -658,7 +594,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'deep-sea'; // for testing purposes
+    let choose = 'soapy-bubbles'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1307,8 +1243,7 @@ function chooseAlgos() {
         case 'soapy-bubbles':
             displayAlgos('SOAPY BUBBLES');
             ctx.save();
-            runningAlgo = new SoapyBubbles();
-            runningAlgo.draw();
+            runningAlgo = new SoapyBubbles(ctx, w, h);
             break;
         case 'gridlock':
             displayAlgos('GRIDLOCK');
@@ -1392,61 +1327,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class SoapyBubbles {
-    constructor() {
-        this.size = random(5, 50);
-        this.length = Math.random() * 5 + 1;
-        this.angle = Math.random() * (Math.PI / 4) + 0.1;
-        this.rot = random(1, 61);
-        this.position = new Vector(0, 0);
-        this.velocity = new Vector(0, 0);
-        this.velocity.setLength(this.length);
-        this.velocity.setAngle(this.angle);
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor(50, 255, 0.5, 1);
-        ctx.shadowBlur = 30;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(
-                    this.position.getX(),
-                    this.position.getY(),
-                    this.size,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.stroke();
-                ctx.fill();
-                this.position.addTo(this.velocity);
-            }
-            t++;
-            if (t % (speed * 320) === 0) {
-                this.size = random(5, 50);
-                this.length = Math.random() * 5 + 1;
-                this.angle = Math.random() * (Math.PI / 4) + 0.1;
-                this.rot = random(1, 61);
-                this.position = new Vector(0, 0);
-                this.velocity = new Vector(0, 0);
-                this.velocity.setLength(this.length);
-                this.velocity.setAngle(this.angle);
-
-                ctx.strokeStyle = ctx.shadowColor = randomColor(
-                    50,
-                    255,
-                    0.5,
-                    1
-                );
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Gridlock {
     constructor() {
         this.gap = random(5, 70);

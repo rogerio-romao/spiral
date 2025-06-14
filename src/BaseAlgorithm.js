@@ -1,3 +1,5 @@
+import Vector from './utils/Vector.js';
+
 export default class BaseAlgorithm {
     static random(min, max) {
         const num = Math.floor(Math.random() * (max - min)) + min;
@@ -10,6 +12,10 @@ export default class BaseAlgorithm {
         const b = this.random(minC, maxC);
         const a = +(Math.random() * (maxA - minA) + minA).toFixed(3);
         return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+
+    static createVector(x, y) {
+        return new Vector(x, y);
     }
 
     constructor(ctx, w, h) {
