@@ -118,6 +118,7 @@ import Universe from './src/algos/Universe.js';
 import Upholstery from './src/algos/Upholstery.js';
 import VanishingRays from './src/algos/VanishingRays.js';
 import Veils from './src/algos/Veils.js';
+import Vortrix from './src/algos/Vortrix.js';
 import Wallpapering from './src/algos/Wallpapering.js';
 import Warp2001 from './src/algos/Warp2001.js';
 import Wormhole from './src/algos/Wormhole.js';
@@ -654,7 +655,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'hubble'; // for testing purposes
+    let choose = 'vortrix'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1283,8 +1284,7 @@ function chooseAlgos() {
         case 'vortrix':
             displayAlgos('VORTRIX');
             ctx.save();
-            runningAlgo = new Vortrix();
-            runningAlgo.draw();
+            runningAlgo = new Vortrix(ctx, w, h);
             break;
         case 'vanishing-point':
             displayAlgos('VANISHING POINT');
@@ -1392,48 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Vortrix {
-    constructor() {
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.size = random(60, 400);
-        this.rot = random(1, 60);
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.5, 1);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-        ctx.shadowBlur = 10;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                this.drawTriangle(this.x, this.y);
-                this.size--;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 360) === 0) {
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.size = random(60, 400);
-                this.rot = random(1, 60);
-                ctx.strokeStyle = ctx.shadowColor = randomColor(0, 255, 0.5, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-    drawTriangle = (x, y) => {
-        ctx.moveTo(x, y);
-        ctx.beginPath();
-        ctx.lineTo(x + this.size, y);
-        ctx.lineTo(x, y + this.size);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-    };
-}
-
 class VanishingPoint {
     constructor() {
         this.size = Math.min(w, h);
