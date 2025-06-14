@@ -105,6 +105,7 @@ import TheFan from './src/algos/TheFan.js';
 import Thread from './src/algos/Thread.js';
 import ThreeD from './src/algos/ThreeD.js';
 import Trance from './src/algos/Trance.js';
+import Triangulate from './src/algos/Triangulate.js';
 import Tripping from './src/algos/Tripping.js';
 import Typobrush from './src/algos/Typobrush.js';
 import UFOs from './src/algos/Ufos.js';
@@ -649,7 +650,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'trance'; // for testing purposes
+    let choose = 'triangulate'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1253,8 +1254,8 @@ function chooseAlgos() {
         case 'triangulate':
             displayAlgos('TRIANGULATE');
             ctx.save();
-            runningAlgo = new Triangulate();
-            runningAlgo.draw();
+            runningAlgo = new Triangulate(ctx, w, h);
+
             break;
         case 'halfsies':
             displayAlgos('HALFSIES');
@@ -1392,62 +1393,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Triangulate {
-    constructor() {
-        this.radius = random(60, Math.max(w, h) / 2);
-        this.angle = 0;
-        this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
-        this.triangles = this.divisions[random(0, this.divisions.length)];
-        this.size = random(15, 100);
-        this.rotations = [
-            10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120,
-        ];
-        this.rotate = this.rotations[random(0, this.rotations.length)];
-
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = randomColor(0, 255, 0.2, 0.45);
-        ctx.lineWidth = 3;
-
-        this.drawTriangle = (x, y, i) => {
-            ctx.moveTo(x, y);
-            ctx.beginPath();
-            ctx.lineTo(x + this.size + i, y + i);
-            ctx.lineTo(x + i, y + this.size + i);
-            ctx.lineTo(x, y);
-            ctx.closePath();
-        };
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i < this.triangles; i++) {
-                    this.angle = (i * Math.PI * 2) / this.triangles;
-                    const x = w / 2 + Math.cos(this.angle) * this.radius;
-                    const y = h / 2 + Math.sin(this.angle) * this.radius;
-                    this.drawTriangle(x, y, i);
-                    ctx.fill();
-                    ctx.stroke();
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rotate * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 60) === 0) {
-                this.size = random(15, 100);
-                this.triangles =
-                    this.divisions[random(0, this.divisions.length)];
-                ctx.fillStyle = randomColor(0, 255, 0.2, 0.45);
-                this.angle = 0;
-                this.radius = random(60, Math.max(w, h) / 2);
-            }
-            if (t % (speed * 180) === 0) {
-                this.rotate = this.rotations[random(0, this.rotations.length)];
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Halfsies {
     constructor() {
         this.rot = random(3, 37);
