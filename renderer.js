@@ -41,6 +41,7 @@ import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
+import Halfsies from './src/algos/Halfsies.js';
 import Hallucinate from './src/algos/Hallucinate.js';
 import Harmonie from './src/algos/Harmonie.js';
 import Hive from './src/algos/Hive.js';
@@ -650,7 +651,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'triangulate'; // for testing purposes
+    let choose = 'halfsies'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1255,13 +1256,11 @@ function chooseAlgos() {
             displayAlgos('TRIANGULATE');
             ctx.save();
             runningAlgo = new Triangulate(ctx, w, h);
-
             break;
         case 'halfsies':
             displayAlgos('HALFSIES');
             ctx.save();
-            runningAlgo = new Halfsies();
-            runningAlgo.draw();
+            runningAlgo = new Halfsies(ctx, w, h);
             break;
         case 'loading':
             displayAlgos('LOADING');
@@ -1393,45 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Halfsies {
-    constructor() {
-        this.rot = random(3, 37);
-        this.radius = random(40, 400);
-        this.x = random(w / 2 - this.radius, w / 2 + this.radius);
-        this.y = random(h / 2 - this.radius, h / 2 + this.radius);
-        this.counter = false;
-        this.width1 = random(2, 11);
-        this.width2 = random(2, 11);
-
-        this.draw = () => {
-            ctx.lineWidth = t % 2 ? this.width1 : this.width2;
-            ctx.strokeStyle = t % 2 ? 'black' : 'white';
-            this.counter = t % 2 ? true : false;
-            ctx.globalCompositeOperation = t % 2 ? 'source-over' : 'difference';
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI, this.counter);
-                ctx.stroke();
-                ctx.closePath();
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 120) === 0) {
-                this.radius = random(40, 400);
-                this.x = random(w / 2 - this.radius, w / 2 + this.radius);
-                this.y = random(h / 2 - this.radius, h / 2 + this.radius);
-                this.rot = random(3, 37);
-                this.width1 = random(2, 11);
-                this.width2 = random(2, 11);
-                ctx.beginPath();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Loading {
     constructor() {
         this.rot = random(2, 45);
