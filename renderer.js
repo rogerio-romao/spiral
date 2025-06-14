@@ -45,6 +45,7 @@ import Halfsies from './src/algos/Halfsies.js';
 import Hallucinate from './src/algos/Hallucinate.js';
 import Harmonie from './src/algos/Harmonie.js';
 import Hive from './src/algos/Hive.js';
+import Hubble from './src/algos/Hubble.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
 import LisaJou from './src/algos/LisaJou.js';
@@ -1391,73 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Hubble {
-    constructor() {
-        this.seq = this.createSeq(13);
-        this.index = 0;
-        this.currentVal = this.seq[this.index];
-        this.rotate = random(1, 44);
-
-        ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-        ctx.filter = 'blur(5px)';
-        ctx.globalCompositeOperation = 'hard-light';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillRect(
-                    w / 2,
-                    h / 2,
-                    this.currentVal * 3,
-                    this.currentVal * 3
-                );
-                ctx.fillRect(
-                    w / 2,
-                    h / 2,
-                    this.currentVal * 3,
-                    -this.currentVal * 3
-                );
-                ctx.fillRect(
-                    w / 2,
-                    h / 2,
-                    -this.currentVal * 3,
-                    this.currentVal * 3
-                );
-                ctx.fillRect(
-                    w / 2,
-                    h / 2,
-                    -this.currentVal * 3,
-                    -this.currentVal * 3
-                );
-                this.index++;
-                if (this.index >= this.seq.length - 1) {
-                    this.index = 0;
-                    this.rotate = random(1, 44);
-                    ctx.fillStyle = randomColor(0, 255, 0.01, 0.05);
-                }
-                this.currentVal = this.seq[this.index];
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    createSeq(num) {
-        const start = [0, 1];
-        const values = [];
-        for (let i = 1; i <= num; i++) {
-            for (let j = 1; j <= num; j++) {
-                values.push(
-                    j * i * (start[start.length - 2] + start[start.length - 1])
-                );
-            }
-        }
-        return values;
-    }
-}
-
 class Vortrix {
     constructor() {
         this.x = random(0, w);
