@@ -25,6 +25,7 @@ import Cornucopia2 from './src/algos/Cornucopia2.js';
 import CounterClock from './src/algos/CounterClock.js';
 import CrayonFunnel from './src/algos/CrayonFunnel.js';
 import CrystalTiles from './src/algos/CrystalTiles.js';
+import DeepSea from './src/algos/DeepSea.js';
 import DigitalArt from './src/algos/DigitalArt.js';
 import Discos from './src/algos/Discos.js';
 import Division from './src/algos/Division.js';
@@ -657,7 +658,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'subwoofer'; // for testing purposes
+    let choose = 'deep-sea'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1301,8 +1302,7 @@ function chooseAlgos() {
         case 'deep-sea':
             displayAlgos('DEEP SEA');
             ctx.save();
-            runningAlgo = new DeepSea();
-            runningAlgo.draw();
+            runningAlgo = new DeepSea(ctx, w, h);
             break;
         case 'soapy-bubbles':
             displayAlgos('SOAPY BUBBLES');
@@ -1392,72 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class DeepSea {
-    constructor() {
-        this.rotations = [
-            4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 72, 90,
-        ];
-        this.startX = random(0, w);
-        this.startY = random(0, h);
-        this.cp1x = random(0, w);
-        this.cp1y = random(0, h);
-        this.cp2x = random(0, w);
-        this.cp2y = random(0, h);
-        this.endX = random(0, w);
-        this.endY = random(0, h);
-        this.factor = random(180, 850);
-        this.factor2 = random(36, 170);
-        this.rot = this.rotations[random(0, this.rotations.length)];
-
-        ctx.strokeStyle = randomColor(50, 200, 0.35, 0.7);
-        ctx.shadowColor = 'randomColor(75, 200, 0.3, 0.5);';
-        ctx.lineWidth = 0.1;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.045)';
-        ctx.shadowBlur = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                ctx.moveTo(this.startX, this.startY);
-                ctx.bezierCurveTo(
-                    this.cp1x,
-                    this.cp1y,
-                    this.cp2x,
-                    this.cp2y,
-                    this.endX,
-                    this.endY
-                );
-                ctx.stroke();
-                this.endX += Math.sin(t) * this.factor;
-                this.endY += Math.cos(t) * this.factor;
-                this.cp1x += Math.sin(t) * this.factor2;
-                this.cp1y += Math.cos(t) * this.factor2;
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 270) === 0) {
-                ctx.beginPath();
-                this.startX = random(0, w);
-                this.startY = random(0, h);
-                this.cp1x = random(0, w);
-                this.cp1y = random(0, h);
-                this.cp2x = random(0, w);
-                this.cp2y = random(0, h);
-                this.endX = random(0, w);
-                this.endY = random(0, h);
-                this.factor = random(180, 850);
-                this.factor2 = random(36, 170);
-                this.rot = this.rotations[random(0, this.rotations.length)];
-                ctx.strokeStyle = randomColor(50, 200, 0.35, 0.7);
-                ctx.shadowColor = randomColor(75, 255, 0.3, 0.5);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class SoapyBubbles {
     constructor() {
         this.size = random(5, 50);
