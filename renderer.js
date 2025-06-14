@@ -116,6 +116,7 @@ import UFOs from './src/algos/Ufos.js';
 import Unfocused from './src/algos/Unfocused.js';
 import Universe from './src/algos/Universe.js';
 import Upholstery from './src/algos/Upholstery.js';
+import VanishingPoint from './src/algos/VanishingPoint.js';
 import VanishingRays from './src/algos/VanishingRays.js';
 import Veils from './src/algos/Veils.js';
 import Vortrix from './src/algos/Vortrix.js';
@@ -655,7 +656,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'vortrix'; // for testing purposes
+    let choose = 'vanishing-point'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1289,8 +1290,7 @@ function chooseAlgos() {
         case 'vanishing-point':
             displayAlgos('VANISHING POINT');
             ctx.save();
-            runningAlgo = new VanishingPoint();
-            runningAlgo.draw();
+            runningAlgo = new VanishingPoint(ctx, w, h);
             break;
         case 'subwoofer':
             displayAlgos('SUBWOOFER');
@@ -1392,63 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class VanishingPoint {
-    constructor() {
-        this.size = Math.min(w, h);
-        this.decrease = random(2, 11);
-        this.rot = random(1, 90);
-        this.color1 = randomColor(0, 255, 1, 1);
-        this.color2 = randomColor(0, 255, 1, 1);
-        this.color3 = randomColor(0, 255, 1, 1);
-        this.color4 = randomColor(0, 255, 1, 1);
-        this.colors = [this.color1, this.color2, this.color3, this.color4];
-
-        ctx.strokeStyle = 'black';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillStyle = this.colors[random(0, this.colors.length)];
-                this.drawTriangle(w / 2, h / 2);
-                this.size -= this.decrease;
-                if (this.size - this.decrease <= 1) {
-                    this.size = 1;
-                    this.decrease = 0;
-                    this.color1 = randomColor(0, 255, 1, 1);
-                    this.color2 = randomColor(0, 255, 1, 1);
-                    this.color3 = randomColor(0, 255, 1, 1);
-                    this.color4 = randomColor(0, 255, 1, 1);
-                    this.colors = [
-                        this.color1,
-                        this.color2,
-                        this.color3,
-                        this.color4,
-                    ];
-                    this.rot = random(1, 90);
-                    setTimeout(() => {
-                        this.size = Math.min(w, h);
-                        this.decrease = random(2, 11);
-                    }, 3500);
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-    drawTriangle = (x, y) => {
-        ctx.moveTo(x, y);
-        ctx.beginPath();
-        ctx.lineTo(x + this.size, y);
-        ctx.lineTo(x, y + this.size);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-    };
-}
-
 class Subwoofer {
     constructor() {
         this.size = random(15, 200);
