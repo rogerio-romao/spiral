@@ -101,6 +101,7 @@ import SquareNebulas from './src/algos/SquareNebulas.js';
 import StainedGlass from './src/algos/StainedGlass.js';
 import Starbursts from './src/algos/Starbursts.js';
 import Starship from './src/algos/Starship.js';
+import Subwoofer from './src/algos/Subwoofer.js';
 import Supernova from './src/algos/Supernova.js';
 import Sushi from './src/algos/Sushi.js';
 import Swirls from './src/algos/Swirls.js';
@@ -656,7 +657,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'vanishing-point'; // for testing purposes
+    let choose = 'subwoofer'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1295,8 +1296,7 @@ function chooseAlgos() {
         case 'subwoofer':
             displayAlgos('SUBWOOFER');
             ctx.save();
-            runningAlgo = new Subwoofer();
-            runningAlgo.draw();
+            runningAlgo = new Subwoofer(ctx, w, h);
             break;
         case 'deep-sea':
             displayAlgos('DEEP SEA');
@@ -1392,69 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Subwoofer {
-    constructor() {
-        this.size = random(15, 200);
-        this.factor = random(10, this.size);
-        this.divisor = random(1, 25);
-        this.color1 = randomColor();
-        this.color2 = randomColor();
-        this.color3 = randomColor();
-        this.color4 = randomColor();
-        this.color5 = randomColor();
-        this.colors = [
-            this.color1,
-            this.color2,
-            this.color3,
-            this.color4,
-            this.color5,
-        ];
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = random(7, 70);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i < 30; i++) {
-                    ctx.strokeStyle = this.colors[i % 5];
-                    ctx.beginPath();
-                    ctx.arc(
-                        w / 2,
-                        h / 2,
-                        this.size + i * ctx.lineWidth,
-                        0,
-                        2 * Math.PI
-                    );
-                    ctx.stroke();
-                }
-            }
-            t++;
-            this.size = Math.max(
-                this.size + Math.sin(t / this.divisor) * this.factor,
-                1
-            );
-            if (t % (speed * 110) === 0) {
-                this.size = random(15, 200);
-                this.factor = random(10, this.size);
-                this.divisor = random(1, 25);
-                this.color1 = randomColor();
-                this.color2 = randomColor();
-                this.color3 = randomColor();
-                this.color4 = randomColor();
-                this.color5 = randomColor();
-                this.colors = [
-                    this.color1,
-                    this.color2,
-                    this.color3,
-                    this.color4,
-                    this.color5,
-                ];
-                ctx.lineWidth = random(7, 70);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class DeepSea {
     constructor() {
         this.rotations = [
