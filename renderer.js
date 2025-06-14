@@ -26,6 +26,7 @@ import CrayonFunnel from './src/algos/CrayonFunnel.js';
 import CrystalTiles from './src/algos/CrystalTiles.js';
 import DigitalArt from './src/algos/DigitalArt.js';
 import Discos from './src/algos/Discos.js';
+import Division from './src/algos/Division.js';
 import Dotted from './src/algos/Dotted.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import Encoded from './src/algos/Encoded.js';
@@ -646,7 +647,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'lisajou'; // for testing purposes
+    let choose = 'division'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1235,8 +1236,7 @@ function chooseAlgos() {
         case 'division':
             displayAlgos('DIVISION');
             ctx.save();
-            runningAlgo = new Division();
-            runningAlgo.draw();
+            runningAlgo = new Division(ctx, w, h);
             break;
         case 'blur':
             displayAlgos('BLUR');
@@ -1392,46 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Division {
-    constructor() {
-        this.radius = random(25, Math.min(w, h) / 2);
-        this.angle = 0;
-        this.circles = random(5, 30);
-        this.size = random(3, 24);
-
-        ctx.strokeStyle = randomColor();
-        ctx.shadowColor = 'white';
-        ctx.fillStyle = randomColor();
-        ctx.shadowBlur = 7;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i < this.circles; i++) {
-                    this.angle = (i * Math.PI * 2) / this.circles;
-                    const x = w / 2 + Math.cos(this.angle) * this.radius;
-                    const y = h / 2 + Math.sin(this.angle) * this.radius;
-                    ctx.beginPath();
-                    ctx.arc(x, y, this.size, 0, 2 * Math.PI);
-                    ctx.fill();
-                    ctx.stroke();
-                }
-            }
-            t++;
-            if (t % (speed * 40) === 0) {
-                this.radius = random(25, Math.min(w, h) / 2);
-                this.angle = 0;
-                this.circles = random(5, 30);
-                this.size = random(3, 24);
-            }
-            if (t % (speed * 400) === 0) {
-                ctx.strokeStyle = randomColor();
-                ctx.fillStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Blur {
     constructor() {
         this.radius = random(25, Math.max(w, h) / 2);
