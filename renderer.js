@@ -104,6 +104,7 @@ import TheBadge from './src/algos/TheBadge.js';
 import TheFan from './src/algos/TheFan.js';
 import Thread from './src/algos/Thread.js';
 import ThreeD from './src/algos/ThreeD.js';
+import Trance from './src/algos/Trance.js';
 import Tripping from './src/algos/Tripping.js';
 import Typobrush from './src/algos/Typobrush.js';
 import UFOs from './src/algos/Ufos.js';
@@ -1391,63 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Trance {
-    constructor() {
-        this.radius = random(25, Math.max(w, h) / 2);
-        this.angle = 0;
-        this.divisions = [2, 4, 6, 8, 10, 12];
-        this.squares = this.divisions[random(0, this.divisions.length)];
-        this.size = random(15, 220);
-        this.factor = random(2, 8);
-        this.rotate = random(1, 71);
-
-        ctx.strokeStyle = randomColor();
-        ctx.fillStyle = randomColor();
-        ctx.globalCompositeOperation = 'overlay';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                for (let i = 0; i < this.squares; i++) {
-                    this.angle = (i * Math.PI * 2) / this.squares;
-                    const x = w / 2 + Math.cos(this.angle) * this.radius;
-                    const y = h / 2 + Math.sin(this.angle) * this.radius;
-                    ctx.beginPath();
-                    ctx.fillRect(
-                        x - this.size / 4,
-                        y - this.size / 4,
-                        this.size / 2,
-                        this.size / 2
-                    );
-                    ctx.strokeRect(
-                        x - this.size / 2,
-                        y - this.size / 2,
-                        this.size,
-                        this.size
-                    );
-                }
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rotate);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 9) === 0) {
-                this.radius = random(25, Math.max(w, h) / 2);
-                this.angle = 0;
-                this.size = random(15, 220);
-                this.rotate = random(1, 71);
-                this.squares = this.divisions[random(0, this.divisions.length)];
-                ctx.globalCompositeOperation = 'overlay';
-                ctx.fillStyle = randomColor();
-            }
-            if (t % (speed * 63) === 0) {
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Triangulate {
     constructor() {
         this.radius = random(60, Math.max(w, h) / 2);
