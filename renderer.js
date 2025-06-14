@@ -48,6 +48,7 @@ import Hive from './src/algos/Hive.js';
 import HyperTunnel from './src/algos/HyperTunnel.js';
 import Irradiate from './src/algos/Irradiate.js';
 import LisaJou from './src/algos/LisaJou.js';
+import Loading from './src/algos/Loading.js';
 import Lollipottery from './src/algos/Lollipottery.js';
 import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
@@ -651,7 +652,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'halfsies'; // for testing purposes
+    let choose = 'loading'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1265,8 +1266,7 @@ function chooseAlgos() {
         case 'loading':
             displayAlgos('LOADING');
             ctx.save();
-            runningAlgo = new Loading();
-            runningAlgo.draw();
+            runningAlgo = new Loading(ctx, w, h);
             break;
         case 'quadratic':
             displayAlgos('QUADRATIC');
@@ -1392,42 +1392,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Loading {
-    constructor() {
-        this.rot = random(2, 45);
-        this.radius = random(30, Math.max(w, h) / 2);
-        this.counter = false;
-        this.width1 = random(4, 51);
-        this.width2 = random(4, 51);
-        this.color = randomColor(60, 255, 0.75, 1);
-        ctx.fillStyle = 'black';
-        ctx.fillRect(-w, -h, w * 3, h * 3);
-
-        this.draw = () => {
-            ctx.lineWidth = t % 2 ? this.width1 : this.width2;
-            ctx.strokeStyle = t % 2 ? 'black' : this.color;
-            ctx.globalCompositeOperation = t % 2 ? 'source-over' : 'difference';
-            this.counter = t % 2 ? true : false;
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(w / 2, h / 2, this.radius, 0, Math.PI, this.counter);
-                ctx.stroke();
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 45) === 0) {
-                this.radius = random(30, Math.max(w, h) / 2);
-                this.rot = random(2, 45);
-                this.width1 = random(4, 51);
-                this.width2 = random(4, 51);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Quadratic {
     constructor() {
         this.rot = random(4, 91);
