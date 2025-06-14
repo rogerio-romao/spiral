@@ -77,6 +77,7 @@ import Progression from './src/algos/Progression.js';
 import PsychoRainbow from './src/algos/PsychoRainbow.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
+import Quadratic from './src/algos/Quadratic.js';
 import Radiance from './src/algos/Radiance.js';
 import RadioWaves from './src/algos/RadioWaves.js';
 import Records from './src/algos/Records.js';
@@ -652,7 +653,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'loading'; // for testing purposes
+    let choose = 'hubble'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1271,14 +1272,12 @@ function chooseAlgos() {
         case 'quadratic':
             displayAlgos('QUADRATIC');
             ctx.save();
-            runningAlgo = new Quadratic();
-            runningAlgo.draw();
+            runningAlgo = new Quadratic(ctx, w, h);
             break;
         case 'hubble':
             displayAlgos('HUBBLE');
             ctx.save();
-            runningAlgo = new Hubble();
-            runningAlgo.draw();
+            runningAlgo = new Hubble(ctx, w, h);
             break;
         case 'vortrix':
             displayAlgos('VORTRIX');
@@ -1392,66 +1391,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Quadratic {
-    constructor() {
-        this.rot = random(4, 91);
-        this.startNum = random(5, 50);
-        this.firstDiff = random(10, 50);
-        this.secondDiff = random(3, 45);
-
-        this.nums = this.createSeq(
-            this.startNum,
-            this.firstDiff,
-            this.secondDiff
-        );
-
-        ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                this.nums.forEach((num) => {
-                    return ctx.strokeRect(
-                        w / 2 - num / 2,
-                        h / 2 - num / 2,
-                        num,
-                        num
-                    );
-                });
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 90) === 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = randomColor(0, 255, 0.5, 1);
-                this.startNum = random(5, 50);
-                this.firstDiff = random(10, 50);
-                this.secondDiff = random(3, 45);
-                this.nums = this.createSeq(
-                    this.startNum,
-                    this.firstDiff,
-                    this.secondDiff
-                );
-            }
-            if (t % (speed * 180) === 0) {
-                this.rot = random(4, 91);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    createSeq(startNum, firstDiff, secondDiff) {
-        const arr = [startNum];
-        while (startNum < Math.max(w, h)) {
-            startNum += firstDiff;
-            firstDiff += secondDiff;
-            arr.push(startNum);
-        }
-        return arr;
-    }
-}
-
 class Hubble {
     constructor() {
         this.seq = this.createSeq(13);
