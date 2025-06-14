@@ -42,6 +42,7 @@ import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
+import Gridlock from './src/algos/Gridlock.js';
 import Halfsies from './src/algos/Halfsies.js';
 import Hallucinate from './src/algos/Hallucinate.js';
 import Harmonie from './src/algos/Harmonie.js';
@@ -594,7 +595,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'soapy-bubbles'; // for testing purposes
+    let choose = 'gridlock'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1248,8 +1249,7 @@ function chooseAlgos() {
         case 'gridlock':
             displayAlgos('GRIDLOCK');
             ctx.save();
-            runningAlgo = new Gridlock();
-            runningAlgo.draw();
+            runningAlgo = new Gridlock(ctx, w, h);
             break;
         case 'glowsticks':
             displayAlgos('GLOWSTICKS');
@@ -1327,48 +1327,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Gridlock {
-    constructor() {
-        this.gap = random(5, 70);
-        this.inc = this.gap;
-        ctx.strokeStyle = 'white';
-        let white = true;
-        ctx.moveTo(this.gap, this.gap);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.lineTo(this.gap, h - this.gap);
-                ctx.stroke();
-                ctx.lineTo(w - this.gap, h - this.gap);
-                ctx.stroke();
-                ctx.lineTo(w - this.gap, this.gap);
-                ctx.stroke();
-                ctx.lineTo(this.gap + this.inc, this.gap);
-                ctx.stroke();
-                this.gap += this.inc;
-            }
-            t++;
-
-            if (t % (speed * 150) === 0) {
-                ctx.lineWidth = random(1, 7);
-                ctx.translate(w / 2, h / 2);
-                ctx.rotate(random(1, 99));
-                ctx.translate(-w / 2, -h / 2);
-                this.gap = random(5, 70);
-                this.inc = this.gap;
-                ctx.beginPath();
-                white = !white;
-                if (white) {
-                    ctx.strokeStyle = 'white';
-                } else {
-                    ctx.strokeStyle = 'black';
-                }
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class Glowsticks {
     constructor() {
         this.dist = random(10, 100);

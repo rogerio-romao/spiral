@@ -1,0 +1,60 @@
+import BA from '../BaseAlgorithm.js';
+
+export default class Gridlock extends BA {
+    constructor(ctx, w, h) {
+        super(ctx, w, h);
+
+        this.initializeProperties();
+        this.setupDrawingStyles();
+
+        this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeProperties() {
+        this.gap = BA.random(5, 70);
+        this.inc = this.gap;
+        this.isWhite = true;
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = 'white';
+        this.ctx.moveTo(this.gap, this.gap);
+    }
+
+    draw() {
+        if (this.t % this.speed === 0) {
+            this.ctx.lineTo(this.gap, this.h - this.gap);
+            this.ctx.stroke();
+            this.ctx.lineTo(this.w - this.gap, this.h - this.gap);
+            this.ctx.stroke();
+            this.ctx.lineTo(this.w - this.gap, this.gap);
+            this.ctx.stroke();
+            this.ctx.lineTo(this.gap + this.inc, this.gap);
+            this.ctx.stroke();
+
+            this.gap += this.inc;
+        }
+
+        if (this.t % (this.speed * 150) === 0) {
+            this.ctx.translate(this.w / 2, this.h / 2);
+            this.ctx.rotate(BA.random(1, 99));
+            this.ctx.translate(-this.w / 2, -this.h / 2);
+
+            this.gap = BA.random(5, 70);
+            this.inc = this.gap;
+            this.isWhite = !this.isWhite;
+            if (this.isWhite) {
+                this.ctx.strokeStyle = 'white';
+            } else {
+                this.ctx.strokeStyle = 'black';
+            }
+
+            this.ctx.lineWidth = BA.random(1, 7);
+            this.ctx.beginPath();
+        }
+
+        this.t++;
+
+        requestAnimationFrame(this.draw);
+    }
+}
