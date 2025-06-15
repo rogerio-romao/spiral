@@ -42,6 +42,7 @@ import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
+import Glowsticks from './src/algos/Glowsticks.js';
 import Gridlock from './src/algos/Gridlock.js';
 import Halfsies from './src/algos/Halfsies.js';
 import Hallucinate from './src/algos/Hallucinate.js';
@@ -595,7 +596,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'gridlock'; // for testing purposes
+    let choose = 'glowsticks'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1254,8 +1255,7 @@ function chooseAlgos() {
         case 'glowsticks':
             displayAlgos('GLOWSTICKS');
             ctx.save();
-            runningAlgo = new Glowsticks();
-            runningAlgo.draw();
+            runningAlgo = new Glowsticks(ctx, w, h);
             break;
         case 'four-dee':
             displayAlgos('FOUR DEE');
@@ -1327,44 +1327,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Glowsticks {
-    constructor() {
-        this.dist = random(10, 100);
-        this.x = random(0, w - this.dist);
-        this.y = random(this.dist, h);
-        this.rot = random(1, 200);
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor();
-        ctx.shadowBlur = 5;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.moveTo(this.x++, this.y++);
-                ctx.lineTo(this.x + this.dist, this.y - this.dist);
-                ctx.stroke();
-                if (this.x > w) this.x = 0;
-                if (this.x < 0) this.x = w - this.dist;
-                if (this.y > h) this.y = this.dist;
-                if (this.y < 0) this.x = h;
-            }
-            t++;
-            if (t % (speed * 900) === 0) {
-                ctx.beginPath();
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                ctx.strokeStyle = ctx.shadowColor = randomColor();
-                this.dist = random(10, 100);
-                this.x = random(0, w - this.dist);
-                this.y = random(this.dist, h);
-                this.rot = random(1, 200);
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class FourDee {
     constructor() {
         this.springPoint = { x: w / 2, y: h / 2 };
