@@ -82,6 +82,7 @@ import Polyhedra from './src/algos/Polyhedra.js';
 import Portals from './src/algos/Portals.js';
 import Progression from './src/algos/Progression.js';
 import PsychoRainbow from './src/algos/PsychoRainbow.js';
+import Pulsar from './src/algos/Pulsar.js';
 import Punctuation from './src/algos/Punctuation.js';
 import Quadrants from './src/algos/Quadrants.js';
 import Quadratic from './src/algos/Quadratic.js';
@@ -384,7 +385,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'gravity-turbulence'; // for testing purposes
+    let choose = 'pulsar'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1068,8 +1069,7 @@ function chooseAlgos() {
         case 'pulsar':
             displayAlgos('PULSAR');
             ctx.save();
-            runningAlgo = new Pulsar();
-            runningAlgo.draw();
+            runningAlgo = new Pulsar(ctx, w, h);
             break;
         case 'shards':
             displayAlgos('SHARDS');
@@ -1111,73 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Pulsar {
-    constructor() {
-        this.cp1x = random(0, w);
-        this.cp1y = random(0, h);
-        this.cp2x = random(0, w);
-        this.cp2y = random(0, h);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.rot1 = random(1, 90);
-        this.rot2 = random(1, 90);
-        this.pulse1 = random(50, 300);
-        this.pulse2 = random(30, 200);
-
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = ctx.shadowColor = randomColor();
-        ctx.shadowBlur = 2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                for (let i = 0; i < 20; i++) {
-                    this.drawBezier(ctx, i * 15);
-                    this.drawBezier(ctx, i * -15);
-                }
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot1 * Math.PI) / 180);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 160) === 0) {
-                this.cp1x = random(0, w);
-                this.cp1y = random(0, h);
-                this.cp2x = random(0, w);
-                this.cp2y = random(0, h);
-                this.x = random(0, w);
-                this.y = random(0, h);
-                this.rot1 = random(1, 90);
-                this.rot2 = random(1, 90);
-                this.pulse1 = random(50, 300);
-                this.pulse2 = random(30, 200);
-                ctx.strokeStyle = ctx.shadowColor = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-    drawBezier(context, rot) {
-        context.beginPath();
-        context.moveTo(
-            w / 2 + Math.sin(t) * this.pulse1,
-            h / 2 + Math.cos(t) * this.pulse2
-        );
-        context.translate(w / 2, h / 2);
-        context.rotate((rot * Math.PI) / 180);
-        context.bezierCurveTo(
-            this.cp1x + rot,
-            this.cp1y + this.pulse1,
-            this.cp2x - rot,
-            this.cp2y - this.pulse2,
-            this.x,
-            this.y
-        );
-        context.stroke();
-        context.closePath();
-        context.translate(-w / 2, -h / 2);
-    }
-}
-
 class Shards {
     constructor() {
         this.c1x1 = random(0, w);
