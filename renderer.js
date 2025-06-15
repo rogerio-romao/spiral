@@ -18,6 +18,7 @@ import CamouflagePostits from './src/algos/CamouflagePostits.js';
 import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
 import Chillout from './src/algos/Chillout.js';
 import Clock from './src/algos/Clock.js';
+import Coils from './src/algos/Coils.js';
 import Comets from './src/algos/Comets.js';
 import Concentric from './src/algos/Concentric.js';
 import Cornucopia from './src/algos/Cornucopia.js';
@@ -386,7 +387,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'shards'; // for testing purposes
+    let choose = 'coils'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1080,8 +1081,7 @@ function chooseAlgos() {
         case 'coils':
             displayAlgos('COILS');
             ctx.save();
-            runningAlgo = new Coils();
-            runningAlgo.draw();
+            runningAlgo = new Coils(ctx, w, h);
             break;
         case 'mesmerize':
             displayAlgos('MESMERIZE');
@@ -1111,118 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Coils {
-    constructor() {
-        this.obj1 = {
-            x: 0,
-            y: 0,
-            radius: random(10, 35),
-            color: randomColor(60, 255, 0.6, 1),
-        };
-        this.obj2 = {
-            x: w / 2,
-            y: h / 2,
-            radius: random(30, 130),
-            color: randomColor(60, 255, 0.6, 1),
-        };
-        this.dur1 = random(5, 20);
-        this.dur2 = random(8, 30);
-        this.dur3 = random(10, 40);
-        this.dur4 = random(3, 10);
-        this.rot = random(1, 100);
-        this.tl = null;
-
-        ctx.shadowBlur = 15;
-
-        ctx.strokeStyle = ctx.shadowColor = this.obj1.color;
-
-        this.getTweens();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.beginPath();
-                ctx.arc(
-                    this.obj1.x,
-                    this.obj1.y,
-                    this.obj1.radius,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.fill();
-                ctx.stroke();
-                ctx.closePath();
-            }
-            t++;
-
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-
-            if (t % (speed * 720) === 0) {
-                this.tl.kill();
-                this.obj1 = {
-                    x: 0,
-                    y: 0,
-                    radius: random(10, 35),
-                    color: randomColor(60, 255, 0.6, 1),
-                };
-                this.obj2 = {
-                    x: w / 2,
-                    y: h / 2,
-                    radius: random(30, 130),
-                    color: randomColor(60, 255, 0.6, 1),
-                };
-                this.dur1 = random(5, 20);
-                this.dur2 = random(8, 30);
-                this.dur3 = random(10, 40);
-                this.dur4 = random(3, 10);
-                this.rot = random(1, 100);
-                this.getTweens();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    getTweens() {
-        this.tl = gsap.timeline({ defaults: { repeat: -1, yoyo: true } });
-        this.tl
-            .to(this.obj1, {
-                duration: this.dur1,
-                x: this.obj2.x,
-                ease: 'elastic',
-            })
-            .to(
-                this.obj1,
-                {
-                    duration: this.dur2,
-                    y: this.obj2.y,
-                    ease: 'bounce',
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: this.dur3,
-                    radius: this.obj2.radius,
-                    ease: 'back.out(3)',
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: this.dur4,
-                    color: this.obj2.color,
-                    ease: 'power1',
-                    onUpdate: () =>
-                        (ctx.strokeStyle = ctx.shadowColor = this.obj1.color),
-                },
-                '<'
-            );
-    }
-}
-
 class Mesmerize {
     constructor() {
         this.rot = random(1, 199);

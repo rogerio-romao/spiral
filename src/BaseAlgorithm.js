@@ -18,6 +18,8 @@ export default class BaseAlgorithm {
 
     static mathUtils = mathUtils;
 
+    static gsap = gsap;
+
     static createVector(x, y) {
         return new Vector(x, y);
     }
