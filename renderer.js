@@ -39,6 +39,7 @@ import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
 import FourDee from './src/algos/FourDee.js';
 import Fruits from './src/algos/Fruits.js';
+import GameOfFlies from './src/algos/GameOfFlies.js';
 import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
@@ -499,7 +500,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'spring-orbits'; // for testing purposes
+    let choose = 'game-of-flies'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1173,8 +1174,7 @@ function chooseAlgos() {
         case 'game-of-flies':
             displayAlgos('GAME OF FLIES');
             ctx.save();
-            runningAlgo = new GameOfFlies();
-            runningAlgo.draw();
+            runningAlgo = new GameOfFlies(ctx, w, h);
             break;
         case 'gravity-turbulence':
             displayAlgos('GRAVITY TURBULENCE');
@@ -1228,59 +1228,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class GameOfFlies {
-    constructor() {
-        this.springPoint = { x: w / 2, y: h / 2 };
-        this.p = new Particle(
-            random(0, w),
-            random(0, h),
-            random(5, 50),
-            Math.random() * Math.PI * 2
-        );
-        this.p.radius = random(3, 9);
-        this.p.color = randomColor(60, 255, 0.5, 1);
-        this.particles = [this.p];
-        let k = 0.14;
-
-        ctx.fillStyle = this.color2;
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillStyle = 'rgba(0,0,0,0.14)';
-                ctx.fillRect(0, 0, w, h);
-                this.particles.forEach((prtcl) => {
-                    const dx = this.springPoint.x - prtcl.x;
-                    const dy = this.springPoint.y - prtcl.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const springForce = distance * k;
-                    const ax = (dx / distance) * springForce;
-                    const ay = (dy / distance) * springForce;
-                    prtcl.vx += ax;
-                    prtcl.vy += ay;
-                    prtcl.update();
-                    ctx.beginPath();
-                    ctx.arc(prtcl.x, prtcl.y, prtcl.radius, 0, 2 * Math.PI);
-                    ctx.fillStyle = prtcl.color;
-                    ctx.fill();
-                });
-            }
-            t++;
-            if (t % (speed * 130) === 0) {
-                const p = new Particle(
-                    random(0, w),
-                    random(0, h),
-                    random(5, 50),
-                    Math.random() * Math.PI * 2
-                );
-                p.radius = random(3, 9);
-                p.color = randomColor(60, 255, 0.5, 1);
-                this.particles.push(p);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class GravityTurbulence {
     constructor() {
         this.sun1 = new Particle(150, 200, 1, Math.random() * Math.PI * 2);
