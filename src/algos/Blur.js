@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Blur extends BA {
+export default class Blur extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class Blur extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(25, Math.max(this.w, this.h) / 2);
+        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
         this.angle = 0;
-        this.circles = BA.random(8, 25);
-        this.size = BA.random(8, 40);
-        this.factor = BA.random(3, 20);
-        this.rotate = BA.random(1, 71);
+        this.circles = AL.random(8, 25);
+        this.size = AL.random(8, 40);
+        this.factor = AL.random(3, 20);
+        this.rotate = AL.random(1, 71);
         this.speed *= 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 1);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
         this.ctx.lineWidth = 0.25;
     }
 
@@ -43,14 +43,14 @@ export default class Blur extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 90) === 0) {
-            this.radius = BA.random(25, Math.max(this.w, this.h) / 2);
+            this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
             this.angle = 0;
-            this.size = BA.random(8, 40);
-            this.factor = BA.random(3, 20);
-            this.rotate = BA.random(1, 71);
-            this.circles = BA.random(8, 25);
+            this.size = AL.random(8, 40);
+            this.factor = AL.random(3, 20);
+            this.rotate = AL.random(1, 71);
+            this.circles = AL.random(8, 25);
 
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 1);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
         }
 
         if (this.t % (this.speed * 630) === 0) {

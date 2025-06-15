@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Thread extends BA {
+export default class Thread extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,14 +11,14 @@ export default class Thread extends BA {
     }
 
     initializeProperties() {
-        this.offset = BA.random(30, this.h * 0.75);
+        this.offset = AL.random(30, this.h * 0.75);
         this.angle = 0;
-        this.radius = BA.random(25, 350);
-        this.rotate = BA.random(1, 35);
+        this.radius = AL.random(25, 350);
+        this.rotate = AL.random(1, 35);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     }
 
@@ -38,12 +38,12 @@ export default class Thread extends BA {
 
         if (this.t % (this.speed * 450) === 0) {
             this.angle = 0;
-            this.rotate = BA.random(1, 35);
-            this.radius = BA.random(25, 350);
-            this.offset = BA.random(30, this.h * 0.75);
+            this.rotate = AL.random(1, 35);
+            this.radius = AL.random(25, 350);
+            this.offset = AL.random(30, this.h * 0.75);
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.strokeStyle = BA.randomColor(20, 255, 0.15, 1);
+            this.ctx.strokeStyle = AL.randomColor(20, 255, 0.15, 1);
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class ChalkGalaxy extends BA {
+export default class ChalkGalaxy extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -18,14 +18,14 @@ export default class ChalkGalaxy extends BA {
             1499, 1500, 10157,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
-        this.rotate = BA.random(1, 179);
+        this.rotate = AL.random(1, 179);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(150, 255, 0.25, 0.25);
-        this.ctx.font = `${BA.random(100, 500)}px bold`;
+        this.ctx.strokeStyle = AL.randomColor(150, 255, 0.25, 0.25);
+        this.ctx.font = `${AL.random(100, 500)}px bold`;
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
         this.ctx.fillRect(0, 0, this.w, this.h);
     }
@@ -40,18 +40,18 @@ export default class ChalkGalaxy extends BA {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.strokeStyle = BA.randomColor(170, 255, 0.2, 0.2);
-            this.ctx.font = `${BA.random(100, 600)}px bold`;
+            this.ctx.strokeStyle = AL.randomColor(170, 255, 0.2, 0.2);
+            this.ctx.font = `${AL.random(100, 600)}px bold`;
         }
 
         if (this.t % (this.speed * 500) === 0) {
-            this.ctx.strokeStyle = BA.randomColor(0, 115, 0.2, 0.2);
-            this.rotate = BA.random(1, 179);
+            this.ctx.strokeStyle = AL.randomColor(0, 115, 0.2, 0.2);
+            this.rotate = AL.random(1, 179);
         }
 
         if (this.t % (this.speed * 1000) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

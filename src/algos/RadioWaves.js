@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class RadioWaves extends BA {
+export default class RadioWaves extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -14,15 +14,15 @@ export default class RadioWaves extends BA {
         this.first = 0;
         this.second = 1;
         this.divisors = [2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 20, 24, 30, 36];
-        this.divisor = this.divisors[BA.random(0, this.divisors.length)];
-        this.posX = this.divisors[BA.random(0, this.divisors.length)];
-        this.posY = this.divisors[BA.random(0, this.divisors.length)];
+        this.divisor = this.divisors[AL.random(0, this.divisors.length)];
+        this.posX = this.divisors[AL.random(0, this.divisors.length)];
+        this.posY = this.divisors[AL.random(0, this.divisors.length)];
         this.seq = [this.first, this.second];
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'copy';
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             30,
             255,
             1,
@@ -60,16 +60,16 @@ export default class RadioWaves extends BA {
 
         if (this.t % (this.speed * 360) === 0) {
             this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 30,
                 255,
                 1,
                 1
             );
 
-            this.divisor = this.divisors[BA.random(0, this.divisors.length)];
-            this.posX = this.divisors[BA.random(0, this.divisors.length)];
-            this.posY = this.divisors[BA.random(0, this.divisors.length)];
+            this.divisor = this.divisors[AL.random(0, this.divisors.length)];
+            this.posX = this.divisors[AL.random(0, this.divisors.length)];
+            this.posY = this.divisors[AL.random(0, this.divisors.length)];
         }
 
         if (this.t % (this.speed * 1440) === 0) {

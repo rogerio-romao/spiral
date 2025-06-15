@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Hallucinate extends BA {
+export default class Hallucinate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,12 +11,12 @@ export default class Hallucinate extends BA {
     }
 
     initializeProperties() {
-        this.rows = BA.random(3, 17);
-        this.rot = BA.random(1, 180);
+        this.rows = AL.random(3, 17);
+        this.rot = AL.random(1, 180);
         this.height = this.h / this.rows;
         this.colors = [];
         for (let i = 0; i <= this.rows; i++) {
-            this.colors.push(BA.randomColor());
+            this.colors.push(AL.randomColor());
         }
     }
 
@@ -42,12 +42,12 @@ export default class Hallucinate extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.rows = BA.random(3, 17);
-            this.rot = BA.random(1, 180);
+            this.rows = AL.random(3, 17);
+            this.rot = AL.random(1, 180);
             this.height = this.h / this.rows;
             this.colors = [];
             for (let i = 0; i <= this.rows; i++) {
-                this.colors.push(BA.randomColor());
+                this.colors.push(AL.randomColor());
             }
         }
 

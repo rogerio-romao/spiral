@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class GravityTurbulence extends BA {
+export default class GravityTurbulence extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -10,8 +10,8 @@ export default class GravityTurbulence extends BA {
     }
 
     initializeProperties() {
-        this.sun1 = BA.createParticle(150, 200, 1, Math.random() * Math.PI * 2);
-        this.sun2 = BA.createParticle(
+        this.sun1 = AL.createParticle(150, 200, 1, Math.random() * Math.PI * 2);
+        this.sun2 = AL.createParticle(
             this.w / 2,
             this.h / 2,
             2,
@@ -26,11 +26,11 @@ export default class GravityTurbulence extends BA {
         this.particles = [];
 
         for (let i = 0; i < this.numParticles; i++) {
-            const p = BA.createParticle(
-                BA.mathUtils.randomRange(0, this.w),
-                BA.mathUtils.randomRange(0, this.h),
-                BA.mathUtils.randomRange(7, 8),
-                Math.PI / 2 + BA.mathUtils.randomRange(-0.1, 0.1)
+            const p = AL.createParticle(
+                AL.mathUtils.randomRange(0, this.w),
+                AL.mathUtils.randomRange(0, this.h),
+                AL.mathUtils.randomRange(7, 8),
+                Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1)
             );
             p.addGravitation(this.sun1);
             p.addGravitation(this.sun2);
@@ -81,22 +81,22 @@ export default class GravityTurbulence extends BA {
                 particle.y > this.h ||
                 particle.y < 0
             ) {
-                particle.x = BA.mathUtils.randomRange(0, this.w);
-                particle.y = BA.mathUtils.randomRange(0, this.h);
-                particle.setSpeed(BA.mathUtils.randomRange(7, 8));
+                particle.x = AL.mathUtils.randomRange(0, this.w);
+                particle.y = AL.mathUtils.randomRange(0, this.h);
+                particle.setSpeed(AL.mathUtils.randomRange(7, 8));
                 particle.setHeading(
-                    Math.PI / 2 + BA.mathUtils.randomRange(-0.1, 0.1)
+                    Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1)
                 );
             }
         }
 
         if (this.t % (this.speed * 250) === 0) {
-            this.sun1.mass = BA.mathUtils.randomRange(-100000, 100000);
-            this.sun1.radius = BA.mathUtils.randomRange(3, 25);
+            this.sun1.mass = AL.mathUtils.randomRange(-100000, 100000);
+            this.sun1.radius = AL.mathUtils.randomRange(3, 25);
             this.sun1.direction = Math.random() * Math.PI * 2;
             this.sun1.speed = Math.random() * 5 - 2.5;
-            this.sun2.mass = BA.mathUtils.randomRange(-100000, 100000);
-            this.sun2.radius = BA.mathUtils.randomRange(5, 40);
+            this.sun2.mass = AL.mathUtils.randomRange(-100000, 100000);
+            this.sun2.radius = AL.mathUtils.randomRange(5, 40);
             this.sun2.direction = Math.random() * Math.PI * 2;
             this.sun2.speed = Math.random() * 5 - 2.5;
         }

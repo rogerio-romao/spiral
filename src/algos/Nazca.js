@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Nazca extends BA {
+export default class Nazca extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,15 +12,15 @@ export default class Nazca extends BA {
 
     initializeProperties() {
         this.r = 1;
-        this.i = BA.random(13, 60);
-        this.a = BA.random(1, 180);
+        this.i = AL.random(13, 60);
+        this.a = AL.random(1, 180);
         this.cycles = 0;
         this.modes = ['soft-light', 'overlay', 'color'];
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.15, 0.55);
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.75, 1);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.15, 0.55);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
         this.ctx.globalCompositeOperation = 'soft-light';
     }
 
@@ -46,16 +46,16 @@ export default class Nazca extends BA {
             this.cycles++;
             if (this.cycles % 10 === 0) {
                 this.ctx.globalCompositeOperation =
-                    this.modes[BA.random(0, this.modes.length)];
+                    this.modes[AL.random(0, this.modes.length)];
             }
 
-            this.a = BA.random(1, 180);
+            this.a = AL.random(1, 180);
             this.r = 1;
-            this.i = BA.random(13, 60);
+            this.i = AL.random(13, 60);
 
-            this.ctx.lineWidth = BA.random(1, 7);
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.15, 0.55);
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.75, 1);
+            this.ctx.lineWidth = AL.random(1, 7);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.15, 0.55);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
             this.ctx.beginPath();
         }
 

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Majestic extends BA {
+export default class Majestic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -16,21 +16,21 @@ export default class Majestic extends BA {
             23, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42,
             43, 44, 45,
         ];
-        this.rotate = this.rotations[BA.random(0, this.rotations.length)];
+        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
 
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.width = BA.random(30, this.w - 100);
-        this.height = BA.random(30, this.h - 100);
-        this.ul = BA.random(10, this.w);
-        this.ur = BA.random(10, this.h);
-        this.ll = BA.random(10, this.h);
-        this.lr = BA.random(10, this.w);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.width = AL.random(30, this.w - 100);
+        this.height = AL.random(30, this.h - 100);
+        this.ul = AL.random(10, this.w);
+        this.ur = AL.random(10, this.h);
+        this.ll = AL.random(10, this.h);
+        this.lr = AL.random(10, this.w);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.05);
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
@@ -56,19 +56,19 @@ export default class Majestic extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.width = BA.random(30, this.w - 100);
-            this.height = BA.random(30, this.h - 100);
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.ul = BA.random(10, this.w);
-            this.ur = BA.random(10, this.h);
-            this.ll = BA.random(10, this.h);
-            this.lr = BA.random(10, this.w);
-            this.rotate = this.rotations[BA.random(0, this.rotations.length)];
+            this.width = AL.random(30, this.w - 100);
+            this.height = AL.random(30, this.h - 100);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.ul = AL.random(10, this.w);
+            this.ur = AL.random(10, this.h);
+            this.ll = AL.random(10, this.h);
+            this.lr = AL.random(10, this.w);
+            this.rotate = this.rotations[AL.random(0, this.rotations.length)];
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.strokeStyle = BA.randomColor();
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.05);
+            this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
         }
 
         this.t++;

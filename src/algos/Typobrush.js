@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Typobrush extends BA {
+export default class Typobrush extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -18,18 +18,18 @@ export default class Typobrush extends BA {
             2795, 2796, 2797, 2798, 2799, 2800,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
         this.size = 20;
-        this.sizeInc = BA.random(1, 6);
-        this.rot = BA.random(1, 400);
+        this.sizeInc = AL.random(1, 6);
+        this.rot = AL.random(1, 400);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.33, 0.33);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33, 0.33);
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         this.ctx.textAlign = 'center';
         this.ctx.font = `${this.size}px serif`;
@@ -48,18 +48,18 @@ export default class Typobrush extends BA {
 
         if (this.t % (this.speed * 150) === 0) {
             this.size = 20;
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.rot = BA.random(1, 400);
-            this.sizeInc = BA.random(1, 6);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.rot = AL.random(1, 400);
+            this.sizeInc = AL.random(1, 6);
 
             this.ctx.font = `${this.size}px serif`;
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.33, 0.33);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33, 0.33);
         }
 
         if (this.t % (this.speed * 1500) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);

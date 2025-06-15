@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class SnakesLadders extends BA {
+export default class SnakesLadders extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,18 +11,18 @@ export default class SnakesLadders extends BA {
     }
 
     initializeProperties() {
-        this.div = BA.random(3, 17);
-        this.div2 = BA.random(3, 17);
+        this.div = AL.random(3, 17);
+        this.div2 = AL.random(3, 17);
         this.colSize = this.w / this.div;
         this.rowSize = this.h / this.div2;
         this.currCol = 0;
         this.currRow = 0;
-        this.rotate = BA.random(1, 83);
+        this.rotate = AL.random(1, 83);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.12, 0.37);
-        this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor(
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.12, 0.37);
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
             0,
             255,
             0.65,
@@ -57,16 +57,16 @@ export default class SnakesLadders extends BA {
         }
 
         if (this.t % (this.speed * 720) === 0) {
-            this.rotate = BA.random(1, 83);
-            this.div = BA.random(3, 17);
-            this.div2 = BA.random(3, 17);
+            this.rotate = AL.random(1, 83);
+            this.div = AL.random(3, 17);
+            this.div2 = AL.random(3, 17);
             this.colSize = this.w / this.div;
             this.rowSize = this.h / this.div2;
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
             this.ctx.beginPath();
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.12, 0.37);
-            this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor(
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.12, 0.37);
+            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
                 0,
                 255,
                 0.65,

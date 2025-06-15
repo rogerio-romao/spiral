@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Wallpapering extends BA {
+export default class Wallpapering extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -34,7 +34,7 @@ export default class Wallpapering extends BA {
 
         this.y = 0;
         this.x = 0;
-        this.size = BA.random(50, 200);
+        this.size = AL.random(50, 200);
     }
 
     setupDrawingStyles() {
@@ -46,7 +46,7 @@ export default class Wallpapering extends BA {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.strokeRect(this.x, this.y, this.size, this.size);
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
             this.ctx.fillRect(this.x, this.y, this.size, this.size);
 
             this.x += this.size;
@@ -57,10 +57,10 @@ export default class Wallpapering extends BA {
             if (this.y > this.h) {
                 this.x = 0;
                 this.y = 0;
-                this.size = BA.random(35, 200);
+                this.size = AL.random(35, 200);
 
                 this.ctx.globalCompositeOperation =
-                    this.modes[BA.random(0, this.modes.length)];
+                    this.modes[AL.random(0, this.modes.length)];
             }
         }
 

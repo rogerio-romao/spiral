@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Rounded extends BA {
+export default class Rounded extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class Rounded extends BA {
     }
 
     initializeProperties() {
-        this.rounded1 = BA.random(15, 50);
-        this.rounded2 = BA.random(15, 50);
-        this.rounded3 = BA.random(15, 50);
-        this.rounded4 = BA.random(15, 50);
-        this.side1 = BA.random(0, this.w / 4);
-        this.side2 = BA.random(0, this.h / 4);
-        this.rotate = (BA.random(1, 359) * Math.PI) / 180;
+        this.rounded1 = AL.random(15, 50);
+        this.rounded2 = AL.random(15, 50);
+        this.rounded3 = AL.random(15, 50);
+        this.rounded4 = AL.random(15, 50);
+        this.side1 = AL.random(0, this.w / 4);
+        this.side2 = AL.random(0, this.h / 4);
+        this.rotate = (AL.random(1, 359) * Math.PI) / 180;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(50, 255, 0.5, 1);
+        this.ctx.strokeStyle = AL.randomColor(50, 255, 0.5, 1);
         this.ctx.filter = 'contrast(2)';
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
     }
@@ -48,15 +48,15 @@ export default class Rounded extends BA {
         }
 
         if (this.t % (this.speed * 125) === 0) {
-            this.rounded1 = BA.random(15, 50);
-            this.rounded2 = BA.random(15, 50);
-            this.rounded3 = BA.random(15, 50);
-            this.rounded4 = BA.random(15, 50);
-            this.side1 = BA.random(0, this.w / 4);
-            this.side2 = BA.random(0, this.h / 4);
-            this.rotate = (BA.random(1, 359) * Math.PI) / 180;
+            this.rounded1 = AL.random(15, 50);
+            this.rounded2 = AL.random(15, 50);
+            this.rounded3 = AL.random(15, 50);
+            this.rounded4 = AL.random(15, 50);
+            this.side1 = AL.random(0, this.w / 4);
+            this.side2 = AL.random(0, this.h / 4);
+            this.rotate = (AL.random(1, 359) * Math.PI) / 180;
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(50, 255, 0.5, 1);
+            this.ctx.strokeStyle = AL.randomColor(50, 255, 0.5, 1);
         }
 
         this.t++;

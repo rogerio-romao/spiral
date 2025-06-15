@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Chillout extends BA {
+export default class Chillout extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,18 +11,18 @@ export default class Chillout extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.x3 = BA.random(0, this.w);
-        this.y3 = BA.random(0, this.h);
-        this.rotate = BA.random(1, 10);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.x3 = AL.random(0, this.w);
+        this.y3 = AL.random(0, this.h);
+        this.rotate = AL.random(1, 10);
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = BA.random(1, 5);
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.4, 1);
+        this.ctx.lineWidth = AL.random(1, 5);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.4, 1);
         this.ctx.filter = 'saturate(17.5%)';
     }
 
@@ -38,17 +38,17 @@ export default class Chillout extends BA {
         }
 
         if (this.t % (this.speed * 80) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.x3 = BA.random(0, this.w);
-            this.y3 = BA.random(0, this.h);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.x3 = AL.random(0, this.w);
+            this.y3 = AL.random(0, this.h);
 
             this.ctx.beginPath();
-            this.ctx.lineWidth = BA.random(1, 5);
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.4, 1);
-            this.rotate = BA.random(1, 10);
+            this.ctx.lineWidth = AL.random(1, 5);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.4, 1);
+            this.rotate = AL.random(1, 10);
         }
 
         this.t++;

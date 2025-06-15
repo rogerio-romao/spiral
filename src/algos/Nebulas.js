@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Nebulas extends BA {
+export default class Nebulas extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,9 +11,9 @@ export default class Nebulas extends BA {
     }
 
     initializeProperties() {
-        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
-        this.gap = BA.random(4, 100);
-        this.rotate = BA.random(3, 160);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+        this.gap = AL.random(4, 100);
+        this.rotate = AL.random(3, 160);
     }
 
     setupDrawingStyles() {
@@ -21,7 +21,7 @@ export default class Nebulas extends BA {
         this.ctx.shadowColor = 'rgba(255,255,255,0.7)';
         this.ctx.shadowOffsetX = 5;
         this.ctx.shadowOffsetY = 5;
-        this.ctx.fillStyle = this.ctx.strokeStyle = BA.randomColor(
+        this.ctx.fillStyle = this.ctx.strokeStyle = AL.randomColor(
             5,
             255,
             0.02,
@@ -31,21 +31,21 @@ export default class Nebulas extends BA {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.lineWidth = BA.random(1, 200);
+            this.ctx.lineWidth = AL.random(1, 200);
             this.ctx.strokeRect(this.w / 2, this.h / 2, this.length, this.gap);
             this.ctx.translate(this.w / 2, this.h / 2);
             this.ctx.rotate(this.rotate);
             this.ctx.translate(-this.w / 2, -this.h / 2);
-            this.length = BA.random(10, Math.max(this.w, this.h));
-            this.rotate = BA.random(3, 160);
-            this.gap += BA.random(2, 10);
+            this.length = AL.random(10, Math.max(this.w, this.h));
+            this.rotate = AL.random(3, 160);
+            this.gap += AL.random(2, 10);
             if (this.gap > 1000) this.gap = 1;
         }
 
         if (this.t % (this.speed * 10) === 0) {
             this.ctx.fillRect(
-                BA.random(0, this.w),
-                BA.random(0, this.h),
+                AL.random(0, this.w),
+                AL.random(0, this.h),
                 this.gap,
                 this.gap
             );
@@ -53,7 +53,7 @@ export default class Nebulas extends BA {
 
         if (this.t % (this.speed * 70) === 0) {
             this.rotate = -this.rotate;
-            this.ctx.fillStyle = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.fillStyle = this.ctx.strokeStyle = AL.randomColor(
                 5,
                 255,
                 0.02,

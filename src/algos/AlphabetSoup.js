@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class AlphabetSoup extends BA {
+export default class AlphabetSoup extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -20,24 +20,24 @@ export default class AlphabetSoup extends BA {
             1390, 1392, 1393, 1397, 1399, 1400,
         ];
         this.letter1 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter2 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter3 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter4 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.rot1 = (BA.random(8, 35) * Math.PI) / 180;
+        this.rot1 = (AL.random(8, 35) * Math.PI) / 180;
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.45, 0.7);
-        this.fontChange = BA.random(35, 180);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
+        this.fontChange = AL.random(35, 180);
         this.ctx.font = `${this.fontChange}px sans-serif`;
     }
 
@@ -55,27 +55,27 @@ export default class AlphabetSoup extends BA {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.fontChange = BA.random(35, 180);
+            this.fontChange = AL.random(35, 180);
             this.ctx.font = `${this.fontChange}px sans-serif`;
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.45, 0.7);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.rot1 = (BA.random(8, 35) * Math.PI) / 180;
+            this.rot1 = (AL.random(8, 35) * Math.PI) / 180;
         }
 
         if (this.t % (this.speed * 400) === 0) {
             this.letter1 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter2 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter3 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter4 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

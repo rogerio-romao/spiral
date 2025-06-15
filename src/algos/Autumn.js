@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Autumn extends BA {
+export default class Autumn extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -13,12 +13,12 @@ export default class Autumn extends BA {
     initializeProperties() {
         this.y = 0;
         this.x = 0;
-        this.size = BA.random(13, 110);
-        this.rotate = BA.random(1, 90);
+        this.size = AL.random(13, 110);
+        this.rotate = AL.random(1, 90);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.1, 0.6);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.6);
     }
 
     draw() {
@@ -31,14 +31,14 @@ export default class Autumn extends BA {
             if (this.x > this.w) {
                 this.x = 0;
                 this.y += this.size;
-                this.size = BA.random(15, 110);
+                this.size = AL.random(15, 110);
             }
             if (this.y > this.h) {
                 this.x = 0;
                 this.y = 0;
-                this.rotate = BA.random(1, 90);
+                this.rotate = AL.random(1, 90);
 
-                this.ctx.fillStyle = BA.randomColor(0, 255, 0.1, 0.6);
+                this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.6);
             }
         }
 

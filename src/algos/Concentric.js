@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Concentric extends BA {
+export default class Concentric extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -16,29 +16,29 @@ export default class Concentric extends BA {
             2667, 2670, 2676, 2677, 2691, 2694, 2695, 2696, 2700,
         ];
         this.letter1 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter2 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter3 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter4 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.size = BA.random(25, 160);
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
+        this.size = AL.random(25, 160);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
         this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
-        this.angle = this.angles[BA.random(0, this.angles.length)];
+        this.angle = this.angles[AL.random(0, this.angles.length)];
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'soft-light';
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.fillStyle = AL.randomColor();
         this.ctx.font = `bold ${this.size}px serif`;
         this.ctx.textAlign = 'center';
         this.ctx.shadowBlur = 7;
@@ -60,25 +60,25 @@ export default class Concentric extends BA {
 
         if (this.t % (this.speed * 150) === 0) {
             this.letter1 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter2 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter3 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter4 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
 
-            this.size = BA.random(25, 160);
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
+            this.size = AL.random(25, 160);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
 
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
             this.ctx.font = `bold ${this.size}px serif`;
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 30,
                 255,
                 0.2,

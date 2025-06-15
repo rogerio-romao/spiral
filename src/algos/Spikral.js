@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Spikral extends BA {
+export default class Spikral extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,12 +12,12 @@ export default class Spikral extends BA {
 
     initializeProperties() {
         this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
-        this.rot = BA.random(1, 22);
-        this.size = BA.random(25, 100);
+        this.rot = AL.random(1, 22);
+        this.size = AL.random(25, 100);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.25, 1);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.25, 1);
     }
 
     draw() {
@@ -35,13 +35,13 @@ export default class Spikral extends BA {
 
         if (this.t % (this.speed * 150) === 0) {
             this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
-            this.size = BA.random(25, 100);
+            this.size = AL.random(25, 100);
 
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.25, 1);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.25, 1);
         }
 
         if (this.t % (this.speed * 1500) === 0) {
-            this.rot = BA.random(1, 22);
+            this.rot = AL.random(1, 22);
         }
 
         this.t++;

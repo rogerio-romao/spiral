@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Glowsticks extends BA {
+export default class Glowsticks extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,14 +11,14 @@ export default class Glowsticks extends BA {
     }
 
     initializeProperties() {
-        this.dist = BA.random(10, 100);
-        this.x = BA.random(0, this.w - this.dist);
-        this.y = BA.random(this.dist, this.h);
-        this.rot = BA.random(1, 200);
+        this.dist = AL.random(10, 100);
+        this.x = AL.random(0, this.w - this.dist);
+        this.y = AL.random(this.dist, this.h);
+        this.rot = AL.random(1, 200);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor();
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = 5;
     }
 
@@ -39,7 +39,7 @@ export default class Glowsticks extends BA {
 
             this.ctx.beginPath();
             this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor();
+            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

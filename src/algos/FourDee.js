@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class FourDee extends BA {
+export default class FourDee extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,20 +12,20 @@ export default class FourDee extends BA {
 
     initializeProperties() {
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
-        this.weight = BA.createParticle(
-            BA.random(0, this.w),
-            BA.random(0, this.h),
+        this.weight = AL.createParticle(
+            AL.random(0, this.w),
+            AL.random(0, this.h),
             0,
             0
         );
         this.weight.radius = 20;
-        this.rot = BA.random(-90, -1);
+        this.rot = AL.random(-90, -1);
         this.k = 0.1;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.fillStyle = BA.randomColor(40, 255, 0.1, 0.25);
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.fillStyle = AL.randomColor(40, 255, 0.1, 0.25);
     }
 
     draw() {
@@ -58,17 +58,17 @@ export default class FourDee extends BA {
         if (this.t % (this.speed * 540) === 0) {
             this.ctx.fillStyle = 'black';
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.fillStyle = BA.randomColor(40, 255, 0.1, 0.25);
+            this.ctx.fillStyle = AL.randomColor(40, 255, 0.1, 0.25);
 
-            this.weight = BA.createParticle(
-                BA.random(0, this.w),
-                BA.random(0, this.h),
-                BA.random(-50, 50),
-                BA.random(-360, 360)
+            this.weight = AL.createParticle(
+                AL.random(0, this.w),
+                AL.random(0, this.h),
+                AL.random(-50, 50),
+                AL.random(-360, 360)
             );
             this.weight.radius = 20;
             this.k = Math.random();
-            this.rot = BA.random(-90, -1);
+            this.rot = AL.random(-90, -1);
         }
 
         this.t++;

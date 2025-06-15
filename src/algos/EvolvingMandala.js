@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class EvolvingMandala extends BA {
+export default class EvolvingMandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -22,16 +22,16 @@ export default class EvolvingMandala extends BA {
             1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.rot = BA.random(4, 356);
+        this.rot = AL.random(4, 356);
         this.speed *= 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(20, 255, 0.85, 0.85);
-        this.ctx.font = `bold ${BA.random(70, 260)}px sans-serif`;
+        this.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
+        this.ctx.font = `bold ${AL.random(70, 260)}px sans-serif`;
         this.ctx.textAlign = 'center';
     }
 
@@ -55,20 +55,20 @@ export default class EvolvingMandala extends BA {
             } else if (pick < 0.15) {
                 this.ctx.strokeStyle = 'white';
             } else {
-                this.ctx.strokeStyle = BA.randomColor(20, 255, 0.85, 0.85);
+                this.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
             }
 
             this.rot += 2;
         }
 
         if (this.t % (this.speed * 90) === 0) {
-            this.ctx.font = `bold ${BA.random(70, 260)}px sans-serif`;
+            this.ctx.font = `bold ${AL.random(70, 260)}px sans-serif`;
         }
 
         if (this.t % (this.speed * 360) === 0) {
-            this.rot = BA.random(4, 356);
+            this.rot = AL.random(4, 356);
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Tripping extends BA {
+export default class Tripping extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,21 +11,21 @@ export default class Tripping extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.width = BA.random(50, this.w);
-        this.height = BA.random(50, this.h);
-        this.rotate = BA.random(1, 360);
-        this.ul = BA.random(10, Math.max(this.w, this.h));
-        this.ur = BA.random(10, Math.max(this.w, this.h));
-        this.ll = BA.random(10, Math.max(this.w, this.h));
-        this.lr = BA.random(10, Math.max(this.w, this.h));
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.width = AL.random(50, this.w);
+        this.height = AL.random(50, this.h);
+        this.rotate = AL.random(1, 360);
+        this.ul = AL.random(10, Math.max(this.w, this.h));
+        this.ur = AL.random(10, Math.max(this.w, this.h));
+        this.ll = AL.random(10, Math.max(this.w, this.h));
+        this.lr = AL.random(10, Math.max(this.w, this.h));
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.25, 0.5);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.25, 0.5);
         this.ctx.lineWidth = 0.5;
     }
 
@@ -56,21 +56,21 @@ export default class Tripping extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 500) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.width = BA.random(50, this.w);
-            this.height = BA.random(50, this.h);
-            this.rotate = BA.random(1, 360);
-            this.ul = BA.random(10, Math.max(this.w, this.h));
-            this.ur = BA.random(10, Math.max(this.w, this.h));
-            this.ll = BA.random(10, Math.max(this.w, this.h));
-            this.lr = BA.random(10, Math.max(this.w, this.h));
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.width = AL.random(50, this.w);
+            this.height = AL.random(50, this.h);
+            this.rotate = AL.random(1, 360);
+            this.ul = AL.random(10, Math.max(this.w, this.h));
+            this.ur = AL.random(10, Math.max(this.w, this.h));
+            this.ll = AL.random(10, Math.max(this.w, this.h));
+            this.lr = AL.random(10, Math.max(this.w, this.h));
 
             this.ctx.beginPath();
             this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.25, 0.5);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.25, 0.5);
         }
 
         this.t++;

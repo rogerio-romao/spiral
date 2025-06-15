@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Subwoofer extends BA {
+export default class Subwoofer extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,14 +11,14 @@ export default class Subwoofer extends BA {
     }
 
     initializeProperties() {
-        this.size = BA.random(15, 200);
-        this.factor = BA.random(10, this.size);
-        this.divisor = BA.random(1, 25);
-        this.color1 = BA.randomColor();
-        this.color2 = BA.randomColor();
-        this.color3 = BA.randomColor();
-        this.color4 = BA.randomColor();
-        this.color5 = BA.randomColor();
+        this.size = AL.random(15, 200);
+        this.factor = AL.random(10, this.size);
+        this.divisor = AL.random(1, 25);
+        this.color1 = AL.randomColor();
+        this.color2 = AL.randomColor();
+        this.color3 = AL.randomColor();
+        this.color4 = AL.randomColor();
+        this.color5 = AL.randomColor();
         this.colors = [
             this.color1,
             this.color2,
@@ -30,7 +30,7 @@ export default class Subwoofer extends BA {
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'white';
-        this.ctx.lineWidth = BA.random(7, 70);
+        this.ctx.lineWidth = AL.random(7, 70);
     }
 
     draw() {
@@ -55,7 +55,7 @@ export default class Subwoofer extends BA {
         );
         if (this.t % (this.speed * 110) === 0) {
             this.initializeProperties();
-            this.ctx.lineWidth = BA.random(7, 70);
+            this.ctx.lineWidth = AL.random(7, 70);
         }
         requestAnimationFrame(this.draw);
     }

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Picnic extends BA {
+export default class Picnic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,15 +11,15 @@ export default class Picnic extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(10, 450);
+        this.radius = AL.random(10, 450);
         this.rows = Math.ceil(this.h / 150) + 2;
         this.cols = Math.ceil(this.w / 150) + 2;
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.strokeStyle = BA.randomColor(10, 255, 0.2, 0.5);
-        this.ctx.lineWidth = BA.random(1, 25);
+        this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
+        this.ctx.lineWidth = AL.random(1, 25);
     }
 
     draw() {
@@ -40,10 +40,10 @@ export default class Picnic extends BA {
         }
 
         if (this.t % (this.speed * 30) === 0) {
-            this.radius = BA.random(10, 450);
+            this.radius = AL.random(10, 450);
 
-            this.ctx.lineWidth = BA.random(1, 25);
-            this.ctx.strokeStyle = BA.randomColor(10, 255, 0.2, 0.5);
+            this.ctx.lineWidth = AL.random(1, 25);
+            this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
             this.ctx.globalCompositeOperation = 'source-over';
         }
 

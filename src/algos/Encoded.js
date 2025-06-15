@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Encoded extends BA {
+export default class Encoded extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,17 +12,17 @@ export default class Encoded extends BA {
 
     initializeProperties() {
         this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
-        this.letter = this.letters[BA.random(0, this.letters.length)];
-        this.size = BA.random(100, 400);
-        this.rot = (BA.random(1, 360) * Math.PI) / 180;
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
+        this.letter = this.letters[AL.random(0, this.letters.length)];
+        this.size = AL.random(100, 400);
+        this.rot = (AL.random(1, 360) * Math.PI) / 180;
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
         this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
-        this.angle = this.angles[BA.random(0, this.angles.length)];
+        this.angle = this.angles[AL.random(0, this.angles.length)];
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             30,
             255,
             0.2,
@@ -45,13 +45,13 @@ export default class Encoded extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 72) === 0) {
-            this.letter = this.letters[BA.random(0, this.letters.length)];
-            this.size = BA.random(100, 400);
-            this.rot = (BA.random(1, 360) * Math.PI) / 180;
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
+            this.letter = this.letters[AL.random(0, this.letters.length)];
+            this.size = AL.random(100, 400);
+            this.rot = (AL.random(1, 360) * Math.PI) / 180;
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
 
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 30,
                 255,
                 0.2,

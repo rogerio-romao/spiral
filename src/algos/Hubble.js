@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Hubble extends BA {
+export default class Hubble extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -14,11 +14,11 @@ export default class Hubble extends BA {
         this.seq = this.createSeq(13);
         this.index = 0;
         this.currentVal = this.seq[this.index];
-        this.rotate = BA.random(1, 44);
+        this.rotate = AL.random(1, 44);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.05);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
         this.ctx.filter = 'blur(5px)';
         this.ctx.globalCompositeOperation = 'hard-light';
     }
@@ -66,8 +66,8 @@ export default class Hubble extends BA {
             this.index++;
             if (this.index >= this.seq.length - 1) {
                 this.index = 0;
-                this.rotate = BA.random(1, 44);
-                this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.05);
+                this.rotate = AL.random(1, 44);
+                this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
             }
             this.currentVal = this.seq[this.index];
         }

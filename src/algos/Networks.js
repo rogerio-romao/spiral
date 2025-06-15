@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Networks extends BA {
+export default class Networks extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -14,13 +14,13 @@ export default class Networks extends BA {
         this.drawAmount = 0.01;
         this.x = this.w / 2;
         this.y = this.h / 2;
-        this.rot = BA.random(1, 71);
-        this.size = BA.random(30, 200);
-        this.sizeIncrease = Math.random() * BA.random(0, 5);
+        this.rot = AL.random(1, 71);
+        this.size = AL.random(30, 200);
+        this.sizeIncrease = Math.random() * AL.random(0, 5);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
@@ -45,13 +45,13 @@ export default class Networks extends BA {
 
         if (this.t % (this.speed * 480) === 0) {
             this.drawAmount = 0.01;
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.rot = BA.random(1, 71);
-            this.size = BA.random(30, 200);
-            this.sizeIncrease = Math.random() * BA.random(0, 5);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.rot = AL.random(1, 71);
+            this.size = AL.random(30, 200);
+            this.sizeIncrease = Math.random() * AL.random(0, 5);
 
-            this.ctx.strokeStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.t++;

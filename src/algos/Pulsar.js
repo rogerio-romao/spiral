@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Pulsar extends BA {
+export default class Pulsar extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,21 +11,21 @@ export default class Pulsar extends BA {
     }
 
     initializeProperties() {
-        this.cp1x = BA.random(0, this.w);
-        this.cp1y = BA.random(0, this.h);
-        this.cp2x = BA.random(0, this.w);
-        this.cp2y = BA.random(0, this.h);
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.rot1 = BA.random(1, 90);
-        this.rot2 = BA.random(1, 90);
-        this.pulse1 = BA.random(50, 300);
-        this.pulse2 = BA.random(30, 200);
+        this.cp1x = AL.random(0, this.w);
+        this.cp1y = AL.random(0, this.h);
+        this.cp2x = AL.random(0, this.w);
+        this.cp2y = AL.random(0, this.h);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.rot1 = AL.random(1, 90);
+        this.rot2 = AL.random(1, 90);
+        this.pulse1 = AL.random(50, 300);
+        this.pulse2 = AL.random(30, 200);
     }
 
     setupDrawingStyles() {
         this.ctx.lineWidth = 5;
-        this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor();
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = 2;
     }
 
@@ -44,17 +44,17 @@ export default class Pulsar extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 160) === 0) {
-            this.cp1x = BA.random(0, this.w);
-            this.cp1y = BA.random(0, this.h);
-            this.cp2x = BA.random(0, this.w);
-            this.cp2y = BA.random(0, this.h);
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.rot1 = BA.random(1, 90);
-            this.rot2 = BA.random(1, 90);
-            this.pulse1 = BA.random(50, 300);
-            this.pulse2 = BA.random(30, 200);
-            this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor();
+            this.cp1x = AL.random(0, this.w);
+            this.cp1y = AL.random(0, this.h);
+            this.cp2x = AL.random(0, this.w);
+            this.cp2y = AL.random(0, this.h);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.rot1 = AL.random(1, 90);
+            this.rot2 = AL.random(1, 90);
+            this.pulse1 = AL.random(50, 300);
+            this.pulse2 = AL.random(30, 200);
+            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class SpaceGears extends BA {
+export default class SpaceGears extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -17,12 +17,12 @@ export default class SpaceGears extends BA {
             451, 458, 461, 474, 478, 480, 484, 488, 491, 494,
         ];
         this.letter = String.fromCharCode(428);
-        this.rotate = (BA.random(3, 357) * Math.PI) / 180;
-        this.ctx.font = BA.random(100, 700) + 'px serif';
+        this.rotate = (AL.random(3, 357) * Math.PI) / 180;
+        this.ctx.font = AL.random(100, 700) + 'px serif';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.6, 0.6);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 0.6);
     }
 
     draw() {
@@ -37,14 +37,14 @@ export default class SpaceGears extends BA {
         }
 
         if (this.t % (this.speed * 120) === 0) {
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.6, 0.6);
-            this.ctx.font = BA.random(100, 700) + 'px serif';
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 0.6);
+            this.ctx.font = AL.random(100, 700) + 'px serif';
         }
 
         if (this.t % (this.speed * 1260) === 0) {
-            this.rotate = (BA.random(3, 357) * Math.PI) / 180;
+            this.rotate = (AL.random(3, 357) * Math.PI) / 180;
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

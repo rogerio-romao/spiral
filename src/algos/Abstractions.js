@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Abstractions extends BA {
+export default class Abstractions extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,30 +11,30 @@ export default class Abstractions extends BA {
     }
 
     initializeProperties() {
-        this.pointAx = BA.random(0, this.w);
-        this.pointAy = BA.random(0, this.h);
-        this.pointCpAx = BA.random(0, this.w);
-        this.pointCpAy = BA.random(0, this.h);
-        this.pointBx = BA.random(0, this.w);
-        this.pointBy = BA.random(0, this.h);
-        this.pointCpBx = BA.random(0, this.w);
-        this.pointCpBy = BA.random(0, this.h);
-        this.pointCx = BA.random(0, this.w);
-        this.pointCy = BA.random(0, this.h);
-        this.pointCpCx = BA.random(0, this.w);
-        this.pointCpCy = BA.random(0, this.h);
+        this.pointAx = AL.random(0, this.w);
+        this.pointAy = AL.random(0, this.h);
+        this.pointCpAx = AL.random(0, this.w);
+        this.pointCpAy = AL.random(0, this.h);
+        this.pointBx = AL.random(0, this.w);
+        this.pointBy = AL.random(0, this.h);
+        this.pointCpBx = AL.random(0, this.w);
+        this.pointCpBy = AL.random(0, this.h);
+        this.pointCx = AL.random(0, this.w);
+        this.pointCy = AL.random(0, this.h);
+        this.pointCpCx = AL.random(0, this.w);
+        this.pointCpCy = AL.random(0, this.h);
 
         this.rotations = [
             1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
             31, 32, 33, 34, 37, 38, 39, 41, 43,
         ];
-        this.rotate = this.rotations[BA.random(0, this.rotations.length)];
+        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
 
         this.speed = 3;
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             0,
             255,
             0.25,
@@ -89,21 +89,21 @@ export default class Abstractions extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.pointAx = BA.random(0, this.w);
-            this.pointAy = BA.random(0, this.h);
-            this.pointCpAx = BA.random(0, this.w);
-            this.pointCpAy = BA.random(0, this.h);
-            this.pointBx = BA.random(0, this.w);
-            this.pointBy = BA.random(0, this.h);
-            this.pointCpBx = BA.random(0, this.w);
-            this.pointCpBy = BA.random(0, this.h);
-            this.pointCx = BA.random(0, this.w);
-            this.pointCy = BA.random(0, this.h);
-            this.pointCpCx = BA.random(0, this.w);
-            this.pointCpCy = BA.random(0, this.h);
-            this.rotate = this.rotations[BA.random(0, this.rotations.length)];
+            this.pointAx = AL.random(0, this.w);
+            this.pointAy = AL.random(0, this.h);
+            this.pointCpAx = AL.random(0, this.w);
+            this.pointCpAy = AL.random(0, this.h);
+            this.pointBx = AL.random(0, this.w);
+            this.pointBy = AL.random(0, this.h);
+            this.pointCpBx = AL.random(0, this.w);
+            this.pointCpBy = AL.random(0, this.h);
+            this.pointCx = AL.random(0, this.w);
+            this.pointCy = AL.random(0, this.h);
+            this.pointCpCx = AL.random(0, this.w);
+            this.pointCpCy = AL.random(0, this.h);
+            this.rotate = this.rotations[AL.random(0, this.rotations.length)];
 
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 0,
                 255,
                 0.25,

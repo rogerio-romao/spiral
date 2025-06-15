@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class TheFan extends BA {
+export default class TheFan extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,19 +11,19 @@ export default class TheFan extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w / 2);
-        this.y1 = BA.random(0, this.h / 2);
-        this.x2 = BA.random(this.w / 2, this.w);
-        this.y2 = BA.random(this.h / 2, this.h);
-        this.ox = BA.random(0, this.w / 2);
-        this.oy = BA.random(0, this.h / 2);
-        this.dx = BA.random(this.w / 2, this.w);
-        this.dy = BA.random(this.h / 2, this.h);
-        this.rotate = BA.random(1, 359);
+        this.x1 = AL.random(0, this.w / 2);
+        this.y1 = AL.random(0, this.h / 2);
+        this.x2 = AL.random(this.w / 2, this.w);
+        this.y2 = AL.random(this.h / 2, this.h);
+        this.ox = AL.random(0, this.w / 2);
+        this.oy = AL.random(0, this.h / 2);
+        this.dx = AL.random(this.w / 2, this.w);
+        this.dy = AL.random(this.h / 2, this.h);
+        this.rotate = AL.random(1, 359);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.globalCompositeOperation = 'luminosity';
         this.ctx.filter = 'saturate(500%)';
         this.ctx.shadowColor = 'black';
@@ -49,18 +49,18 @@ export default class TheFan extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 240) === 0) {
-            this.x1 = BA.random(0, this.w / 2);
-            this.y1 = BA.random(0, this.h / 2);
-            this.x2 = BA.random(this.w / 2, this.w);
-            this.y2 = BA.random(this.h / 2, this.h);
-            this.ox = BA.random(0, this.w / 2);
-            this.oy = BA.random(0, this.h / 2);
-            this.dx = BA.random(this.w / 2, this.w);
-            this.dy = BA.random(this.h / 2, this.h);
-            this.rotate = BA.random(1, 359);
+            this.x1 = AL.random(0, this.w / 2);
+            this.y1 = AL.random(0, this.h / 2);
+            this.x2 = AL.random(this.w / 2, this.w);
+            this.y2 = AL.random(this.h / 2, this.h);
+            this.ox = AL.random(0, this.w / 2);
+            this.oy = AL.random(0, this.h / 2);
+            this.dx = AL.random(this.w / 2, this.w);
+            this.dy = AL.random(this.h / 2, this.h);
+            this.rotate = AL.random(1, 359);
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.t++;

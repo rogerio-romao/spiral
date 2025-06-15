@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Dye extends BA {
+export default class Dye extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -18,22 +18,22 @@ export default class Dye extends BA {
             3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493,
         ];
         this.text = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         ).padStart(30, ' ');
 
         this.tl = null;
 
-        this.font1 = { size: BA.random(14, 40) };
-        this.font2 = { size: BA.random(60, 150) };
+        this.font1 = { size: AL.random(14, 40) };
+        this.font2 = { size: AL.random(60, 150) };
         this.line1 = { width: 1 };
-        this.line2 = { width: BA.random(4, 12) };
-        this.rot = BA.random(1, 500);
-        this.color1 = { color: BA.randomColor() };
-        this.color2 = { color: BA.randomColor() };
-        this.color3 = { color: BA.randomColor() };
-        this.color4 = { color: BA.randomColor() };
-        this.offsetX = BA.random(-this.w / 5 / 2, this.w / 5 / 2);
-        this.offsetY = BA.random(-this.h / 5 / 2, this.h / 5 / 2);
+        this.line2 = { width: AL.random(4, 12) };
+        this.rot = AL.random(1, 500);
+        this.color1 = { color: AL.randomColor() };
+        this.color2 = { color: AL.randomColor() };
+        this.color3 = { color: AL.randomColor() };
+        this.color4 = { color: AL.randomColor() };
+        this.offsetX = AL.random(-this.w / 5 / 2, this.w / 5 / 2);
+        this.offsetY = AL.random(-this.h / 5 / 2, this.h / 5 / 2);
     }
 
     setupDrawingStyles() {
@@ -65,25 +65,25 @@ export default class Dye extends BA {
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.rot = BA.random(1, 500);
+            this.rot = AL.random(1, 500);
         }
 
         if (this.t % 80 === 0) {
             this.tl.kill();
 
             this.text = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             ).padStart(30, ' ');
-            this.font1.size = BA.random(14, 40);
-            this.font2.size = BA.random(60, 150);
+            this.font1.size = AL.random(14, 40);
+            this.font2.size = AL.random(60, 150);
             this.line1.width = 1;
-            this.line2.width = BA.random(4, 12);
-            this.color1.color = BA.randomColor();
-            this.color2.color = BA.randomColor();
-            this.color3.color = BA.randomColor();
-            this.color4.color = BA.randomColor();
-            this.offsetX = BA.random(-this.w / 5 / 2, this.w / 5 / 2);
-            this.offsetY = BA.random(-this.h / 5 / 2, this.h / 5 / 2);
+            this.line2.width = AL.random(4, 12);
+            this.color1.color = AL.randomColor();
+            this.color2.color = AL.randomColor();
+            this.color3.color = AL.randomColor();
+            this.color4.color = AL.randomColor();
+            this.offsetX = AL.random(-this.w / 5 / 2, this.w / 5 / 2);
+            this.offsetY = AL.random(-this.h / 5 / 2, this.h / 5 / 2);
 
             this.ctx.font = `${this.font1.size}px bold serif`;
             this.ctx.lineWidth = this.line1.width;
@@ -99,14 +99,14 @@ export default class Dye extends BA {
     }
 
     getTweens() {
-        this.tl = BA.gsap.timeline({
+        this.tl = AL.gsap.timeline({
             defaults: { repeat: -1, yoyo: true, ease: 'circ' },
         });
         this.tl
             .to(
                 this.font1,
                 {
-                    duration: BA.random(4, 10),
+                    duration: AL.random(4, 10),
                     size: this.font2.size,
                     onUpdate: () =>
                         (this.ctx.font = `${this.font1.size}px bold serif`),
@@ -116,7 +116,7 @@ export default class Dye extends BA {
             .to(
                 this.color1,
                 {
-                    duration: BA.random(3, 13),
+                    duration: AL.random(3, 13),
                     color: this.color3.color,
                     onUpdate: () => (this.ctx.strokeStyle = this.color1.color),
                 },
@@ -125,7 +125,7 @@ export default class Dye extends BA {
             .to(
                 this.color2,
                 {
-                    duration: BA.random(3, 10),
+                    duration: AL.random(3, 10),
                     color: this.color1.color,
                     onUpdate: () => (this.ctx.fillStyle = this.color2.color),
                 },
@@ -134,7 +134,7 @@ export default class Dye extends BA {
             .to(
                 this.line1,
                 {
-                    duration: BA.random(2, 10),
+                    duration: AL.random(2, 10),
                     width: this.line2.width,
                     onUpdate: () => (this.ctx.lineWidth = this.line1.width),
                 },

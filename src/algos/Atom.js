@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Atom extends BA {
+export default class Atom extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,15 +12,15 @@ export default class Atom extends BA {
 
     initializeProperties() {
         this.change = 0;
-        this.rate = BA.random(5, 105);
-        this.rotate = BA.random(5, 24);
+        this.rate = AL.random(5, 105);
+        this.rotate = AL.random(5, 24);
     }
 
     setupDrawingStyles() {
         this.ctx.shadowBlur = 2;
         this.ctx.shadowColor = 'black';
         this.ctx.lineWidth = 5;
-        this.ctx.strokeStyle = BA.randomColor(65, 255, 0.5, 1);
+        this.ctx.strokeStyle = AL.randomColor(65, 255, 0.5, 1);
     }
 
     draw() {
@@ -43,10 +43,10 @@ export default class Atom extends BA {
 
         if (this.t % (this.speed * 450) === 0) {
             this.change = 0;
-            this.rate = BA.random(5, 105);
-            this.rotate = BA.random(5, 24);
+            this.rate = AL.random(5, 105);
+            this.rotate = AL.random(5, 24);
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(65, 255, 0.5, 1);
+            this.ctx.strokeStyle = AL.randomColor(65, 255, 0.5, 1);
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class GameOfFlies extends BA {
+export default class GameOfFlies extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,21 +11,21 @@ export default class GameOfFlies extends BA {
     }
 
     initializeProperties() {
-        this.p = BA.createParticle(
-            BA.random(0, this.w),
-            BA.random(0, this.h),
-            BA.random(5, 50),
+        this.p = AL.createParticle(
+            AL.random(0, this.w),
+            AL.random(0, this.h),
+            AL.random(5, 50),
             Math.random() * Math.PI * 2
         );
-        this.p.radius = BA.random(3, 9);
-        this.p.color = BA.randomColor(60, 255, 0.5, 1);
+        this.p.radius = AL.random(3, 9);
+        this.p.color = AL.randomColor(60, 255, 0.5, 1);
         this.particles = [this.p];
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
         this.k = 0.14;
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(60, 255, 0.5, 1);
+        this.ctx.fillStyle = AL.randomColor(60, 255, 0.5, 1);
     }
 
     draw() {
@@ -58,14 +58,14 @@ export default class GameOfFlies extends BA {
         }
 
         if (this.t % (this.speed * 130) === 0) {
-            const newParticle = BA.createParticle(
-                BA.random(0, this.w),
-                BA.random(0, this.h),
-                BA.random(5, 50),
+            const newParticle = AL.createParticle(
+                AL.random(0, this.w),
+                AL.random(0, this.h),
+                AL.random(5, 50),
                 Math.random() * Math.PI * 2
             );
-            newParticle.radius = BA.random(3, 9);
-            newParticle.color = BA.randomColor(60, 255, 0.5, 1);
+            newParticle.radius = AL.random(3, 9);
+            newParticle.color = AL.randomColor(60, 255, 0.5, 1);
             this.particles.push(newParticle);
         }
 

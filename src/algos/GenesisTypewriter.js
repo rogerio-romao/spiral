@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class GenesisTypewriter extends BA {
+export default class GenesisTypewriter extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -15,15 +15,15 @@ export default class GenesisTypewriter extends BA {
     initializeProperties() {
         this.tl = null;
         this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        this.text = this.letters[BA.random(0, this.letters.length)];
-        this.font1 = { size: BA.random(20, 100) };
-        this.font2 = { size: BA.random(160, 600) };
-        this.pos1 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
-        this.pos2 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
+        this.text = this.letters[AL.random(0, this.letters.length)];
+        this.font1 = { size: AL.random(20, 100) };
+        this.font2 = { size: AL.random(160, 600) };
+        this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
+        this.pos2 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
         this.line1 = { width: 1 };
-        this.line2 = { width: BA.random(3, 7) };
-        this.rot1 = { angle: BA.random(1, 44) };
-        this.rot2 = { angle: BA.random(1, 44) };
+        this.line2 = { width: AL.random(3, 7) };
+        this.rot1 = { angle: AL.random(1, 44) };
+        this.rot2 = { angle: AL.random(1, 44) };
     }
 
     setupDrawingStyles() {
@@ -40,20 +40,20 @@ export default class GenesisTypewriter extends BA {
         if (this.t % 1000 === 0) {
             this.tl.kill();
 
-            this.text = this.letters[BA.random(0, this.letters.length)];
-            this.font1 = { size: BA.random(20, 100) };
-            this.font2 = { size: BA.random(160, 600) };
-            this.pos1 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
-            this.pos2 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
+            this.text = this.letters[AL.random(0, this.letters.length)];
+            this.font1 = { size: AL.random(20, 100) };
+            this.font2 = { size: AL.random(160, 600) };
+            this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
+            this.pos2 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
             this.line1 = { width: 1 };
-            this.line2 = { width: BA.random(3, 7) };
-            this.rot1 = { angle: BA.random(1, 44) };
-            this.rot2 = { angle: BA.random(1, 44) };
+            this.line2 = { width: AL.random(3, 7) };
+            this.rot1 = { angle: AL.random(1, 44) };
+            this.rot2 = { angle: AL.random(1, 44) };
 
             this.ctx.font = `${this.font1.size}px bold serif`;
             this.ctx.lineWidth = this.line1.width;
             this.ctx.strokeStyle =
-                Math.random() < 0.25 ? 'white' : BA.randomColor();
+                Math.random() < 0.25 ? 'white' : AL.randomColor();
             this.ctx.fillStyle = 'black';
 
             this.getTweens();
@@ -69,14 +69,14 @@ export default class GenesisTypewriter extends BA {
     }
 
     getTweens() {
-        this.tl = BA.gsap.timeline({
+        this.tl = AL.gsap.timeline({
             defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' },
         });
         this.tl
             .to(
                 this.font1,
                 {
-                    duration: BA.random(12, 40),
+                    duration: AL.random(12, 40),
                     size: this.font2.size,
                     onUpdate: () =>
                         (this.ctx.font = `${this.font1.size}px bold serif`),
@@ -86,7 +86,7 @@ export default class GenesisTypewriter extends BA {
             .to(
                 this.pos1,
                 {
-                    duration: BA.random(15, 50),
+                    duration: AL.random(15, 50),
                     x: this.pos2.x,
                 },
                 '<'
@@ -94,7 +94,7 @@ export default class GenesisTypewriter extends BA {
             .to(
                 this.pos1,
                 {
-                    duration: BA.random(15, 50),
+                    duration: AL.random(15, 50),
                     y: this.pos2.y,
                 },
                 '<'
@@ -102,7 +102,7 @@ export default class GenesisTypewriter extends BA {
             .to(
                 this.line1,
                 {
-                    duration: BA.random(6, 14),
+                    duration: AL.random(6, 14),
                     width: this.line2.width,
                     onUpdate: () => (this.ctx.lineWidth = this.line1.width),
                 },

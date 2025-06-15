@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Starship extends BA {
+export default class Starship extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -14,13 +14,13 @@ export default class Starship extends BA {
         this.first = 0;
         this.second = 1;
         this.divisors = [2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 20, 24, 30, 36];
-        this.divisor = this.divisors[BA.random(0, this.divisors.length)];
+        this.divisor = this.divisors[AL.random(0, this.divisors.length)];
         this.seq = [this.first, this.second];
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'hard-light';
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             0,
             255,
             0.6,
@@ -52,14 +52,14 @@ export default class Starship extends BA {
 
         if (this.t % (this.speed * 240) === 0) {
             this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 0,
                 255,
                 0.6,
                 1
             );
 
-            this.divisor = this.divisors[BA.random(0, this.divisors.length)];
+            this.divisor = this.divisors[AL.random(0, this.divisors.length)];
         }
 
         if (this.t % (this.speed * 1200) === 0) {

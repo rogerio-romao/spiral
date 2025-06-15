@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Ourobouros extends BA {
+export default class Ourobouros extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -17,20 +17,20 @@ export default class Ourobouros extends BA {
             2596,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.x = BA.random(100, this.w - 100);
-        this.y = BA.random(100, this.h - 100);
-        this.rotate = BA.random(4, 30);
+        this.x = AL.random(100, this.w - 100);
+        this.y = AL.random(100, this.h - 100);
+        this.rotate = AL.random(4, 30);
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'difference';
         this.ctx.lineWidth = 20;
-        this.ctx.font = `${BA.random(40, 300)}px sans-serif`;
+        this.ctx.font = `${AL.random(40, 300)}px sans-serif`;
         this.ctx.textAlign = 'center';
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.08, 0.4);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.08, 0.4);
     }
 
     draw() {
@@ -43,17 +43,17 @@ export default class Ourobouros extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 80) === 0) {
-            this.x = BA.random(100, this.w - 100);
-            this.y = BA.random(100, this.h - 100);
-            this.rotate = BA.random(4, 30);
+            this.x = AL.random(100, this.w - 100);
+            this.y = AL.random(100, this.h - 100);
+            this.rotate = AL.random(4, 30);
 
-            this.ctx.font = `${BA.random(40, 300)}px sans-serif`;
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.08, 0.4);
+            this.ctx.font = `${AL.random(40, 300)}px sans-serif`;
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.08, 0.4);
         }
 
         if (this.t % (this.speed * 1000) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

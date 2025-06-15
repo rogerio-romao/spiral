@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class VanishingRays extends BA {
+export default class VanishingRays extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
         this.initializeProperties();
@@ -16,19 +16,19 @@ export default class VanishingRays extends BA {
             1873, 1877, 1879, 1883, 1884, 1888, 1890, 1894, 1899,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
         this.incAlpha = 0;
         this.angle = 1;
-        this.fontSize = BA.random(30, 500);
+        this.fontSize = AL.random(30, 500);
         this.rotations = [20, 24, 30, 36, 40, 45, 60, 72, 80];
-        this.rotate = this.rotations[BA.random(0, this.rotations.length)];
+        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(50, 200, 0.0025, 0.0025);
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.8, 0.8);
+        this.ctx.fillStyle = AL.randomColor(50, 200, 0.0025, 0.0025);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
         this.ctx.font = `bold ${this.fontSize}px sans-serif`;
     }
 
@@ -46,14 +46,14 @@ export default class VanishingRays extends BA {
         }
 
         if (this.t % (this.speed * (1440 / this.rotate)) === 0) {
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.8, 0.8);
-            this.fontSize = BA.random(30, 500);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
+            this.fontSize = AL.random(30, 500);
             this.ctx.font = `bold ${this.fontSize}px sans-serif`;
             this.angle *= -1;
         }
 
         if (this.t % (this.speed * 360) === 0) {
-            this.ctx.fillStyle = BA.randomColor(
+            this.ctx.fillStyle = AL.randomColor(
                 0,
                 255,
                 0.006 + this.incAlpha,
@@ -64,7 +64,7 @@ export default class VanishingRays extends BA {
 
         if (this.t % (this.speed * 720) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

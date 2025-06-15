@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Progression extends BA {
+export default class Progression extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,14 +11,14 @@ export default class Progression extends BA {
     }
 
     initializeProperties() {
-        this.width = BA.random(40, this.w);
-        this.height = BA.random(40, this.h);
-        this.round = BA.random(1, 350);
-        this.rotate = BA.random(1, 180);
+        this.width = AL.random(40, this.w);
+        this.height = AL.random(40, this.h);
+        this.round = AL.random(1, 350);
+        this.rotate = AL.random(1, 180);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.03);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.03);
     }
 
     draw() {
@@ -44,13 +44,13 @@ export default class Progression extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.width = BA.random(40, this.w);
-            this.height = BA.random(40, this.h);
-            this.round = BA.random(1, 350);
-            this.rotate = BA.random(1, 180);
+            this.width = AL.random(40, this.w);
+            this.height = AL.random(40, this.h);
+            this.round = AL.random(1, 350);
+            this.rotate = AL.random(1, 180);
 
             this.ctx.beginPath();
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.03);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.03);
         }
 
         this.t++;

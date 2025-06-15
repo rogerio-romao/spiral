@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Irradiate extends BA {
+export default class Irradiate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class Irradiate extends BA {
     }
 
     initializeProperties() {
-        this.width = BA.random(50, this.w / 2);
-        this.height = BA.random(50, this.h / 2);
-        this.rotate = BA.random(1, 181);
-        this.ul = BA.random(10, Math.min(this.w, this.h));
-        this.ur = BA.random(10, Math.min(this.w, this.h));
-        this.ll = BA.random(10, Math.min(this.w, this.h));
-        this.lr = BA.random(10, Math.min(this.w, this.h));
+        this.width = AL.random(50, this.w / 2);
+        this.height = AL.random(50, this.h / 2);
+        this.rotate = AL.random(1, 181);
+        this.ul = AL.random(10, Math.min(this.w, this.h));
+        this.ur = AL.random(10, Math.min(this.w, this.h));
+        this.ll = AL.random(10, Math.min(this.w, this.h));
+        this.lr = AL.random(10, Math.min(this.w, this.h));
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.33);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
         this.ctx.globalCompositeOperation = 'hard-light';
     }
 
@@ -46,16 +46,16 @@ export default class Irradiate extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.width = BA.random(50, this.w / 2);
-            this.height = BA.random(50, this.h / 2);
-            this.rotate = BA.random(1, 181);
-            this.ul = BA.random(10, Math.min(this.w, this.h));
-            this.ur = BA.random(10, Math.min(this.w, this.h));
-            this.ll = BA.random(10, Math.min(this.w, this.h));
-            this.lr = BA.random(10, Math.min(this.w, this.h));
+            this.width = AL.random(50, this.w / 2);
+            this.height = AL.random(50, this.h / 2);
+            this.rotate = AL.random(1, 181);
+            this.ul = AL.random(10, Math.min(this.w, this.h));
+            this.ur = AL.random(10, Math.min(this.w, this.h));
+            this.ll = AL.random(10, Math.min(this.w, this.h));
+            this.lr = AL.random(10, Math.min(this.w, this.h));
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.33);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
         }
 
         this.t++;

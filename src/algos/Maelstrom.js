@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Maelstrom extends BA {
+export default class Maelstrom extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,16 +11,16 @@ export default class Maelstrom extends BA {
     }
 
     initializeProperties() {
-        this.cp1 = BA.random(0, this.w);
-        this.cp2 = BA.random(0, this.h);
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.angle = BA.random(1, 200);
+        this.cp1 = AL.random(0, this.w);
+        this.cp2 = AL.random(0, this.h);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.angle = AL.random(1, 200);
     }
 
     setupDrawingStyles() {
         this.ctx.lineWidth = 2;
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.7, 1);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.225)';
     }
 
@@ -36,15 +36,15 @@ export default class Maelstrom extends BA {
         }
 
         if (this.t % (this.speed * 300) === 0) {
-            this.cp1 = BA.random(0, this.w);
-            this.cp2 = BA.random(0, this.h);
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.angle = BA.random(1, 200);
+            this.cp1 = AL.random(0, this.w);
+            this.cp2 = AL.random(0, this.h);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.angle = AL.random(1, 200);
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.7, 1);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
         }
 
         this.t++;

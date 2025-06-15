@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Discos extends BA {
+export default class Discos extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,11 +11,11 @@ export default class Discos extends BA {
     }
 
     initializeProperties() {
-        this.color1 = BA.randomColor(5, 255, 0.5, 0.5);
-        this.color2 = BA.randomColor(5, 255, 0.5, 0.5);
-        this.startAngle = BA.random(0, 100);
+        this.color1 = AL.randomColor(5, 255, 0.5, 0.5);
+        this.color2 = AL.randomColor(5, 255, 0.5, 0.5);
+        this.startAngle = AL.random(0, 100);
         this.endAngle = (180 * Math.PI) / 180;
-        this.radius = BA.random(10, this.h);
+        this.radius = AL.random(10, this.h);
         this.anti = false;
     }
 
@@ -31,7 +31,7 @@ export default class Discos extends BA {
                 this.ctx.moveTo(this.w / 2, this.h / 2);
                 this.ctx.beginPath();
                 this.ctx.strokeStyle = this.color1;
-                this.ctx.lineWidth = BA.random(0, 100);
+                this.ctx.lineWidth = AL.random(0, 100);
                 this.ctx.arc(
                     this.w / 2,
                     this.h / 2,
@@ -47,7 +47,7 @@ export default class Discos extends BA {
                 this.ctx.beginPath();
                 this.ctx.strokeStyle = this.color2;
                 this.anti = !this.anti;
-                this.radius = BA.random(0, this.h);
+                this.radius = AL.random(0, this.h);
                 this.ctx.arc(
                     this.w / 2,
                     this.h / 2,
@@ -61,7 +61,7 @@ export default class Discos extends BA {
 
             if (this.stagger === 2) {
                 this.ctx.beginPath();
-                this.radius = BA.random(0, this.h);
+                this.radius = AL.random(0, this.h);
                 this.ctx.fillRect(this.w / 2, this.h / 2, this.w, 2);
                 this.ctx.stroke();
             }
@@ -78,8 +78,8 @@ export default class Discos extends BA {
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.color1 = this.ctx.fillStyle = BA.randomColor(5, 255, 0.5, 0.5);
-            this.color2 = BA.randomColor(5, 255, 0.5, 0.5);
+            this.color1 = this.ctx.fillStyle = AL.randomColor(5, 255, 0.5, 0.5);
+            this.color2 = AL.randomColor(5, 255, 0.5, 0.5);
         }
 
         this.t++;

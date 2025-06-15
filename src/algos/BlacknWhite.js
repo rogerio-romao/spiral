@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class BlacknWhite extends BA {
+export default class BlacknWhite extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,13 +11,13 @@ export default class BlacknWhite extends BA {
     }
 
     initializeProperties() {
-        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
-        this.height = this.length / BA.random(1, 5);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+        this.height = this.length / AL.random(1, 5);
     }
 
     setupDrawingStyles() {
         this.modes = ['source-over', 'difference', 'destination-out'];
-        this.ctx.strokeStyle = 'white'
+        this.ctx.strokeStyle = 'white';
         this.ctx.lineWidth = 4;
     }
 
@@ -35,18 +35,24 @@ export default class BlacknWhite extends BA {
                     this.height
                 );
 
-                this.length = BA.random(20, Math.max(this.w, this.h));
-                this.height = this.length / BA.random(1, 5);
+                this.length = AL.random(20, Math.max(this.w, this.h));
+                this.height = this.length / AL.random(1, 5);
             }
 
             if (this.stagger === 1) {
                 this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate((BA.random(-180, 180) * Math.PI) / 180);
+                this.ctx.rotate((AL.random(-180, 180) * Math.PI) / 180);
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
 
             if (this.stagger === 2) {
-                this.ctx.arcTo(this.height, this.length, 0, this.h / 2, this.w / 2);
+                this.ctx.arcTo(
+                    this.height,
+                    this.length,
+                    0,
+                    this.h / 2,
+                    this.w / 2
+                );
                 this.ctx.stroke();
             }
 
@@ -54,7 +60,7 @@ export default class BlacknWhite extends BA {
                 this.ctx.arcTo(
                     this.w / 2,
                     this.h / 2,
-                    BA.random(1, 10),
+                    AL.random(1, 10),
                     this.height,
                     this.length
                 );
@@ -66,11 +72,11 @@ export default class BlacknWhite extends BA {
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.globalCompositeOperation =
-            this.modes[BA.random(0, this.modes.length)];
+                this.modes[AL.random(0, this.modes.length)];
         }
 
         this.t++;
 
         requestAnimationFrame(this.draw);
-    };
+    }
 }

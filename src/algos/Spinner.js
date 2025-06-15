@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Spinner extends BA {
+export default class Spinner extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -10,11 +10,11 @@ export default class Spinner extends BA {
     }
 
     initializeProperties() {
-        this.color1 = BA.randomColor(0, 255, 1, 1);
-        this.color2 = BA.randomColor(0, 255, 1, 1);
+        this.color1 = AL.randomColor(0, 255, 1, 1);
+        this.color2 = AL.randomColor(0, 255, 1, 1);
         this.side = Math.min(this.w, this.h);
-        this.gap1 = BA.random(15, 150);
-        this.gap2 = BA.random(-150, -15);
+        this.gap1 = AL.random(15, 150);
+        this.gap2 = AL.random(-150, -15);
     }
 
     draw() {
@@ -48,15 +48,15 @@ export default class Spinner extends BA {
         }
 
         if (this.t % (this.speed * 50) === 0) {
-            this.side = BA.random(200, Math.max(this.w, this.h) / 2);
-            this.gap1 = BA.random(15, 150);
-            this.gap2 = BA.random(-150, -15);
-            this.color2 = BA.randomColor(0, 255, 1, 1);
+            this.side = AL.random(200, Math.max(this.w, this.h) / 2);
+            this.gap1 = AL.random(15, 150);
+            this.gap2 = AL.random(-150, -15);
+            this.color2 = AL.randomColor(0, 255, 1, 1);
         }
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.beginPath();
-            this.color1 = BA.randomColor(0, 255, 1, 1);
+            this.color1 = AL.randomColor(0, 255, 1, 1);
         }
 
         this.t++;

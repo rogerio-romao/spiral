@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Coils extends BA {
+export default class Coils extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -13,23 +13,23 @@ export default class Coils extends BA {
     }
 
     initializeProperties() {
-        this.dur1 = BA.random(5, 20);
-        this.dur2 = BA.random(8, 30);
-        this.dur3 = BA.random(10, 40);
-        this.dur4 = BA.random(3, 10);
-        this.rot = BA.random(1, 100);
+        this.dur1 = AL.random(5, 20);
+        this.dur2 = AL.random(8, 30);
+        this.dur3 = AL.random(10, 40);
+        this.dur4 = AL.random(3, 10);
+        this.rot = AL.random(1, 100);
 
         this.obj1 = {
             x: 0,
             y: 0,
-            radius: BA.random(10, 35),
-            color: BA.randomColor(60, 255, 0.6, 1),
+            radius: AL.random(10, 35),
+            color: AL.randomColor(60, 255, 0.6, 1),
         };
         this.obj2 = {
             x: this.w / 2,
             y: this.h / 2,
-            radius: BA.random(30, 130),
-            color: BA.randomColor(60, 255, 0.6, 1),
+            radius: AL.random(30, 130),
+            color: AL.randomColor(60, 255, 0.6, 1),
         };
 
         this.tl = null;
@@ -62,23 +62,23 @@ export default class Coils extends BA {
         if (this.t % (this.speed * 720) === 0) {
             this.tl.kill();
 
-            this.dur1 = BA.random(5, 20);
-            this.dur2 = BA.random(8, 30);
-            this.dur3 = BA.random(10, 40);
-            this.dur4 = BA.random(3, 10);
-            this.rot = BA.random(1, 100);
+            this.dur1 = AL.random(5, 20);
+            this.dur2 = AL.random(8, 30);
+            this.dur3 = AL.random(10, 40);
+            this.dur4 = AL.random(3, 10);
+            this.rot = AL.random(1, 100);
 
             this.obj1 = {
                 x: 0,
                 y: 0,
-                radius: BA.random(10, 35),
-                color: BA.randomColor(60, 255, 0.6, 1),
+                radius: AL.random(10, 35),
+                color: AL.randomColor(60, 255, 0.6, 1),
             };
             this.obj2 = {
                 x: this.w / 2,
                 y: this.h / 2,
-                radius: BA.random(30, 130),
-                color: BA.randomColor(60, 255, 0.6, 1),
+                radius: AL.random(30, 130),
+                color: AL.randomColor(60, 255, 0.6, 1),
             };
 
             this.getTweens();
@@ -90,7 +90,7 @@ export default class Coils extends BA {
     }
 
     getTweens() {
-        this.tl = BA.gsap.timeline({ defaults: { repeat: -1, yoyo: true } });
+        this.tl = AL.gsap.timeline({ defaults: { repeat: -1, yoyo: true } });
         this.tl
             .to(this.obj1, {
                 duration: this.dur1,

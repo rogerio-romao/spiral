@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Slices extends BA {
+export default class Slices extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,18 +11,18 @@ export default class Slices extends BA {
     }
 
     initializeProperties() {
-        this.offsetX = BA.random(50, this.w / 2);
-        this.offsetY = BA.random(50, this.h / 2);
+        this.offsetX = AL.random(50, this.w / 2);
+        this.offsetY = AL.random(50, this.h / 2);
         this.angleChange = Math.random() * 2 - 1;
         this.angle = 0;
         this.slice = Math.random();
-        this.radius = BA.random(70, 220);
-        this.rotate = BA.random(2, 90);
+        this.radius = AL.random(70, 220);
+        this.rotate = AL.random(2, 90);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillStyle = BA.randomColor(30, 255, 0.3, 0.9);
+        this.ctx.fillStyle = AL.randomColor(30, 255, 0.3, 0.9);
     }
 
     draw() {
@@ -43,15 +43,15 @@ export default class Slices extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 360) === 0) {
-            this.offsetX = BA.random(50, this.w / 2);
-            this.offsetY = BA.random(50, this.h / 2);
+            this.offsetX = AL.random(50, this.w / 2);
+            this.offsetY = AL.random(50, this.h / 2);
             this.angleChange = Math.random() * 2 - 1;
             this.slice = Math.random();
             this.angle = 0;
-            this.radius = BA.random(70, 220);
-            this.rotate = BA.random(1, 90);
+            this.radius = AL.random(70, 220);
+            this.rotate = AL.random(1, 90);
 
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.2, 0.9);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.9);
         }
 
         this.t++;

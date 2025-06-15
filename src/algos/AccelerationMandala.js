@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class AccelerationMandala extends BA {
+export default class AccelerationMandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -17,15 +17,15 @@ export default class AccelerationMandala extends BA {
             1993, 1997, 12398,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
         this.rot = 1;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(12, 255, 0.33, 0.33);
-        this.ctx.font = `bold ${BA.random(125, 550)}px sans-serif`;
+        this.ctx.strokeStyle = AL.randomColor(12, 255, 0.33, 0.33);
+        this.ctx.font = `bold ${AL.random(125, 550)}px sans-serif`;
         this.ctx.textAlign = 'center';
     }
 
@@ -43,16 +43,16 @@ export default class AccelerationMandala extends BA {
         }
 
         if (this.t % (this.speed * 90) === 0) {
-            this.ctx.strokeStyle = BA.randomColor(12, 255, 0.33, 0.33);
+            this.ctx.strokeStyle = AL.randomColor(12, 255, 0.33, 0.33);
         }
 
         if (this.t % (this.speed * 135) === 0) {
-            this.ctx.font = `bold ${BA.random(125, 550)}px sans-serif`;
+            this.ctx.font = `bold ${AL.random(125, 550)}px sans-serif`;
         }
 
         if (this.t % (this.speed * 360) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

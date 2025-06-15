@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Maelstrom2 extends BA {
+export default class Maelstrom2 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,21 +11,21 @@ export default class Maelstrom2 extends BA {
     }
 
     initializeProperties() {
-        this.cp1 = BA.random(0, this.w);
-        this.cp2 = BA.random(0, this.h);
-        this.alter1 = BA.random(-5, 5);
-        this.alter2 = BA.random(-5, 5);
-        this.alter3 = BA.random(-5, 5);
-        this.alter4 = BA.random(-5, 5);
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.angle = BA.random(10, 350);
+        this.cp1 = AL.random(0, this.w);
+        this.cp2 = AL.random(0, this.h);
+        this.alter1 = AL.random(-5, 5);
+        this.alter2 = AL.random(-5, 5);
+        this.alter3 = AL.random(-5, 5);
+        this.alter4 = AL.random(-5, 5);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.angle = AL.random(10, 350);
     }
 
     setupDrawingStyles() {
         this.ctx.lineWidth = 0.5;
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.8, 1);
-        this.ctx.fillStyle = BA.randomColor(0, 160, 0.05, 0.15);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 1);
+        this.ctx.fillStyle = AL.randomColor(0, 160, 0.05, 0.15);
     }
 
     draw() {
@@ -60,21 +60,21 @@ export default class Maelstrom2 extends BA {
         }
 
         if (this.t % (this.speed * 240) === 0) {
-            this.cp1 = BA.random(0, this.w);
-            this.cp2 = BA.random(0, this.h);
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.alter1 = BA.random(-5, 5);
-            this.alter2 = BA.random(-5, 5);
-            this.alter3 = BA.random(-5, 5);
-            this.alter4 = BA.random(-5, 5);
-            this.angle = BA.random(10, 350);
+            this.cp1 = AL.random(0, this.w);
+            this.cp2 = AL.random(0, this.h);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.alter1 = AL.random(-5, 5);
+            this.alter2 = AL.random(-5, 5);
+            this.alter3 = AL.random(-5, 5);
+            this.alter4 = AL.random(-5, 5);
+            this.angle = AL.random(10, 350);
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.8, 1);
-            this.ctx.fillStyle = BA.randomColor(0, 160, 0.05, 0.15);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 1);
+            this.ctx.fillStyle = AL.randomColor(0, 160, 0.05, 0.15);
         }
 
         this.t++;

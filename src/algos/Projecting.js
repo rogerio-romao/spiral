@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Projecting extends BA {
+export default class Projecting extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -33,13 +33,13 @@ export default class Projecting extends BA {
 
         this.tl = null;
 
-        this.width = BA.random(4, 19);
-        this.rot1 = { rot: BA.random(1, 90) };
-        this.rot2 = { rot: BA.random(1, 90) };
-        this.color1 = { color: BA.randomColor() };
-        this.color2 = { color: BA.randomColor() };
-        this.color3 = { color: BA.randomColor() };
-        this.color4 = { color: BA.randomColor() };
+        this.width = AL.random(4, 19);
+        this.rot1 = { rot: AL.random(1, 90) };
+        this.rot2 = { rot: AL.random(1, 90) };
+        this.color1 = { color: AL.randomColor() };
+        this.color2 = { color: AL.randomColor() };
+        this.color3 = { color: AL.randomColor() };
+        this.color4 = { color: AL.randomColor() };
     }
 
     setupDrawingStyles() {
@@ -48,7 +48,7 @@ export default class Projecting extends BA {
         this.ctx.shadowColor = this.color3.color;
         this.ctx.shadowBlur = 10;
         this.ctx.globalCompositeOperation =
-            this.modes[BA.random(0, this.modes.length)];
+            this.modes[AL.random(0, this.modes.length)];
     }
 
     draw() {
@@ -60,15 +60,15 @@ export default class Projecting extends BA {
         if (this.t % 480 === 0) {
             this.tl.kill();
 
-            this.rot1.rot = BA.random(1, 90);
-            this.rot2.rot = BA.random(1, 90);
-            this.color1.color = BA.randomColor();
-            this.color2.color = BA.randomColor();
-            this.color3.color = BA.randomColor();
-            this.color4.color = BA.randomColor();
-            this.width = BA.random(4, 19);
+            this.rot1.rot = AL.random(1, 90);
+            this.rot2.rot = AL.random(1, 90);
+            this.color1.color = AL.randomColor();
+            this.color2.color = AL.randomColor();
+            this.color3.color = AL.randomColor();
+            this.color4.color = AL.randomColor();
+            this.width = AL.random(4, 19);
             this.ctx.globalCompositeOperation =
-                this.modes[BA.random(0, this.modes.length)];
+                this.modes[AL.random(0, this.modes.length)];
 
             this.ctx.fillStyle = this.color1.color;
 
@@ -81,13 +81,13 @@ export default class Projecting extends BA {
     }
 
     getTweens() {
-        this.tl = BA.gsap.timeline({
+        this.tl = AL.gsap.timeline({
             defaults: { repeat: -1, yoyo: true },
         });
         this.tl.to(
             this.rot1,
             {
-                duration: BA.random(3, 8),
+                duration: AL.random(3, 8),
                 rot: this.rot2.rot,
             },
             '<'
@@ -95,7 +95,7 @@ export default class Projecting extends BA {
         this.tl.to(
             this.color1,
             {
-                duration: BA.random(3, 10),
+                duration: AL.random(3, 10),
                 color: this.color2.color,
                 onUpdate: () => (this.ctx.fillStyle = this.color1.color),
             },
@@ -104,7 +104,7 @@ export default class Projecting extends BA {
         this.tl.to(
             this.color3,
             {
-                duration: BA.random(3, 10),
+                duration: AL.random(3, 10),
                 color: this.color4.color,
                 onUpdate: () => (this.ctx.shadowColor = this.color3.color),
             },

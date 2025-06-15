@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Radiance extends BA {
+export default class Radiance extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,35 +11,35 @@ export default class Radiance extends BA {
     }
 
     initializeProperties() {
-        this.rounded1 = BA.random(15, 50);
-        this.rounded2 = BA.random(15, 50);
-        this.rounded3 = BA.random(15, 50);
-        this.rounded4 = BA.random(15, 50);
-        this.x1 = BA.random(0, this.w / 2);
-        this.y1 = BA.random(0, this.h / 2);
-        this.x2 = BA.random(this.w / 2, this.w);
-        this.y2 = BA.random(0, this.h / 2);
-        this.x3 = BA.random(this.w / 2, this.w);
-        this.y3 = BA.random(this.h / 2, this.h);
-        this.x4 = BA.random(0, this.w / 2);
-        this.y4 = BA.random(this.h / 2, this.h);
-        this.side1 = BA.random(60, this.w / 2);
-        this.side2 = BA.random(60, this.h / 2);
-        this.side3 = BA.random(60, this.w / 2);
-        this.side4 = BA.random(60, this.h / 2);
-        this.side5 = BA.random(60, this.w / 2);
-        this.side6 = BA.random(60, this.h / 2);
-        this.side7 = BA.random(60, this.w / 2);
-        this.side8 = BA.random(60, this.h / 2);
-        this.color1 = BA.randomColor();
-        this.color2 = BA.randomColor();
-        this.color3 = BA.randomColor();
-        this.color4 = BA.randomColor();
-        this.rotate = BA.random(1, 11);
+        this.rounded1 = AL.random(15, 50);
+        this.rounded2 = AL.random(15, 50);
+        this.rounded3 = AL.random(15, 50);
+        this.rounded4 = AL.random(15, 50);
+        this.x1 = AL.random(0, this.w / 2);
+        this.y1 = AL.random(0, this.h / 2);
+        this.x2 = AL.random(this.w / 2, this.w);
+        this.y2 = AL.random(0, this.h / 2);
+        this.x3 = AL.random(this.w / 2, this.w);
+        this.y3 = AL.random(this.h / 2, this.h);
+        this.x4 = AL.random(0, this.w / 2);
+        this.y4 = AL.random(this.h / 2, this.h);
+        this.side1 = AL.random(60, this.w / 2);
+        this.side2 = AL.random(60, this.h / 2);
+        this.side3 = AL.random(60, this.w / 2);
+        this.side4 = AL.random(60, this.h / 2);
+        this.side5 = AL.random(60, this.w / 2);
+        this.side6 = AL.random(60, this.h / 2);
+        this.side7 = AL.random(60, this.w / 2);
+        this.side8 = AL.random(60, this.h / 2);
+        this.color1 = AL.randomColor();
+        this.color2 = AL.randomColor();
+        this.color3 = AL.randomColor();
+        this.color4 = AL.randomColor();
+        this.rotate = AL.random(1, 11);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.05);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
@@ -126,36 +126,36 @@ export default class Radiance extends BA {
         }
 
         if (this.t % (this.speed * 500) === 0) {
-            this.rounded1 = BA.random(15, 50);
-            this.rounded2 = BA.random(15, 50);
-            this.rounded3 = BA.random(15, 50);
-            this.rounded4 = BA.random(15, 50);
-            this.x1 = BA.random(0, this.w / 2);
-            this.y1 = BA.random(0, this.h / 2);
-            this.x2 = BA.random(this.w / 2, this.w);
-            this.y2 = BA.random(0, this.h / 2);
-            this.x3 = BA.random(this.w / 2, this.w);
-            this.y3 = BA.random(this.h / 2, this.h);
-            this.x4 = BA.random(0, this.w / 2);
-            this.y4 = BA.random(this.h / 2, this.h);
-            this.side1 = BA.random(60, this.w / 2);
-            this.side2 = BA.random(60, this.h / 2);
-            this.side3 = BA.random(60, this.w / 2);
-            this.side4 = BA.random(60, this.h / 2);
-            this.side5 = BA.random(60, this.w / 2);
-            this.side6 = BA.random(60, this.h / 2);
-            this.side7 = BA.random(60, this.w / 2);
-            this.side8 = BA.random(60, this.h / 2);
-            this.color1 = BA.randomColor();
-            this.color2 = BA.randomColor();
-            this.color3 = BA.randomColor();
-            this.color4 = BA.randomColor();
+            this.rounded1 = AL.random(15, 50);
+            this.rounded2 = AL.random(15, 50);
+            this.rounded3 = AL.random(15, 50);
+            this.rounded4 = AL.random(15, 50);
+            this.x1 = AL.random(0, this.w / 2);
+            this.y1 = AL.random(0, this.h / 2);
+            this.x2 = AL.random(this.w / 2, this.w);
+            this.y2 = AL.random(0, this.h / 2);
+            this.x3 = AL.random(this.w / 2, this.w);
+            this.y3 = AL.random(this.h / 2, this.h);
+            this.x4 = AL.random(0, this.w / 2);
+            this.y4 = AL.random(this.h / 2, this.h);
+            this.side1 = AL.random(60, this.w / 2);
+            this.side2 = AL.random(60, this.h / 2);
+            this.side3 = AL.random(60, this.w / 2);
+            this.side4 = AL.random(60, this.h / 2);
+            this.side5 = AL.random(60, this.w / 2);
+            this.side6 = AL.random(60, this.h / 2);
+            this.side7 = AL.random(60, this.w / 2);
+            this.side8 = AL.random(60, this.h / 2);
+            this.color1 = AL.randomColor();
+            this.color2 = AL.randomColor();
+            this.color3 = AL.randomColor();
+            this.color4 = AL.randomColor();
 
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.05);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
         }
 
         if (this.t % (this.speed * 1500) === 0) {
-            this.rotate = BA.random(1, 11);
+            this.rotate = AL.random(1, 11);
         }
 
         this.t++;

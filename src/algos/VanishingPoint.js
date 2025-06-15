@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class VanishingPoint extends BA {
+export default class VanishingPoint extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,12 +12,12 @@ export default class VanishingPoint extends BA {
 
     initializeProperties() {
         this.size = Math.min(this.w, this.h);
-        this.decrease = BA.random(2, 11);
-        this.rot = BA.random(1, 90);
-        this.color1 = BA.randomColor(0, 255, 1, 1);
-        this.color2 = BA.randomColor(0, 255, 1, 1);
-        this.color3 = BA.randomColor(0, 255, 1, 1);
-        this.color4 = BA.randomColor(0, 255, 1, 1);
+        this.decrease = AL.random(2, 11);
+        this.rot = AL.random(1, 90);
+        this.color1 = AL.randomColor(0, 255, 1, 1);
+        this.color2 = AL.randomColor(0, 255, 1, 1);
+        this.color3 = AL.randomColor(0, 255, 1, 1);
+        this.color4 = AL.randomColor(0, 255, 1, 1);
         this.colors = [this.color1, this.color2, this.color3, this.color4];
     }
 
@@ -27,27 +27,27 @@ export default class VanishingPoint extends BA {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillStyle = this.colors[BA.random(0, this.colors.length)];
+            this.ctx.fillStyle = this.colors[AL.random(0, this.colors.length)];
             this.drawTriangle(this.w / 2, this.h / 2);
 
             this.size -= this.decrease;
             if (this.size - this.decrease <= 1) {
                 this.size = 1;
                 this.decrease = 0;
-                this.color1 = BA.randomColor(0, 255, 1, 1);
-                this.color2 = BA.randomColor(0, 255, 1, 1);
-                this.color3 = BA.randomColor(0, 255, 1, 1);
-                this.color4 = BA.randomColor(0, 255, 1, 1);
+                this.color1 = AL.randomColor(0, 255, 1, 1);
+                this.color2 = AL.randomColor(0, 255, 1, 1);
+                this.color3 = AL.randomColor(0, 255, 1, 1);
+                this.color4 = AL.randomColor(0, 255, 1, 1);
                 this.colors = [
                     this.color1,
                     this.color2,
                     this.color3,
                     this.color4,
                 ];
-                this.rot = BA.random(1, 90);
+                this.rot = AL.random(1, 90);
                 setTimeout(() => {
                     this.size = Math.min(this.w, this.h);
-                    this.decrease = BA.random(2, 11);
+                    this.decrease = AL.random(2, 11);
                 }, 3500);
             }
         }

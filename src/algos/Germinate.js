@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Germinate extends BA {
+export default class Germinate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -15,27 +15,27 @@ export default class Germinate extends BA {
             5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 32, 35, 36, 42, 44, 45, 48,
             50, 55, 64, 65, 66, 70, 72, 75, 95, 100,
         ];
-        this.rotate = this.angles[BA.random(0, this.angles.length)];
+        this.rotate = this.angles[AL.random(0, this.angles.length)];
 
-        this.width = BA.random(35, this.w * 0.8);
-        this.height = BA.random(35, this.h * 0.8);
-        this.ul = BA.random(4, 115);
-        this.ur = BA.random(4, 115);
-        this.dl = BA.random(4, 115);
-        this.dr = BA.random(4, 115);
-        this.wc = BA.random(-5, 6);
-        this.hc = BA.random(-5, 6);
-        this.rc = BA.random(-7, 8);
+        this.width = AL.random(35, this.w * 0.8);
+        this.height = AL.random(35, this.h * 0.8);
+        this.ul = AL.random(4, 115);
+        this.ur = AL.random(4, 115);
+        this.dl = AL.random(4, 115);
+        this.dr = AL.random(4, 115);
+        this.wc = AL.random(-5, 6);
+        this.hc = AL.random(-5, 6);
+        this.rc = AL.random(-7, 8);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor(
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
             0,
             255,
             1,
             1
         );
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.2, 0.2);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
         this.ctx.shadowBlur = 2;
     }
 
@@ -70,25 +70,25 @@ export default class Germinate extends BA {
         }
 
         if (this.t % (this.speed * 280) === 0) {
-            this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor(
+            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
                 0,
                 255,
                 1,
                 1
             );
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.2, 0.2);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
 
-            this.width = BA.random(35, this.w * 0.8);
-            this.height = BA.random(35, this.h * 0.8);
-            this.ul = BA.random(4, 115);
-            this.ur = BA.random(4, 115);
-            this.dl = BA.random(4, 115);
-            this.dr = BA.random(4, 115);
-            this.wc = BA.random(-5, 6);
-            this.hc = BA.random(-5, 6);
-            this.rc = BA.random(-7, 8);
-            this.rotate = this.angles[BA.random(0, this.angles.length)];
+            this.width = AL.random(35, this.w * 0.8);
+            this.height = AL.random(35, this.h * 0.8);
+            this.ul = AL.random(4, 115);
+            this.ur = AL.random(4, 115);
+            this.dl = AL.random(4, 115);
+            this.dr = AL.random(4, 115);
+            this.wc = AL.random(-5, 6);
+            this.hc = AL.random(-5, 6);
+            this.rc = AL.random(-7, 8);
+            this.rotate = this.angles[AL.random(0, this.angles.length)];
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

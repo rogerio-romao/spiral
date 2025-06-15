@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Cornucopia extends BA {
+export default class Cornucopia extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class Cornucopia extends BA {
     }
 
     initializeProperties() {
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.width = BA.random(15, 240);
-        this.height = BA.random(15, 150);
-        this.ul = BA.random(4, 35);
-        this.ur = BA.random(4, 35);
-        this.dl = BA.random(4, 35);
-        this.dr = BA.random(4, 35);
-        this.rotate = BA.random(1, 25);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.width = AL.random(15, 240);
+        this.height = AL.random(15, 150);
+        this.ul = AL.random(4, 35);
+        this.ur = AL.random(4, 35);
+        this.dl = AL.random(4, 35);
+        this.dr = AL.random(4, 35);
+        this.rotate = AL.random(1, 25);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.025, 0.09);
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.025, 0.09);
     }
 
     draw() {
@@ -46,18 +46,18 @@ export default class Cornucopia extends BA {
         }
 
         if (this.t % (this.speed * 210) === 0) {
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.rotate = BA.random(1, 25);
-            this.width = BA.random(15, 240);
-            this.height = BA.random(15, 150);
-            this.ul = BA.random(4, 35);
-            this.ur = BA.random(4, 35);
-            this.dl = BA.random(4, 35);
-            this.dr = BA.random(4, 35);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.rotate = AL.random(1, 25);
+            this.width = AL.random(15, 240);
+            this.height = AL.random(15, 150);
+            this.ul = AL.random(4, 35);
+            this.ur = AL.random(4, 35);
+            this.dl = AL.random(4, 35);
+            this.dr = AL.random(4, 35);
 
-            this.ctx.strokeStyle = BA.randomColor();
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.025, 0.09);
+            this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.025, 0.09);
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

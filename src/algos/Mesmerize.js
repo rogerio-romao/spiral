@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Mesmerize extends BA {
+export default class Mesmerize extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -13,27 +13,27 @@ export default class Mesmerize extends BA {
     }
 
     initializeProperties() {
-        this.rot = BA.random(1, 199);
-        this.w1 = BA.random(30, 300);
-        this.h1 = BA.random(30, 300);
-        this.w2 = BA.random(60, 600);
-        this.h2 = BA.random(60, 600);
-        this.x1 = BA.random(0, this.w - this.w1);
-        this.x2 = BA.random(0, this.w - this.w2);
-        this.y1 = BA.random(0, this.h - this.h1);
-        this.y2 = BA.random(0, this.h - this.h2);
-        this.ul1 = BA.random(0, 30);
-        this.ur1 = BA.random(0, 30);
-        this.ll1 = BA.random(0, 30);
-        this.lr1 = BA.random(0, 30);
-        this.ul2 = BA.random(-300, 600);
-        this.ur2 = BA.random(-300, 600);
-        this.ll2 = BA.random(-300, 600);
-        this.lr2 = BA.random(-300, 600);
-        this.color1 = BA.randomColor(127, 255);
-        this.color2 = BA.randomColor(0, 127);
-        this.fill1 = BA.randomColor(0, 255, 0.01, 0.04);
-        this.fill2 = BA.randomColor(0, 255, 0.04, 0.1);
+        this.rot = AL.random(1, 199);
+        this.w1 = AL.random(30, 300);
+        this.h1 = AL.random(30, 300);
+        this.w2 = AL.random(60, 600);
+        this.h2 = AL.random(60, 600);
+        this.x1 = AL.random(0, this.w - this.w1);
+        this.x2 = AL.random(0, this.w - this.w2);
+        this.y1 = AL.random(0, this.h - this.h1);
+        this.y2 = AL.random(0, this.h - this.h2);
+        this.ul1 = AL.random(0, 30);
+        this.ur1 = AL.random(0, 30);
+        this.ll1 = AL.random(0, 30);
+        this.lr1 = AL.random(0, 30);
+        this.ul2 = AL.random(-300, 600);
+        this.ur2 = AL.random(-300, 600);
+        this.ll2 = AL.random(-300, 600);
+        this.lr2 = AL.random(-300, 600);
+        this.color1 = AL.randomColor(127, 255);
+        this.color2 = AL.randomColor(0, 127);
+        this.fill1 = AL.randomColor(0, 255, 0.01, 0.04);
+        this.fill2 = AL.randomColor(0, 255, 0.04, 0.1);
 
         this.obj1 = {
             width: this.w1,
@@ -105,18 +105,18 @@ export default class Mesmerize extends BA {
     }
 
     getTweens() {
-        this.tl = BA.gsap.timeline({
+        this.tl = AL.gsap.timeline({
             defaults: { repeat: -1, yoyo: true, ease: 'power1' },
         });
         this.tl
             .to(this.obj1, {
-                duration: BA.random(10, 100),
+                duration: AL.random(10, 100),
                 width: this.obj2.width,
             })
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(10, 100),
+                    duration: AL.random(10, 100),
                     height: this.obj2.height,
                 },
                 '<'
@@ -124,7 +124,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(10, 100),
+                    duration: AL.random(10, 100),
                     x: this.obj2.x,
                 },
                 '<'
@@ -132,7 +132,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(10, 100),
+                    duration: AL.random(10, 100),
                     y: this.obj2.y,
                 },
                 '<'
@@ -140,7 +140,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(10, 100),
+                    duration: AL.random(10, 100),
                     upperLeft: this.obj2.upperLeft,
                 },
                 '<'
@@ -148,7 +148,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(10, 100),
+                    duration: AL.random(10, 100),
                     upperRight: this.obj2.upperRight,
                 },
                 '<'
@@ -156,7 +156,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(10, 100),
+                    duration: AL.random(10, 100),
                     lowerLeft: this.obj2.lowerLeft,
                 },
                 '<'
@@ -164,7 +164,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(1, 10),
+                    duration: AL.random(1, 10),
                     lowerRight: this.obj2.lowerRight,
                 },
                 '<'
@@ -172,7 +172,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(2, 20),
+                    duration: AL.random(2, 20),
                     color: this.obj2.color,
                     onUpdate: () => (this.ctx.strokeStyle = this.obj1.color),
                 },
@@ -181,7 +181,7 @@ export default class Mesmerize extends BA {
             .to(
                 this.obj1,
                 {
-                    duration: BA.random(2, 20),
+                    duration: AL.random(2, 20),
                     fill: this.obj2.fill,
                     onUpdate: () => (this.ctx.fillStyle = this.obj1.fill),
                 },

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class FadeIn extends BA {
+export default class FadeIn extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,27 +11,27 @@ export default class FadeIn extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.c1 = BA.random(-2, 2);
-        this.c2 = BA.random(-2, 2);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.c3 = BA.random(-2, 2);
-        this.c4 = BA.random(-2, 2);
-        this.ox = BA.random(0, this.w);
-        this.oy = BA.random(0, this.h);
-        this.c5 = BA.random(-2, 2);
-        this.c6 = BA.random(-2, 2);
-        this.dx = BA.random(0, this.w);
-        this.dy = BA.random(0, this.h);
-        this.c7 = BA.random(-2, 2);
-        this.c8 = BA.random(-2, 2);
-        this.rotate = BA.random(1, 359);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.c1 = AL.random(-2, 2);
+        this.c2 = AL.random(-2, 2);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.c3 = AL.random(-2, 2);
+        this.c4 = AL.random(-2, 2);
+        this.ox = AL.random(0, this.w);
+        this.oy = AL.random(0, this.h);
+        this.c5 = AL.random(-2, 2);
+        this.c6 = AL.random(-2, 2);
+        this.dx = AL.random(0, this.w);
+        this.dy = AL.random(0, this.h);
+        this.c7 = AL.random(-2, 2);
+        this.c8 = AL.random(-2, 2);
+        this.rotate = AL.random(1, 359);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.lineWidth = 0.2;
         this.ctx.globalAlpha = 0.15;
     }
@@ -64,26 +64,26 @@ export default class FadeIn extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.c1 = BA.random(-2, 2);
-            this.c2 = BA.random(-2, 2);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.c3 = BA.random(-2, 2);
-            this.c4 = BA.random(-2, 2);
-            this.ox = BA.random(0, this.w);
-            this.oy = BA.random(0, this.h);
-            this.c5 = BA.random(-2, 2);
-            this.c6 = BA.random(-2, 2);
-            this.dx = BA.random(0, this.w);
-            this.dy = BA.random(0, this.h);
-            this.c7 = BA.random(-2, 2);
-            this.c8 = BA.random(-2, 2);
-            this.rotate = BA.random(1, 359);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.c1 = AL.random(-2, 2);
+            this.c2 = AL.random(-2, 2);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.c3 = AL.random(-2, 2);
+            this.c4 = AL.random(-2, 2);
+            this.ox = AL.random(0, this.w);
+            this.oy = AL.random(0, this.h);
+            this.c5 = AL.random(-2, 2);
+            this.c6 = AL.random(-2, 2);
+            this.dx = AL.random(0, this.w);
+            this.dy = AL.random(0, this.h);
+            this.c7 = AL.random(-2, 2);
+            this.c8 = AL.random(-2, 2);
+            this.rotate = AL.random(1, 359);
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.t++;

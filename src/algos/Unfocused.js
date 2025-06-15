@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Unfocused extends BA {
+export default class Unfocused extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class Unfocused extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.radius1 = BA.random(5, 55);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.radius2 = BA.random(5, 55);
-        this.x3 = BA.random(0, this.w);
-        this.y3 = BA.random(0, this.h);
-        this.radius3 = BA.random(5, 55);
-        this.rotate = BA.random(1, 61);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.radius1 = AL.random(5, 55);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.radius2 = AL.random(5, 55);
+        this.x3 = AL.random(0, this.w);
+        this.y3 = AL.random(0, this.h);
+        this.radius3 = AL.random(5, 55);
+        this.rotate = AL.random(1, 61);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(10, 255, 0.1, 0.1);
+        this.ctx.fillStyle = AL.randomColor(10, 255, 0.1, 0.1);
     }
 
     draw() {
@@ -45,27 +45,27 @@ export default class Unfocused extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 20) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.radius1 = BA.random(5, 55);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.radius2 = BA.random(5, 55);
-            this.x3 = BA.random(0, this.w);
-            this.y3 = BA.random(0, this.h);
-            this.radius3 = BA.random(5, 55);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.radius1 = AL.random(5, 55);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.radius2 = AL.random(5, 55);
+            this.x3 = AL.random(0, this.w);
+            this.y3 = AL.random(0, this.h);
+            this.radius3 = AL.random(5, 55);
 
-            this.ctx.fillStyle = BA.randomColor(10, 255, 0.1, 0.1);
+            this.ctx.fillStyle = AL.randomColor(10, 255, 0.1, 0.1);
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.rotate = BA.random(1, 61);
+            this.rotate = AL.random(1, 61);
         }
 
         if (this.t % (this.speed * 500) === 0) {
             this.ctx.fillStyle = 'rgba(0,0,0,0.5)';
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.fillStyle = BA.randomColor(10, 255, 0.1, 0.1);
+            this.ctx.fillStyle = AL.randomColor(10, 255, 0.1, 0.1);
         }
 
         this.t++;

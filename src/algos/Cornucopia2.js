@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Cornucopia2 extends BA {
+export default class Cornucopia2 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,24 +11,24 @@ export default class Cornucopia2 extends BA {
     }
 
     initializeProperties() {
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.width = BA.random(35, 440);
-        this.height = BA.random(35, 350);
-        this.ul = BA.random(4, 135);
-        this.ulc = BA.random(-5, 5);
-        this.ur = BA.random(4, 135);
-        this.urc = BA.random(-5, 5);
-        this.dl = BA.random(4, 135);
-        this.dlc = BA.random(-5, 5);
-        this.dr = BA.random(4, 135);
-        this.drc = BA.random(-5, 5);
-        this.rotate = BA.random(1, 75);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.width = AL.random(35, 440);
+        this.height = AL.random(35, 350);
+        this.ul = AL.random(4, 135);
+        this.ulc = AL.random(-5, 5);
+        this.ur = AL.random(4, 135);
+        this.urc = AL.random(-5, 5);
+        this.dl = AL.random(4, 135);
+        this.dlc = AL.random(-5, 5);
+        this.dr = AL.random(4, 135);
+        this.drc = AL.random(-5, 5);
+        this.rotate = AL.random(1, 75);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.75, 1);
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
+        this.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
@@ -55,22 +55,22 @@ export default class Cornucopia2 extends BA {
         }
 
         if (this.t % (this.speed * 450) === 0) {
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.width = BA.random(35, 440);
-            this.height = BA.random(35, 350);
-            this.ul = BA.random(4, 135);
-            this.ulc = BA.random(-5, 5);
-            this.urc = BA.random(-5, 5);
-            this.dlc = BA.random(-5, 5);
-            this.drc = BA.random(-5, 5);
-            this.ur = BA.random(4, 135);
-            this.dl = BA.random(4, 135);
-            this.dr = BA.random(4, 135);
-            this.rotate = BA.random(1, 75);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.width = AL.random(35, 440);
+            this.height = AL.random(35, 350);
+            this.ul = AL.random(4, 135);
+            this.ulc = AL.random(-5, 5);
+            this.urc = AL.random(-5, 5);
+            this.dlc = AL.random(-5, 5);
+            this.drc = AL.random(-5, 5);
+            this.ur = AL.random(4, 135);
+            this.dl = AL.random(4, 135);
+            this.dr = AL.random(4, 135);
+            this.rotate = AL.random(1, 75);
 
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.75, 1);
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
+            this.ctx.fillStyle = AL.randomColor();
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

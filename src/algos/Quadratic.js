@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Quadratic extends BA {
+export default class Quadratic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,10 +11,10 @@ export default class Quadratic extends BA {
     }
 
     initializeProperties() {
-        this.rot = BA.random(4, 91);
-        this.startNum = BA.random(5, 50);
-        this.firstDiff = BA.random(10, 50);
-        this.secondDiff = BA.random(3, 45);
+        this.rot = AL.random(4, 91);
+        this.startNum = AL.random(5, 50);
+        this.firstDiff = AL.random(10, 50);
+        this.secondDiff = AL.random(3, 45);
         this.nums = this.createQuadraticSequence(
             this.startNum,
             this.firstDiff,
@@ -23,7 +23,7 @@ export default class Quadratic extends BA {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 1);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
     }
 
     createQuadraticSequence(startNum, firstDiff, secondDiff) {
@@ -54,10 +54,10 @@ export default class Quadratic extends BA {
 
         if (this.t % (this.speed * 90) === 0) {
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 1);
-            this.startNum = BA.random(5, 50);
-            this.firstDiff = BA.random(10, 50);
-            this.secondDiff = BA.random(3, 45);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
+            this.startNum = AL.random(5, 50);
+            this.firstDiff = AL.random(10, 50);
+            this.secondDiff = AL.random(3, 45);
             this.nums = this.createQuadraticSequence(
                 this.startNum,
                 this.firstDiff,
@@ -66,7 +66,7 @@ export default class Quadratic extends BA {
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rot = BA.random(4, 91);
+            this.rot = AL.random(4, 91);
         }
 
         this.t++;

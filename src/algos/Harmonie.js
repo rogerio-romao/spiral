@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Harmonie extends BA {
+export default class Harmonie extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -18,21 +18,21 @@ export default class Harmonie extends BA {
             2990, 2991, 2992, 2994, 2997, 2998,
         ];
         this.letter1 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
         this.letter2 = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.x = BA.random(40, this.w - 40);
-        this.y = BA.random(25, this.h - 25);
-        this.size = BA.random(20, 55);
+        this.x = AL.random(40, this.w - 40);
+        this.y = AL.random(25, this.h - 25);
+        this.size = AL.random(20, 55);
         this.rot = 23;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(35, 210, 0.2, 0.65);
-        this.ctx.fillStyle = BA.randomColor(35, 210, 0.2, 0.65);
+        this.ctx.strokeStyle = AL.randomColor(35, 210, 0.2, 0.65);
+        this.ctx.fillStyle = AL.randomColor(35, 210, 0.2, 0.65);
         this.ctx.textAlign = 'center';
         this.ctx.font = `${this.size}px serif`;
     }
@@ -52,22 +52,22 @@ export default class Harmonie extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.size = BA.random(20, 55);
-            this.x = BA.random(40, this.w - 40);
-            this.y = BA.random(25, this.h - 25);
-            this.rot = BA.random(1, 400);
+            this.size = AL.random(20, 55);
+            this.x = AL.random(40, this.w - 40);
+            this.y = AL.random(25, this.h - 25);
+            this.rot = AL.random(1, 400);
 
             this.ctx.font = `${this.size}px serif`;
-            this.ctx.strokeStyle = BA.randomColor(35, 210, 0.2, 0.65);
-            this.ctx.fillStyle = BA.randomColor(35, 210, 0.2, 0.65);
+            this.ctx.strokeStyle = AL.randomColor(35, 210, 0.2, 0.65);
+            this.ctx.fillStyle = AL.randomColor(35, 210, 0.2, 0.65);
         }
 
         if (this.t % (this.speed * 900) === 0) {
             this.letter1 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.letter2 = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

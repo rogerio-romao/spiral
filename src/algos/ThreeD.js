@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class ThreeD extends BA {
+export default class ThreeD extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -16,19 +16,19 @@ export default class ThreeD extends BA {
             3079, 3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.fontSize = BA.random(24, 80);
-        this.rot1 = BA.random(-5, 5);
-        this.rot2 = BA.random(2, 11);
-        this.rot3 = BA.random(-8, 7);
-        this.rot4 = BA.random(4, 18);
-        this.rot5 = BA.random(-15, -2);
+        this.fontSize = AL.random(24, 80);
+        this.rot1 = AL.random(-5, 5);
+        this.rot2 = AL.random(2, 11);
+        this.rot3 = AL.random(-8, 7);
+        this.rot4 = AL.random(4, 18);
+        this.rot5 = AL.random(-15, -2);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.5, 1);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.5, 1);
         this.ctx.shadowColor = 'black';
         this.ctx.shadowOffsetX = 4;
         this.ctx.shadowOffsetY = 4;
@@ -92,22 +92,22 @@ export default class ThreeD extends BA {
         }
 
         if (this.t % (this.speed * 75) === 0) {
-            this.fontSize = BA.random(24, 80);
+            this.fontSize = AL.random(24, 80);
             this.ctx.font = this.fontSize + 'px serif';
         }
 
         if (this.t % (this.speed * 150) === 0) {
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.5, 1);
-            this.rot1 = BA.random(-5, 5);
-            this.rot2 = BA.random(2, 11);
-            this.rot3 = BA.random(-8, 7);
-            this.rot4 = BA.random(4, 18);
-            this.rot5 = BA.random(-15, -2);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.5, 1);
+            this.rot1 = AL.random(-5, 5);
+            this.rot2 = AL.random(2, 11);
+            this.rot3 = AL.random(-8, 7);
+            this.rot4 = AL.random(4, 18);
+            this.rot5 = AL.random(-15, -2);
         }
 
         if (this.t % (this.speed * 300) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

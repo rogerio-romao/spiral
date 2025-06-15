@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Blends extends BA {
+export default class Blends extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class Blends extends BA {
     }
 
     initializeProperties() {
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.length = BA.random(30, 250);
-        this.rotation = BA.random(2, 140);
-        this.color1 = BA.randomColor(0, 255, 0.025, 0.075);
-        this.color2 = BA.randomColor(0, 255, 0.025, 0.075);
-        this.currentShape = BA.random(0, 3);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.length = AL.random(30, 250);
+        this.rotation = AL.random(2, 140);
+        this.color1 = AL.randomColor(0, 255, 0.025, 0.075);
+        this.color2 = AL.randomColor(0, 255, 0.025, 0.075);
+        this.currentShape = AL.random(0, 3);
     }
 
     setupDrawingStyles() {
         this.ctx.lineWidth = 3;
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
@@ -54,17 +54,17 @@ export default class Blends extends BA {
         }
 
         if (this.t % (this.speed * 270) === 0) {
-            this.rotation = BA.random(2, 140);
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.length = BA.random(30, 250);
+            this.rotation = AL.random(2, 140);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.length = AL.random(30, 250);
 
             this.ctx.beginPath();
-            this.color1 = BA.randomColor(0, 255, 0.025, 0.075);
-            this.color2 = BA.randomColor(0, 255, 0.025, 0.075);
-            this.ctx.strokeStyle = BA.randomColor();
+            this.color1 = AL.randomColor(0, 255, 0.025, 0.075);
+            this.color2 = AL.randomColor(0, 255, 0.025, 0.075);
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.t++;

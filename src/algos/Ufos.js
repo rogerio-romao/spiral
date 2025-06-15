@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class UFOs extends BA {
+export default class UFOs extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,12 +11,12 @@ export default class UFOs extends BA {
     }
 
     initializeProperties() {
-        this.color1 = BA.randomColor();
-        this.color2 = BA.randomColor();
-        this.color3 = BA.randomColor();
-        this.perc1 = BA.random(1, 45);
-        this.perc2 = BA.random(1, 45);
-        this.repeats = BA.random(10, 150);
+        this.color1 = AL.randomColor();
+        this.color2 = AL.randomColor();
+        this.color3 = AL.randomColor();
+        this.perc1 = AL.random(1, 45);
+        this.perc2 = AL.random(1, 45);
+        this.repeats = AL.random(10, 150);
     }
 
     setupDrawingStyles() {
@@ -34,12 +34,12 @@ export default class UFOs extends BA {
 
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.beginPath();
-            this.color1 = BA.randomColor();
-            this.color2 = BA.randomColor();
-            this.color3 = BA.randomColor();
-            this.perc1 = BA.random(1, 45);
-            this.perc2 = BA.random(1, 45);
-            this.repeats = BA.random(10, 150);
+            this.color1 = AL.randomColor();
+            this.color2 = AL.randomColor();
+            this.color3 = AL.randomColor();
+            this.perc1 = AL.random(1, 45);
+            this.perc2 = AL.random(1, 45);
+            this.repeats = AL.random(10, 150);
             this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
                 this.color1
             }, ${this.color2} ${this.perc2++}%, ${this.color3} ${this

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Warp2001 extends BA {
+export default class Warp2001 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -13,14 +13,14 @@ export default class Warp2001 extends BA {
     initializeProperties() {
         this.x = 1;
         this.y = 1;
-        this.rotate = (BA.random(5, 355) * Math.PI) / 180;
+        this.rotate = (AL.random(5, 355) * Math.PI) / 180;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = 'black';
         this.ctx.shadowBlur = 3;
-        this.ctx.lineWidth = BA.random(5, 45);
+        this.ctx.lineWidth = AL.random(5, 45);
     }
 
     draw() {
@@ -41,9 +41,9 @@ export default class Warp2001 extends BA {
 
         if (this.t % (this.speed * 180) === 0) {
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor();
-            this.ctx.lineWidth = BA.random(5, 45);
-            this.rotate = (BA.random(5, 355) * Math.PI) / 180;
+            this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.lineWidth = AL.random(5, 45);
+            this.rotate = (AL.random(5, 355) * Math.PI) / 180;
         }
 
         this.t++;

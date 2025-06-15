@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Smooth extends BA {
+export default class Smooth extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,14 +11,14 @@ export default class Smooth extends BA {
     }
 
     initializeProperties() {
-        this.size = BA.random(50, 500);
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.rot = BA.random(1, 11);
+        this.size = AL.random(50, 500);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.rot = AL.random(1, 11);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.03, 0.08);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.08);
     }
 
     draw() {
@@ -31,12 +31,12 @@ export default class Smooth extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 60) === 0) {
-            this.size = BA.random(50, 500);
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.rot = BA.random(1, 11);
+            this.size = AL.random(50, 500);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.rot = AL.random(1, 11);
 
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.03, 0.08);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.08);
         }
 
         this.t++;

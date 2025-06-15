@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Starbursts extends BA {
+export default class Starbursts extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,18 +11,18 @@ export default class Starbursts extends BA {
     }
 
     initializeProperties() {
-        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
         this.maxLength = this.length;
-        this.gap = BA.random(4, 120);
+        this.gap = AL.random(4, 120);
         this.maxGap = this.gap;
-        this.startAngle = BA.random(0, 100);
-        this.endAngle = BA.random(101, 360);
-        this.rot1 = BA.random(1, 6);
+        this.startAngle = AL.random(0, 100);
+        this.endAngle = AL.random(101, 360);
+        this.rot1 = AL.random(1, 6);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(5, 255, 0.1, 0.1);
-        this.ctx.strokeStyle = BA.randomColor(5, 255, 0.8, 0.8);
+        this.ctx.fillStyle = AL.randomColor(5, 255, 0.1, 0.1);
+        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.8, 0.8);
     }
 
     draw() {
@@ -65,9 +65,9 @@ export default class Starbursts extends BA {
 
             this.length -= this.gap;
             if (this.length < -this.maxLength) {
-                this.length = BA.random(7, 100);
+                this.length = AL.random(7, 100);
                 this.maxLength = 2 * this.length;
-                this.gap = BA.random(2, 30);
+                this.gap = AL.random(2, 30);
                 this.maxGap = 2 * this.gap;
             }
 
@@ -77,8 +77,8 @@ export default class Starbursts extends BA {
         if (this.t % (this.speed * 420) === 0) {
             this.ctx.closePath();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(5, 255, 0.8, 0.8);
-            this.ctx.fillStyle = BA.randomColor(5, 255, 0.1, 0.1);
+            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.8, 0.8);
+            this.ctx.fillStyle = AL.randomColor(5, 255, 0.1, 0.1);
             if (Math.random() < 0.15) this.ctx.fillStyle = 'rgb(0,0,0)';
             this.ctx.translate(this.w / 2, this.h / 2);
             this.ctx.rotate(Math.random() * Math.PI);

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Upholstery extends BA {
+export default class Upholstery extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,18 +11,18 @@ export default class Upholstery extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.rotate = BA.random(1, 55);
-        this.dash1 = BA.random(1, 15);
-        this.dash2 = BA.random(20, 40);
-        this.dash3 = BA.random(1, 50);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.rotate = AL.random(1, 55);
+        this.dash1 = AL.random(1, 15);
+        this.dash2 = AL.random(20, 40);
+        this.dash3 = AL.random(1, 50);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(50, 255, 1, 1);
+        this.ctx.strokeStyle = AL.randomColor(50, 255, 1, 1);
         this.ctx.setLineDash([this.dash1, this.dash2, this.dash3]);
         this.ctx.globalCompositeOperation = 'overlay';
     }
@@ -39,17 +39,17 @@ export default class Upholstery extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 120) === 0) {
-            this.dash1 = BA.random(1, 15);
-            this.dash2 = BA.random(20, 40);
-            this.dash3 = BA.random(1, 50);
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.rotate = BA.random(1, 55);
+            this.dash1 = AL.random(1, 15);
+            this.dash2 = AL.random(20, 40);
+            this.dash3 = AL.random(1, 50);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.rotate = AL.random(1, 55);
 
             this.ctx.setLineDash([this.dash1, this.dash2, this.dash3]);
-            this.ctx.strokeStyle = BA.randomColor(50, 255, 1, 1);
+            this.ctx.strokeStyle = AL.randomColor(50, 255, 1, 1);
             this.ctx.beginPath();
         }
 

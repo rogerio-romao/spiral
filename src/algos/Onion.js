@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Onion extends BA {
+export default class Onion extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,15 +11,15 @@ export default class Onion extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(45, 500);
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.angle = BA.random(2, 50);
+        this.radius = AL.random(45, 500);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.angle = AL.random(2, 50);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.005, 0.015);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
     }
 
     draw() {
@@ -36,16 +36,16 @@ export default class Onion extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 135) === 0) {
-            this.radius = BA.random(50, 500);
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
+            this.radius = AL.random(50, 500);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
 
             this.ctx.beginPath();
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.005, 0.015);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
         }
 
         if (this.t % (this.speed * 540) === 0) {
-            this.angle = BA.random(2, 50);
+            this.angle = AL.random(2, 50);
         }
 
         this.t++;

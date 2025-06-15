@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Division extends BA {
+export default class Division extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,16 +11,16 @@ export default class Division extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(25, Math.min(this.w, this.h) / 2);
+        this.radius = AL.random(25, Math.min(this.w, this.h) / 2);
         this.angle = 0;
-        this.circles = BA.random(5, 30);
-        this.size = BA.random(3, 24);
+        this.circles = AL.random(5, 30);
+        this.size = AL.random(3, 24);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = 'white';
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.fillStyle = AL.randomColor();
         this.ctx.shadowBlur = 7;
     }
 
@@ -39,15 +39,15 @@ export default class Division extends BA {
         }
 
         if (this.t % (this.speed * 40) === 0) {
-            this.radius = BA.random(25, Math.min(this.w, this.h) / 2);
+            this.radius = AL.random(25, Math.min(this.w, this.h) / 2);
             this.angle = 0;
-            this.circles = BA.random(5, 30);
-            this.size = BA.random(3, 24);
+            this.circles = AL.random(5, 30);
+            this.size = AL.random(3, 24);
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.ctx.strokeStyle = BA.randomColor();
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
         }
 
         this.t++;

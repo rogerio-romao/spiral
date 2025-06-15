@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Halfsies extends BA {
+export default class Halfsies extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -10,13 +10,13 @@ export default class Halfsies extends BA {
     }
 
     initializeProperties() {
-        this.rot = BA.random(3, 37);
-        this.radius = BA.random(40, 400);
-        this.x = BA.random(this.w / 2 - this.radius, this.w / 2 + this.radius);
-        this.y = BA.random(this.h / 2 - this.radius, this.h / 2 + this.radius);
+        this.rot = AL.random(3, 37);
+        this.radius = AL.random(40, 400);
+        this.x = AL.random(this.w / 2 - this.radius, this.w / 2 + this.radius);
+        this.y = AL.random(this.h / 2 - this.radius, this.h / 2 + this.radius);
         this.counter = false;
-        this.width1 = BA.random(2, 11);
-        this.width2 = BA.random(2, 11);
+        this.width1 = AL.random(2, 11);
+        this.width2 = AL.random(2, 11);
     }
 
     draw() {
@@ -38,15 +38,15 @@ export default class Halfsies extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 120) === 0) {
-            this.rot = BA.random(3, 37);
-            this.width1 = BA.random(2, 11);
-            this.width2 = BA.random(2, 11);
-            this.radius = BA.random(40, 400);
-            this.x = BA.random(
+            this.rot = AL.random(3, 37);
+            this.width1 = AL.random(2, 11);
+            this.width2 = AL.random(2, 11);
+            this.radius = AL.random(40, 400);
+            this.x = AL.random(
                 this.w / 2 - this.radius,
                 this.w / 2 + this.radius
             );
-            this.y = BA.random(
+            this.y = AL.random(
                 this.h / 2 - this.radius,
                 this.h / 2 + this.radius
             );

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class SpringOrbits extends BA {
+export default class SpringOrbits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,10 +12,10 @@ export default class SpringOrbits extends BA {
 
     initializeProperties() {
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
-        this.weight = BA.createParticle(
-            BA.random(0, this.w),
-            BA.random(0, this.h),
-            BA.random(15, 120),
+        this.weight = AL.createParticle(
+            AL.random(0, this.w),
+            AL.random(0, this.h),
+            AL.random(15, 120),
             Math.random() * Math.PI * 2
         );
         this.weight.friction = 0.975;
@@ -23,7 +23,7 @@ export default class SpringOrbits extends BA {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor();
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = 2;
         this.ctx.lineWidth = 3;
         this.ctx.fillStyle = 'white';
@@ -57,15 +57,15 @@ export default class SpringOrbits extends BA {
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.weight = BA.createParticle(
-                BA.random(0, this.w),
-                BA.random(0, this.h),
-                BA.random(15, 120),
+            this.weight = AL.createParticle(
+                AL.random(0, this.w),
+                AL.random(0, this.h),
+                AL.random(15, 120),
                 Math.random() * Math.PI * 2
             );
             this.weight.friction = 0.975;
 
-            this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor();
+            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Quadrants extends BA {
+export default class Quadrants extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,11 +11,11 @@ export default class Quadrants extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(5, 250);
+        this.radius = AL.random(5, 250);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.fillStyle = BA.randomColor(
+        this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor(
             0,
             255,
             0.3,
@@ -61,11 +61,11 @@ export default class Quadrants extends BA {
         }
 
         if (this.t % (this.speed * 15) === 0) {
-            this.radius = BA.random(10, 350);
+            this.radius = AL.random(10, 350);
         }
 
         if (this.t % (this.speed * 45) === 0) {
-            this.ctx.strokeStyle = this.ctx.fillStyle = BA.randomColor(
+            this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor(
                 0,
                 255,
                 0.3,
@@ -74,7 +74,7 @@ export default class Quadrants extends BA {
         }
 
         if (this.t % (this.speed * 225) === 0) {
-            this.ctx.lineWidth = BA.random(1, 40);
+            this.ctx.lineWidth = AL.random(1, 40);
             this.ctx.strokeStyle = this.ctx.fillStyle = 'black';
         }
 

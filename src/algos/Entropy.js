@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Entropy extends BA {
+export default class Entropy extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class Entropy extends BA {
     }
 
     initializeProperties() {
-        this.width = BA.random(50, this.w);
-        this.height = BA.random(50, this.h);
-        this.rotate = BA.random(1, 181);
-        this.ul = BA.random(10, Math.min(this.w, this.h));
-        this.ur = BA.random(10, Math.min(this.w, this.h));
-        this.ll = BA.random(10, Math.min(this.w, this.h));
-        this.lr = BA.random(10, Math.min(this.w, this.h));
+        this.width = AL.random(50, this.w);
+        this.height = AL.random(50, this.h);
+        this.rotate = AL.random(1, 181);
+        this.ul = AL.random(10, Math.min(this.w, this.h));
+        this.ur = AL.random(10, Math.min(this.w, this.h));
+        this.ll = AL.random(10, Math.min(this.w, this.h));
+        this.lr = AL.random(10, Math.min(this.w, this.h));
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 1);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 1);
     }
 
     draw() {
@@ -45,13 +45,13 @@ export default class Entropy extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 405) === 0) {
-            this.width = BA.random(50, this.w);
-            this.height = BA.random(50, this.h);
-            this.rotate = BA.random(1, 181);
-            this.ul = BA.random(10, Math.min(this.w, this.h));
-            this.ur = BA.random(10, Math.min(this.w, this.h));
-            this.ll = BA.random(10, Math.min(this.w, this.h));
-            this.lr = BA.random(10, Math.min(this.w, this.h));
+            this.width = AL.random(50, this.w);
+            this.height = AL.random(50, this.h);
+            this.rotate = AL.random(1, 181);
+            this.ul = AL.random(10, Math.min(this.w, this.h));
+            this.ur = AL.random(10, Math.min(this.w, this.h));
+            this.ll = AL.random(10, Math.min(this.w, this.h));
+            this.lr = AL.random(10, Math.min(this.w, this.h));
 
             let colorRoll = Math.random();
             this.ctx.strokeStyle =
@@ -59,7 +59,7 @@ export default class Entropy extends BA {
                     ? 'black'
                     : colorRoll < 0.2
                     ? 'white'
-                    : BA.randomColor(0, 255, 1);
+                    : AL.randomColor(0, 255, 1);
             this.ctx.beginPath();
         }
 

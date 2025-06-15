@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Gridlock extends BA {
+export default class Gridlock extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,7 +11,7 @@ export default class Gridlock extends BA {
     }
 
     initializeProperties() {
-        this.gap = BA.random(5, 70);
+        this.gap = AL.random(5, 70);
         this.inc = this.gap;
         this.isWhite = true;
     }
@@ -37,10 +37,10 @@ export default class Gridlock extends BA {
 
         if (this.t % (this.speed * 150) === 0) {
             this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(BA.random(1, 99));
+            this.ctx.rotate(AL.random(1, 99));
             this.ctx.translate(-this.w / 2, -this.h / 2);
 
-            this.gap = BA.random(5, 70);
+            this.gap = AL.random(5, 70);
             this.inc = this.gap;
             this.isWhite = !this.isWhite;
             if (this.isWhite) {
@@ -49,7 +49,7 @@ export default class Gridlock extends BA {
                 this.ctx.strokeStyle = 'black';
             }
 
-            this.ctx.lineWidth = BA.random(1, 7);
+            this.ctx.lineWidth = AL.random(1, 7);
             this.ctx.beginPath();
         }
 

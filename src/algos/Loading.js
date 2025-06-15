@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Loading extends BA {
+export default class Loading extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,12 +11,12 @@ export default class Loading extends BA {
     }
 
     initializeProperties() {
-        this.rot = BA.random(2, 45);
-        this.radius = BA.random(30, Math.max(this.w, this.h) / 2);
+        this.rot = AL.random(2, 45);
+        this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
         this.counter = false;
-        this.width1 = BA.random(4, 51);
-        this.width2 = BA.random(4, 51);
-        this.color = BA.randomColor(60, 255, 0.75, 1);
+        this.width1 = AL.random(4, 51);
+        this.width2 = AL.random(4, 51);
+        this.color = AL.randomColor(60, 255, 0.75, 1);
     }
 
     setupDrawingStyles() {
@@ -49,10 +49,10 @@ export default class Loading extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 45) === 0) {
-            this.radius = BA.random(30, Math.max(this.w, this.h) / 2);
-            this.rot = BA.random(2, 45);
-            this.width1 = BA.random(4, 51);
-            this.width2 = BA.random(4, 51);
+            this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
+            this.rot = AL.random(2, 45);
+            this.width1 = AL.random(4, 51);
+            this.width2 = AL.random(4, 51);
         }
 
         this.t++;

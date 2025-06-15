@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Vortrix extends BA {
+export default class Vortrix extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,14 +11,14 @@ export default class Vortrix extends BA {
     }
 
     initializeProperties() {
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.size = BA.random(60, 400);
-        this.rot = BA.random(1, 60);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.size = AL.random(60, 400);
+        this.rot = AL.random(1, 60);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor(
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
             0,
             255,
             0.5,
@@ -39,12 +39,12 @@ export default class Vortrix extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 360) === 0) {
-            this.x = BA.random(0, this.w);
-            this.y = BA.random(0, this.h);
-            this.size = BA.random(60, 400);
-            this.rot = BA.random(1, 60);
+            this.x = AL.random(0, this.w);
+            this.y = AL.random(0, this.h);
+            this.size = AL.random(60, 400);
+            this.rot = AL.random(1, 60);
 
-            this.ctx.strokeStyle = this.ctx.shadowColor = BA.randomColor(
+            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
                 0,
                 255,
                 0.5,

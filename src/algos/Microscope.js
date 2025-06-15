@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Microscope extends BA {
+export default class Microscope extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,11 +11,11 @@ export default class Microscope extends BA {
     }
 
     initializeProperties() {
-        this.radiusX = BA.random(35, 415);
-        this.radiusY = BA.random(35, 415);
+        this.radiusX = AL.random(35, 415);
+        this.radiusY = AL.random(35, 415);
         this.rows = Math.ceil(this.h / this.radiusY) + 5;
         this.cols = Math.ceil(this.w / this.radiusX) + 5;
-        this.rotate = BA.random(1, 20);
+        this.rotate = AL.random(1, 20);
     }
 
     setupDrawingStyles() {
@@ -34,7 +34,7 @@ export default class Microscope extends BA {
             'luminosity',
             'exclusion',
         ];
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             0,
             255,
             0.5,
@@ -47,7 +47,7 @@ export default class Microscope extends BA {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
                 this.ctx.globalCompositeOperation =
-                    this.modes[BA.random(0, this.modes.length)];
+                    this.modes[AL.random(0, this.modes.length)];
 
                 this.ctx.translate(this.w / 2, this.h / 2);
                 this.ctx.rotate(this.rotate);
@@ -70,7 +70,7 @@ export default class Microscope extends BA {
         }
 
         if (this.t % (this.speed * 50) === 0) {
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 0,
                 255,
                 0.5,
@@ -79,8 +79,8 @@ export default class Microscope extends BA {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.radiusX = BA.random(35, 415);
-            this.radiusY = BA.random(35, 415);
+            this.radiusX = AL.random(35, 415);
+            this.radiusY = AL.random(35, 415);
             this.rows = Math.ceil(this.h / this.radiusY) + 5;
             this.cols = Math.ceil(this.w / this.radiusX) + 5;
         }

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Trance extends BA {
+export default class Trance extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,18 +11,18 @@ export default class Trance extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(25, Math.max(this.w, this.h) / 2);
+        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
         this.angle = 0;
         this.divisions = [2, 4, 6, 8, 10, 12];
-        this.squares = this.divisions[BA.random(0, this.divisions.length)];
-        this.size = BA.random(15, 220);
-        this.factor = BA.random(2, 8);
-        this.rotate = BA.random(1, 71);
+        this.squares = this.divisions[AL.random(0, this.divisions.length)];
+        this.size = AL.random(15, 220);
+        this.factor = AL.random(2, 8);
+        this.rotate = AL.random(1, 71);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.fillStyle = AL.randomColor();
         this.ctx.globalCompositeOperation = 'overlay';
     }
 
@@ -54,19 +54,19 @@ export default class Trance extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 9) === 0) {
-            this.radius = BA.random(25, Math.max(this.w, this.h) / 2);
+            this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
             this.angle = 0;
-            this.size = BA.random(15, 220);
-            this.rotate = BA.random(1, 71);
-            this.squares = this.divisions[BA.random(0, this.divisions.length)];
+            this.size = AL.random(15, 220);
+            this.rotate = AL.random(1, 71);
+            this.squares = this.divisions[AL.random(0, this.divisions.length)];
 
             this.ctx.globalCompositeOperation = 'overlay';
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
         }
 
         if (this.t % (this.speed * 63) === 0) {
             this.ctx.globalCompositeOperation = 'source-over';
-            this.ctx.strokeStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Shards extends BA {
+export default class Shards extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -28,28 +28,28 @@ export default class Shards extends BA {
             'screen',
         ];
 
-        this.c1x1 = BA.random(0, this.w);
-        this.c1y1 = BA.random(0, this.h);
-        this.c1x2 = BA.random(0, this.w);
-        this.c1y2 = BA.random(0, this.h);
-        this.c2x1 = BA.random(0, this.w);
-        this.c2y1 = BA.random(0, this.h);
-        this.c2x2 = BA.random(0, this.w);
-        this.c2y2 = BA.random(0, this.h);
-        this.x = BA.random(0, this.w);
-        this.y = BA.random(0, this.h);
-        this.rot1 = BA.random(1, 90);
-        this.rot2 = BA.random(1, 90);
-        this.deviation1 = BA.random(50, 200);
-        this.deviation2 = BA.random(50, 200);
-        this.color1 = BA.randomColor(0, 255, 1, 1);
-        this.color2 = BA.randomColor();
+        this.c1x1 = AL.random(0, this.w);
+        this.c1y1 = AL.random(0, this.h);
+        this.c1x2 = AL.random(0, this.w);
+        this.c1y2 = AL.random(0, this.h);
+        this.c2x1 = AL.random(0, this.w);
+        this.c2y1 = AL.random(0, this.h);
+        this.c2x2 = AL.random(0, this.w);
+        this.c2y2 = AL.random(0, this.h);
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.rot1 = AL.random(1, 90);
+        this.rot2 = AL.random(1, 90);
+        this.deviation1 = AL.random(50, 200);
+        this.deviation2 = AL.random(50, 200);
+        this.color1 = AL.randomColor(0, 255, 1, 1);
+        this.color2 = AL.randomColor();
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 1, 1);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
         this.ctx.globalCompositeOperation =
-            this.modes[BA.random(0, this.modes.length)];
+            this.modes[AL.random(0, this.modes.length)];
     }
 
     draw() {
@@ -65,22 +65,22 @@ export default class Shards extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.c1x1 = BA.random(0, this.w);
-            this.c1y1 = BA.random(0, this.h);
-            this.c1x2 = BA.random(0, this.w);
-            this.c1y2 = BA.random(0, this.h);
-            this.c2x1 = BA.random(0, this.w);
-            this.c2y1 = BA.random(0, this.h);
-            this.c2x2 = BA.random(0, this.w);
-            this.c2y2 = BA.random(0, this.h);
-            this.rot1 = BA.random(1, 90);
-            this.rot2 = BA.random(1, 90);
-            this.color1 = BA.randomColor(0, 255, 1, 1);
-            this.color2 = BA.randomColor();
+            this.c1x1 = AL.random(0, this.w);
+            this.c1y1 = AL.random(0, this.h);
+            this.c1x2 = AL.random(0, this.w);
+            this.c1y2 = AL.random(0, this.h);
+            this.c2x1 = AL.random(0, this.w);
+            this.c2y1 = AL.random(0, this.h);
+            this.c2x2 = AL.random(0, this.w);
+            this.c2y2 = AL.random(0, this.h);
+            this.rot1 = AL.random(1, 90);
+            this.rot2 = AL.random(1, 90);
+            this.color1 = AL.randomColor(0, 255, 1, 1);
+            this.color2 = AL.randomColor();
 
             this.ctx.globalCompositeOperation =
-                this.modes[BA.random(0, this.modes.length)];
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 1, 1);
+                this.modes[AL.random(0, this.modes.length)];
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
         }
         this.t++;
         requestAnimationFrame(this.draw);

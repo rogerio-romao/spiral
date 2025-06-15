@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class PietriDish extends BA {
+export default class PietriDish extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -13,16 +13,16 @@ export default class PietriDish extends BA {
     initializeProperties() {
         this.y = 0;
         this.x = 0;
-        this.size = BA.random(15, 115);
-        this.rotate = BA.random(1, 90);
+        this.size = AL.random(15, 115);
+        this.rotate = AL.random(1, 90);
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.shadowColor = BA.randomColor(100, 255, 0.75, 1);
-        this.ctx.fillStyle = BA.randomColor();
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.lineWidth = BA.random(2, 18);
+        this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
+        this.ctx.fillStyle = AL.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.lineWidth = AL.random(2, 18);
         this.ctx.shadowBlur = 35;
     }
 
@@ -47,27 +47,27 @@ export default class PietriDish extends BA {
             if (this.y > this.h) {
                 this.x = 0;
                 this.y = 0;
-                this.size = BA.random(15, 115);
+                this.size = AL.random(15, 115);
             }
         }
 
         if (this.t % (this.speed * 150) === 0) {
-            this.rotate = BA.random(1, 90);
+            this.rotate = AL.random(1, 90);
 
             if (Math.random() < 0.2) {
                 this.ctx.fillStyle = 'black';
             } else {
-                this.ctx.fillStyle = BA.randomColor();
+                this.ctx.fillStyle = AL.randomColor();
             }
 
-            this.ctx.lineWidth = BA.random(2, 18);
-            this.ctx.shadowColor = BA.randomColor(100, 255, 0.75, 1);
+            this.ctx.lineWidth = AL.random(2, 18);
+            this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
         }
 
         if (this.t % (this.speed * 450) === 0) {
             this.ctx.beginPath();
-            this.size = BA.random(15, 85);
-            this.ctx.strokeStyle = BA.randomColor();
+            this.size = AL.random(15, 85);
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

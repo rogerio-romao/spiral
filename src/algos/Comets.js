@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Comets extends BA {
+export default class Comets extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,15 +12,15 @@ export default class Comets extends BA {
 
     initializeProperties() {
         this.change = 0;
-        this.rate = BA.random(1, 7);
-        this.rotate = BA.random(3, 13);
+        this.rate = AL.random(1, 7);
+        this.rotate = AL.random(3, 13);
 
         this.speed = 1;
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.lineWidth = BA.random(3, 12);
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.lineWidth = AL.random(3, 12);
         this.ctx.shadowBlur = this.ctx.lineWidth;
         this.ctx.beginPath();
     }
@@ -47,13 +47,13 @@ export default class Comets extends BA {
 
         if (this.t % (this.speed * 720) === 0) {
             this.change = 0;
-            this.rate = BA.random(1, 7);
-            this.rotate = BA.random(3, 13);
+            this.rate = AL.random(1, 7);
+            this.rotate = AL.random(3, 13);
 
-            this.ctx.lineWidth = BA.random(3, 12);
+            this.ctx.lineWidth = AL.random(3, 12);
             this.ctx.shadowBlur = this.ctx.lineWidth;
             this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.strokeStyle = BA.randomColor();
+            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.stagger++;

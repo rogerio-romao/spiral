@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Glow extends BA {
+export default class Glow extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,11 +11,11 @@ export default class Glow extends BA {
     }
 
     initializeProperties() {
-        this.margin1 = BA.random(25, this.w / 4);
-        this.margin2 = BA.random(25, this.w / 4);
-        this.color1 = BA.randomColor(0, 255, 0.05, 0.2);
-        this.color2 = BA.randomColor(0, 255, 0.05, 0.2);
-        this.rot = BA.random(1, 60);
+        this.margin1 = AL.random(25, this.w / 4);
+        this.margin2 = AL.random(25, this.w / 4);
+        this.color1 = AL.randomColor(0, 255, 0.05, 0.2);
+        this.color2 = AL.randomColor(0, 255, 0.05, 0.2);
+        this.rot = AL.random(1, 60);
         this.modes = ['color', 'source-over', 'overlay', 'soft-light'];
     }
 
@@ -37,19 +37,19 @@ export default class Glow extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 60) === 0) {
-            this.margin1 = BA.random(25, this.w / 4);
-            this.color1 = BA.randomColor(0, 255, 0.05, 0.2);
+            this.margin1 = AL.random(25, this.w / 4);
+            this.color1 = AL.randomColor(0, 255, 0.05, 0.2);
         }
 
         if (this.t % (this.speed * 90) === 0) {
-            this.margin2 = BA.random(25, this.w / 4);
-            this.color2 = BA.randomColor(0, 255, 0.05, 0.2);
+            this.margin2 = AL.random(25, this.w / 4);
+            this.color2 = AL.randomColor(0, 255, 0.05, 0.2);
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rot = BA.random(1, 60);
+            this.rot = AL.random(1, 60);
             this.ctx.globalCompositeOperation =
-                this.modes[BA.random(0, this.modes.length)];
+                this.modes[AL.random(0, this.modes.length)];
         }
 
         this.t++;

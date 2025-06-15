@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Hive extends BA {
+export default class Hive extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,27 +11,27 @@ export default class Hive extends BA {
     }
 
     initializeProperties() {
-        this.rows = BA.random(3, 10);
+        this.rows = AL.random(3, 10);
         this.height = this.h / this.rows;
         this.angles = [9, 10, 12, 16, 20, 30, 36, 45, 60];
-        this.rot = this.angles[BA.random(1, this.angles.length)];
+        this.rot = this.angles[AL.random(1, this.angles.length)];
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.shadowColor = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = 7;
-        this.ctx.lineWidth = BA.random(7, 18);
+        this.ctx.lineWidth = AL.random(7, 18);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
                 this.ctx.strokeRect(
-                    BA.random(0, this.w),
+                    AL.random(0, this.w),
                     i * this.height,
-                    BA.random(0, this.w),
+                    AL.random(0, this.w),
                     this.height
                 );
             }
@@ -42,12 +42,12 @@ export default class Hive extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 125) === 0) {
-            this.rows = BA.random(3, 10);
-            this.rot = this.angles[BA.random(1, this.angles.length)];
+            this.rows = AL.random(3, 10);
+            this.rot = this.angles[AL.random(1, this.angles.length)];
             this.height = this.h / this.rows;
 
-            this.ctx.strokeStyle = BA.randomColor();
-            this.ctx.shadowColor = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.shadowColor = AL.randomColor();
             this.ctx.globalCompositeOperation = 'overlay';
         }
 

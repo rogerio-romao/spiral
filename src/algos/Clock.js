@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Clock extends BA {
+export default class Clock extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -33,16 +33,16 @@ export default class Clock extends BA {
             778, 781, 782, 784, 790, 794, 795, 796,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.color = BA.randomColor(0, 255, 0.66, 0.66);
+        this.color = AL.randomColor(0, 255, 0.66, 0.66);
         this.rotate = (18 * Math.PI) / 180;
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.font = BA.random(60, 600) + 'px sans-serif';
+        this.ctx.font = AL.random(60, 600) + 'px sans-serif';
         this.ctx.textAlign = 'center';
         this.ctx.lineWidth = 3;
         this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
@@ -59,7 +59,7 @@ export default class Clock extends BA {
         }
 
         if (this.t % (this.speed * 40) === 0) {
-            this.ctx.font = BA.random(60, 600) + 'px sans-serif';
+            this.ctx.font = AL.random(60, 600) + 'px sans-serif';
 
             let col = Math.random();
             if (col < 0.15) {
@@ -72,19 +72,19 @@ export default class Clock extends BA {
             } else {
                 this.ctx.shadowBlur = 8;
                 this.ctx.lineWidth = 3;
-                this.color = BA.randomColor(0, 255, 0.66, 0.66);
+                this.color = AL.randomColor(0, 255, 0.66, 0.66);
             }
             this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
         }
 
         if (this.t % (this.speed * 120) === 0) {
             this.ctx.globalCompositeOperation =
-                this.modes[BA.random(0, this.modes.length)];
+                this.modes[AL.random(0, this.modes.length)];
         }
 
         if (this.t % (this.speed * 200) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

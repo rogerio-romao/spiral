@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Records extends BA {
+export default class Records extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,15 +11,15 @@ export default class Records extends BA {
     }
 
     initializeProperties() {
-        this.offset = BA.random(50, 330);
+        this.offset = AL.random(50, 330);
         this.angleChange = Math.random() * 7;
         this.angle = 0;
-        this.radius = BA.random(50, Math.min(this.w, this.h) / 2);
-        this.rotate = BA.random(1, 45);
+        this.radius = AL.random(50, Math.min(this.w, this.h) / 2);
+        this.rotate = AL.random(1, 45);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.fillStyle = BA.randomColor();
+        this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor();
         this.ctx.lineWidth = 2;
     }
 
@@ -47,15 +47,15 @@ export default class Records extends BA {
 
         if (this.t % (this.speed * 120) === 0) {
             this.angle = 0;
-            this.rotate = BA.random(1, 45);
-            this.radius = BA.random(50, Math.min(this.w, this.h) / 2);
-            this.offset = BA.random(50, 330);
+            this.rotate = AL.random(1, 45);
+            this.radius = AL.random(50, Math.min(this.w, this.h) / 2);
+            this.offset = AL.random(50, 330);
             this.angleChange = Math.random() * 7;
 
             this.ctx.beginPath();
             this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, 2 * Math.PI);
             this.ctx.fill();
-            this.ctx.strokeStyle = this.ctx.fillStyle = BA.randomColor();
+            this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor();
         }
 
         this.t++;

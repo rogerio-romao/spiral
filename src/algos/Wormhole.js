@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Wormhole extends BA {
+export default class Wormhole extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class Wormhole extends BA {
     }
 
     initializeProperties() {
-        this.x = BA.random(50, this.w - 50);
-        this.y = BA.random(50, this.h - 50);
-        this.width = BA.random(30, this.w);
-        this.height = BA.random(30, this.h);
-        this.ul = BA.random(10, 50);
-        this.ur = BA.random(10, 50);
-        this.ll = BA.random(10, 50);
-        this.lr = BA.random(10, 50);
-        this.rotate = BA.random(1, 44);
+        this.x = AL.random(50, this.w - 50);
+        this.y = AL.random(50, this.h - 50);
+        this.width = AL.random(30, this.w);
+        this.height = AL.random(30, this.h);
+        this.ul = AL.random(10, 50);
+        this.ur = AL.random(10, 50);
+        this.ll = AL.random(10, 50);
+        this.lr = AL.random(10, 50);
+        this.rotate = AL.random(1, 44);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.2, 0.5);
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.01);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.2, 0.5);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.01);
     }
 
     draw() {
@@ -55,18 +55,18 @@ export default class Wormhole extends BA {
         this.ur++;
 
         if (this.t % (this.speed * 360) === 0) {
-            this.width = BA.random(30, this.w);
-            this.height = BA.random(30, this.h);
-            this.x = BA.random(50, this.w - 50);
-            this.y = BA.random(50, this.h - 50);
-            this.ul = BA.random(10, 50);
-            this.ur = BA.random(10, 50);
-            this.ll = BA.random(10, 50);
-            this.lr = BA.random(10, 50);
-            this.rotate = BA.random(1, 44);
+            this.width = AL.random(30, this.w);
+            this.height = AL.random(30, this.h);
+            this.x = AL.random(50, this.w - 50);
+            this.y = AL.random(50, this.h - 50);
+            this.ul = AL.random(10, 50);
+            this.ur = AL.random(10, 50);
+            this.ll = AL.random(10, 50);
+            this.lr = AL.random(10, 50);
+            this.rotate = AL.random(1, 44);
 
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.2, 0.5);
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.01, 0.01);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.2, 0.5);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.01);
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class TheBadge extends BA {
+export default class TheBadge extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,9 +11,9 @@ export default class TheBadge extends BA {
     }
 
     initializeProperties() {
-        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
-        this.rot1 = (BA.random(0, 360) * Math.PI) / 180;
-        this.randCol = BA.random(0, 255);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+        this.rot1 = (AL.random(0, 360) * Math.PI) / 180;
+        this.randCol = AL.random(0, 255);
     }
 
     setupDrawingStyles() {
@@ -27,9 +27,9 @@ export default class TheBadge extends BA {
             'source-atop',
         ];
 
-        this.ctx.fillStyle = `rgb(${this.randCol + BA.random(-28, 28)},${
-            this.randCol + BA.random(-28, 28)
-        },${this.randCol + BA.random(-28, 28)})`;
+        this.ctx.fillStyle = `rgb(${this.randCol + AL.random(-28, 28)},${
+            this.randCol + AL.random(-28, 28)
+        },${this.randCol + AL.random(-28, 28)})`;
         this.ctx.strokeStyle = 'white';
         this.ctx.lineWidth = 3;
     }
@@ -54,18 +54,18 @@ export default class TheBadge extends BA {
         }
 
         if (this.t % (this.speed * 25) === 0) {
-            this.length = BA.random(5, Math.min(this.w, this.h) / 3);
-            this.randCol = BA.random(0, 255);
+            this.length = AL.random(5, Math.min(this.w, this.h) / 3);
+            this.randCol = AL.random(0, 255);
 
-            this.ctx.fillStyle = `rgb(${this.randCol + BA.random(-28, 28)},${
-                this.randCol + BA.random(-28, 28)
-            },${this.randCol + BA.random(-28, 28)})`;
+            this.ctx.fillStyle = `rgb(${this.randCol + AL.random(-28, 28)},${
+                this.randCol + AL.random(-28, 28)
+            },${this.randCol + AL.random(-28, 28)})`;
         }
 
         if (this.t % (this.speed * 50) === 0) {
-            this.rot1 = (BA.random(0, 360) * Math.PI) / 180;
+            this.rot1 = (AL.random(0, 360) * Math.PI) / 180;
             this.ctx.globalCompositeOperation =
-                this.modes[BA.random(0, this.modes.length - 1)];
+                this.modes[AL.random(0, this.modes.length - 1)];
         }
 
         this.t++;

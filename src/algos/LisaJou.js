@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class LisaJou extends BA {
+export default class LisaJou extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class LisaJou extends BA {
     }
 
     initializeProperties() {
-        this.radiusX = BA.random(100, this.w * 0.75);
-        this.radiusY = BA.random(100, this.h * 0.75);
+        this.radiusX = AL.random(100, this.w * 0.75);
+        this.radiusY = AL.random(100, this.h * 0.75);
         this.angleX = 0;
         this.angleY = 0;
         this.speedX = Math.random() * 3;
         this.speedY = Math.random() * 3;
-        this.size = BA.random(2, 16);
+        this.size = AL.random(2, 16);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.fillStyle = AL.randomColor();
         this.ctx.fillRect(0, 0, this.w, this.h);
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
@@ -41,17 +41,17 @@ export default class LisaJou extends BA {
         }
 
         if (this.t % (this.speed * 720) === 0) {
-            this.radiusX = BA.random(100, this.w * 0.75);
-            this.radiusY = BA.random(100, this.h * 0.75);
+            this.radiusX = AL.random(100, this.w * 0.75);
+            this.radiusY = AL.random(100, this.h * 0.75);
             this.angleX = 0;
             this.angleY = 0;
             this.speedX = Math.random() * 3;
             this.speedY = Math.random() * 3;
-            this.size = BA.random(2, 16);
+            this.size = AL.random(2, 16);
 
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
             this.ctx.fillRect(0, 0, this.w, this.h);
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
         }
 
         this.t++;

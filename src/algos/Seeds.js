@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Seeds extends BA {
+export default class Seeds extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class Seeds extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.x3 = BA.random(0, this.w);
-        this.y3 = BA.random(0, this.h);
-        this.rotate = BA.random(10, 101);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.x3 = AL.random(0, this.w);
+        this.y3 = AL.random(0, this.h);
+        this.rotate = AL.random(10, 101);
     }
 
     setupDrawingStyles() {
         this.ctx.fillStyle =
             this.ctx.strokeStyle =
             this.ctx.shadowColor =
-                BA.randomColor(40, 255, 0.65, 1);
+                AL.randomColor(40, 255, 0.65, 1);
         this.ctx.shadowBlur = 2;
     }
 
@@ -49,18 +49,18 @@ export default class Seeds extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 360) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.x3 = BA.random(0, this.w);
-            this.y3 = BA.random(0, this.h);
-            this.rotate = BA.random(10, 101);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.x3 = AL.random(0, this.w);
+            this.y3 = AL.random(0, this.h);
+            this.rotate = AL.random(10, 101);
 
             this.ctx.fillStyle =
                 this.ctx.strokeStyle =
                 this.ctx.shadowColor =
-                    BA.randomColor(40, 255, 0.65, 1);
+                    AL.randomColor(40, 255, 0.65, 1);
         }
 
         this.t++;

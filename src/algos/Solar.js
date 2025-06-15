@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Solar extends BA {
+export default class Solar extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,15 +11,15 @@ export default class Solar extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.rotate = BA.random(1, 359);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.rotate = AL.random(1, 359);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.globalCompositeOperation = 'hard-light';
     }
 
@@ -42,14 +42,14 @@ export default class Solar extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 120) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.rotate = BA.random(1, 359);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.rotate = AL.random(1, 359);
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
         }
 
         this.t++;

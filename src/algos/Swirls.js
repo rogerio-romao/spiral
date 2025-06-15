@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Swirls extends BA {
+export default class Swirls extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class Swirls extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.x3 = BA.random(0, this.w);
-        this.y3 = BA.random(0, this.h);
-        this.rotate = BA.random(1, 10);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.x3 = AL.random(0, this.w);
+        this.y3 = AL.random(0, this.h);
+        this.rotate = AL.random(1, 10);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 0.8);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.8);
         this.ctx.lineWidth = 0.4;
     }
 
@@ -37,16 +37,16 @@ export default class Swirls extends BA {
         }
 
         if (this.t % (this.speed * 240) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.x3 = BA.random(0, this.w);
-            this.y3 = BA.random(0, this.h);
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.x3 = AL.random(0, this.w);
+            this.y3 = AL.random(0, this.h);
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 0.5, 0.8);
-            this.rotate = BA.random(1, 10);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.8);
+            this.rotate = AL.random(1, 10);
         }
 
         this.t++;

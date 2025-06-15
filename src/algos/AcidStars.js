@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class AcidStars extends BA {
+export default class AcidStars extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -20,18 +20,18 @@ export default class AcidStars extends BA {
             1691, 1693, 1695, 1697,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.side = BA.random(30, 300);
+        this.side = AL.random(30, 300);
         this.change = this.side / 1.618;
-        this.rotate = BA.random(2, 44);
-        this.fontSize = BA.random(12, 20);
+        this.rotate = AL.random(2, 44);
+        this.fontSize = AL.random(12, 20);
     }
 
     setupDrawingStyles() {
         this.ctx.font = this.fontSize + 'px serif';
-        this.ctx.shadowColor = this.ctx.fillStyle = BA.randomColor(0, 255, 1);
+        this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(0, 255, 1);
         this.ctx.shadowBlur = 15;
     }
 
@@ -77,22 +77,22 @@ export default class AcidStars extends BA {
         }
 
         if (this.t % (this.speed * 240) === 0) {
-            this.rotate = BA.random(2, 44);
+            this.rotate = AL.random(2, 44);
             this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.fillStyle = BA.randomColor(
+            this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(
                 0,
                 255,
                 1
             );
-            this.side = BA.random(30, 300);
+            this.side = AL.random(30, 300);
             this.change = this.side / 1.618;
-            this.fontSize = BA.random(12, 20);
+            this.fontSize = AL.random(12, 20);
             this.ctx.font = this.fontSize + 'px serif';
         }
 
         if (this.t % (this.speed * 720) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
         }
 

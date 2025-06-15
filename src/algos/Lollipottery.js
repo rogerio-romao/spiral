@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Lollipottery extends BA {
+export default class Lollipottery extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,15 +11,15 @@ export default class Lollipottery extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(50, Math.max(this.w, this.h) / 2);
-        this.alter = BA.random(-50, 50);
+        this.radius = AL.random(50, Math.max(this.w, this.h) / 2);
+        this.alter = AL.random(-50, 50);
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = BA.random(2, 14);
+        this.ctx.lineWidth = AL.random(2, 14);
         this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.shadowColor = BA.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = 4;
     }
 
@@ -29,9 +29,9 @@ export default class Lollipottery extends BA {
 
             this.radius += this.alter;
             if (this.radius > Math.max(this.w, this.h) || this.radius <= 40) {
-                this.radius = BA.random(50, Math.max(this.w, this.h) / 2);
-                this.alter = BA.random(-50, 50);
-                this.ctx.lineWidth = BA.random(2, 14);
+                this.radius = AL.random(50, Math.max(this.w, this.h) / 2);
+                this.alter = AL.random(-50, 50);
+                this.ctx.lineWidth = AL.random(2, 14);
             }
 
             this.ctx.stroke();
@@ -39,13 +39,13 @@ export default class Lollipottery extends BA {
         }
 
         if (this.t % (this.speed * 150) === 0) {
-            this.radius = BA.random(50, Math.max(this.w, this.h));
-            this.alter = BA.random(-50, 50);
+            this.radius = AL.random(50, Math.max(this.w, this.h));
+            this.alter = AL.random(-50, 50);
 
-            this.ctx.lineWidth = BA.random(1, 12);
+            this.ctx.lineWidth = AL.random(1, 12);
             this.ctx.beginPath();
-            this.ctx.strokeStyle = BA.randomColor();
-            this.ctx.shadowColor = BA.randomColor();
+            this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.shadowColor = AL.randomColor();
             this.ctx.globalCompositeOperation = 'overlay';
         }
 

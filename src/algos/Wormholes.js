@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Wormholes extends BA {
+export default class Wormholes extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -18,17 +18,17 @@ export default class Wormholes extends BA {
             2361, 2362, 2365, 2367, 2368, 2383, 2385, 2390, 2391,
         ];
         this.letter = String.fromCharCode(
-            this.letters[BA.random(0, this.letters.length)]
+            this.letters[AL.random(0, this.letters.length)]
         );
 
         this.size = 15;
         this.change = 2;
-        this.rotate = BA.random(1, 22);
+        this.rotate = AL.random(1, 22);
     }
 
     setupDrawingStyles() {
         this.ctx.textAlign = 'center';
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.05, 0.15);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
         this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
         this.ctx.font = `${this.size}px sans-serif`;
     }
@@ -47,13 +47,13 @@ export default class Wormholes extends BA {
         }
         if (this.ctx.measureText(this.letter).width < 5) {
             this.letter = String.fromCharCode(
-                this.letters[BA.random(0, this.letters.length)]
+                this.letters[AL.random(0, this.letters.length)]
             );
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.rotate = BA.random(1, 22);
+            this.rotate = AL.random(1, 22);
             this.change *= -1;
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.05, 0.15);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

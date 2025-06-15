@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Geometer extends BA {
+export default class Geometer extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -12,14 +12,14 @@ export default class Geometer extends BA {
 
     initializeProperties() {
         this.change = 0;
-        this.rate = BA.random(25, 250);
-        this.rotate = BA.random(23, 179);
+        this.rate = AL.random(25, 250);
+        this.rotate = AL.random(23, 179);
     }
 
     setupDrawingStyles() {
         this.ctx.shadowColor = 'black';
-        this.ctx.strokeStyle = BA.randomColor();
-        this.ctx.lineWidth = BA.random(2, 7);
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.lineWidth = AL.random(2, 7);
         this.ctx.shadowBlur = 1;
     }
 
@@ -43,10 +43,10 @@ export default class Geometer extends BA {
 
         if (this.t % (this.speed * 180) === 0) {
             this.change = 0;
-            this.rate = BA.random(25, 250);
-            this.rotate = BA.random(23, 179);
+            this.rate = AL.random(25, 250);
+            this.rotate = AL.random(23, 179);
             this.ctx.beginPath();
-            this.ctx.lineWidth = BA.random(2, 7);
+            this.ctx.lineWidth = AL.random(2, 7);
 
             let color = Math.random();
             if (color < 0.2) {
@@ -56,7 +56,7 @@ export default class Geometer extends BA {
                 this.ctx.strokeStyle = 'black';
                 this.ctx.shadowColor = 'white';
             } else {
-                this.ctx.strokeStyle = BA.randomColor();
+                this.ctx.strokeStyle = AL.randomColor();
                 this.ctx.shadowColor = 'black';
             }
         }

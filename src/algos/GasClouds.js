@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class GasClouds extends BA {
+export default class GasClouds extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,20 +11,20 @@ export default class GasClouds extends BA {
     }
 
     initializeProperties() {
-        this.width = BA.random(0, this.w / 2);
-        this.height = BA.random(0, this.h / 2);
-        this.ul = BA.random(0, 300);
-        this.ur = BA.random(0, 300);
-        this.dl = BA.random(0, 300);
-        this.dr = BA.random(0, 300);
+        this.width = AL.random(0, this.w / 2);
+        this.height = AL.random(0, this.h / 2);
+        this.ul = AL.random(0, 300);
+        this.ur = AL.random(0, 300);
+        this.dl = AL.random(0, 300);
+        this.dr = AL.random(0, 300);
         this.x = 0;
         this.y = 0;
-        this.rotate = BA.random(1, 200);
+        this.rotate = AL.random(1, 200);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 150, 0.2, 0.5);
-        this.ctx.fillStyle = BA.randomColor(25, 255, 0.02, 0.04);
+        this.ctx.strokeStyle = AL.randomColor(0, 150, 0.2, 0.5);
+        this.ctx.fillStyle = AL.randomColor(25, 255, 0.02, 0.04);
     }
 
     draw() {
@@ -46,18 +46,18 @@ export default class GasClouds extends BA {
         }
 
         if (this.t % (this.speed * 240) === 0) {
-            this.width = BA.random(0, this.w / 2);
-            this.height = BA.random(0, this.h / 2);
-            this.ul = BA.random(0, 300);
-            this.ur = BA.random(0, 300);
-            this.dl = BA.random(0, 300);
-            this.dr = BA.random(0, 300);
+            this.width = AL.random(0, this.w / 2);
+            this.height = AL.random(0, this.h / 2);
+            this.ul = AL.random(0, 300);
+            this.ur = AL.random(0, 300);
+            this.dl = AL.random(0, 300);
+            this.dr = AL.random(0, 300);
             this.x = 0;
             this.y = 0;
-            this.rotate = BA.random(1, 200);
+            this.rotate = AL.random(1, 200);
 
-            this.ctx.strokeStyle = BA.randomColor(0, 150, 0.2, 0.5);
-            this.ctx.fillStyle = BA.randomColor(25, 255, 0.02, 0.04);
+            this.ctx.strokeStyle = AL.randomColor(0, 150, 0.2, 0.5);
+            this.ctx.fillStyle = AL.randomColor(25, 255, 0.02, 0.04);
         }
 
         this.ctx.translate(this.w / 2, this.h / 2);

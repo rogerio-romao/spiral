@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class SpiralLines extends BA {
+export default class SpiralLines extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,17 +11,17 @@ export default class SpiralLines extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(10, this.h);
-        this.length = BA.random(50, Math.min(this.w, this.h) / 1.5);
-        this.gap = BA.random(4, 100);
-        this.rot1 = (BA.random(1, 359) * Math.PI) / 180;
+        this.radius = AL.random(10, this.h);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+        this.gap = AL.random(4, 100);
+        this.rot1 = (AL.random(1, 359) * Math.PI) / 180;
         this.cycles = 1;
         this.bw = Math.random();
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(5, 255, 0.5, 0.5);
-        this.ctx.lineWidth = BA.random(1, 8);
+        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.5, 0.5);
+        this.ctx.lineWidth = AL.random(1, 8);
         this.ctx.moveTo(this.w / 2, this.h / 2);
         this.ctx.beginPath();
     }
@@ -67,11 +67,11 @@ export default class SpiralLines extends BA {
                 this.cycles++;
                 this.length = this.gap;
                 this.ctx.beginPath();
-                this.ctx.strokeStyle = BA.randomColor(5, 255, 0.5, 0.5);
+                this.ctx.strokeStyle = AL.randomColor(5, 255, 0.5, 0.5);
                 this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, 360);
                 this.bw = Math.random();
-                this.radius = BA.random(5, 65);
-                this.gap = BA.random(2, 30);
+                this.radius = AL.random(5, 65);
+                this.gap = AL.random(2, 30);
             }
         }
 

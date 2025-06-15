@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class HyperTunnel extends BA {
+export default class HyperTunnel extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,16 +11,16 @@ export default class HyperTunnel extends BA {
     }
 
     initializeProperties() {
-        this.side = BA.random(25, Math.min(this.w, this.h));
-        this.rotate = BA.random(95, 175);
+        this.side = AL.random(25, Math.min(this.w, this.h));
+        this.rotate = AL.random(95, 175);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(5, 255, 0.25, 0.25);
+        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
         if (this.side > Math.min(this.w, this.h) / 2) {
-            this.ctx.fillStyle = BA.randomColor(5, 255, 0.02, 0.02);
+            this.ctx.fillStyle = AL.randomColor(5, 255, 0.02, 0.02);
         } else {
-            this.ctx.fillStyle = BA.randomColor(5, 255, 0.2, 0.2);
+            this.ctx.fillStyle = AL.randomColor(5, 255, 0.2, 0.2);
         }
     }
 
@@ -52,25 +52,25 @@ export default class HyperTunnel extends BA {
         }
 
         if (this.t % (this.speed * (360 / this.rotate)) === 0) {
-            this.side = BA.random(25, Math.min(this.w, this.h));
+            this.side = AL.random(25, Math.min(this.w, this.h));
 
-            this.ctx.strokeStyle = BA.randomColor(5, 255, 0.25, 0.25);
+            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
             if (this.side > Math.min(this.w, this.h) / 2) {
-                this.ctx.fillStyle = BA.randomColor(5, 255, 0.02, 0.02);
+                this.ctx.fillStyle = AL.randomColor(5, 255, 0.02, 0.02);
             } else {
-                this.ctx.fillStyle = BA.randomColor(5, 255, 0.2, 0.2);
+                this.ctx.fillStyle = AL.randomColor(5, 255, 0.2, 0.2);
             }
         }
 
         if (this.t % (this.speed * 75) === 0) {
-            this.rotate = BA.random(95, 175);
-            this.side = BA.random(25, Math.max(this.w, this.h));
+            this.rotate = AL.random(95, 175);
+            this.side = AL.random(25, Math.max(this.w, this.h));
 
-            this.ctx.strokeStyle = BA.randomColor(5, 255, 0.25, 0.25);
+            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
             if (this.side > Math.min(this.w, this.h) / 2) {
-                this.ctx.fillStyle = BA.randomColor(5, 255, 0.02, 0.02);
+                this.ctx.fillStyle = AL.randomColor(5, 255, 0.02, 0.02);
             } else {
-                this.ctx.fillStyle = BA.randomColor(5, 255, 0.1, 0.1);
+                this.ctx.fillStyle = AL.randomColor(5, 255, 0.1, 0.1);
             }
         }
 

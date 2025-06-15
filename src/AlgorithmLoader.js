@@ -2,7 +2,7 @@ import Particle from './utils/Particle.js';
 import Vector from './utils/Vector.js';
 import mathUtils from './utils/math.js';
 
-export default class BaseAlgorithm {
+export default class AlgorithmLoader {
     static random(min, max) {
         const num = Math.floor(Math.random() * (max - min)) + min;
         return num;
@@ -33,10 +33,9 @@ export default class BaseAlgorithm {
         this.w = w;
         this.h = h;
 
-        // Common properties that many algorithms might use
         this.t = 1; // Time variable or frame counter
         this.interval = null; // To store requestAnimationFrame ID
-        this.speed = BaseAlgorithm.random(2, 6); // Use static method instead
+        this.speed = AlgorithmLoader.random(2, 6);
         this.stagger = 0; // Used for staggered animations
 
         this.draw = this.draw.bind(this); // Bind draw method to the instance

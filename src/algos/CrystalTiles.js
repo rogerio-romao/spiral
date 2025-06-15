@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class CrystalTiles extends BA {
+export default class CrystalTiles extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -32,23 +32,23 @@ export default class CrystalTiles extends BA {
             'overlay',
         ];
 
-        this.gray = BA.random(50, 215);
+        this.gray = AL.random(50, 215);
         this.y = 0;
         this.x = 0;
-        this.size = BA.random(50, 150);
-        this.rotate = BA.random(1, 15);
+        this.size = AL.random(50, 150);
+        this.rotate = AL.random(1, 15);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'white';
         this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.lineWidth = BA.random(1, 4);
+        this.ctx.lineWidth = AL.random(1, 4);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.strokeRect(this.x, this.y, this.size, this.size);
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
             this.ctx.fillRect(this.x, this.y, this.size, this.size);
 
             this.x += this.size;
@@ -59,10 +59,10 @@ export default class CrystalTiles extends BA {
             if (this.y > this.h) {
                 this.x = 0;
                 this.y = 0;
-                this.size = BA.random(35, 150);
+                this.size = AL.random(35, 150);
 
                 this.ctx.globalCompositeOperation =
-                    this.modes[BA.random(0, this.modes.length)];
+                    this.modes[AL.random(0, this.modes.length)];
 
                 this.ctx.translate(this.w / 2, this.h / 2);
                 this.ctx.rotate(this.rotate);

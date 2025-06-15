@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Sandala extends BA {
+export default class Sandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -18,13 +18,13 @@ export default class Sandala extends BA {
             3270, 3294, 3298,
         ];
 
-        this.cols = BA.random(5, 12);
-        this.rows = BA.random(5, 12);
-        this.rot = BA.random(1, 60);
+        this.cols = AL.random(5, 12);
+        this.rows = AL.random(5, 12);
+        this.rot = AL.random(1, 60);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = BA.randomColor(0, 255, 1, 1);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
         this.ctx.globalCompositeOperation = 'soft-light';
     }
 
@@ -38,7 +38,7 @@ export default class Sandala extends BA {
                 for (let col = 0; col <= this.cols; col++) {
                     this.ctx.strokeText(
                         String.fromCharCode(
-                            this.letters[BA.random(0, this.letters.length)]
+                            this.letters[AL.random(0, this.letters.length)]
                         ),
                         row * (this.w / this.cols),
                         col * (this.h / this.rows)
@@ -48,11 +48,11 @@ export default class Sandala extends BA {
         }
 
         if (this.t % (this.speed * 80) === 0) {
-            this.cols = BA.random(5, 12);
-            this.rows = BA.random(5, 12);
-            this.rot = BA.random(1, 60);
+            this.cols = AL.random(5, 12);
+            this.rows = AL.random(5, 12);
+            this.rot = AL.random(1, 60);
 
-            this.ctx.strokeStyle = BA.randomColor(0, 255, 1, 1);
+            this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
         }
 
         this.t++;

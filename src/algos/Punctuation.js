@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Punctuation extends BA {
+export default class Punctuation extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -29,14 +29,14 @@ export default class Punctuation extends BA {
             '`',
             '.',
         ];
-        this.letter = this.letters[BA.random(0, this.letters.length)];
+        this.letter = this.letters[AL.random(0, this.letters.length)];
 
-        this.rot1 = (BA.random(-359, -1) * Math.PI) / 180;
+        this.rot1 = (AL.random(-359, -1) * Math.PI) / 180;
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.66, 0.66);
-        this.fontChange = BA.random(35, 250);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.66, 0.66);
+        this.fontChange = AL.random(35, 250);
         this.ctx.font = `${this.fontChange}px sans-serif`;
     }
 
@@ -74,17 +74,17 @@ export default class Punctuation extends BA {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.rot1 = (BA.random(-35, -10) * Math.PI) / 180;
-            this.fontChange = BA.random(35, 250);
+            this.rot1 = (AL.random(-35, -10) * Math.PI) / 180;
+            this.fontChange = AL.random(35, 250);
             this.ctx.font = `${this.fontChange}px sans-serif`;
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.66, 0.66);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.66, 0.66);
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.letter = this.letters[BA.random(0, this.letters.length)];
+            this.letter = this.letters[AL.random(0, this.letters.length)];
         }
 
         this.t++;

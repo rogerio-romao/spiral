@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class DigitalArt extends BA {
+export default class DigitalArt extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,15 +11,15 @@ export default class DigitalArt extends BA {
     }
 
     initializeProperties() {
-        this.x = BA.random(75, this.w - 75);
-        this.y = BA.random(30, this.h - 30);
-        this.rot = BA.random(3, 40);
-        this.size = BA.random(12, 36);
+        this.x = AL.random(75, this.w - 75);
+        this.y = AL.random(30, this.h - 30);
+        this.rot = AL.random(3, 40);
+        this.size = AL.random(12, 36);
     }
 
     setupDrawingStyles() {
         this.ctx.font = `${this.size}px serif`;
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
@@ -46,16 +46,16 @@ export default class DigitalArt extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 90) === 0) {
-            this.x = BA.random(75, this.w - 75);
-            this.y = BA.random(30, this.h - 30);
-            this.size = BA.random(12, 36);
+            this.x = AL.random(75, this.w - 75);
+            this.y = AL.random(30, this.h - 30);
+            this.size = AL.random(12, 36);
 
             this.ctx.font = `${this.size}px serif`;
-            this.ctx.fillStyle = BA.randomColor();
+            this.ctx.fillStyle = AL.randomColor();
         }
 
         if (this.t % (this.speed * 450) === 0) {
-            this.rot = BA.random(3, 40);
+            this.rot = AL.random(3, 40);
         }
 
         this.t++;

@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Sushi extends BA {
+export default class Sushi extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -20,8 +20,8 @@ export default class Sushi extends BA {
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'white';
         this.ctx.globalCompositeOperation = 'difference';
-        this.ctx.lineWidth = BA.random(3, 17);
-        this.ctx.fillStyle = BA.randomColor();
+        this.ctx.lineWidth = AL.random(3, 17);
+        this.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
@@ -43,9 +43,9 @@ export default class Sushi extends BA {
         }
 
         if (this.t % (this.speed * 30) === 0) {
-            this.radius = BA.random(10, 46);
-            this.ctx.lineWidth = BA.random(3, 17);
-            this.ctx.fillStyle = BA.randomColor();
+            this.radius = AL.random(10, 46);
+            this.ctx.lineWidth = AL.random(3, 17);
+            this.ctx.fillStyle = AL.randomColor();
         }
 
         this.t++;

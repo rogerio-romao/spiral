@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class AngelHair extends BA {
+export default class AngelHair extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,13 +11,13 @@ export default class AngelHair extends BA {
     }
 
     initializeProperties() {
-        this.x1 = BA.random(0, this.w);
-        this.y1 = BA.random(0, this.h);
-        this.x2 = BA.random(0, this.w);
-        this.y2 = BA.random(0, this.h);
-        this.rotate = BA.random(2, 359);
-        this.radius1 = BA.random(20, 300);
-        this.radius2 = BA.random(20, 300);
+        this.x1 = AL.random(0, this.w);
+        this.y1 = AL.random(0, this.h);
+        this.x2 = AL.random(0, this.w);
+        this.y2 = AL.random(0, this.h);
+        this.rotate = AL.random(2, 359);
+        this.radius1 = AL.random(20, 300);
+        this.radius2 = AL.random(20, 300);
 
         this.speed = 3;
     }
@@ -25,7 +25,7 @@ export default class AngelHair extends BA {
     setupDrawingStyles() {
         this.ctx.lineWidth = 0.25;
         this.ctx.setLineDash([1, 4]);
-        this.ctx.strokeStyle = BA.randomColor(120, 255, 0.66, 0.95);
+        this.ctx.strokeStyle = AL.randomColor(120, 255, 0.66, 0.95);
         this.ctx.globalCompositeOperation = 'hard-light';
     }
 
@@ -67,18 +67,18 @@ export default class AngelHair extends BA {
         }
 
         if (this.t % (this.speed * 360) === 0) {
-            this.x1 = BA.random(0, this.w);
-            this.y1 = BA.random(0, this.h);
-            this.x2 = BA.random(0, this.w);
-            this.y2 = BA.random(0, this.h);
-            this.radius1 = BA.random(20, 300);
-            this.radius2 = BA.random(20, 300);
-            this.rotate = (BA.random(2, 359) * Math.PI) / 180;
+            this.x1 = AL.random(0, this.w);
+            this.y1 = AL.random(0, this.h);
+            this.x2 = AL.random(0, this.w);
+            this.y2 = AL.random(0, this.h);
+            this.radius1 = AL.random(20, 300);
+            this.radius2 = AL.random(20, 300);
+            this.rotate = (AL.random(2, 359) * Math.PI) / 180;
 
             if (Math.random() < 0.075) {
                 this.ctx.strokeStyle = 'white';
             } else {
-                this.ctx.strokeStyle = BA.randomColor(120, 255, 0.66, 0.95);
+                this.ctx.strokeStyle = AL.randomColor(120, 255, 0.66, 0.95);
             }
             this.ctx.beginPath();
         }

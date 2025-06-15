@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Patterns extends BA {
+export default class Patterns extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -11,7 +11,7 @@ export default class Patterns extends BA {
     }
 
     initializeProperties() {
-        this.radius = BA.random(10, 250);
+        this.radius = AL.random(10, 250);
         this.rows = Math.ceil(this.h / 100) + 2;
         this.cols = Math.ceil(this.w / 100) + 2;
     }
@@ -21,7 +21,7 @@ export default class Patterns extends BA {
         this.ctx.globalAlpha = 0.1;
         this.ctx.strokeStyle = 'white';
         this.ctx.lineWidth = 3;
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.05, 0.6);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.6);
     }
 
     draw() {
@@ -43,11 +43,11 @@ export default class Patterns extends BA {
         }
 
         if (this.t % (this.speed * 40) === 0) {
-            this.radius = BA.random(10, 250);
+            this.radius = AL.random(10, 250);
 
             this.ctx.globalCompositeOperation = 'xor';
             this.ctx.strokeStyle = 'black';
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.05, 0.6);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.6);
             this.ctx.beginPath();
             this.ctx.arc(
                 this.w / 2,

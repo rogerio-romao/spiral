@@ -1,6 +1,6 @@
-import BA from '../BaseAlgorithm.js';
+import AL from '../AlgorithmLoader.js';
 
-export default class Triangulate extends BA {
+export default class Triangulate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
@@ -14,17 +14,17 @@ export default class Triangulate extends BA {
         this.rotations = [
             10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120,
         ];
-        this.rotate = this.rotations[BA.random(0, this.rotations.length)];
-        this.radius = BA.random(60, Math.max(this.w, this.h) / 2);
+        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
+        this.radius = AL.random(60, Math.max(this.w, this.h) / 2);
         this.angle = 0;
         this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
-        this.triangles = this.divisions[BA.random(0, this.divisions.length)];
-        this.size = BA.random(15, 100);
+        this.triangles = this.divisions[AL.random(0, this.divisions.length)];
+        this.size = AL.random(15, 100);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillStyle = BA.randomColor(0, 255, 0.2, 0.45);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.45);
         this.ctx.lineWidth = 3;
     }
 
@@ -55,17 +55,17 @@ export default class Triangulate extends BA {
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
         if (this.t % (this.speed * 60) === 0) {
-            this.size = BA.random(15, 100);
+            this.size = AL.random(15, 100);
             this.triangles =
-                this.divisions[BA.random(0, this.divisions.length)];
+                this.divisions[AL.random(0, this.divisions.length)];
             this.angle = 0;
-            this.radius = BA.random(60, Math.max(this.w, this.h) / 2);
+            this.radius = AL.random(60, Math.max(this.w, this.h) / 2);
 
-            this.ctx.fillStyle = BA.randomColor(0, 255, 0.2, 0.45);
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.45);
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rotate = this.rotations[BA.random(0, this.rotations.length)];
+            this.rotate = this.rotations[AL.random(0, this.rotations.length)];
         }
 
         this.t++;
