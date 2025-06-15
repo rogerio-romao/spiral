@@ -102,6 +102,7 @@ import Spikral from './src/algos/Spikral.js';
 import Spinner from './src/algos/Spinner.js';
 import SpiralLines from './src/algos/SpiralLines.js';
 import SpiralText from './src/algos/SpiralText.js';
+import SpringOrbits from './src/algos/SpringOrbits.js';
 import SquareNebulas from './src/algos/SquareNebulas.js';
 import StainedGlass from './src/algos/StainedGlass.js';
 import Starbursts from './src/algos/Starbursts.js';
@@ -498,7 +499,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'four-dee'; // for testing purposes
+    let choose = 'spring-orbits'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1167,8 +1168,7 @@ function chooseAlgos() {
         case 'spring-orbits':
             displayAlgos('SPRING ORBITS');
             ctx.save();
-            runningAlgo = new SpringOrbits();
-            runningAlgo.draw();
+            runningAlgo = new SpringOrbits(ctx, w, h);
             break;
         case 'game-of-flies':
             displayAlgos('GAME OF FLIES');
@@ -1228,64 +1228,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class SpringOrbits {
-    constructor() {
-        this.springPoint = { x: w / 2, y: h / 2 };
-        this.weight = new Particle(
-            random(0, w),
-            random(0, h),
-            random(15, 120),
-            Math.random() * Math.PI * 2
-        );
-        this.weight.friction = 0.975;
-        let k = 0.04;
-
-        ctx.strokeStyle = ctx.shadowColor = randomColor();
-        ctx.shadowBlur = 2;
-        ctx.lineWidth = 3;
-        ctx.fillStyle = 'white';
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                const dx = this.springPoint.x - this.weight.x;
-                const dy = this.springPoint.y - this.weight.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const springForce = distance * k;
-                const ax = (dx / distance) * springForce;
-                const ay = (dy / distance) * springForce;
-                this.weight.vx += ax;
-                this.weight.vy += ay;
-                this.weight.update();
-                ctx.beginPath();
-                ctx.arc(
-                    this.springPoint.x,
-                    this.springPoint.y,
-                    8,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.fill();
-                ctx.beginPath();
-                ctx.moveTo(this.weight.x, this.weight.y);
-                ctx.lineTo(this.springPoint.x, this.springPoint.y);
-                ctx.stroke();
-            }
-            t++;
-            if (t % (speed * 180) === 0) {
-                this.weight = new Particle(
-                    random(0, w),
-                    random(0, h),
-                    random(15, 120),
-                    Math.random() * Math.PI * 2
-                );
-                this.weight.friction = 0.975;
-                ctx.strokeStyle = ctx.shadowColor = randomColor();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class GameOfFlies {
     constructor() {
         this.springPoint = { x: w / 2, y: h / 2 };
