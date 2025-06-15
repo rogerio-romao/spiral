@@ -62,6 +62,7 @@ import Maelstrom from './src/algos/Maelstrom.js';
 import Maelstrom2 from './src/algos/Maelstrom2.js';
 import Majestic from './src/algos/Majestic.js';
 import Matter from './src/algos/Matter.js';
+import Mesmerize from './src/algos/Mesmerize.js';
 import Microscope from './src/algos/Microscope.js';
 import Mirage from './src/algos/Mirage.js';
 import Nazca from './src/algos/Nazca.js';
@@ -387,7 +388,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'coils'; // for testing purposes
+    let choose = 'mesmerize'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1086,8 +1087,7 @@ function chooseAlgos() {
         case 'mesmerize':
             displayAlgos('MESMERIZE');
             ctx.save();
-            runningAlgo = new Mesmerize();
-            runningAlgo.draw();
+            runningAlgo = new Mesmerize(ctx, w, h);
             break;
         case 'genesis-typewriter':
             displayAlgos('GENESIS TYPEWRITER');
@@ -1111,225 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Mesmerize {
-    constructor() {
-        this.rot = random(1, 199);
-        this.w1 = random(30, 300);
-        this.h1 = random(30, 300);
-        this.w2 = random(60, 600);
-        this.h2 = random(60, 600);
-        this.x1 = random(0, w - this.w1);
-        this.x2 = random(0, w - this.w1);
-        this.y1 = random(0, h - this.height);
-        this.y2 = random(0, h - this.height);
-        this.ul1 = random(0, 30);
-        this.ur1 = random(0, 30);
-        this.ll1 = random(0, 30);
-        this.lr1 = random(0, 30);
-        this.ul2 = random(-300, 600);
-        this.ur2 = random(-300, 600);
-        this.ll2 = random(-300, 600);
-        this.lr2 = random(-300, 600);
-        this.color1 = randomColor(127, 255);
-        this.color2 = randomColor(0, 127);
-        this.fill1 = randomColor(0, 255, 0.01, 0.04);
-        this.fill2 = randomColor(0, 255, 0.04, 0.1);
-        this.obj1 = {
-            width: this.w1,
-            height: this.h1,
-            x: this.x1,
-            y: this.y1,
-            upperLeft: this.ul1,
-            upperRight: this.ur1,
-            lowerLeft: this.ll1,
-            lowerRight: this.lr1,
-            color: this.color1,
-            fill: this.fill1,
-        };
-        this.obj2 = {
-            width: this.w2,
-            height: this.h2,
-            x: this.x2,
-            y: this.y2,
-            upperLeft: this.ul2,
-            upperRight: this.ur2,
-            lowerLeft: this.ll2,
-            lowerRight: this.lr2,
-            color: this.color2,
-            fill: this.fill2,
-        };
-
-        ctx.strokeStyle = this.obj1.color;
-        ctx.fillStyle = this.obj1.fill;
-
-        this.getTweens();
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.roundRect(
-                    this.obj1.width,
-                    this.obj1.height,
-                    this.obj1.x,
-                    this.obj1.y,
-                    {
-                        upperLeft: this.obj1.upperLeft,
-                        upperRight: this.obj1.upperRight,
-                        lowerLeft: this.obj1.lowerLeft,
-                        lowerRight: this.obj1.lowerRight,
-                    },
-                    true,
-                    true
-                );
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 1620) === 0) {
-                this.tl.kill();
-                ctx.clearRect(-w, -h, 3 * w, 3 * h);
-                this.rot = random(1, 199);
-                this.w1 = random(30, 300);
-                this.h1 = random(30, 300);
-                this.w2 = random(60, 600);
-                this.h2 = random(60, 600);
-                this.x1 = random(0, w - this.w1);
-                this.x2 = random(0, w - this.w1);
-                this.y1 = random(0, h - this.height);
-                this.y2 = random(0, h - this.height);
-                this.ul1 = random(0, 30);
-                this.ur1 = random(0, 30);
-                this.ll1 = random(0, 30);
-                this.lr1 = random(0, 30);
-                this.ul2 = random(-300, 600);
-                this.ur2 = random(-300, 600);
-                this.ll2 = random(-300, 600);
-                this.lr2 = random(-300, 600);
-                this.color1 = randomColor(127, 255);
-                this.color2 = randomColor(0, 127);
-                this.fill1 = randomColor(0, 255, 0.01, 0.04);
-                this.fill2 = randomColor(0, 255, 0.04, 0.1);
-                this.obj1 = {
-                    width: this.w1,
-                    height: this.h1,
-                    x: this.x1,
-                    y: this.y1,
-                    upperLeft: this.ul1,
-                    upperRight: this.ur1,
-                    lowerLeft: this.ll1,
-                    lowerRight: this.lr1,
-                    color: this.color1,
-                    fill: this.fill1,
-                };
-                this.obj2 = {
-                    width: this.w2,
-                    height: this.h2,
-                    x: this.x2,
-                    y: this.y2,
-                    upperLeft: this.ul2,
-                    upperRight: this.ur2,
-                    lowerLeft: this.ll2,
-                    lowerRight: this.lr2,
-                    color: this.color2,
-                    fill: this.fill2,
-                };
-
-                this.rot = random(1, 199);
-                ctx.strokeStyle = this.obj1.color;
-                ctx.fillStyle = this.obj1.fill;
-
-                this.getTweens();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    getTweens() {
-        this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'power1' },
-        });
-        this.tl
-            .to(this.obj1, {
-                duration: random(10, 100),
-                width: this.obj2.width,
-            })
-            .to(
-                this.obj1,
-                {
-                    duration: random(10, 100),
-                    height: this.obj2.height,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(10, 100),
-                    x: this.obj2.x,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(10, 100),
-                    y: this.obj2.y,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(10, 100),
-                    upperLeft: this.obj2.upperLeft,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(10, 100),
-                    upperRight: this.obj2.upperRight,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(10, 100),
-                    lowerLeft: this.obj2.lowerLeft,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(1, 10),
-                    lowerRight: this.obj2.lowerRight,
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(2, 20),
-                    color: this.obj2.color,
-                    onUpdate: () => (ctx.strokeStyle = this.obj1.color),
-                },
-                '<'
-            )
-            .to(
-                this.obj1,
-                {
-                    duration: random(2, 20),
-                    fill: this.obj2.fill,
-                    onUpdate: () => (ctx.fillStyle = this.obj1.fill),
-                },
-                '<'
-            );
-    }
-}
-
 class GenesisTypewriter {
     constructor() {
         this.tl = null;
