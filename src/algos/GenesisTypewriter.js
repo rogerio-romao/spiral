@@ -1,0 +1,112 @@
+import BA from '../BaseAlgorithm.js';
+
+export default class GenesisTypewriter extends BA {
+    constructor(ctx, w, h) {
+        super(ctx, w, h);
+
+        this.initializeProperties();
+        this.setupDrawingStyles();
+
+        this.getTweens();
+
+        this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeProperties() {
+        this.tl = null;
+        this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        this.text = this.letters[BA.random(0, this.letters.length)];
+        this.font1 = { size: BA.random(20, 100) };
+        this.font2 = { size: BA.random(160, 600) };
+        this.pos1 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
+        this.pos2 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
+        this.line1 = { width: 1 };
+        this.line2 = { width: BA.random(3, 7) };
+        this.rot1 = { angle: BA.random(1, 44) };
+        this.rot2 = { angle: BA.random(1, 44) };
+    }
+
+    setupDrawingStyles() {
+        this.ctx.font = `${this.font1.size}px bold serif`;
+        this.ctx.lineWidth = this.line1.width;
+        this.ctx.strokeStyle = 'white';
+        this.ctx.fillStyle = 'black';
+    }
+
+    draw() {
+        this.ctx.fillText(this.text, this.pos1.x, this.pos1.y);
+        this.ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
+
+        if (this.t % 1000 === 0) {
+            this.tl.kill();
+
+            this.text = this.letters[BA.random(0, this.letters.length)];
+            this.font1 = { size: BA.random(20, 100) };
+            this.font2 = { size: BA.random(160, 600) };
+            this.pos1 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
+            this.pos2 = { x: BA.random(0, this.w), y: BA.random(0, this.h) };
+            this.line1 = { width: 1 };
+            this.line2 = { width: BA.random(3, 7) };
+            this.rot1 = { angle: BA.random(1, 44) };
+            this.rot2 = { angle: BA.random(1, 44) };
+
+            this.ctx.font = `${this.font1.size}px bold serif`;
+            this.ctx.lineWidth = this.line1.width;
+            this.ctx.strokeStyle =
+                Math.random() < 0.25 ? 'white' : BA.randomColor();
+            this.ctx.fillStyle = 'black';
+
+            this.getTweens();
+        }
+
+        this.ctx.translate(this.w / 2, this.h / 2);
+        this.ctx.rotate((this.rot1.angle * Math.PI) / 180);
+        this.ctx.translate(-this.w / 2, -this.h / 2);
+
+        this.t++;
+
+        requestAnimationFrame(this.draw);
+    }
+
+    getTweens() {
+        this.tl = BA.gsap.timeline({
+            defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' },
+        });
+        this.tl
+            .to(
+                this.font1,
+                {
+                    duration: BA.random(12, 40),
+                    size: this.font2.size,
+                    onUpdate: () =>
+                        (this.ctx.font = `${this.font1.size}px bold serif`),
+                },
+                '<'
+            )
+            .to(
+                this.pos1,
+                {
+                    duration: BA.random(15, 50),
+                    x: this.pos2.x,
+                },
+                '<'
+            )
+            .to(
+                this.pos1,
+                {
+                    duration: BA.random(15, 50),
+                    y: this.pos2.y,
+                },
+                '<'
+            )
+            .to(
+                this.line1,
+                {
+                    duration: BA.random(6, 14),
+                    width: this.line2.width,
+                    onUpdate: () => (this.ctx.lineWidth = this.line1.width),
+                },
+                '<'
+            );
+    }
+}

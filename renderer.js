@@ -42,6 +42,7 @@ import FourDee from './src/algos/FourDee.js';
 import Fruits from './src/algos/Fruits.js';
 import GameOfFlies from './src/algos/GameOfFlies.js';
 import GasClouds from './src/algos/GasClouds.js';
+import GenesisTypewriter from './src/algos/GenesisTypewriter.js';
 import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
@@ -388,7 +389,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'mesmerize'; // for testing purposes
+    let choose = 'genesis-typewriter'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1092,8 +1093,7 @@ function chooseAlgos() {
         case 'genesis-typewriter':
             displayAlgos('GENESIS TYPEWRITER');
             ctx.save();
-            runningAlgo = new GenesisTypewriter();
-            runningAlgo.draw();
+            runningAlgo = new GenesisTypewriter(ctx, w, h);
             break;
         case 'dye':
             displayAlgos('DYE');
@@ -1111,102 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class GenesisTypewriter {
-    constructor() {
-        this.tl = null;
-        this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        this.text = this.letters[random(0, this.letters.length)];
-        this.font1 = { size: random(20, 100) };
-        this.font2 = { size: random(160, 600) };
-        this.pos1 = { x: random(0, w), y: random(0, h) };
-        this.pos2 = { x: random(0, w), y: random(0, h) };
-        this.line1 = { width: 1 };
-        this.line2 = { width: random(3, 7) };
-        this.rot1 = { angle: random(1, 44) };
-        this.rot2 = { angle: random(1, 44) };
-
-        ctx.font = `${this.font1.size}px bold serif`;
-        ctx.lineWidth = this.line1.width;
-        ctx.strokeStyle = 'white';
-        ctx.fillStyle = 'black';
-
-        this.getTweens();
-
-        this.draw = () => {
-            ctx.fillText(this.text, this.pos1.x, this.pos1.y);
-            ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
-
-            t++;
-            if (t % 1000 === 0) {
-                this.tl.kill();
-                this.text = this.letters[random(0, this.letters.length)];
-                this.font1 = { size: random(20, 100) };
-                this.font2 = { size: random(160, 600) };
-                this.pos1 = { x: random(0, w), y: random(0, h) };
-                this.pos2 = { x: random(0, w), y: random(0, h) };
-                this.line1 = { width: 1 };
-                this.line2 = { width: random(3, 7) };
-                this.rot1 = { angle: random(1, 44) };
-                this.rot2 = { angle: random(1, 44) };
-
-                ctx.font = `${this.font1.size}px bold serif`;
-                ctx.lineWidth = this.line1.width;
-                ctx.strokeStyle =
-                    Math.random() < 0.25 ? 'white' : randomColor();
-                ctx.fillStyle = 'black';
-
-                this.getTweens();
-            }
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate((this.rot1.angle * 180) / Math.PI);
-            ctx.translate(-w / 2, -h / 2);
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    getTweens() {
-        this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' },
-        });
-        this.tl
-            .to(
-                this.font1,
-                {
-                    duration: random(12, 40),
-                    size: this.font2.size,
-                    onUpdate: () =>
-                        (ctx.font = `${this.font1.size}px bold serif`),
-                },
-                '<'
-            )
-            .to(
-                this.pos1,
-                {
-                    duration: random(15, 50),
-                    x: this.pos2.x,
-                },
-                '<'
-            )
-            .to(
-                this.pos1,
-                {
-                    duration: random(15, 50),
-                    y: this.pos2.y,
-                },
-                '<'
-            )
-            .to(
-                this.line1,
-                {
-                    duration: random(6, 14),
-                    width: this.line2.width,
-                    onUpdate: () => (ctx.lineWidth = this.line1.width),
-                },
-                '<'
-            );
-    }
-}
-
 class Dye {
     constructor() {
         this.tl = null;
