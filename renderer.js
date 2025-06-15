@@ -85,6 +85,7 @@ import Plaid from './src/algos/Plaid.js';
 import Polyhedra from './src/algos/Polyhedra.js';
 import Portals from './src/algos/Portals.js';
 import Progression from './src/algos/Progression.js';
+import Projecting from './src/algos/Projecting.js';
 import PsychoRainbow from './src/algos/PsychoRainbow.js';
 import Pulsar from './src/algos/Pulsar.js';
 import Punctuation from './src/algos/Punctuation.js';
@@ -390,7 +391,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'dye'; // for testing purposes
+    let choose = 'projecting'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1104,110 +1105,10 @@ function chooseAlgos() {
         case 'projecting':
             displayAlgos('PROJECTING');
             ctx.save();
-            runningAlgo = new Projecting();
-            runningAlgo.draw();
+            runningAlgo = new Projecting(ctx, w, h);
             break;
     }
 }
-
-// ALGORITHMS / SPIRALS CLASSES
-class Projecting {
-    constructor() {
-        this.tl = null;
-        this.width = random(4, 19);
-        this.modes = [
-            'source-over',
-            'multiply',
-            'darken',
-            'lighten',
-            'xor',
-            'difference',
-            'exclusion',
-            'overlay',
-            'screen',
-            'hue',
-            'luminosity',
-            'color',
-            'saturation',
-            'soft-light',
-            'hard-light',
-        ];
-        this.rot1 = { rot: random(1, 90) };
-        this.rot2 = { rot: random(1, 90) };
-        this.color1 = { color: randomColor() };
-        this.color2 = { color: randomColor() };
-        this.color3 = { color: randomColor() };
-        this.color4 = { color: randomColor() };
-
-        ctx.fillStyle = this.color1.color;
-        ctx.strokeStyle = 'black';
-        ctx.shadowColor = this.color3.color;
-        ctx.shadowBlur = 10;
-        ctx.globalCompositeOperation = this.modes[random(0, this.modes.length)];
-
-        this.getTweens();
-
-        this.draw = () => {
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot1.rot);
-            ctx.fillRect(0, 0, w, this.width);
-            ctx.translate(-w / 2, -h / 2);
-
-            t++;
-
-            if (t % 480 === 0) {
-                this.tl.kill();
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-                this.rot1 = { rot: random(1, 90) };
-                this.rot2 = { rot: random(1, 90) };
-                this.color1 = { color: randomColor() };
-                this.color2 = { color: randomColor() };
-                this.color3 = { color: randomColor() };
-                this.color4 = { color: randomColor() };
-
-                ctx.fillStyle = this.color1.color;
-                this.width = random(4, 19);
-                this.getTweens();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    getTweens() {
-        this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true },
-        });
-        this.tl.to(
-            this.rot1,
-            {
-                duration: random(3, 8),
-                rot: this.rot2.rot,
-            },
-            '<'
-        );
-        this.tl.to(
-            this.color1,
-            {
-                duration: random(3, 10),
-                color: this.color2.color,
-                onUpdate: () => (ctx.fillStyle = this.color1.color),
-            },
-            '<'
-        );
-        this.tl.to(
-            this.color3,
-            {
-                duration: random(3, 10),
-                color: this.color4.color,
-                onUpdate: () => (ctx.shadowColor = this.color3.color),
-            },
-            '<'
-        );
-    }
-}
-
-// END OF CLASSES
 
 // initial setup of canvas settings and listeners
 function init() {
