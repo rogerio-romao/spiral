@@ -94,6 +94,7 @@ import RotationPatterns from './src/algos/RotationPatterns.js';
 import Rounded from './src/algos/Rounded.js';
 import Sandala from './src/algos/Sandala.js';
 import Seeds from './src/algos/Seeds.js';
+import Shards from './src/algos/Shards.js';
 import Slices from './src/algos/Slices.js';
 import Smooth from './src/algos/Smooth.js';
 import SnakesLadders from './src/algos/SnakesLadders.js';
@@ -385,7 +386,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'pulsar'; // for testing purposes
+    let choose = 'shards'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1074,8 +1075,7 @@ function chooseAlgos() {
         case 'shards':
             displayAlgos('SHARDS');
             ctx.save();
-            runningAlgo = new Shards();
-            runningAlgo.draw();
+            runningAlgo = new Shards(ctx, w, h);
             break;
         case 'coils':
             displayAlgos('COILS');
@@ -1111,92 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Shards {
-    constructor() {
-        this.c1x1 = random(0, w);
-        this.c1y1 = random(0, h);
-        this.c1x2 = random(0, w);
-        this.c1y2 = random(0, h);
-        this.c2x1 = random(0, w);
-        this.c2y1 = random(0, h);
-        this.c2x2 = random(0, w);
-        this.c2y2 = random(0, h);
-        this.x = random(0, w);
-        this.y = random(0, h);
-        this.rot1 = random(1, 90);
-        this.rot2 = random(1, 90);
-        this.deviation1 = random(50, 200);
-        this.deviation2 = random(50, 200);
-        this.color1 = randomColor(0, 255, 1, 1);
-        this.color2 = randomColor();
-        this.modes = [
-            'source-over',
-            'hard-light',
-            'soft-light',
-            'overlay',
-            'xor',
-            'difference',
-            'exclusion',
-            'lighten',
-            'darken',
-            'hue',
-            'color',
-            'luminosity',
-            'multiply',
-            'screen',
-        ];
-
-        ctx.strokeStyle = randomColor(0, 255, 1, 1);
-        ctx.globalCompositeOperation = this.modes[random(0, this.modes.length)];
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.01)';
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                ctx.fillStyle = this.color1;
-                this.drawTriangle();
-            }
-
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot1);
-            ctx.translate(-w / 2, -h / 2);
-            t++;
-            if (t % (speed * 150) === 0) {
-                this.c1x1 = random(0, w);
-                this.c1y1 = random(0, h);
-                this.c1x2 = random(0, w);
-                this.c1y2 = random(0, h);
-                this.c2x1 = random(0, w);
-                this.c2y1 = random(0, h);
-                this.c2x2 = random(0, w);
-                this.c2y2 = random(0, h);
-                this.rot1 = random(1, 90);
-                this.rot2 = random(1, 90);
-                this.color1 = randomColor(0, 255, 1, 1);
-                this.color2 = randomColor();
-                ctx.globalCompositeOperation =
-                    this.modes[random(0, this.modes.length)];
-
-                ctx.strokeStyle = randomColor(0, 255, 1, 1);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-    drawTriangle() {
-        ctx.beginPath();
-        ctx.moveTo(w / 2 + Math.sin(t) * 100, h / 2 + Math.cos(t) * 100);
-        ctx.lineTo(this.c1x1, this.c1y1);
-        ctx.lineTo(this.c1x2, this.c1y2);
-        ctx.lineTo(
-            w / 2 + Math.sin(t) * this.deviation1,
-            h / 2 + Math.cos(t) * this.deviation1
-        );
-        ctx.stroke();
-        ctx.fill();
-        ctx.closePath();
-    }
-}
-
 class Coils {
     constructor() {
         this.obj1 = {
