@@ -1,3 +1,4 @@
+import Particle from './utils/Particle.js';
 import Vector from './utils/Vector.js';
 
 export default class BaseAlgorithm {
@@ -16,6 +17,10 @@ export default class BaseAlgorithm {
 
     static createVector(x, y) {
         return new Vector(x, y);
+    }
+
+    static createParticle(x, y, speed, direction, grav = 0) {
+        return new Particle(x, y, speed, direction, grav);
     }
 
     constructor(ctx, w, h) {

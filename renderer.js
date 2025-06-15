@@ -37,6 +37,7 @@ import EpicRays from './src/algos/EpicRays.js';
 import EvolvingMandala from './src/algos/EvolvingMandala.js';
 import FadeIn from './src/algos/FadeIn.js';
 import Fluor from './src/algos/Fluor.js';
+import FourDee from './src/algos/FourDee.js';
 import Fruits from './src/algos/Fruits.js';
 import GasClouds from './src/algos/GasClouds.js';
 import Geometer from './src/algos/Geometer.js';
@@ -188,105 +189,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (
         this.fill();
     }
 };
-
-// Particle class
-class Particle {
-    constructor(x, y, speed, direction, grav = 0) {
-        this.x = x;
-        this.y = y;
-        this.vx = Math.cos(direction) * speed;
-        this.vy = Math.sin(direction) * speed;
-        this.gravity = grav;
-        this.bounce = -1;
-        this.friction = 1;
-        this.mass = 1;
-        this.springs = [];
-        this.gravitations = [];
-    }
-    accelerate(ax, ay) {
-        this.vx += ax;
-        this.vy += ay;
-    }
-    addGravitation(p) {
-        this.removeGravitation(p); // case it already exists
-        this.gravitations.push(p);
-    }
-    addSpring(point, k, length = 0) {
-        this.removeSpring(point); // case it already exists
-        this.springs.push({ point, k, length });
-    }
-    angleTo(p2) {
-        return Math.atan2(p2.y - this.y, p2.x - this.x);
-    }
-    distanceTo(p2) {
-        const dx = p2.x - this.x;
-        const dy = p2.y - this.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-    getHeading() {
-        return Math.atan2(this.vy, this.vx);
-    }
-    getSpeed() {
-        return Math.sqrt(this.vx ** 2 + this.vy ** 2);
-    }
-    gravitateTo(p2) {
-        const dx = p2.x - this.x;
-        const dy = p2.y - this.y;
-        const dSq = dx * dx + dy * dy;
-        const dist = Math.sqrt(dSq);
-        const force = p2.mass / dSq;
-        const ax = (dx / dist) * force;
-        const ay = (dy / dist) * force;
-
-        this.vx += ax;
-        this.vy += ay;
-    }
-    handleGravitations() {
-        this.gravitations.forEach((gravitation) =>
-            this.gravitateTo(gravitation)
-        );
-    }
-    handleSprings() {
-        this.springs.forEach((spring) =>
-            this.springTo(spring.point, spring.k, spring.length)
-        );
-    }
-    removeGravitation(p) {
-        const gravIndex = this.gravitations.findIndex((g) => g === p);
-        this.gravitations.splice(gravIndex, 1);
-    }
-    removeSpring(point) {
-        const springIndex = this.springs.findIndex((s) => s.point === point);
-        this.springs.splice(springIndex, 1);
-    }
-    setHeading(heading) {
-        const speed = this.getSpeed();
-        this.vx = Math.cos(heading) * speed;
-        this.vy = Math.sin(heading) * speed;
-    }
-    setSpeed(speed) {
-        const heading = this.getHeading();
-        this.vx = Math.cos(heading) * speed;
-        this.vy = Math.sin(heading) * speed;
-    }
-    springTo(point, k, length = 0) {
-        const dx = point.x - this.x;
-        const dy = point.y - this.y;
-        const distance = Math.hypot(dx, dy);
-        const springForce = (distance - length) * k;
-        this.vx += (dx / distance) * springForce;
-        this.vy += (dy / distance) * springForce;
-    }
-    update() {
-        this.handleSprings();
-        this.handleGravitations();
-        this.vx *= this.friction;
-        this.vy *= this.friction;
-        this.vy += this.gravity;
-        this.x += this.vx;
-        this.y += this.vy;
-    }
-}
 
 // Math utils
 const utils = {
@@ -596,7 +498,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'glowsticks'; // for testing purposes
+    let choose = 'four-dee'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1260,8 +1162,7 @@ function chooseAlgos() {
         case 'four-dee':
             displayAlgos('FOUR DEE');
             ctx.save();
-            runningAlgo = new FourDee();
-            runningAlgo.draw();
+            runningAlgo = new FourDee(ctx, w, h);
             break;
         case 'spring-orbits':
             displayAlgos('SPRING ORBITS');
@@ -1327,61 +1228,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class FourDee {
-    constructor() {
-        this.springPoint = { x: w / 2, y: h / 2 };
-        this.weight = new Particle(random(0, w), random(0, h), 0, 0);
-        this.weight.radius = 20;
-        this.rot = random(-90, -1);
-        let k = 0.1;
-
-        ctx.strokeStyle = randomColor();
-        ctx.fillStyle = randomColor(40, 255, 0.1, 0.25);
-
-        this.draw = () => {
-            if (t % speed === 0) {
-                const dx = this.springPoint.x - this.weight.x;
-                const dy = this.springPoint.y - this.weight.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const springForce = distance * k;
-                const ax = (dx / distance) * springForce;
-                const ay = (dy / distance) * springForce;
-                this.weight.vx += ax;
-                this.weight.vy += ay;
-                this.weight.update();
-                ctx.beginPath();
-                ctx.arc(
-                    this.weight.x,
-                    this.weight.y,
-                    this.weight.radius,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.fill();
-            }
-            t++;
-            ctx.translate(w / 2, h / 2);
-            ctx.rotate(this.rot);
-            ctx.translate(-w / 2, -h / 2);
-            if (t % (speed * 540) === 0) {
-                ctx.fillStyle = 'black';
-                ctx.fillRect(-w, -h, 3 * w, 3 * h);
-                this.weight = new Particle(
-                    random(0, w),
-                    random(0, h),
-                    random(-50, 50),
-                    random(-360, 360)
-                );
-                this.weight.radius = 20;
-                k = Math.random();
-                this.rot = random(-90, -1);
-                ctx.fillStyle = randomColor(40, 255, 0.1, 0.25);
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-}
-
 class SpringOrbits {
     constructor() {
         this.springPoint = { x: w / 2, y: h / 2 };
