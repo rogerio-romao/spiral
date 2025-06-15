@@ -45,6 +45,7 @@ import Geometer from './src/algos/Geometer.js';
 import Germinate from './src/algos/Germinate.js';
 import Glow from './src/algos/Glow.js';
 import Glowsticks from './src/algos/Glowsticks.js';
+import GravityTurbulence from './src/algos/GravityTurbulence.js';
 import Gridlock from './src/algos/Gridlock.js';
 import Halfsies from './src/algos/Halfsies.js';
 import Hallucinate from './src/algos/Hallucinate.js';
@@ -190,123 +191,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (
     if (fill) {
         this.fill();
     }
-};
-
-// Math utils
-const utils = {
-    norm(value, min, max) {
-        return (value - min) / (max - min);
-    },
-
-    lerp(norm, min, max) {
-        return (max - min) * norm + min;
-    },
-
-    map(value, sourceMin, sourceMax, destMin, destMax) {
-        return this.lerp(
-            this.norm(value, sourceMin, sourceMax),
-            destMin,
-            destMax
-        );
-    },
-
-    clamp(value, min, max) {
-        return Math.min(
-            Math.max(value, Math.min(min, max)),
-            Math.max(min, max)
-        );
-    },
-
-    distance(p0, p1) {
-        const dx = p1.x - p0.x;
-        const dy = p1.y - p0.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    },
-
-    distanceXY(x0, y0, x1, y1) {
-        const dx = x1 - x0;
-        const dy = y1 - y0;
-        return Math.sqrt(dx * dx + dy * dy);
-    },
-
-    circleCollision(c0, c1) {
-        return this.distance(c0, c1) <= c0.radius + c1.radius;
-    },
-
-    circlePointCollision(x, y, circle) {
-        return this.distanceXY(x, y, circle.x, circle.y) < circle.radius;
-    },
-
-    pointInRect(x, y, rect) {
-        return (
-            this.inRange(x, rect.x, rect.x + rect.width) &&
-            this.inRange(y, rect.y, rect.y + rect.height)
-        );
-    },
-
-    inRange(value, min, max) {
-        return value >= Math.min(min, max) && value <= Math.max(min, max);
-    },
-
-    rangeIntersect(min0, max0, min1, max1) {
-        return (
-            Math.max(min0, max0) >= Math.min(min1, max1) &&
-            Math.min(min0, max0) <= Math.max(min1, max1)
-        );
-    },
-
-    rectIntersect(r0, r1) {
-        return (
-            this.rangeIntersect(r0.x, r0.x + r0.width, r1.x, r1.x + r1.width) &&
-            this.rangeIntersect(r0.y, r0.y + r0.height, r1.y, r1.y + r1.height)
-        );
-    },
-
-    degreesToRads(degrees) {
-        return (degrees / 180) * Math.PI;
-    },
-
-    radsToDegrees(radians) {
-        return (radians * 180) / Math.PI;
-    },
-
-    randomRange(min, max) {
-        return min + Math.random() * (max - min);
-    },
-
-    randomInt(min, max) {
-        return Math.floor(min + Math.random() * (max - min + 1));
-    },
-
-    roundToPlaces(value, places) {
-        return Math.round(value * mult) / mult;
-    },
-
-    roundNearest(value, nearest) {
-        return Math.round(value / nearest) * nearest;
-    },
-
-    quadraticBezier(p0, p1, p2, t, pFinal = {}) {
-        pFinal.x =
-            Math.pow(1 - t, 2) * p0.x + (1 - t) * 2 * t * p1.x + t * t * p2.x;
-        pFinal.y =
-            Math.pow(1 - t, 2) * p0.y + (1 - t) * 2 * t * p1.y + t * t * p2.y;
-        return pFinal;
-    },
-
-    cubicBezier(p0, p1, p2, p3, t, pFinal = {}) {
-        pFinal.x =
-            Math.pow(1 - t, 3) * p0.x +
-            Math.pow(1 - t, 2) * 3 * t * p1.x +
-            (1 - t) * 3 * t * t * p2.x +
-            t * t * t * p3.x;
-        pFinal.y =
-            Math.pow(1 - t, 3) * p0.y +
-            Math.pow(1 - t, 2) * 3 * t * p1.y +
-            (1 - t) * 3 * t * t * p2.y +
-            t * t * t * p3.y;
-        return pFinal;
-    },
 };
 
 // DOM References
@@ -500,7 +384,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'game-of-flies'; // for testing purposes
+    let choose = 'gravity-turbulence'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1179,8 +1063,7 @@ function chooseAlgos() {
         case 'gravity-turbulence':
             displayAlgos('GRAVITY TURBULENCE');
             ctx.save();
-            runningAlgo = new GravityTurbulence();
-            runningAlgo.draw();
+            runningAlgo = new GravityTurbulence(ctx, w, h);
             break;
         case 'pulsar':
             displayAlgos('PULSAR');
@@ -1228,99 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class GravityTurbulence {
-    constructor() {
-        this.sun1 = new Particle(150, 200, 1, Math.random() * Math.PI * 2);
-        this.sun2 = new Particle(w / 2, h / 2, 2, Math.random() * Math.PI * 2);
-
-        this.particles = [];
-        this.numParticles = 225;
-        this.sun1.mass = 50000;
-        this.sun1.radius = 40;
-        this.sun2.mass = -10000;
-        this.sun2.radius = 30;
-
-        for (let i = 0; i < this.numParticles; i++) {
-            const p = new Particle(
-                utils.randomRange(0, w),
-                utils.randomRange(0, h),
-                utils.randomRange(7, 8),
-                Math.PI / 2 + utils.randomRange(-0.1, 0.1)
-            );
-            p.addGravitation(this.sun1);
-            p.addGravitation(this.sun2);
-            p.radius = 1.25;
-            this.particles.push(p);
-        }
-
-        this.draw = () => {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-            ctx.fillRect(0, 0, w, h);
-            this.sun1.update();
-            this.sun2.update();
-            if (this.sun1.x - this.sun1.radius > w) {
-                this.sun1.x = -this.sun1.radius;
-            }
-            if (this.sun1.x + this.sun1.radius < 0) {
-                this.sun1.x = w + this.sun1.radius;
-            }
-            if (this.sun1.y - this.sun1.radius > h) {
-                this.sun1.y = -this.sun1.radius;
-            }
-            if (this.sun1.y + this.sun1.radius < 0) {
-                this.sun1.y = h + this.sun1.radius;
-            }
-            if (this.sun2.x - this.sun2.radius > w) {
-                this.sun2.x = -this.sun2.radius;
-            }
-            if (this.sun2.x + this.sun2.radius < 0) {
-                this.sun2.x = w + this.sun2.radius;
-            }
-            if (this.sun2.y - this.sun2.radius > h) {
-                this.sun2.y = -this.sun2.radius;
-            }
-            if (this.sun2.y + this.sun2.radius < 0) {
-                this.sun2.y = h + this.sun2.radius;
-            }
-            this.particles.forEach((particle) => {
-                particle.update();
-                this.drawPart(particle, 'white');
-                if (
-                    particle.x > w ||
-                    particle.x < 0 ||
-                    particle.y > h ||
-                    particle.y < 0
-                ) {
-                    particle.x = utils.randomRange(0, w);
-                    particle.y = utils.randomRange(0, h);
-                    particle.setSpeed(utils.randomRange(7, 8));
-                    particle.setHeading(
-                        Math.PI / 2 + utils.randomRange(-0.1, 0.1)
-                    );
-                }
-            });
-            t++;
-            if (t % (speed * 250) === 0) {
-                this.sun1.mass = random(-100000, 100000);
-                this.sun1.radius = random(3, 25);
-                this.sun1.direction = Math.random() * Math.PI * 2;
-                this.sun1.speed = Math.random() * 5 - 2.5;
-                this.sun2.mass = random(-100000, 100000);
-                this.sun2.radius = random(5, 40);
-                this.sun2.direction = Math.random() * Math.PI * 2;
-                this.sun2.speed = Math.random() * 5 - 2.5;
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-    drawPart(p, color) {
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-        ctx.fill();
-    }
-}
-
 class Pulsar {
     constructor() {
         this.cp1x = random(0, w);

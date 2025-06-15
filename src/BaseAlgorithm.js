@@ -1,5 +1,6 @@
 import Particle from './utils/Particle.js';
 import Vector from './utils/Vector.js';
+import mathUtils from './utils/math.js';
 
 export default class BaseAlgorithm {
     static random(min, max) {
@@ -14,6 +15,8 @@ export default class BaseAlgorithm {
         const a = +(Math.random() * (maxA - minA) + minA).toFixed(3);
         return `rgba(${r}, ${g}, ${b}, ${a})`;
     }
+
+    static mathUtils = mathUtils;
 
     static createVector(x, y) {
         return new Vector(x, y);
