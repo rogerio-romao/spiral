@@ -31,6 +31,7 @@ import DigitalArt from './src/algos/DigitalArt.js';
 import Discos from './src/algos/Discos.js';
 import Division from './src/algos/Division.js';
 import Dotted from './src/algos/Dotted.js';
+import Dye from './src/algos/Dye.js';
 import DysonSpheres from './src/algos/DysonSpheres.js';
 import Encoded from './src/algos/Encoded.js';
 import Entropy from './src/algos/Entropy.js';
@@ -389,7 +390,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'genesis-typewriter'; // for testing purposes
+    let choose = 'dye'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();
@@ -1098,8 +1099,7 @@ function chooseAlgos() {
         case 'dye':
             displayAlgos('DYE');
             ctx.save();
-            runningAlgo = new Dye();
-            runningAlgo.draw();
+            runningAlgo = new Dye(ctx, w, h);
             break;
         case 'projecting':
             displayAlgos('PROJECTING');
@@ -1111,126 +1111,6 @@ function chooseAlgos() {
 }
 
 // ALGORITHMS / SPIRALS CLASSES
-class Dye {
-    constructor() {
-        this.tl = null;
-        this.letters = [
-            3405, 3423, 3424, 3437, 3442, 3443, 3444, 3458, 3459, 3461, 3465,
-            3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493,
-        ];
-        this.text = String.fromCharCode(
-            this.letters[random(0, this.letters.length)]
-        ).padStart(30, ' ');
-        this.font1 = { size: random(14, 40) };
-        this.font2 = { size: random(60, 150) };
-        this.line1 = { width: 1 };
-        this.line2 = { width: random(4, 12) };
-        this.rot = random(1, 500);
-        this.color1 = { color: randomColor() };
-        this.color2 = { color: randomColor() };
-        this.color3 = { color: randomColor() };
-        this.color4 = { color: randomColor() };
-        this.offsetX = random(-w / 5 / 2, w / 5 / 2);
-        this.offsetY = random(-h / 5 / 2, h / 5 / 2);
-
-        ctx.font = `${this.font1.size}px bold serif`;
-        ctx.lineWidth = this.line1.width;
-        ctx.strokeStyle = this.color1.color;
-        ctx.fillStyle = this.color2.color;
-        ctx.globalCompositeOperation = 'soft-light';
-
-        this.getTweens();
-
-        this.draw = () => {
-            for (let i = -100; i <= w + 100; i += w / 5) {
-                for (let j = -100; j <= h + 100; j += h / 5) {
-                    ctx.translate(w / 2, h / 2);
-                    ctx.rotate(this.rot);
-                    ctx.translate(-w / 2, -h / 2);
-                    ctx.fillText(this.text, i + this.offsetX, j + this.offsetY);
-                    ctx.strokeText(
-                        this.text,
-                        i + this.offsetX,
-                        j + this.offsetY
-                    );
-                }
-            }
-            t++;
-            if (t % (speed * 400) === 0) {
-                this.rot = random(1, 500);
-            }
-            if (t % 80 === 0) {
-                this.tl.kill();
-                this.text = String.fromCharCode(
-                    this.letters[random(0, this.letters.length)]
-                ).padStart(30, ' ');
-                this.font1 = { size: random(14, 40) };
-                this.font2 = { size: random(60, 150) };
-                this.line1 = { width: 1 };
-                this.line2 = { width: random(4, 12) };
-                this.color1 = { color: randomColor() };
-                this.color2 = { color: randomColor() };
-                this.color3 = { color: randomColor() };
-                this.color4 = { color: randomColor() };
-                this.offsetX = random(-w / 5 / 2, w / 5 / 2);
-                this.offsetY = random(-h / 5 / 2, h / 5 / 2);
-
-                ctx.font = `${this.font1.size}px bold serif`;
-                ctx.lineWidth = this.line1.width;
-                ctx.strokeStyle = this.color1.color;
-                ctx.fillStyle = this.color2.color;
-
-                this.getTweens();
-            }
-            interval = requestAnimationFrame(this.draw);
-        };
-    }
-
-    getTweens() {
-        this.tl = gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'circ' },
-        });
-        this.tl
-            .to(
-                this.font1,
-                {
-                    duration: random(4, 10),
-                    size: this.font2.size,
-                    onUpdate: () =>
-                        (ctx.font = `${this.font1.size}px bold serif`),
-                },
-                '<'
-            )
-            .to(
-                this.color1,
-                {
-                    duration: random(3, 13),
-                    color: this.color3.color,
-                    onUpdate: () => (ctx.strokeStyle = this.color1.color),
-                },
-                '<'
-            )
-            .to(
-                this.color2,
-                {
-                    duration: random(3, 10),
-                    color: this.color1.color,
-                    onUpdate: () => (ctx.fillStyle = this.color2.color),
-                },
-                '<'
-            )
-            .to(
-                this.line1,
-                {
-                    duration: random(2, 10),
-                    width: this.line2.width,
-                    onUpdate: () => (ctx.lineWidth = this.line1.width),
-                },
-                '<'
-            );
-    }
-}
-
 class Projecting {
     constructor() {
         this.tl = null;
