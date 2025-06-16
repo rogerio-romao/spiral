@@ -33,10 +33,10 @@ export default class AccelerationMandala extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(((this.rot + 1) * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvas(this.rot + 1);
         }
+
+        this.t++;
 
         if (this.t % (this.speed * 45) === 0) {
             this.rot++;
@@ -55,8 +55,6 @@ export default class AccelerationMandala extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
