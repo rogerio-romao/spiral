@@ -33,12 +33,18 @@ export default class AlgorithmLoader {
         this.w = w;
         this.h = h;
 
-        this.t = 1; // Time variable or frame counter
+        this.t = 0; // Time variable or frame counter
         this.interval = null; // To store requestAnimationFrame ID
         this.speed = AlgorithmLoader.random(2, 6);
         this.stagger = 0; // Used for staggered animations
 
         this.draw = this.draw.bind(this); // Bind draw method to the instance
+    }
+
+    rotateCanvas(angle) {
+        this.ctx.translate(this.w / 2, this.h / 2);
+        this.ctx.rotate((angle * Math.PI) / 180);
+        this.ctx.translate(-this.w / 2, -this.h / 2);
     }
 
     draw() {

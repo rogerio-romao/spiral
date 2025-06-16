@@ -4,10 +4,20 @@ export default class Abstractions extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeConstantProperties() {
+        this.rotations = [
+            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
+            31, 32, 33, 34, 37, 38, 39, 41, 43,
+        ];
+        this.speed = 3;
     }
 
     initializeProperties() {
@@ -23,14 +33,11 @@ export default class Abstractions extends AL {
         this.pointCy = AL.random(0, this.h);
         this.pointCpCx = AL.random(0, this.w);
         this.pointCpCy = AL.random(0, this.h);
-
-        this.rotations = [
-            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43,
-        ];
         this.rotate = this.rotations[AL.random(0, this.rotations.length)];
+    }
 
-        this.speed = 3;
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 3;
     }
 
     setupDrawingStyles() {
@@ -40,7 +47,6 @@ export default class Abstractions extends AL {
             0.25,
             0.45
         );
-        this.ctx.shadowBlur = 3;
     }
 
     draw() {
@@ -84,36 +90,15 @@ export default class Abstractions extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        if (this.t % (this.speed * 180) === 0) {
-            this.pointAx = AL.random(0, this.w);
-            this.pointAy = AL.random(0, this.h);
-            this.pointCpAx = AL.random(0, this.w);
-            this.pointCpAy = AL.random(0, this.h);
-            this.pointBx = AL.random(0, this.w);
-            this.pointBy = AL.random(0, this.h);
-            this.pointCpBx = AL.random(0, this.w);
-            this.pointCpBy = AL.random(0, this.h);
-            this.pointCx = AL.random(0, this.w);
-            this.pointCy = AL.random(0, this.h);
-            this.pointCpCx = AL.random(0, this.w);
-            this.pointCpCy = AL.random(0, this.h);
-            this.rotate = this.rotations[AL.random(0, this.rotations.length)];
-
-            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-                0,
-                255,
-                0.25,
-                0.45
-            );
-        }
-
-        this.stagger++;
+        this.rotateCanvas(this.rotate);
 
         this.t++;
+        this.stagger++;
+
+        if (this.t % (this.speed * 180) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
+        }
 
         requestAnimationFrame(this.draw);
     }
