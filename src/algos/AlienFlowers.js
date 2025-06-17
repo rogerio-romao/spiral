@@ -95,10 +95,10 @@ export default class AlienFlowers extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 16) === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((AL.random(1, 359) * 180) / Math.PI);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvas(AL.random(1, 359));
         }
 
         if (this.t % (this.speed * 32) === 0) {
@@ -124,8 +124,6 @@ export default class AlienFlowers extends AL {
         if (this.t % (this.speed * 256) === 0) {
             this.ctx.setLineDash([AL.random(1, 100), AL.random(5, 200)]);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
