@@ -76,18 +76,21 @@ export default class AcidStars extends AL {
             this.change = -this.change;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 240) === 0) {
             this.rotate = AL.random(2, 44);
+            this.side = AL.random(30, 300);
+            this.change = this.side / 1.618;
+            this.fontSize = AL.random(12, 20);
+
             this.ctx.beginPath();
+            this.ctx.font = this.fontSize + 'px serif';
             this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(
                 0,
                 255,
                 1
             );
-            this.side = AL.random(30, 300);
-            this.change = this.side / 1.618;
-            this.fontSize = AL.random(12, 20);
-            this.ctx.font = this.fontSize + 'px serif';
         }
 
         if (this.t % (this.speed * 720) === 0) {
@@ -95,8 +98,6 @@ export default class AcidStars extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
