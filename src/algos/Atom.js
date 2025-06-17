@@ -36,20 +36,17 @@ export default class Atom extends AL {
                 this.rate = -this.rate;
             }
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((this.rotate * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
-        }
-
-        if (this.t % (this.speed * 450) === 0) {
-            this.change = 0;
-            this.rate = AL.random(5, 105);
-            this.rotate = AL.random(5, 24);
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(65, 255, 0.5, 1);
+            this.rotateCanvasRadians(this.rotate);
         }
 
         this.t++;
+
+        if (this.t % (this.speed * 450) === 0) {
+            this.initializeProperties();
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = AL.randomColor(65, 255, 0.5, 1);
+        }
 
         requestAnimationFrame(this.draw);
     }
