@@ -10,7 +10,7 @@ import Autumn from './src/algos/Autumn.js';
 import BehindBars from './src/algos/BehindBars.js';
 import BeziersStraight from './src/algos/BeziersStraight.js';
 import BigBangs from './src/algos/BigBangs.js';
-import BlacknWhite from './src/algos/BlackNWhite.js';
+import BlacknWhite from './src/algos/BlacknWhite.js';
 import Blends from './src/algos/Blends.js';
 import Blur from './src/algos/Blur.js';
 import Boxes from './src/algos/Boxes.js';
@@ -391,7 +391,7 @@ const LAST_ALGOS = [];
 function chooseAlgos() {
     let picks = ALGOS.filter((algo) => !LAST_ALGOS.includes(algo));
     // let choose = picks[random(0, picks.length)];
-    let choose = 'big-bangs'; // for testing purposes
+    let choose = 'blur'; // for testing purposes
 
     LAST_ALGOS.push(choose);
     if (LAST_ALGOS.length > 58) LAST_ALGOS.shift();

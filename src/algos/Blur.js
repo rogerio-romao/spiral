@@ -4,10 +4,15 @@ export default class Blur extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeConstantProperties() {
+        this.speed *= 2;
     }
 
     initializeProperties() {
@@ -17,7 +22,6 @@ export default class Blur extends AL {
         this.size = AL.random(8, 40);
         this.factor = AL.random(3, 20);
         this.rotate = AL.random(1, 71);
-        this.speed *= 2;
     }
 
     setupDrawingStyles() {
@@ -38,17 +42,12 @@ export default class Blur extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.rotateCanvasRadians(this.rotate);
+
+        this.t++;
 
         if (this.t % (this.speed * 90) === 0) {
-            this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
-            this.angle = 0;
-            this.size = AL.random(8, 40);
-            this.factor = AL.random(3, 20);
-            this.rotate = AL.random(1, 71);
-            this.circles = AL.random(8, 25);
+            this.initializeProperties();
 
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
         }
@@ -56,8 +55,6 @@ export default class Blur extends AL {
         if (this.t % (this.speed * 630) === 0) {
             this.ctx.strokeStyle = 'black';
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }

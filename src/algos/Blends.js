@@ -45,29 +45,19 @@ export default class Blends extends AL {
                 this.ctx.stroke();
             }
 
-            this.currentShape++;
-            if (this.currentShape > 2) this.currentShape = 0;
+            this.currentShape = AL.random(0, 3);
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((this.rotation * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
-        }
-
-        if (this.t % (this.speed * 270) === 0) {
-            this.rotation = AL.random(2, 140);
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
-            this.x2 = AL.random(0, this.w);
-            this.y2 = AL.random(0, this.h);
-            this.length = AL.random(30, 250);
-
-            this.ctx.beginPath();
-            this.color1 = AL.randomColor(0, 255, 0.025, 0.075);
-            this.color2 = AL.randomColor(0, 255, 0.025, 0.075);
-            this.ctx.strokeStyle = AL.randomColor();
+            this.rotateCanvasRadians(this.rotation);
         }
 
         this.t++;
+
+        if (this.t % (this.speed * 270) === 0) {
+            this.initializeProperties();
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = AL.randomColor();
+        }
 
         requestAnimationFrame(this.draw);
     }

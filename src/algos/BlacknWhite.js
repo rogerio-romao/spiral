@@ -40,9 +40,7 @@ export default class BlacknWhite extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate((AL.random(-180, 180) * Math.PI) / 180);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(AL.random(-180, 180));
             }
 
             if (this.stagger === 2) {
@@ -70,12 +68,12 @@ export default class BlacknWhite extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.globalCompositeOperation =
                 this.modes[AL.random(0, this.modes.length)];
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
