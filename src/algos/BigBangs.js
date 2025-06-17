@@ -5,6 +5,7 @@ export default class BigBangs extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -16,10 +17,13 @@ export default class BigBangs extends AL {
         this.a = AL.random(1, 180);
     }
 
+    setupConstantStyles() {
+        this.ctx.globalCompositeOperation = 'hard-light';
+    }
+
     setupDrawingStyles() {
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.02, 0.05);
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
-        this.ctx.globalCompositeOperation = 'hard-light';
     }
 
     draw() {
@@ -31,18 +35,13 @@ export default class BigBangs extends AL {
             this.r += this.i;
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.a * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.rotateCanvasRadians(this.a);
 
         if (this.r > Math.max(this.w, this.h)) {
-            this.a = AL.random(1, 180);
-            this.r = 1;
-            this.i = AL.random(5, 30);
+            this.initializeProperties();
+            this.setupDrawingStyles();
 
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.02, 0.05);
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
             this.ctx.beginPath();
         }
 
