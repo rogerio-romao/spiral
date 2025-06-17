@@ -17,7 +17,7 @@ export default class BeziersStraight extends AL {
         this.cp1Y = AL.random(0, this.h);
         this.cp2X = AL.random(0, this.w);
         this.cp2Y = AL.random(0, this.h);
-        this.rot = AL.random(1, 21);
+        this.rot = AL.random(2, 25);
     }
 
     setupDrawingStyles() {
@@ -65,25 +65,21 @@ export default class BeziersStraight extends AL {
                 );
                 this.ctx.stroke();
 
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rot);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(this.rot);
             }
 
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 280) === 0) {
             this.ctx.closePath();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.2, 0.2);
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(AL.random(0, 3) * Math.PI);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
-            this.cp2Y = AL.random(0, this.h);
+            this.initializeProperties();
+            this.setupDrawingStyles();
+            this.rotateCanvasRadians(this.rot);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
