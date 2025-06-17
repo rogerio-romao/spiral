@@ -43,7 +43,7 @@ export default class AlphabetSoup extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.rotateCanvas(this.rot1);
+            this.rotateCanvasRadians(this.rot1);
 
             this.ctx.fillText(
                 `${this.letter1} ${this.letter2} ${this.letter3} ${this.letter4}`,

@@ -41,7 +41,7 @@ export default class AlgorithmLoader {
         this.draw = this.draw.bind(this); // Bind draw method to the instance
     }
 
-    rotateCanvas(angle) {
+    rotateCanvasRadians(angle) {
         this.ctx.translate(this.w / 2, this.h / 2);
         this.ctx.rotate((angle * Math.PI) / 180);
         this.ctx.translate(-this.w / 2, -this.h / 2);

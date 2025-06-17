@@ -33,7 +33,7 @@ export default class AccelerationMandala extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
 
-            this.rotateCanvas(this.rot + 1);
+            this.rotateCanvasRadians(this.rot + 1);
         }
 
         this.t++;

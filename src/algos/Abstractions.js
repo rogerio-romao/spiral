@@ -90,7 +90,7 @@ export default class Abstractions extends AL {
             }
         }
 
-        this.rotateCanvas(this.rotate);
+        this.rotateCanvasRadians(this.rotate);
 
         this.t++;
         this.stagger++;
