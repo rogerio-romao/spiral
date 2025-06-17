@@ -32,7 +32,7 @@ export default class AlphabetSoup extends AL {
             this.letters[AL.random(0, this.letters.length)]
         );
 
-        this.rot1 = (AL.random(8, 35) * Math.PI) / 180;
+        this.rot1 = AL.random(8, 35);
     }
 
     setupDrawingStyles() {
@@ -43,9 +43,7 @@ export default class AlphabetSoup extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rot1);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvas(this.rot1);
 
             this.ctx.fillText(
                 `${this.letter1} ${this.letter2} ${this.letter3} ${this.letter4}`,
@@ -54,14 +52,14 @@ export default class AlphabetSoup extends AL {
             );
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 100) === 0) {
-            this.fontChange = AL.random(35, 180);
-            this.ctx.font = `${this.fontChange}px sans-serif`;
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.rot1 = (AL.random(8, 35) * Math.PI) / 180;
+            this.rot1 = AL.random(8, 35);
         }
 
         if (this.t % (this.speed * 400) === 0) {
@@ -78,8 +76,6 @@ export default class AlphabetSoup extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
