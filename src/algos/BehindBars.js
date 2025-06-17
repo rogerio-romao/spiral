@@ -21,7 +21,7 @@ export default class BehindBars extends AL {
         this.ctx.lineWidth = AL.random(3, 75);
         this.ctx.shadowColor = AL.randomColor();
         this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.shadowBlur = this.ctx.lineWidth > 30 ? 30 : this.ctx.lineWidth;
+        this.ctx.shadowBlur = Math.min(30, this.ctx.lineWidth);
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'bevel';
     }
@@ -38,12 +38,13 @@ export default class BehindBars extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 15) === 0) {
             this.ctx.globalCompositeOperation = 'overlay';
             this.ctx.strokeStyle = AL.randomColor();
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+
+            this.rotateCanvasRadians(this.rotate);
         }
 
         if (this.t % (this.speed * 180) === 0) {
@@ -51,12 +52,9 @@ export default class BehindBars extends AL {
 
             this.ctx.globalCompositeOperation = 'source-over';
             this.ctx.lineWidth = AL.random(3, 75);
-            this.ctx.shadowBlur =
-                this.ctx.lineWidth > 30 ? 30 : this.ctx.lineWidth;
+            this.ctx.shadowBlur = Math.min(30, this.ctx.lineWidth);
             this.ctx.shadowColor = AL.randomColor();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
