@@ -52,7 +52,7 @@ export default class Cornucopia extends AL {
             this.setupDrawingStyles();
         }
 
-        this.rotateCanvasDegrees(this.rotate);
+        this.rotateCanvasRadians(this.rotate);
 
         requestAnimationFrame(this.draw);
     }

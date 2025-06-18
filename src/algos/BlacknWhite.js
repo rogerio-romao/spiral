@@ -40,7 +40,7 @@ export default class BlacknWhite extends AL {
             }
 
             if (this.stagger === 1) {
-                this.rotateCanvasRadians(AL.random(-180, 180));
+                this.rotateCanvasDegrees(AL.random(-180, 180));
             }
 
             if (this.stagger === 2) {

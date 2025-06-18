@@ -36,7 +36,7 @@ export default class Atom extends AL {
                 this.rate = -this.rate;
             }
 
-            this.rotateCanvasRadians(this.rotate);
+            this.rotateCanvasDegrees(this.rotate);
         }
 
         this.t++;

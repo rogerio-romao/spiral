@@ -42,7 +42,7 @@ export default class Comets extends AL {
 
             if (this.stagger === 2) {
                 this.change += this.rate;
-                this.rotateCanvasRadians(this.rotate);
+                this.rotateCanvasDegrees(this.rotate);
             }
         }
 

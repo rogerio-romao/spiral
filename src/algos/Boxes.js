@@ -44,7 +44,7 @@ export default class Boxes extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 100) === 0) {
             this.rows = AL.random(3, 17);

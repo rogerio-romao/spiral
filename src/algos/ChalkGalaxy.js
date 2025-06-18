@@ -34,7 +34,7 @@ export default class ChalkGalaxy extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
 
-            this.rotateCanvasDegrees(this.rotate);
+            this.rotateCanvasRadians(this.rotate);
         }
 
         this.t++;

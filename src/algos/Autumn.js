@@ -42,7 +42,7 @@ export default class Autumn extends AL {
             }
         }
 
-        this.rotateCanvasRadians(this.rotate);
+        this.rotateCanvasDegrees(this.rotate);
 
         this.t++;
 

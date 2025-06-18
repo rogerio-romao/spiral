@@ -57,7 +57,7 @@ export default class Coils extends AL {
             this.ctx.closePath();
         }
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasRadians(this.rot);
 
         this.t++;
 

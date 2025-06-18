@@ -45,7 +45,7 @@ export default class CamouflagePostits extends AL {
             this.x = AL.random(0, this.w);
             this.y = AL.random(0, this.h);
 
-            this.rotateCanvasDegrees(AL.random(0, 360));
+            this.rotateCanvasRadians(AL.random(0, 360));
         }
 
         this.t++;

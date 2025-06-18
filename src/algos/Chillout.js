@@ -36,7 +36,7 @@ export default class Chillout extends AL {
             this.ctx.quadraticCurveTo(this.x2, this.y2, this.x1, this.y1);
             this.ctx.stroke();
 
-            this.rotateCanvasDegrees(this.rotate);
+            this.rotateCanvasRadians(this.rotate);
         }
 
         this.t++;

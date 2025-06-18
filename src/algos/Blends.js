@@ -47,7 +47,7 @@ export default class Blends extends AL {
 
             this.currentShape = AL.random(0, 3);
 
-            this.rotateCanvasRadians(this.rotation);
+            this.rotateCanvasDegrees(this.rotation);
         }
 
         this.t++;

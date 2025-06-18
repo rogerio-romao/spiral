@@ -98,7 +98,7 @@ export default class AlienFlowers extends AL {
         this.t++;
 
         if (this.t % (this.speed * 16) === 0) {
-            this.rotateCanvasRadians(AL.random(1, 359));
+            this.rotateCanvasDegrees(AL.random(1, 359));
         }
 
         if (this.t % (this.speed * 32) === 0) {

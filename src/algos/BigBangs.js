@@ -35,7 +35,7 @@ export default class BigBangs extends AL {
             this.r += this.i;
         }
 
-        this.rotateCanvasRadians(this.a);
+        this.rotateCanvasDegrees(this.a);
 
         if (this.r > Math.max(this.w, this.h)) {
             this.initializeProperties();

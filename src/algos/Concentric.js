@@ -62,7 +62,7 @@ export default class Concentric extends AL {
             );
         }
 
-        this.rotateCanvasDegrees(this.angle);
+        this.rotateCanvasRadians(this.angle);
 
         this.t++;
 
