@@ -42,7 +42,7 @@ export default class Blur extends AL {
             }
         }
 
-        this.rotateCanvasRadians(this.rotate);
+        this.rotateCanvasDegrees(this.rotate);
 
         this.t++;
 

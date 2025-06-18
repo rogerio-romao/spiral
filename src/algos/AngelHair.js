@@ -63,7 +63,7 @@ export default class AngelHair extends AL {
             }
 
             if (this.stagger === 3) {
-                this.rotateCanvasRadians(this.rotate);
+                this.rotateCanvasDegrees(this.rotate);
             }
         }
 

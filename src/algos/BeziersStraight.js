@@ -65,7 +65,7 @@ export default class BeziersStraight extends AL {
                 );
                 this.ctx.stroke();
 
-                this.rotateCanvasRadians(this.rot);
+                this.rotateCanvasDegrees(this.rot);
             }
 
             this.stagger++;
@@ -78,7 +78,7 @@ export default class BeziersStraight extends AL {
             this.ctx.beginPath();
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.rotateCanvasRadians(this.rot);
+            this.rotateCanvasDegrees(this.rot);
         }
 
         requestAnimationFrame(this.draw);

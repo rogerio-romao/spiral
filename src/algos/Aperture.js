@@ -54,7 +54,7 @@ export default class Aperture extends AL {
         this.x += this.incX;
         this.height += this.incH;
 
-        this.rotateCanvasRadians(this.rotate);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 300) === 0) {
             if (this.white) {

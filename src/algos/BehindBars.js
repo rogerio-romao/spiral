@@ -44,7 +44,7 @@ export default class BehindBars extends AL {
             this.ctx.globalCompositeOperation = 'overlay';
             this.ctx.strokeStyle = AL.randomColor();
 
-            this.rotateCanvasRadians(this.rotate);
+            this.rotateCanvasDegrees(this.rotate);
         }
 
         if (this.t % (this.speed * 180) === 0) {
