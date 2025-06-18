@@ -58,10 +58,12 @@ export default class Clock extends AL {
             this.ctx.beginPath();
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.font = AL.random(60, 600) + 'px sans-serif';
 
-            let col = Math.random();
+            const col = Math.random();
             if (col < 0.15) {
                 this.ctx.lineWidth = 2;
                 this.ctx.shadowBlur = 12;
@@ -74,6 +76,7 @@ export default class Clock extends AL {
                 this.ctx.lineWidth = 3;
                 this.color = AL.randomColor(0, 255, 0.66, 0.66);
             }
+
             this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
         }
 
@@ -87,8 +90,6 @@ export default class Clock extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
