@@ -12,9 +12,9 @@ export default class Boxes extends AL {
 
     initializeProperties() {
         this.rows = AL.random(3, 17);
-        this.height = this.h / this.rows;
         this.cols = AL.random(3, 17);
         this.width = this.w / this.cols;
+        this.height = this.h / this.rows;
         this.angles = [15, 20, 24, 30, 36, 45, 48, 72, 80, 90];
         this.rot = this.angles[AL.random(0, this.angles.length)];
     }
@@ -42,14 +42,14 @@ export default class Boxes extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 100) === 0) {
+            this.rows = AL.random(3, 17);
             this.cols = AL.random(3, 17);
             this.width = this.w / this.cols;
-            this.rows = AL.random(3, 17);
             this.height = this.h / this.rows;
         }
 
@@ -60,8 +60,6 @@ export default class Boxes extends AL {
         if (this.t % (this.speed * 400) === 0) {
             this.ctx.fillStyle = AL.randomColor(0, 255, 0.075, 0.075);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
