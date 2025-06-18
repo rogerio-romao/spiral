@@ -34,10 +34,10 @@ export default class ChalkGalaxy extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(this.rotate);
         }
+
+        this.t++;
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.strokeStyle = AL.randomColor(170, 255, 0.2, 0.2);
@@ -54,8 +54,6 @@ export default class ChalkGalaxy extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
