@@ -11,20 +11,20 @@ export default class Cornucopia extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(50, this.w - 50);
+        this.y = AL.random(50, this.h - 50);
         this.width = AL.random(15, 240);
         this.height = AL.random(15, 150);
         this.ul = AL.random(4, 35);
         this.ur = AL.random(4, 35);
         this.dl = AL.random(4, 35);
         this.dr = AL.random(4, 35);
-        this.rotate = AL.random(1, 25);
+        this.rotate = AL.random(3, 32);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.025, 0.09);
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.1);
     }
 
     draw() {
@@ -45,26 +45,14 @@ export default class Cornucopia extends AL {
             );
         }
 
-        if (this.t % (this.speed * 210) === 0) {
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
-            this.rotate = AL.random(1, 25);
-            this.width = AL.random(15, 240);
-            this.height = AL.random(15, 150);
-            this.ul = AL.random(4, 35);
-            this.ur = AL.random(4, 35);
-            this.dl = AL.random(4, 35);
-            this.dr = AL.random(4, 35);
+        this.t++;
 
-            this.ctx.strokeStyle = AL.randomColor();
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.025, 0.09);
+        if (this.t % (this.speed * 210) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }
