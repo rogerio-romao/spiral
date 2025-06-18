@@ -31,16 +31,12 @@ export default class CrayonFunnel extends AL {
             this.ctx.stroke();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.x = AL.random(this.w / 3, this.w * 0.66);
-            this.y = AL.random(this.h / 3, this.h * 0.66);
-            this.radius = AL.random(5, 60);
-            this.inc = AL.random(1, 6);
-            this.rotate = AL.random(1, 150);
+            this.initializeProperties();
 
             if (Math.random() < 0.5) {
                 if (Math.random() < 0.5) {
@@ -52,8 +48,6 @@ export default class CrayonFunnel extends AL {
                 this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
             }
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
