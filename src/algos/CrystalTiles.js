@@ -32,6 +32,7 @@ export default class CrystalTiles extends AL {
             'overlay',
         ];
 
+        this.speed = 2;
         this.gray = AL.random(50, 215);
         this.y = 0;
         this.x = 0;
@@ -64,9 +65,7 @@ export default class CrystalTiles extends AL {
                 this.ctx.globalCompositeOperation =
                     this.modes[AL.random(0, this.modes.length)];
 
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rotate);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(this.rotate);
             }
         }
 
