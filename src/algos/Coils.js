@@ -12,6 +12,10 @@ export default class Coils extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.tl = null;
+    }
+
     initializeProperties() {
         this.dur1 = AL.random(5, 20);
         this.dur2 = AL.random(8, 30);
@@ -31,8 +35,6 @@ export default class Coils extends AL {
             radius: AL.random(30, 130),
             color: AL.randomColor(60, 255, 0.6, 1),
         };
-
-        this.tl = null;
     }
 
     setupDrawingStyles() {
@@ -55,36 +57,17 @@ export default class Coils extends AL {
             this.ctx.closePath();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.rotateCanvasDegrees(this.rot);
+
+        this.t++;
 
         if (this.t % (this.speed * 720) === 0) {
             this.tl.kill();
 
-            this.dur1 = AL.random(5, 20);
-            this.dur2 = AL.random(8, 30);
-            this.dur3 = AL.random(10, 40);
-            this.dur4 = AL.random(3, 10);
-            this.rot = AL.random(1, 100);
-
-            this.obj1 = {
-                x: 0,
-                y: 0,
-                radius: AL.random(10, 35),
-                color: AL.randomColor(60, 255, 0.6, 1),
-            };
-            this.obj2 = {
-                x: this.w / 2,
-                y: this.h / 2,
-                radius: AL.random(30, 130),
-                color: AL.randomColor(60, 255, 0.6, 1),
-            };
+            this.initializeProperties();
 
             this.getTweens();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
