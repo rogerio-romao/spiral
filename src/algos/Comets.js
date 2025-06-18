@@ -4,18 +4,21 @@ export default class Comets extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.speed = 1;
+    }
+
     initializeProperties() {
         this.change = 0;
         this.rate = AL.random(1, 7);
         this.rotate = AL.random(3, 13);
-
-        this.speed = 1;
     }
 
     setupDrawingStyles() {
@@ -39,26 +42,18 @@ export default class Comets extends AL {
 
             if (this.stagger === 2) {
                 this.change += this.rate;
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate((this.rotate * Math.PI) / 180);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(this.rotate);
             }
         }
 
-        if (this.t % (this.speed * 720) === 0) {
-            this.change = 0;
-            this.rate = AL.random(1, 7);
-            this.rotate = AL.random(3, 13);
-
-            this.ctx.lineWidth = AL.random(3, 12);
-            this.ctx.shadowBlur = this.ctx.lineWidth;
-            this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
-        }
-
+        this.t++;
         this.stagger++;
 
-        this.t++;
+        if (this.t % (this.speed * 1024) === 0) {
+            this.initializeProperties();
+
+            this.setupDrawingStyles();
+        }
 
         requestAnimationFrame(this.draw);
     }
