@@ -71,18 +71,16 @@ export default class Discos extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 40) === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((30 * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasDegrees(30);
         }
 
         if (this.t % (this.speed * 200) === 0) {
             this.color1 = this.ctx.fillStyle = AL.randomColor(5, 255, 0.5, 0.5);
             this.color2 = AL.randomColor(5, 255, 0.5, 0.5);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
