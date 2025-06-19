@@ -5,6 +5,7 @@ export default class Division extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -17,11 +18,15 @@ export default class Division extends AL {
         this.size = AL.random(3, 24);
     }
 
+    setupConstantStyles() {
+        this.ctx.shadowColor = 'white';
+        this.ctx.shadowBlur = 7;
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = 'white';
         this.ctx.fillStyle = AL.randomColor();
-        this.ctx.shadowBlur = 7;
     }
 
     draw() {
@@ -38,19 +43,15 @@ export default class Division extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 40) === 0) {
-            this.radius = AL.random(25, Math.min(this.w, this.h) / 2);
-            this.angle = 0;
-            this.circles = AL.random(5, 30);
-            this.size = AL.random(3, 24);
+            this.initializeProperties();
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.ctx.strokeStyle = AL.randomColor();
-            this.ctx.fillStyle = AL.randomColor();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
