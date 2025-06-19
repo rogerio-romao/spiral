@@ -24,7 +24,7 @@ export default class DigitalArt extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            let letter = this.t % 2 ? '0' : '1';
+            const letter = this.t % 2 ? '0' : '1';
             if (this.t % 2) {
                 this.ctx.font = `${this.size * 2}px serif`;
                 this.ctx.textAlign = 'left';
@@ -41,24 +41,21 @@ export default class DigitalArt extends AL {
             this.ctx.fillText(letter, this.x, this.y);
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 90) === 0) {
             this.x = AL.random(75, this.w - 75);
             this.y = AL.random(30, this.h - 30);
             this.size = AL.random(12, 36);
 
-            this.ctx.font = `${this.size}px serif`;
-            this.ctx.fillStyle = AL.randomColor();
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 450) === 0) {
             this.rot = AL.random(3, 40);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
