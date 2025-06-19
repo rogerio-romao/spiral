@@ -4,10 +4,20 @@ export default class EpicRays extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeConstantProperties() {
+        this.speed = 3;
+        this.rotations = [
+            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
+            31, 32, 33, 34, 37, 38, 39, 41, 43,
+        ];
+        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
     }
 
     initializeProperties() {
@@ -17,17 +27,10 @@ export default class EpicRays extends AL {
         this.pointBy = AL.random(0, this.h);
         this.pointCx = AL.random(0, this.w);
         this.pointCy = AL.random(0, this.h);
-
-        this.rotations = [
-            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43,
-        ];
-        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(40, 255, 0.25, 0.5);
-        this.speed = 3;
     }
 
     draw() {
@@ -56,23 +59,16 @@ export default class EpicRays extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        if (this.t % (this.speed * 300) === 0) {
-            this.ctx.strokeStyle = AL.randomColor(40, 255, 0.25, 0.5);
-            this.pointAx = AL.random(0, this.w);
-            this.pointAy = AL.random(0, this.h);
-            this.pointBx = AL.random(0, this.w);
-            this.pointBy = AL.random(0, this.h);
-            this.pointCx = AL.random(0, this.w);
-            this.pointCy = AL.random(0, this.h);
-        }
+        this.t++;
 
         this.stagger++;
 
-        this.t++;
+        this.rotateCanvasDegrees(this.rotate);
+
+        if (this.t % (this.speed * 300) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
+        }
 
         requestAnimationFrame(this.draw);
     }
