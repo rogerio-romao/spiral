@@ -42,10 +42,12 @@ export default class DysonSpheres extends AL {
             this.ctx.stroke();
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 170) === 0) {
             this.ctx.beginPath();
 
-            let color = Math.random();
+            const color = Math.random();
             if (color < 0.2) {
                 this.ctx.shadowBlur = 1;
                 this.ctx.shadowOffsetX = 0;
@@ -71,8 +73,6 @@ export default class DysonSpheres extends AL {
         }
 
         this.rot1 = AL.random(0, 360);
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
