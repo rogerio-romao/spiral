@@ -4,7 +4,9 @@ export default class Dye extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.getTweens();
@@ -12,22 +14,26 @@ export default class Dye extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             3405, 3423, 3424, 3437, 3442, 3443, 3444, 3458, 3459, 3461, 3465,
             3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493,
         ];
+
+        this.tl = null;
+
+        this.rot = AL.random(1, 500);
+    }
+
+    initializeProperties() {
         this.text = String.fromCharCode(
             this.letters[AL.random(0, this.letters.length)]
         ).padStart(30, ' ');
-
-        this.tl = null;
 
         this.font1 = { size: AL.random(14, 40) };
         this.font2 = { size: AL.random(60, 150) };
         this.line1 = { width: 1 };
         this.line2 = { width: AL.random(4, 12) };
-        this.rot = AL.random(1, 500);
         this.color1 = { color: AL.randomColor() };
         this.color2 = { color: AL.randomColor() };
         this.color3 = { color: AL.randomColor() };
@@ -36,20 +42,21 @@ export default class Dye extends AL {
         this.offsetY = AL.random(-this.h / 5 / 2, this.h / 5 / 2);
     }
 
+    setupConstantStyles() {
+        this.ctx.globalCompositeOperation = 'soft-light';
+    }
+
     setupDrawingStyles() {
         this.ctx.font = `${this.font1.size}px bold serif`;
         this.ctx.lineWidth = this.line1.width;
         this.ctx.strokeStyle = this.color1.color;
         this.ctx.fillStyle = this.color2.color;
-        this.ctx.globalCompositeOperation = 'soft-light';
     }
 
     draw() {
         for (let i = -100; i <= this.w + 100; i += this.w / 5) {
             for (let j = -100; j <= this.h + 100; j += this.h / 5) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rot);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(this.rot);
 
                 this.ctx.fillText(
                     this.text,
@@ -64,36 +71,18 @@ export default class Dye extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 400) === 0) {
             this.rot = AL.random(1, 500);
         }
 
         if (this.t % 80 === 0) {
             this.tl.kill();
-
-            this.text = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
-            ).padStart(30, ' ');
-            this.font1.size = AL.random(14, 40);
-            this.font2.size = AL.random(60, 150);
-            this.line1.width = 1;
-            this.line2.width = AL.random(4, 12);
-            this.color1.color = AL.randomColor();
-            this.color2.color = AL.randomColor();
-            this.color3.color = AL.randomColor();
-            this.color4.color = AL.randomColor();
-            this.offsetX = AL.random(-this.w / 5 / 2, this.w / 5 / 2);
-            this.offsetY = AL.random(-this.h / 5 / 2, this.h / 5 / 2);
-
-            this.ctx.font = `${this.font1.size}px bold serif`;
-            this.ctx.lineWidth = this.line1.width;
-            this.ctx.strokeStyle = this.color1.color;
-            this.ctx.fillStyle = this.color2.color;
-
+            this.initializeProperties();
+            this.setupDrawingStyles();
             this.getTweens();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
