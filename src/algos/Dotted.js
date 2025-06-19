@@ -46,17 +46,15 @@ export default class Dotted extends AL {
                 this.ctx.lineTo(this.vx1, this.vy1);
                 this.ctx.stroke();
 
+                this.initializeProperties();
+
                 this.ctx.beginPath();
-                this.vx1 = AL.random(0, this.w);
-                this.vx2 = AL.random(0, this.w);
-                this.vx3 = AL.random(0, this.w);
-                this.vy1 = AL.random(0, this.h);
-                this.vy2 = AL.random(0, this.h);
-                this.vy3 = AL.random(0, this.h);
             }
 
             this.stagger++;
         }
+
+        this.t++;
 
         if (this.t % (this.speed * 5) === 0) {
             this.ctx.fillRect(0, 0, this.w, this.h);
@@ -74,8 +72,6 @@ export default class Dotted extends AL {
         if (this.t % (this.speed * 280) === 0) {
             this.ctx.strokeStyle = AL.randomColor(5, 255, 0.75, 0.75);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
