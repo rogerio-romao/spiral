@@ -59,34 +59,16 @@ export default class FadeIn extends AL {
             this.dy += this.c8;
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.x1 = AL.random(0, this.w);
-            this.y1 = AL.random(0, this.h);
-            this.c1 = AL.random(-2, 2);
-            this.c2 = AL.random(-2, 2);
-            this.x2 = AL.random(0, this.w);
-            this.y2 = AL.random(0, this.h);
-            this.c3 = AL.random(-2, 2);
-            this.c4 = AL.random(-2, 2);
-            this.ox = AL.random(0, this.w);
-            this.oy = AL.random(0, this.h);
-            this.c5 = AL.random(-2, 2);
-            this.c6 = AL.random(-2, 2);
-            this.dx = AL.random(0, this.w);
-            this.dy = AL.random(0, this.h);
-            this.c7 = AL.random(-2, 2);
-            this.c8 = AL.random(-2, 2);
-            this.rotate = AL.random(1, 359);
+            this.initializeProperties();
 
-            this.ctx.beginPath();
             this.ctx.strokeStyle = AL.randomColor();
+            this.ctx.beginPath();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
