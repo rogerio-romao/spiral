@@ -43,10 +43,10 @@ export default class EvolvingMandala extends AL {
                 this.h / 2
             );
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((this.rot * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasDegrees(this.rot);
         }
+
+        this.t++;
 
         if (this.t % (this.speed * 45) === 0) {
             const pick = Math.random();
@@ -71,8 +71,6 @@ export default class EvolvingMandala extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
