@@ -4,7 +4,9 @@ export default class GenesisTypewriter extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.getTweens();
@@ -12,9 +14,12 @@ export default class GenesisTypewriter extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.tl = null;
         this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    }
+
+    initializeProperties() {
         this.text = this.letters[AL.random(0, this.letters.length)];
         this.font1 = { size: AL.random(20, 100) };
         this.font2 = { size: AL.random(160, 600) };
@@ -26,44 +31,35 @@ export default class GenesisTypewriter extends AL {
         this.rot2 = { angle: AL.random(1, 44) };
     }
 
+    setupConstantStyles() {
+        this.ctx.strokeStyle = 'white';
+        this.ctx.fillStyle = 'black';
+    }
+
     setupDrawingStyles() {
         this.ctx.font = `${this.font1.size}px bold serif`;
         this.ctx.lineWidth = this.line1.width;
-        this.ctx.strokeStyle = 'white';
-        this.ctx.fillStyle = 'black';
     }
 
     draw() {
         this.ctx.fillText(this.text, this.pos1.x, this.pos1.y);
         this.ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
 
+        this.t++;
+
         if (this.t % 1000 === 0) {
             this.tl.kill();
 
-            this.text = this.letters[AL.random(0, this.letters.length)];
-            this.font1 = { size: AL.random(20, 100) };
-            this.font2 = { size: AL.random(160, 600) };
-            this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
-            this.pos2 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
-            this.line1 = { width: 1 };
-            this.line2 = { width: AL.random(3, 7) };
-            this.rot1 = { angle: AL.random(1, 44) };
-            this.rot2 = { angle: AL.random(1, 44) };
+            this.initializeProperties();
 
-            this.ctx.font = `${this.font1.size}px bold serif`;
-            this.ctx.lineWidth = this.line1.width;
+            this.setupDrawingStyles();
             this.ctx.strokeStyle =
                 Math.random() < 0.25 ? 'white' : AL.randomColor();
-            this.ctx.fillStyle = 'black';
 
             this.getTweens();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot1.angle * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasDegrees(this.rot1.angle);
 
         requestAnimationFrame(this.draw);
     }
