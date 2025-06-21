@@ -4,22 +4,30 @@ export default class Fruits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.cellSizes = [50, 100, 150, 200, 250, 300];
+    }
+
     initializeProperties() {
         this.row = 0;
         this.col = 0;
-        this.cellSizes = [50, 100, 150, 200, 250, 300];
         this.cell = this.cellSizes[AL.random(0, this.cellSizes.length)];
         this.size = AL.random(10, 100);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.strokeStyle = 'black';
+    }
+
+    setupDrawingStyles() {
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.33);
     }
 
@@ -42,13 +50,9 @@ export default class Fruits extends AL {
                 this.row++;
             }
             if (this.row * this.cell - this.cell * 2 > this.h) {
+                this.initializeProperties();
+                this.setupDrawingStyles();
                 this.ctx.beginPath();
-                this.col = 0;
-                this.row = 0;
-                this.cell = this.cellSizes[AL.random(0, this.cellSizes.length)];
-                this.size = AL.random(10, 100);
-                this.ctx.beginPath();
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.33);
             }
         }
 
