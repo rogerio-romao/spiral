@@ -36,15 +36,14 @@ export default class Geometer extends AL {
                 this.rate = -this.rate;
             }
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((this.rotate * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(this.rotate);
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 180) === 0) {
-            this.change = 0;
-            this.rate = AL.random(25, 250);
-            this.rotate = AL.random(23, 179);
+            this.initializeProperties();
+
             this.ctx.beginPath();
             this.ctx.lineWidth = AL.random(2, 7);
 
@@ -60,8 +59,6 @@ export default class Geometer extends AL {
                 this.ctx.shadowColor = 'black';
             }
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
