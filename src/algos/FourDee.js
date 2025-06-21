@@ -4,14 +4,18 @@ export default class FourDee extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
+    }
+
+    initializeProperties() {
         this.weight = AL.createParticle(
             AL.random(0, this.w),
             AL.random(0, this.h),
@@ -20,7 +24,7 @@ export default class FourDee extends AL {
         );
         this.weight.radius = 20;
         this.rot = AL.random(-90, -1);
-        this.k = 0.1;
+        this.k = Math.random();
     }
 
     setupDrawingStyles() {
@@ -51,27 +55,17 @@ export default class FourDee extends AL {
             this.ctx.fill();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 540) === 0) {
             this.ctx.fillStyle = 'black';
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
             this.ctx.fillStyle = AL.randomColor(40, 255, 0.1, 0.25);
 
-            this.weight = AL.createParticle(
-                AL.random(0, this.w),
-                AL.random(0, this.h),
-                AL.random(-50, 50),
-                AL.random(-360, 360)
-            );
-            this.weight.radius = 20;
-            this.k = Math.random();
-            this.rot = AL.random(-90, -1);
+            this.initializeProperties();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
