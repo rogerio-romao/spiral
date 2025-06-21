@@ -45,26 +45,14 @@ export default class GasClouds extends AL {
             );
         }
 
-        if (this.t % (this.speed * 240) === 0) {
-            this.width = AL.random(0, this.w / 2);
-            this.height = AL.random(0, this.h / 2);
-            this.ul = AL.random(0, 300);
-            this.ur = AL.random(0, 300);
-            this.dl = AL.random(0, 300);
-            this.dr = AL.random(0, 300);
-            this.x = 0;
-            this.y = 0;
-            this.rotate = AL.random(1, 200);
+        this.t++;
 
-            this.ctx.strokeStyle = AL.randomColor(0, 150, 0.2, 0.5);
-            this.ctx.fillStyle = AL.randomColor(25, 255, 0.02, 0.04);
+        if (this.t % (this.speed * 240) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasRadians(this.rotate);
 
         requestAnimationFrame(this.draw);
     }
