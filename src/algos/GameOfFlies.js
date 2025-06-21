@@ -5,7 +5,6 @@ export default class GameOfFlies extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
-        this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
@@ -22,10 +21,6 @@ export default class GameOfFlies extends AL {
         this.particles = [this.p];
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
         this.k = 0.14;
-    }
-
-    setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(60, 255, 0.5, 1);
     }
 
     draw() {
@@ -57,6 +52,8 @@ export default class GameOfFlies extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 130) === 0) {
             const newParticle = AL.createParticle(
                 AL.random(0, this.w),
@@ -68,8 +65,6 @@ export default class GameOfFlies extends AL {
             newParticle.color = AL.randomColor(60, 255, 0.5, 1);
             this.particles.push(newParticle);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
