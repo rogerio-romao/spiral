@@ -35,10 +35,10 @@ export default class Gridlock extends AL {
             this.gap += this.inc;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 150) === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(AL.random(1, 99));
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(AL.random(1, 99));
 
             this.gap = AL.random(5, 70);
             this.inc = this.gap;
@@ -52,8 +52,6 @@ export default class Gridlock extends AL {
             this.ctx.lineWidth = AL.random(1, 7);
             this.ctx.beginPath();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
