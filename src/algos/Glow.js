@@ -32,9 +32,9 @@ export default class Glow extends AL {
             this.ctx.fillRect(this.w / 2 - this.margin2, 0, this.w, this.h);
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 60) === 0) {
             this.margin1 = AL.random(25, this.w / 4);
@@ -51,8 +51,6 @@ export default class Glow extends AL {
             this.ctx.globalCompositeOperation =
                 this.modes[AL.random(0, this.modes.length)];
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
