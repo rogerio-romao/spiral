@@ -34,6 +34,8 @@ export default class Glowsticks extends AL {
             if (this.y < 0) this.x = this.h;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 900) === 0) {
             this.initializeProperties();
 
@@ -42,11 +44,7 @@ export default class Glowsticks extends AL {
             this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasRadians(this.rot);
 
         requestAnimationFrame(this.draw);
     }
