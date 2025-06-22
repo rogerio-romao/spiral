@@ -37,25 +37,17 @@ export default class Hallucinate extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.rows = AL.random(3, 17);
-            this.rot = AL.random(1, 180);
-            this.height = this.h / this.rows;
-            this.colors = [];
-            for (let i = 0; i <= this.rows; i++) {
-                this.colors.push(AL.randomColor());
-            }
+            this.initializeProperties();
         }
 
         if (this.t % (this.speed * 750) === 0) {
             this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
