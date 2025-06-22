@@ -4,13 +4,15 @@ export default class Harmonie extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924,
             2925, 2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947,
@@ -23,17 +25,22 @@ export default class Harmonie extends AL {
         this.letter2 = String.fromCharCode(
             this.letters[AL.random(0, this.letters.length)]
         );
+    }
 
+    initializeProperties() {
         this.x = AL.random(40, this.w - 40);
         this.y = AL.random(25, this.h - 25);
         this.size = AL.random(20, 55);
         this.rot = 23;
     }
 
+    setupConstantStyles() {
+        this.ctx.textAlign = 'center';
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(35, 210, 0.2, 0.65);
         this.ctx.fillStyle = AL.randomColor(35, 210, 0.2, 0.65);
-        this.ctx.textAlign = 'center';
         this.ctx.font = `${this.size}px serif`;
     }
 
@@ -47,9 +54,9 @@ export default class Harmonie extends AL {
             this.ctx.font = `${this.size}px serif`;
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 180) === 0) {
             this.size = AL.random(20, 55);
@@ -57,9 +64,7 @@ export default class Harmonie extends AL {
             this.y = AL.random(25, this.h - 25);
             this.rot = AL.random(1, 400);
 
-            this.ctx.font = `${this.size}px serif`;
-            this.ctx.strokeStyle = AL.randomColor(35, 210, 0.2, 0.65);
-            this.ctx.fillStyle = AL.randomColor(35, 210, 0.2, 0.65);
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 900) === 0) {
@@ -70,8 +75,6 @@ export default class Harmonie extends AL {
                 this.letters[AL.random(0, this.letters.length)]
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
