@@ -71,11 +71,10 @@ export default class Hubble extends AL {
             }
             this.currentVal = this.seq[this.index];
         }
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
 
         this.t++;
+
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }
