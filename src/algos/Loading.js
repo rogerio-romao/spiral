@@ -4,19 +4,23 @@ export default class Loading extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.counter = false;
+        this.color = AL.randomColor(60, 255, 0.75, 1);
+    }
+
     initializeProperties() {
         this.rot = AL.random(2, 45);
         this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
-        this.counter = false;
         this.width1 = AL.random(4, 51);
         this.width2 = AL.random(4, 51);
-        this.color = AL.randomColor(60, 255, 0.75, 1);
     }
 
     setupDrawingStyles() {
@@ -44,18 +48,13 @@ export default class Loading extends AL {
             this.ctx.stroke();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 45) === 0) {
-            this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
-            this.rot = AL.random(2, 45);
-            this.width1 = AL.random(4, 51);
-            this.width2 = AL.random(4, 51);
+            this.initializeProperties();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
