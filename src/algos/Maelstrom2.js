@@ -5,6 +5,7 @@ export default class Maelstrom2 extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -22,8 +23,11 @@ export default class Maelstrom2 extends AL {
         this.angle = AL.random(10, 350);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.lineWidth = 0.5;
+    }
+
+    setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 1);
         this.ctx.fillStyle = AL.randomColor(0, 160, 0.05, 0.15);
     }
@@ -54,30 +58,19 @@ export default class Maelstrom2 extends AL {
             }
 
             this.ctx.stroke();
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((this.angle * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
-        }
-
-        if (this.t % (this.speed * 240) === 0) {
-            this.cp1 = AL.random(0, this.w);
-            this.cp2 = AL.random(0, this.h);
-            this.x1 = AL.random(0, this.w);
-            this.y1 = AL.random(0, this.h);
-            this.alter1 = AL.random(-5, 5);
-            this.alter2 = AL.random(-5, 5);
-            this.alter3 = AL.random(-5, 5);
-            this.alter4 = AL.random(-5, 5);
-            this.angle = AL.random(10, 350);
-
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 1);
-            this.ctx.fillStyle = AL.randomColor(0, 160, 0.05, 0.15);
+            this.rotateCanvasDegrees(this.angle);
         }
 
         this.t++;
+
+        if (this.t % (this.speed * 240) === 0) {
+            this.initializeProperties();
+
+            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.ctx.beginPath();
+
+            this.setupDrawingStyles();
+        }
 
         requestAnimationFrame(this.draw);
     }
