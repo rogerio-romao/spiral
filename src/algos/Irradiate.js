@@ -41,25 +41,17 @@ export default class Irradiate extends AL {
             );
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.width = AL.random(50, this.w / 2);
-            this.height = AL.random(50, this.h / 2);
-            this.rotate = AL.random(1, 181);
-            this.ul = AL.random(10, Math.min(this.w, this.h));
-            this.ur = AL.random(10, Math.min(this.w, this.h));
-            this.ll = AL.random(10, Math.min(this.w, this.h));
-            this.lr = AL.random(10, Math.min(this.w, this.h));
+            this.initializeProperties();
 
             this.ctx.beginPath();
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
         }
 
-        this.t++;
-
-        this.interval = requestAnimationFrame(this.draw);
+        requestAnimationFrame(this.draw);
     }
 }
