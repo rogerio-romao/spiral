@@ -4,25 +4,33 @@ export default class Hive extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.angles = [9, 10, 12, 16, 20, 30, 36, 45, 60];
+    }
+
     initializeProperties() {
         this.rows = AL.random(3, 10);
         this.height = this.h / this.rows;
-        this.angles = [9, 10, 12, 16, 20, 30, 36, 45, 60];
         this.rot = this.angles[AL.random(1, this.angles.length)];
+    }
+
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 7;
+        this.ctx.lineWidth = AL.random(7, 18);
     }
 
     setupDrawingStyles() {
         this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = AL.randomColor();
-        this.ctx.shadowBlur = 7;
-        this.ctx.lineWidth = AL.random(7, 18);
     }
 
     draw() {
@@ -37,18 +45,13 @@ export default class Hive extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 125) === 0) {
-            this.rows = AL.random(3, 10);
-            this.rot = this.angles[AL.random(1, this.angles.length)];
-            this.height = this.h / this.rows;
-
-            this.ctx.strokeStyle = AL.randomColor();
-            this.ctx.shadowColor = AL.randomColor();
-            this.ctx.globalCompositeOperation = 'overlay';
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 500) === 0) {
@@ -58,8 +61,6 @@ export default class Hive extends AL {
         if (this.t % (this.speed * 1500) === 0) {
             this.ctx.globalCompositeOperation = 'hard-light';
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
