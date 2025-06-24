@@ -4,21 +4,22 @@ export default class Matter extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.rotations = [
             1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22,
             23, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42,
             43, 44, 45,
         ];
-        this.rotate =
-            this.rotations[Math.floor(Math.random() * this.rotations.length)];
+    }
 
+    initializeProperties() {
         this.x1 = this.w / 2;
         this.y1 = this.h / 2;
         this.radius1 = AL.random(5, 150);
@@ -28,6 +29,7 @@ export default class Matter extends AL {
         this.x3 = AL.random(0, this.w);
         this.y3 = AL.random(0, this.h);
         this.radius3 = AL.random(5, 150);
+        this.rotate = AL.pickRandomElement(this.rotations);
     }
 
     setupDrawingStyles() {
@@ -47,26 +49,14 @@ export default class Matter extends AL {
             this.ctx.fill();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 120) === 0) {
-            this.x1 = AL.random(0, this.w);
-            this.y1 = AL.random(0, this.h);
-            this.radius1 = AL.random(5, 150);
-            this.x2 = AL.random(0, this.w);
-            this.y2 = AL.random(0, this.h);
-            this.radius2 = AL.random(5, 150);
-            this.x3 = AL.random(0, this.w);
-            this.y3 = AL.random(0, this.h);
-            this.radius3 = AL.random(5, 150);
-            this.rotate = AL.random(1, 61);
-
-            this.ctx.fillStyle = AL.randomColor(10, 255, 0.02, 0.07);
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }

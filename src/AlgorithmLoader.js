@@ -28,6 +28,10 @@ export default class AlgorithmLoader {
         return new Particle(x, y, speed, direction, grav);
     }
 
+    static pickRandomElement(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
     constructor(ctx, w, h) {
         this.ctx = ctx;
         this.w = w;
