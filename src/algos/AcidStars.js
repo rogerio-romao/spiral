@@ -19,9 +19,7 @@ export default class AcidStars extends AL {
             1672, 1673, 1674, 1675, 1677, 1678, 1680, 1682, 1683, 1686, 1690,
             1691, 1693, 1695, 1697,
         ];
-        this.letter = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
         this.side = AL.random(30, 300);
         this.change = this.side / 1.618;
@@ -95,7 +93,7 @@ export default class AcidStars extends AL {
 
         if (this.t % (this.speed * 720) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
 

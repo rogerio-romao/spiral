@@ -20,7 +20,7 @@ export default class Majestic extends AL {
     }
 
     initializeProperties() {
-        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
+        this.rotate = AL.pickRandomElement(this.rotations);
         this.x = AL.random(40, this.w - 40);
         this.y = AL.random(40, this.h - 40);
         this.width = AL.random(30, this.w - 100);

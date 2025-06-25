@@ -17,9 +17,7 @@ export default class ChalkGalaxy extends AL {
             1440, 1441, 1470, 1472, 1475, 1478, 1490, 1491, 1492, 1493, 1495,
             1499, 1500, 10157,
         ];
-        this.letter = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
         this.rotate = AL.random(1, 179);
     }
 
@@ -51,7 +49,7 @@ export default class ChalkGalaxy extends AL {
 
         if (this.t % (this.speed * 1000) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
 

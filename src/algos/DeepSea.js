@@ -19,7 +19,7 @@ export default class DeepSea extends AL {
     }
 
     initializeProperties() {
-        this.rot = this.rotations[AL.random(0, this.rotations.length)];
+        this.rot = AL.pickRandomElement(this.rotations);
         this.startX = AL.random(0, this.w);
         this.startY = AL.random(0, this.h);
         this.cp1x = AL.random(0, this.w);

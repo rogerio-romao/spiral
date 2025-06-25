@@ -20,7 +20,7 @@ export default class Germinate extends AL {
     }
 
     initializeProperties() {
-        this.rotate = this.angles[AL.random(0, this.angles.length)];
+        this.rotate = AL.pickRandomElement(this.angles);
         this.width = AL.random(35, this.w * 0.8);
         this.height = AL.random(35, this.h * 0.8);
         this.ul = AL.random(4, 115);

@@ -16,7 +16,7 @@ export default class Boxes extends AL {
         this.width = this.w / this.cols;
         this.height = this.h / this.rows;
         this.angles = [15, 20, 24, 30, 36, 45, 48, 72, 80, 90];
-        this.rot = this.angles[AL.random(0, this.angles.length)];
+        this.rot = AL.pickRandomElement(this.angles);
     }
 
     setupDrawingStyles() {

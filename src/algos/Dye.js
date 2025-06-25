@@ -27,7 +27,7 @@ export default class Dye extends AL {
 
     initializeProperties() {
         this.text = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
+            AL.pickRandomElement(this.letters)
         ).padStart(30, ' ');
 
         this.font1 = { size: AL.random(14, 40) };

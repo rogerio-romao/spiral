@@ -51,7 +51,6 @@ export default class Comets extends AL {
 
         if (this.t % (this.speed * 1024) === 0) {
             this.initializeProperties();
-
             this.setupDrawingStyles();
         }
 

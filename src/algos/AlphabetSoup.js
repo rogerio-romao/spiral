@@ -19,18 +19,10 @@ export default class AlphabetSoup extends AL {
             1373, 1374, 1375, 1376, 1377, 1378, 1383, 1384, 1385, 1386, 1388,
             1390, 1392, 1393, 1397, 1399, 1400,
         ];
-        this.letter1 = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
-        this.letter2 = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
-        this.letter3 = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
-        this.letter4 = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.letter1 = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter2 = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter3 = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter4 = String.fromCharCode(AL.pickRandomElement(this.letters));
 
         this.rot1 = AL.random(8, 35);
     }
@@ -64,16 +56,16 @@ export default class AlphabetSoup extends AL {
 
         if (this.t % (this.speed * 400) === 0) {
             this.letter1 = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
             this.letter2 = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
             this.letter3 = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
             this.letter4 = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
 

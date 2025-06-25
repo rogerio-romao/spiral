@@ -33,7 +33,7 @@ export default class Abstractions extends AL {
         this.pointCy = AL.random(0, this.h);
         this.pointCpCx = AL.random(0, this.w);
         this.pointCpCy = AL.random(0, this.h);
-        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
+        this.rotate = AL.pickRandomElement(this.rotations);
     }
 
     setupConstantStyles() {
@@ -90,10 +90,10 @@ export default class Abstractions extends AL {
             }
         }
 
-        this.rotateCanvasDegrees(this.rotate);
-
         this.t++;
         this.stagger++;
+
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();

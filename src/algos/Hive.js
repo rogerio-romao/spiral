@@ -19,7 +19,7 @@ export default class Hive extends AL {
     initializeProperties() {
         this.rows = AL.random(3, 10);
         this.height = this.h / this.rows;
-        this.rot = this.angles[AL.random(1, this.angles.length)];
+        this.rot = AL.pickRandomElement(this.angles);
     }
 
     setupConstantStyles() {

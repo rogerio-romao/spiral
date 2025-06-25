@@ -72,8 +72,9 @@ export default class CamouflagePostits extends AL {
 
         if (this.t % (this.speed * 100) === 0) {
             this.rot1 = AL.random(0, 360);
-            this.ctx.globalCompositeOperation =
-                this.modes[AL.random(0, this.modes.length - 1)];
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(
+                this.modes
+            );
         }
 
         requestAnimationFrame(this.draw);

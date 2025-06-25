@@ -21,9 +21,7 @@ export default class EvolvingMandala extends AL {
             1254, 1255, 1261, 1262, 1265, 1266, 1267, 1269, 1270, 1271, 1273,
             1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
         ];
-        this.letter = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
         this.rot = AL.random(4, 356);
         this.speed *= 2;
@@ -68,7 +66,7 @@ export default class EvolvingMandala extends AL {
         if (this.t % (this.speed * 360) === 0) {
             this.rot = AL.random(4, 356);
             this.letter = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
 

@@ -71,8 +71,9 @@ export default class BlacknWhite extends AL {
         this.t++;
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.globalCompositeOperation =
-                this.modes[AL.random(0, this.modes.length)];
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(
+                this.modes
+            );
         }
 
         requestAnimationFrame(this.draw);

@@ -62,8 +62,9 @@ export default class CrystalTiles extends AL {
                 this.y = 0;
                 this.size = AL.random(35, 150);
 
-                this.ctx.globalCompositeOperation =
-                    this.modes[AL.random(0, this.modes.length)];
+                this.ctx.globalCompositeOperation = AL.pickRandomElement(
+                    this.modes
+                );
 
                 this.rotateCanvasRadians(this.rotate);
             }

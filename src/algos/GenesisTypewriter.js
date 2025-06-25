@@ -20,7 +20,7 @@ export default class GenesisTypewriter extends AL {
     }
 
     initializeProperties() {
-        this.text = this.letters[AL.random(0, this.letters.length)];
+        this.text = AL.pickRandomElement(this.letters);
         this.font1 = { size: AL.random(20, 100) };
         this.font2 = { size: AL.random(160, 600) };
         this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };

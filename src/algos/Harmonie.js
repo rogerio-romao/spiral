@@ -19,12 +19,8 @@ export default class Harmonie extends AL {
             2949, 2952, 2953, 2960, 2962, 2970, 2972, 2975, 2980, 2984, 2986,
             2990, 2991, 2992, 2994, 2997, 2998,
         ];
-        this.letter1 = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
-        this.letter2 = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.letter1 = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter2 = String.fromCharCode(AL.pickRandomElement(this.letters));
     }
 
     initializeProperties() {
@@ -69,10 +65,10 @@ export default class Harmonie extends AL {
 
         if (this.t % (this.speed * 900) === 0) {
             this.letter1 = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
             this.letter2 = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
 

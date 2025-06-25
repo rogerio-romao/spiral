@@ -103,8 +103,9 @@ export default class AlienFlowers extends AL {
 
         if (this.t % (this.speed * 32) === 0) {
             this.ctx.beginPath();
-            this.ctx.globalCompositeOperation =
-                this.modes[AL.random(0, this.modes.length)];
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(
+                this.modes
+            );
         }
 
         if (this.t % (this.speed * 64) === 0) {
