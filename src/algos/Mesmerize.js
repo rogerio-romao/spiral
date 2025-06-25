@@ -84,9 +84,9 @@ export default class Mesmerize extends AL {
             );
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 1620) === 0) {
             this.tl.kill();
@@ -98,8 +98,6 @@ export default class Mesmerize extends AL {
 
             this.getTweens();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
