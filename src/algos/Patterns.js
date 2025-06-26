@@ -42,6 +42,8 @@ export default class Patterns extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 40) === 0) {
             this.radius = AL.random(10, 250);
 
@@ -61,8 +63,6 @@ export default class Patterns extends AL {
             this.ctx.globalCompositeOperation = 'overlay';
             this.ctx.strokeStyle = 'white';
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
