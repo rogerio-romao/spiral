@@ -111,40 +111,16 @@ export default class ParallelUniverses extends AL {
                 );
             }
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(this.rotate);
         }
 
-        if (this.t % (this.speed * 200) === 0) {
-            this.rounded1 = AL.random(5, 250);
-            this.rounded2 = AL.random(5, 250);
-            this.rounded3 = AL.random(5, 250);
-            this.rounded4 = AL.random(5, 250);
-            this.x1 = AL.random(0, this.w / 2);
-            this.y1 = AL.random(0, this.h / 2);
-            this.x2 = AL.random(this.w / 2, this.w);
-            this.y2 = AL.random(0, this.h / 2);
-            this.x3 = AL.random(this.w / 2, this.w);
-            this.y3 = AL.random(this.h / 2, this.h);
-            this.x4 = AL.random(0, this.w / 2);
-            this.y4 = AL.random(this.h / 2, this.h);
-            this.side1 = AL.random(20, this.w);
-            this.side2 = AL.random(20, this.h);
-            this.side3 = AL.random(20, this.w);
-            this.side4 = AL.random(20, this.h);
-            this.side5 = AL.random(20, this.w);
-            this.side6 = AL.random(20, this.h);
-            this.side7 = AL.random(20, this.w);
-            this.side8 = AL.random(20, this.h);
-            this.rotate = AL.random(1, 11);
-            this.color1 = AL.randomColor(0, 255, 0.05, 0.1);
-            this.color2 = AL.randomColor(0, 255, 0.05, 0.1);
-        }
+        this.t++;
 
         this.stagger++;
 
-        this.t++;
+        if (this.t % (this.speed * 200) === 0) {
+            this.initializeProperties();
+        }
 
         requestAnimationFrame(this.draw);
     }
