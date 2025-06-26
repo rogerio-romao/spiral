@@ -4,16 +4,20 @@ export default class Networks extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
-        this.drawAmount = 0.01;
+    initializeConstantProperties() {
         this.x = this.w / 2;
         this.y = this.h / 2;
+    }
+
+    initializeProperties() {
+        this.drawAmount = 0.01;
         this.rot = AL.random(1, 71);
         this.size = AL.random(30, 200);
         this.sizeIncrease = Math.random() * AL.random(0, 5);
@@ -39,22 +43,17 @@ export default class Networks extends AL {
             this.ctx.beginPath();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 480) === 0) {
-            this.drawAmount = 0.01;
             this.x = AL.random(0, this.w);
             this.y = AL.random(0, this.h);
-            this.rot = AL.random(1, 71);
-            this.size = AL.random(30, 200);
-            this.sizeIncrease = Math.random() * AL.random(0, 5);
 
-            this.ctx.strokeStyle = AL.randomColor();
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
