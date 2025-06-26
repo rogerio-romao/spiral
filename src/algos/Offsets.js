@@ -38,12 +38,12 @@ export default class Offsets extends AL {
                 this.ctx.stroke();
             }
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(this.rotate);
 
             this.stagger++;
         }
+
+        this.t++;
 
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.fill();
@@ -62,8 +62,6 @@ export default class Offsets extends AL {
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.1, 0.1);
             this.rotate = AL.random(1, 37);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
