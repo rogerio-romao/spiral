@@ -33,14 +33,16 @@ export default class Nebulas extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.lineWidth = AL.random(1, 200);
             this.ctx.strokeRect(this.w / 2, this.h / 2, this.length, this.gap);
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+
+            this.rotateCanvasRadians(this.rotate);
+
             this.length = AL.random(10, Math.max(this.w, this.h));
             this.rotate = AL.random(3, 160);
             this.gap += AL.random(2, 10);
             if (this.gap > 1000) this.gap = 1;
         }
+
+        this.t++;
 
         if (this.t % (this.speed * 10) === 0) {
             this.ctx.fillRect(
@@ -60,8 +62,6 @@ export default class Nebulas extends AL {
                 0.02
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }

@@ -58,10 +58,10 @@ export default class NeonTartans extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 15) === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate((30 * Math.PI) / 180);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasDegrees(30);
             this.length = AL.random(30, this.h / 2);
         }
 
@@ -72,8 +72,6 @@ export default class NeonTartans extends AL {
 
         this.lineX = AL.random(0, this.h);
         this.lineY = AL.random(0, this.w);
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
