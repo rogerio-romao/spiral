@@ -4,17 +4,21 @@ export default class Onion extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.angle = AL.random(2, 50);
+    }
+
     initializeProperties() {
         this.radius = AL.random(45, 500);
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
-        this.angle = AL.random(2, 50);
     }
 
     setupDrawingStyles() {
@@ -31,14 +35,12 @@ export default class Onion extends AL {
             this.ctx.closePath();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.angle / 180) * Math.PI);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.angle);
 
         if (this.t % (this.speed * 135) === 0) {
-            this.radius = AL.random(50, 500);
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
+            this.initializeProperties();
 
             this.ctx.beginPath();
             this.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
@@ -47,8 +49,6 @@ export default class Onion extends AL {
         if (this.t % (this.speed * 540) === 0) {
             this.angle = AL.random(2, 50);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
