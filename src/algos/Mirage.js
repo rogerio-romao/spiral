@@ -42,24 +42,16 @@ export default class Mirage extends AL {
             );
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 200) === 0) {
-            this.width = AL.random(100, this.w);
-            this.height = AL.random(100, this.h);
-            this.ul = AL.random(10, 300);
-            this.ur = AL.random(10, 300);
-            this.ll = AL.random(10, 300);
-            this.lr = AL.random(10, 300);
-            this.rotate = AL.random(1, 50);
+            this.initializeProperties();
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }

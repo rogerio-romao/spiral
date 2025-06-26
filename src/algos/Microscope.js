@@ -4,21 +4,15 @@ export default class Microscope extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
-        this.radiusX = AL.random(35, 415);
-        this.radiusY = AL.random(35, 415);
-        this.rows = Math.ceil(this.h / this.radiusY) + 5;
-        this.cols = Math.ceil(this.w / this.radiusX) + 5;
+    initializeConstantProperties() {
         this.rotate = AL.random(1, 20);
-    }
-
-    setupDrawingStyles() {
         this.modes = [
             'xor',
             'difference',
@@ -34,6 +28,16 @@ export default class Microscope extends AL {
             'luminosity',
             'exclusion',
         ];
+    }
+
+    initializeProperties() {
+        this.radiusX = AL.random(35, 415);
+        this.radiusY = AL.random(35, 415);
+        this.rows = Math.ceil(this.h / this.radiusY) + 5;
+        this.cols = Math.ceil(this.w / this.radiusX) + 5;
+    }
+
+    setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             0,
             255,
@@ -46,12 +50,11 @@ export default class Microscope extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.globalCompositeOperation =
-                    this.modes[AL.random(0, this.modes.length)];
+                this.ctx.globalCompositeOperation = AL.pickRandomElement(
+                    this.modes
+                );
 
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rotate);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(this.rotate);
 
                 for (let j = 0; j <= this.cols; j++) {
                     this.ctx.beginPath();
@@ -69,6 +72,8 @@ export default class Microscope extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 50) === 0) {
             this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                 0,
@@ -79,13 +84,8 @@ export default class Microscope extends AL {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.radiusX = AL.random(35, 415);
-            this.radiusY = AL.random(35, 415);
-            this.rows = Math.ceil(this.h / this.radiusY) + 5;
-            this.cols = Math.ceil(this.w / this.radiusX) + 5;
+            this.initializeProperties();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
