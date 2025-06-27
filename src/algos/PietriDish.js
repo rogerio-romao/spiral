@@ -5,6 +5,7 @@ export default class PietriDish extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -17,13 +18,17 @@ export default class PietriDish extends AL {
         this.rotate = AL.random(1, 90);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 35;
         this.ctx.globalCompositeOperation = 'overlay';
+        this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
+    }
+
+    setupDrawingStyles() {
         this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
         this.ctx.fillStyle = AL.randomColor();
         this.ctx.strokeStyle = AL.randomColor();
         this.ctx.lineWidth = AL.random(2, 18);
-        this.ctx.shadowBlur = 35;
     }
 
     draw() {
@@ -51,6 +56,8 @@ export default class PietriDish extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 150) === 0) {
             this.rotate = AL.random(1, 90);
 
@@ -70,11 +77,7 @@ export default class PietriDish extends AL {
             this.ctx.strokeStyle = AL.randomColor();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }
