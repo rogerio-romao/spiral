@@ -4,10 +4,15 @@ export default class Perspective extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeConstantProperties() {
+        this.size = 20;
     }
 
     initializeProperties() {
@@ -15,7 +20,6 @@ export default class Perspective extends AL {
         this.color2 = AL.randomColor(0, 255, 0.2, 0.6);
         this.skewX = Math.random();
         this.skewY = Math.random();
-        this.size = 20;
     }
 
     setupDrawingStyles() {
@@ -44,15 +48,12 @@ export default class Perspective extends AL {
             this.ctx.fill();
         }
 
-        if (this.t % (this.speed * 2000) === 0) {
-            this.ctx.clearRect(-200, -200, this.w, this.h);
-            this.color1 = AL.randomColor(0, 255, 0.2, 0.6);
-            this.color2 = AL.randomColor(0, 255, 0.2, 0.6);
-            this.skewX = Math.random();
-            this.skewY = Math.random();
-        }
-
         this.t++;
+
+        if (this.t % (this.speed * 2000) === 0) {
+            this.initializeProperties();
+            this.ctx.clearRect(-200, -200, this.w, this.h);
+        }
 
         requestAnimationFrame(this.draw);
     }
