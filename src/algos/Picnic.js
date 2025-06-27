@@ -4,20 +4,28 @@ export default class Picnic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
-        this.radius = AL.random(10, 450);
+    initializeConstantProperties() {
         this.rows = Math.ceil(this.h / 150) + 2;
         this.cols = Math.ceil(this.w / 150) + 2;
     }
 
-    setupDrawingStyles() {
+    initializeProperties() {
+        this.radius = AL.random(10, 450);
+    }
+
+    setupConstantStyles() {
         this.ctx.globalCompositeOperation = 'source-over';
+    }
+
+    setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
         this.ctx.lineWidth = AL.random(1, 25);
     }
@@ -39,11 +47,11 @@ export default class Picnic extends AL {
             }
         }
 
-        if (this.t % (this.speed * 30) === 0) {
-            this.radius = AL.random(10, 450);
+        this.t++;
 
-            this.ctx.lineWidth = AL.random(1, 25);
-            this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
+        if (this.t % (this.speed * 30) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
             this.ctx.globalCompositeOperation = 'source-over';
         }
 
@@ -62,8 +70,6 @@ export default class Picnic extends AL {
         if (this.t % (this.speed * 570) === 0) {
             this.ctx.globalCompositeOperation = 'hue';
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
