@@ -4,17 +4,21 @@ export default class Plaid extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.rows = Math.ceil(this.h / 100) + 2;
+        this.cols = Math.ceil(this.w / 100) + 2;
+    }
+
     initializeProperties() {
         this.side1 = AL.random(20, 300);
         this.side2 = AL.random(20, 300);
-        this.rows = Math.ceil(this.h / 100) + 2;
-        this.cols = Math.ceil(this.w / 100) + 2;
     }
 
     setupDrawingStyles() {
@@ -28,9 +32,7 @@ export default class Plaid extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate((45 * Math.PI) / 180);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasDegrees(45);
 
                 for (let j = 0; j <= this.cols; j++) {
                     this.ctx.beginPath();
@@ -50,9 +52,10 @@ export default class Plaid extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 30) === 0) {
-            this.side1 = AL.random(20, 300);
-            this.side2 = AL.random(20, 300);
+            this.initializeProperties();
             this.ctx.lineWidth = AL.random(1, 13);
             this.ctx.globalCompositeOperation = 'overlay';
             this.ctx.fillStyle = AL.randomColor(10, 255, 0.2, 0.7);
@@ -77,8 +80,6 @@ export default class Plaid extends AL {
         if (this.t % (this.speed * 570) === 0) {
             this.ctx.globalCompositeOperation = 'hue';
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
