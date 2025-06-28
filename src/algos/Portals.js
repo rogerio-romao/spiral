@@ -5,6 +5,7 @@ export default class Portals extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -19,11 +20,14 @@ export default class Portals extends AL {
         this.rot = AL.random(1, 33);
     }
 
+    setupConstantStyles() {
+        this.ctx.globalCompositeOperation = 'hard-light';
+        this.ctx.globalAlpha = 0.6;
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
-        this.ctx.globalCompositeOperation = 'hard-light';
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.45);
-        this.ctx.globalAlpha = 0.6;
     }
 
     draw() {
@@ -48,23 +52,14 @@ export default class Portals extends AL {
             }
         }
 
-        if (this.t % (this.speed * 90) === 0) {
-            this.cols = AL.random(3, 13);
-            this.rows = AL.random(3, 13);
-            this.width = AL.random(20, this.w / 8);
-            this.height = AL.random(20, this.h / 8);
-            this.round = AL.random(0, 60);
-            this.rot = AL.random(1, 33);
+        this.t++;
 
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.45);
+        if (this.t % (this.speed * 90) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasDegrees(this.rot);
 
         requestAnimationFrame(this.draw);
     }
