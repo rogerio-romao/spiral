@@ -39,21 +39,15 @@ export default class Progression extends AL {
             );
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.width = AL.random(40, this.w);
-            this.height = AL.random(40, this.h);
-            this.round = AL.random(1, 350);
-            this.rotate = AL.random(1, 180);
-
+            this.initializeProperties();
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.03);
         }
-
-        this.t++;
 
         this.interval = requestAnimationFrame(this.draw);
     }
