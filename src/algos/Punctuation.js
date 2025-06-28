@@ -4,13 +4,14 @@ export default class Punctuation extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             '|',
             '(',
@@ -29,9 +30,11 @@ export default class Punctuation extends AL {
             '`',
             '.',
         ];
-        this.letter = this.letters[AL.random(0, this.letters.length)];
+    }
 
-        this.rot1 = (AL.random(-359, -1) * Math.PI) / 180;
+    initializeProperties() {
+        this.letter = AL.pickRandomElement(this.letters);
+        this.rot1 = AL.random(-359, -1);
     }
 
     setupDrawingStyles() {
@@ -45,17 +48,15 @@ export default class Punctuation extends AL {
             this.stagger = this.stagger % 4;
 
             if (this.stagger === 0) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rot1);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasDegrees(this.rot1);
+
                 this.ctx.fillText(this.letter, this.w / 2, this.h / 2);
             }
 
             if (this.stagger === 1) {
                 this.ctx.fillText(`  ${this.letter}`, this.w / 2, this.h / 2);
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rot1);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+
+                this.rotateCanvasDegrees(this.rot1);
             }
 
             if (this.stagger === 2) {
@@ -73,8 +74,10 @@ export default class Punctuation extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 100) === 0) {
-            this.rot1 = (AL.random(-35, -10) * Math.PI) / 180;
+            this.rot1 = AL.random(-35, -10);
             this.fontChange = AL.random(35, 250);
             this.ctx.font = `${this.fontChange}px sans-serif`;
         }
@@ -84,10 +87,8 @@ export default class Punctuation extends AL {
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.letter = this.letters[AL.random(0, this.letters.length)];
+            this.letter = AL.pickRandomElement(this.letters);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
