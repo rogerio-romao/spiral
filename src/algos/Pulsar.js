@@ -5,6 +5,7 @@ export default class Pulsar extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -23,10 +24,13 @@ export default class Pulsar extends AL {
         this.pulse2 = AL.random(30, 200);
     }
 
-    setupDrawingStyles() {
+    setupConstantProperties() {
         this.ctx.lineWidth = 5;
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = 2;
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
     }
 
     draw() {
@@ -39,25 +43,14 @@ export default class Pulsar extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot1 * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot1);
 
         if (this.t % (this.speed * 160) === 0) {
-            this.cp1x = AL.random(0, this.w);
-            this.cp1y = AL.random(0, this.h);
-            this.cp2x = AL.random(0, this.w);
-            this.cp2y = AL.random(0, this.h);
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
-            this.rot1 = AL.random(1, 90);
-            this.rot2 = AL.random(1, 90);
-            this.pulse1 = AL.random(50, 300);
-            this.pulse2 = AL.random(30, 200);
-            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
