@@ -4,7 +4,9 @@ export default class Projecting extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.getTweens();
@@ -12,7 +14,8 @@ export default class Projecting extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
+        this.tl = null;
         this.modes = [
             'source-over',
             'multiply',
@@ -30,9 +33,9 @@ export default class Projecting extends AL {
             'soft-light',
             'hard-light',
         ];
+    }
 
-        this.tl = null;
-
+    initializeProperties() {
         this.width = AL.random(4, 19);
         this.rot1 = { rot: AL.random(1, 90) };
         this.rot2 = { rot: AL.random(1, 90) };
@@ -42,13 +45,15 @@ export default class Projecting extends AL {
         this.color4 = { color: AL.randomColor() };
     }
 
-    setupDrawingStyles() {
-        this.ctx.fillStyle = this.color1.color;
+    setupConstantStyles() {
         this.ctx.strokeStyle = 'black';
         this.ctx.shadowColor = this.color3.color;
         this.ctx.shadowBlur = 10;
-        this.ctx.globalCompositeOperation =
-            this.modes[AL.random(0, this.modes.length)];
+    }
+
+    setupDrawingStyles() {
+        this.ctx.fillStyle = this.color1.color;
+        this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
     }
 
     draw() {
@@ -57,25 +62,16 @@ export default class Projecting extends AL {
         this.ctx.fillRect(0, 0, this.w, this.width);
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
+        this.t++;
+
         if (this.t % 480 === 0) {
             this.tl.kill();
 
-            this.rot1.rot = AL.random(1, 90);
-            this.rot2.rot = AL.random(1, 90);
-            this.color1.color = AL.randomColor();
-            this.color2.color = AL.randomColor();
-            this.color3.color = AL.randomColor();
-            this.color4.color = AL.randomColor();
-            this.width = AL.random(4, 19);
-            this.ctx.globalCompositeOperation =
-                this.modes[AL.random(0, this.modes.length)];
-
-            this.ctx.fillStyle = this.color1.color;
+            this.initializeProperties();
+            this.setupDrawingStyles();
 
             this.getTweens();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
