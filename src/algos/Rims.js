@@ -13,7 +13,7 @@ export default class Rims extends AL {
     initializeProperties() {
         this.radius = AL.random(30, this.h);
         this.radius2 = AL.random(10, this.radius);
-        this.rot1 = AL.random(1, 6);
+        this.rot = AL.random(1, 6);
         this.startAngle = AL.random(0, 100);
         this.endAngle = AL.random(101, 360);
         this.gap = AL.random(4, 100);
@@ -34,7 +34,7 @@ export default class Rims extends AL {
                     this.h / 2,
                     this.radius,
                     this.radius2,
-                    this.rot1,
+                    this.rot,
                     this.startAngle,
                     this.endAngle
                 );
@@ -46,7 +46,7 @@ export default class Rims extends AL {
                     this.h / 2,
                     this.radius2,
                     this.radius,
-                    this.rot1,
+                    this.rot,
                     this.startAngle + this.gap,
                     this.endAngle + this.gap
                 );
@@ -58,7 +58,7 @@ export default class Rims extends AL {
                     this.endAngle + this.gap,
                     this.radius,
                     this.radius2,
-                    -this.rot1,
+                    -this.rot,
                     this.w / 2,
                     this.h / 2
                 );
@@ -68,22 +68,17 @@ export default class Rims extends AL {
         this.ctx.fill();
         this.ctx.stroke();
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot1);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 150) === 0) {
+            this.initializeProperties();
+            this.speed = AL.random(1, 10);
+
             this.ctx.beginPath();
             this.ctx.fillStyle = AL.randomColor(5, 255, 0.01, 0.01);
-            this.radius = AL.random(10, this.w);
-            this.radius2 = AL.random(10, this.h);
-            this.startAngle = AL.random(0, 50);
-            this.endAngle = AL.random(51, 360);
-            this.gap = AL.random(2, this.w / 4);
-            this.speed = AL.random(1, 10);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
