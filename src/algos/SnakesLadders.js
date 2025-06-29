@@ -4,10 +4,16 @@ export default class SnakesLadders extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeConstantProperties() {
+        this.currCol = 0;
+        this.currRow = 0;
     }
 
     initializeProperties() {
@@ -15,9 +21,11 @@ export default class SnakesLadders extends AL {
         this.div2 = AL.random(3, 17);
         this.colSize = this.w / this.div;
         this.rowSize = this.h / this.div2;
-        this.currCol = 0;
-        this.currRow = 0;
         this.rotate = AL.random(1, 83);
+    }
+
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 3;
     }
 
     setupDrawingStyles() {
@@ -28,7 +36,6 @@ export default class SnakesLadders extends AL {
             0.65,
             1
         );
-        this.ctx.shadowBlur = 3;
     }
 
     draw() {
@@ -45,9 +52,7 @@ export default class SnakesLadders extends AL {
             if (this.currCol > this.div - 1) {
                 this.currCol = 0;
 
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rotate);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(this.rotate);
 
                 this.currRow++;
                 if (this.currRow > this.div2 - 1) {
@@ -56,25 +61,16 @@ export default class SnakesLadders extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 720) === 0) {
-            this.rotate = AL.random(1, 83);
-            this.div = AL.random(3, 17);
-            this.div2 = AL.random(3, 17);
-            this.colSize = this.w / this.div;
-            this.rowSize = this.h / this.div2;
+            this.initializeProperties();
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
             this.ctx.beginPath();
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.12, 0.37);
-            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-                0,
-                255,
-                0.65,
-                1
-            );
-        }
 
-        this.t++;
+            this.setupDrawingStyles();
+        }
 
         requestAnimationFrame(this.draw);
     }
