@@ -6,6 +6,7 @@ export default class SnakesLadders extends AL {
 
         this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);

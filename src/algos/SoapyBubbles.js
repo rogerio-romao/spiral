@@ -21,6 +21,11 @@ export default class SoapyBubbles extends AL {
         this.velocity.setAngle(this.angle);
     }
 
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 30;
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
             50,
@@ -28,8 +33,6 @@ export default class SoapyBubbles extends AL {
             0.5,
             1
         );
-        this.ctx.shadowBlur = 30;
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
     }
 
     draw() {
@@ -48,22 +51,14 @@ export default class SoapyBubbles extends AL {
             this.position.addTo(this.velocity);
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 320) === 0) {
             this.initializeProperties();
-
-            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-                50,
-                255,
-                0.5,
-                1
-            );
+            this.setupDrawingStyles();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
-        this.t++;
+        this.rotateCanvasDegrees(this.rot);
 
         requestAnimationFrame(this.draw);
     }
