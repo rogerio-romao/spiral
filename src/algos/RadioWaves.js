@@ -5,6 +5,7 @@ export default class RadioWaves extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -14,22 +15,25 @@ export default class RadioWaves extends AL {
         this.first = 0;
         this.second = 1;
         this.divisors = [2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 20, 24, 30, 36];
-        this.divisor = this.divisors[AL.random(0, this.divisors.length)];
-        this.posX = this.divisors[AL.random(0, this.divisors.length)];
-        this.posY = this.divisors[AL.random(0, this.divisors.length)];
+        this.divisor = AL.pickRandomElement(this.divisors);
+        this.posX = AL.pickRandomElement(this.divisors);
+        this.posY = AL.pickRandomElement(this.divisors);
         this.seq = [this.first, this.second];
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.globalCompositeOperation = 'copy';
+        this.ctx.shadowBlur = 2;
+        this.ctx.lineWidth = 0.5;
+    }
+
+    setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             30,
             255,
             1,
             1
         );
-        this.ctx.shadowBlur = 2;
-        this.ctx.lineWidth = 0.5;
     }
 
     draw() {
@@ -43,9 +47,7 @@ export default class RadioWaves extends AL {
                 this.second++;
                 this.seq = [this.first, this.second];
 
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(Math.PI / this.divisor);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(Math.PI / this.divisor);
             }
 
             this.ctx.arc(
@@ -58,26 +60,21 @@ export default class RadioWaves extends AL {
             this.ctx.stroke();
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 360) === 0) {
             this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-                30,
-                255,
-                1,
-                1
-            );
+            this.setupDrawingStyles();
 
-            this.divisor = this.divisors[AL.random(0, this.divisors.length)];
-            this.posX = this.divisors[AL.random(0, this.divisors.length)];
-            this.posY = this.divisors[AL.random(0, this.divisors.length)];
+            this.divisor = AL.pickRandomElement(this.divisors);
+            this.posX = AL.pickRandomElement(this.divisors);
+            this.posY = AL.pickRandomElement(this.divisors);
         }
 
         if (this.t % (this.speed * 1440) === 0) {
             this.first = 0;
             this.second = 1;
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
