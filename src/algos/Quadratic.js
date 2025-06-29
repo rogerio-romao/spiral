@@ -4,14 +4,18 @@ export default class Quadratic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.rot = AL.random(4, 91);
+    }
+
+    initializeProperties() {
         this.startNum = AL.random(5, 50);
         this.firstDiff = AL.random(10, 50);
         this.secondDiff = AL.random(3, 45);
@@ -38,38 +42,29 @@ export default class Quadratic extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.nums.forEach((num) => {
+            for (const num of this.nums) {
                 this.ctx.strokeRect(
                     this.w / 2 - num / 2,
                     this.h / 2 - num / 2,
                     num,
                     num
                 );
-            });
+            }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         if (this.t % (this.speed * 90) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
-            this.startNum = AL.random(5, 50);
-            this.firstDiff = AL.random(10, 50);
-            this.secondDiff = AL.random(3, 45);
-            this.nums = this.createQuadraticSequence(
-                this.startNum,
-                this.firstDiff,
-                this.secondDiff
-            );
         }
 
         if (this.t % (this.speed * 180) === 0) {
             this.rot = AL.random(4, 91);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
