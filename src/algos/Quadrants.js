@@ -60,25 +60,20 @@ export default class Quadrants extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 15) === 0) {
             this.radius = AL.random(10, 350);
         }
 
         if (this.t % (this.speed * 45) === 0) {
-            this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor(
-                0,
-                255,
-                0.3,
-                0.3
-            );
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 225) === 0) {
             this.ctx.lineWidth = AL.random(1, 40);
             this.ctx.strokeStyle = this.ctx.fillStyle = 'black';
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
