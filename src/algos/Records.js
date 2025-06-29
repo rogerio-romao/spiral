@@ -41,24 +41,18 @@ export default class Records extends AL {
             );
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 120) === 0) {
-            this.angle = 0;
-            this.rotate = AL.random(1, 45);
-            this.radius = AL.random(50, Math.min(this.w, this.h) / 2);
-            this.offset = AL.random(50, 330);
-            this.angleChange = Math.random() * 7;
+            this.initializeProperties();
 
             this.ctx.beginPath();
             this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
