@@ -4,13 +4,14 @@ export default class Shards extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.modes = [
             'source-over',
             'hard-light',
@@ -28,61 +29,40 @@ export default class Shards extends AL {
             'screen',
         ];
 
+        this.deviation = AL.random(50, 200);
+    }
+
+    initializeProperties() {
         this.c1x1 = AL.random(0, this.w);
         this.c1y1 = AL.random(0, this.h);
         this.c1x2 = AL.random(0, this.w);
         this.c1y2 = AL.random(0, this.h);
-        this.c2x1 = AL.random(0, this.w);
-        this.c2y1 = AL.random(0, this.h);
-        this.c2x2 = AL.random(0, this.w);
-        this.c2y2 = AL.random(0, this.h);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
-        this.rot1 = AL.random(1, 90);
-        this.rot2 = AL.random(1, 90);
-        this.deviation1 = AL.random(50, 200);
-        this.deviation2 = AL.random(50, 200);
-        this.color1 = AL.randomColor(0, 255, 1, 1);
-        this.color2 = AL.randomColor();
+        this.rot = AL.random(1, 90);
+        this.color = AL.randomColor(0, 255, 1, 1);
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
-        this.ctx.globalCompositeOperation =
-            this.modes[AL.random(0, this.modes.length)];
+        this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.01)';
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.fillStyle = this.color1;
+            this.ctx.fillStyle = this.color;
             this.drawTriangle();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot1);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.c1x1 = AL.random(0, this.w);
-            this.c1y1 = AL.random(0, this.h);
-            this.c1x2 = AL.random(0, this.w);
-            this.c1y2 = AL.random(0, this.h);
-            this.c2x1 = AL.random(0, this.w);
-            this.c2y1 = AL.random(0, this.h);
-            this.c2x2 = AL.random(0, this.w);
-            this.c2y2 = AL.random(0, this.h);
-            this.rot1 = AL.random(1, 90);
-            this.rot2 = AL.random(1, 90);
-            this.color1 = AL.randomColor(0, 255, 1, 1);
-            this.color2 = AL.randomColor();
-
-            this.ctx.globalCompositeOperation =
-                this.modes[AL.random(0, this.modes.length)];
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
-        this.t++;
+
         requestAnimationFrame(this.draw);
     }
 
@@ -95,8 +75,8 @@ export default class Shards extends AL {
         this.ctx.lineTo(this.c1x1, this.c1y1);
         this.ctx.lineTo(this.c1x2, this.c1y2);
         this.ctx.lineTo(
-            this.w / 2 + Math.sin(this.t) * this.deviation1,
-            this.h / 2 + Math.cos(this.t) * this.deviation1
+            this.w / 2 + Math.sin(this.t) * this.deviation,
+            this.h / 2 + Math.cos(this.t) * this.deviation
         );
         this.ctx.stroke();
         this.ctx.fill();
