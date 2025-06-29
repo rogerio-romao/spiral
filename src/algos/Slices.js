@@ -5,6 +5,7 @@ export default class Slices extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -20,8 +21,11 @@ export default class Slices extends AL {
         this.rotate = AL.random(2, 90);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.strokeStyle = 'black';
+    }
+
+    setupDrawingStyles() {
         this.ctx.fillStyle = AL.randomColor(30, 255, 0.3, 0.9);
     }
 
@@ -38,23 +42,14 @@ export default class Slices extends AL {
             this.ctx.stroke();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 360) === 0) {
-            this.offsetX = AL.random(50, this.w / 2);
-            this.offsetY = AL.random(50, this.h / 2);
-            this.angleChange = Math.random() * 2 - 1;
-            this.slice = Math.random();
-            this.angle = 0;
-            this.radius = AL.random(70, 220);
-            this.rotate = AL.random(1, 90);
-
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.9);
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
