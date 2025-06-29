@@ -47,19 +47,14 @@ export default class Rounded extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 125) === 0) {
-            this.rounded1 = AL.random(15, 50);
-            this.rounded2 = AL.random(15, 50);
-            this.rounded3 = AL.random(15, 50);
-            this.rounded4 = AL.random(15, 50);
-            this.side1 = AL.random(0, this.w / 4);
-            this.side2 = AL.random(0, this.h / 4);
-            this.rotate = (AL.random(1, 359) * Math.PI) / 180;
+            this.initializeProperties();
+
             this.ctx.beginPath();
             this.ctx.strokeStyle = AL.randomColor(50, 255, 0.5, 1);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
