@@ -47,6 +47,8 @@ export default class Spinner extends AL {
             );
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 50) === 0) {
             this.side = AL.random(200, Math.max(this.w, this.h) / 2);
             this.gap1 = AL.random(15, 150);
@@ -58,8 +60,6 @@ export default class Spinner extends AL {
             this.ctx.beginPath();
             this.color1 = AL.randomColor(0, 255, 1, 1);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
