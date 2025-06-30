@@ -15,10 +15,10 @@ export default class Spikey extends AL {
         this.rounded2 = AL.random(75, 475);
         this.rounded3 = AL.random(75, 475);
         this.rounded4 = AL.random(75, 475);
-        this.side1 = AL.random(0, this.w);
-        this.side2 = AL.random(0, this.h);
-        this.side3 = AL.random(0, this.w);
-        this.side4 = AL.random(0, this.h);
+        this.side1 = AL.random(0, this.w / 4);
+        this.side2 = AL.random(0, this.h / 4);
+        this.side3 = AL.random(0, this.w / 4);
+        this.side4 = AL.random(0, this.h / 4);
         this.rotate = (AL.random(2, 358) * Math.PI) / 180;
     }
 
@@ -76,22 +76,18 @@ export default class Spikey extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 400) === 0) {
+            this.initializeProperties();
+
             this.ctx.canvas.width = this.ctx.canvas.height = 0;
             this.ctx.canvas.width = this.w;
             this.ctx.canvas.height = this.h;
-            this.rounded1 = AL.random(75, 475);
-            this.rounded2 = AL.random(75, 475);
-            this.rounded3 = AL.random(75, 475);
-            this.rounded4 = AL.random(75, 475);
-            this.side1 = AL.random(0, this.w / 4);
-            this.side2 = AL.random(0, this.h / 4);
+
             this.ctx.beginPath();
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.15, 0.6);
-            this.rotate = (AL.random(2, 358) * Math.PI) / 180;
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
