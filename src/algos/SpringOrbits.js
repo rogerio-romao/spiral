@@ -4,14 +4,20 @@ export default class SpringOrbits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
+        this.k = 0.04;
+    }
+
+    initializeProperties() {
         this.weight = AL.createParticle(
             AL.random(0, this.w),
             AL.random(0, this.h),
@@ -19,14 +25,16 @@ export default class SpringOrbits extends AL {
             Math.random() * Math.PI * 2
         );
         this.weight.friction = 0.975;
-        this.k = 0.04;
+    }
+
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 2;
+        this.ctx.lineWidth = 3;
+        this.ctx.fillStyle = 'white';
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
-        this.ctx.shadowBlur = 2;
-        this.ctx.lineWidth = 3;
-        this.ctx.fillStyle = 'white';
     }
 
     draw() {
@@ -56,19 +64,12 @@ export default class SpringOrbits extends AL {
             this.ctx.stroke();
         }
 
-        if (this.t % (this.speed * 180) === 0) {
-            this.weight = AL.createParticle(
-                AL.random(0, this.w),
-                AL.random(0, this.h),
-                AL.random(15, 120),
-                Math.random() * Math.PI * 2
-            );
-            this.weight.friction = 0.975;
-
-            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
-        }
-
         this.t++;
+
+        if (this.t % (this.speed * 180) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
+        }
 
         requestAnimationFrame(this.draw);
     }
