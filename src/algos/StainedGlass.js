@@ -14,7 +14,7 @@ export default class StainedGlass extends AL {
         this.length = this.w / 6;
         this.height = this.h / 5;
         this.rand1 = AL.random(0, 3);
-        this.rand2 = (AL.random(1, 359) * Math.PI) / 180;
+        this.rand2 = AL.random(1, 359);
     }
 
     setupDrawingStyles() {
@@ -447,15 +447,16 @@ export default class StainedGlass extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 50) === 0) {
             this.rand1 = AL.random(0, 3);
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rand2);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasDegrees(this.rand2);
 
-            this.ctx.globalCompositeOperation =
-                this.modes[AL.random(0, this.modes.length)];
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(
+                this.modes
+            );
 
             this.ctx.fillRect(
                 this.w / 2 - this.rand1 * this.length,
@@ -470,8 +471,6 @@ export default class StainedGlass extends AL {
                 5 * this.height
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
