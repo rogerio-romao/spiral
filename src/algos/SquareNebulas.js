@@ -58,15 +58,11 @@ export default class SquareNebulas extends AL {
                 );
                 this.ctx.fill();
                 this.ctx.closePath();
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(Math.random() * Math.PI);
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                this.rotateCanvasRadians(Math.random() * Math.PI);
             }
 
             this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(Math.random() * Math.PI);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(Math.random() * Math.PI);
 
             this.length -= this.gap;
             if (this.length < -this.maxLength) {
@@ -78,17 +74,14 @@ export default class SquareNebulas extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 300) === 0) {
             this.ctx.closePath();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.8, 0.8);
-            this.ctx.fillStyle = AL.randomColor(5, 255, 0.025, 0.025);
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(Math.random() * Math.PI);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.setupDrawingStyles();
+            this.rotateCanvasRadians(Math.random() * Math.PI);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
