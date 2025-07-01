@@ -75,13 +75,13 @@ export default class SpiralLines extends AL {
             }
         }
 
+        this.t++;
+
         if (this.cycles % 9 === 0) {
             this.bw < 0.5
                 ? (this.ctx.strokeStyle = 'rgba(255,255,255, .75)')
                 : (this.ctx.strokeStyle = 'rgba(0,0,0, .75)');
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
