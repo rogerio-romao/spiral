@@ -48,15 +48,19 @@ export default class Subwoofer extends AL {
                 this.ctx.stroke();
             }
         }
+
         this.t++;
+
         this.size = Math.max(
             this.size + Math.sin(this.t / this.divisor) * this.factor,
             1
         );
+
         if (this.t % (this.speed * 110) === 0) {
             this.initializeProperties();
             this.ctx.lineWidth = AL.random(7, 70);
         }
+
         requestAnimationFrame(this.draw);
     }
 }
