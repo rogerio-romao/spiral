@@ -5,6 +5,7 @@ export default class Sushi extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -17,9 +18,12 @@ export default class Sushi extends AL {
         this.cols = Math.round(this.w / (this.radius + this.gap));
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.strokeStyle = 'white';
         this.ctx.globalCompositeOperation = 'difference';
+    }
+
+    setupDrawingStyles() {
         this.ctx.lineWidth = AL.random(3, 17);
         this.ctx.fillStyle = AL.randomColor();
     }
@@ -42,13 +46,12 @@ export default class Sushi extends AL {
             }
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 30) === 0) {
             this.radius = AL.random(10, 46);
-            this.ctx.lineWidth = AL.random(3, 17);
-            this.ctx.fillStyle = AL.randomColor();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
