@@ -52,8 +52,7 @@ export default class Supernova extends AL {
                 this.fib[this.fib.length - 1] +
                 3;
             this.rot = AL.random(1, 20);
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.06, 0.12);
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.06);
+            this.setupDrawingStyles();
         }
 
         this.t++;
