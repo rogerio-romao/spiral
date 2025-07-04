@@ -4,15 +4,19 @@ export default class VanishingPoint extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.size = Math.min(this.w, this.h);
         this.decrease = AL.random(2, 11);
+    }
+
+    initializeProperties() {
         this.rot = AL.random(1, 90);
         this.color1 = AL.randomColor(0, 255, 1, 1);
         this.color2 = AL.randomColor(0, 255, 1, 1);
@@ -27,24 +31,16 @@ export default class VanishingPoint extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillStyle = this.colors[AL.random(0, this.colors.length)];
+            this.ctx.fillStyle = AL.pickRandomElement(this.colors);
             this.drawTriangle(this.w / 2, this.h / 2);
 
             this.size -= this.decrease;
             if (this.size - this.decrease <= 1) {
                 this.size = 1;
                 this.decrease = 0;
-                this.color1 = AL.randomColor(0, 255, 1, 1);
-                this.color2 = AL.randomColor(0, 255, 1, 1);
-                this.color3 = AL.randomColor(0, 255, 1, 1);
-                this.color4 = AL.randomColor(0, 255, 1, 1);
-                this.colors = [
-                    this.color1,
-                    this.color2,
-                    this.color3,
-                    this.color4,
-                ];
-                this.rot = AL.random(1, 90);
+
+                this.initializeProperties();
+
                 setTimeout(() => {
                     this.size = Math.min(this.w, this.h);
                     this.decrease = AL.random(2, 11);
@@ -52,11 +48,9 @@ export default class VanishingPoint extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rot * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-
         this.t++;
+
+        this.rotateCanvasDegrees(this.rot);
 
         requestAnimationFrame(this.draw);
     }
