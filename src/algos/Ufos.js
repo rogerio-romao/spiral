@@ -20,8 +20,8 @@ export default class UFOs extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`;
         this.ctx.globalCompositeOperation = 'multiply';
+        this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`;
     }
 
     draw() {
@@ -32,21 +32,16 @@ export default class UFOs extends AL {
                 .perc1++}% ${this.repeats++}px)`;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.beginPath();
-            this.color1 = AL.randomColor();
-            this.color2 = AL.randomColor();
-            this.color3 = AL.randomColor();
-            this.perc1 = AL.random(1, 45);
-            this.perc2 = AL.random(1, 45);
-            this.repeats = AL.random(10, 150);
+            this.initializeProperties();
             this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
                 this.color1
             }, ${this.color2} ${this.perc2++}%, ${this.color3} ${this
                 .perc1--}% ${this.repeats}px)`;
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
