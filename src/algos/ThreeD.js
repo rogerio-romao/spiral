@@ -15,9 +15,7 @@ export default class ThreeD extends AL {
             3044, 3045, 3046, 3047, 3048, 3052, 3054, 3057, 3059, 3063, 3077,
             3079, 3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100,
         ];
-        this.letter = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
         this.fontSize = AL.random(24, 80);
         this.rot1 = AL.random(-5, 5);
@@ -91,27 +89,29 @@ export default class ThreeD extends AL {
             this.stagger++;
         }
 
+        this.t++;
+
         if (this.t % (this.speed * 75) === 0) {
             this.fontSize = AL.random(24, 80);
+
             this.ctx.font = this.fontSize + 'px serif';
         }
 
         if (this.t % (this.speed * 150) === 0) {
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.5, 1);
             this.rot1 = AL.random(-5, 5);
             this.rot2 = AL.random(2, 11);
             this.rot3 = AL.random(-8, 7);
             this.rot4 = AL.random(4, 18);
             this.rot5 = AL.random(-15, -2);
+
+            this.ctx.fillStyle = AL.randomColor(0, 255, 0.5, 1);
         }
 
         if (this.t % (this.speed * 300) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
