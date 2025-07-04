@@ -3,27 +3,30 @@ import AL from '../AlgorithmLoader.js';
 export default class VanishingRays extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
+
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829,
             1830, 1831, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872,
             1873, 1877, 1879, 1883, 1884, 1888, 1890, 1894, 1899,
         ];
-        this.letter = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.rotations = [20, 24, 30, 36, 40, 45, 60, 72, 80];
+    }
+
+    initializeProperties() {
+        this.rotate = AL.pickRandomElement(this.rotations);
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
         this.incAlpha = 0;
         this.angle = 1;
         this.fontSize = AL.random(30, 500);
-        this.rotations = [20, 24, 30, 36, 40, 45, 60, 72, 80];
-        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
     }
 
     setupDrawingStyles() {
@@ -40,10 +43,10 @@ export default class VanishingRays extends AL {
 
             this.ctx.strokeText(this.letter.repeat(15), this.w / 2, this.h / 2);
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(((this.rotate * Math.PI) / 180) * this.angle);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasDegrees(this.rotate * this.angle);
         }
+
+        this.t++;
 
         if (this.t % (this.speed * (1440 / this.rotate)) === 0) {
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
@@ -64,11 +67,9 @@ export default class VanishingRays extends AL {
 
         if (this.t % (this.speed * 720) === 0) {
             this.letter = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
+                AL.pickRandomElement(this.letters)
             );
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
