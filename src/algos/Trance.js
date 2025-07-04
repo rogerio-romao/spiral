@@ -4,19 +4,22 @@ export default class Trance extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeConstantProperties() {
+        this.divisions = [2, 4, 6, 8, 10, 12];
+    }
+
     initializeProperties() {
         this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
         this.angle = 0;
-        this.divisions = [2, 4, 6, 8, 10, 12];
-        this.squares = this.divisions[AL.random(0, this.divisions.length)];
+        this.squares = AL.pickRandomElement(this.divisions);
         this.size = AL.random(15, 220);
-        this.factor = AL.random(2, 8);
         this.rotate = AL.random(1, 71);
     }
 
@@ -49,16 +52,12 @@ export default class Trance extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 9) === 0) {
-            this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
-            this.angle = 0;
-            this.size = AL.random(15, 220);
-            this.rotate = AL.random(1, 71);
-            this.squares = this.divisions[AL.random(0, this.divisions.length)];
+            this.initializeProperties();
 
             this.ctx.globalCompositeOperation = 'overlay';
             this.ctx.fillStyle = AL.randomColor();
@@ -68,8 +67,6 @@ export default class Trance extends AL {
             this.ctx.globalCompositeOperation = 'source-over';
             this.ctx.strokeStyle = AL.randomColor();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
