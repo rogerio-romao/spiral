@@ -4,30 +4,36 @@ export default class Veils extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             2801, 2817, 2819, 2822, 2824, 2827, 2832, 2835, 2837, 2849, 2855,
             2856, 2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893,
         ];
-        this.letter = String.fromCharCode(
-            this.letters[AL.random(0, this.letters.length)]
-        );
+        this.rot = 1;
+    }
+
+    initializeProperties() {
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
-        this.rot = 1;
         this.size = AL.random(30, 400);
+    }
+
+    setupConstantStyles() {
+        this.ctx.textAlign = 'center';
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
-        this.ctx.textAlign = 'center';
         this.ctx.font = `${this.size}px serif`;
     }
 
@@ -39,27 +45,18 @@ export default class Veils extends AL {
             this.ctx.font = `${this.size}px serif`;
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 540) === 0) {
-            this.letter = String.fromCharCode(
-                this.letters[AL.random(0, this.letters.length)]
-            );
-            this.size = AL.random(30, 400);
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
-
-            this.ctx.font = `${this.size}px serif`;
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 1620) === 0) {
             this.rot++;
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
