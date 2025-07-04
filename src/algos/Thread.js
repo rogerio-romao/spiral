@@ -5,6 +5,7 @@ export default class Thread extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstentProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -17,14 +18,17 @@ export default class Thread extends AL {
         this.rotate = AL.random(1, 35);
     }
 
-    setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
+    setupConstentProperties() {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = AL.randomColor(20, 255, 0.15, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            let y = this.h / 2 + Math.sin(this.angle) * this.offset;
+            const y = this.h / 2 + Math.sin(this.angle) * this.offset;
             this.angle += this.speed;
 
             this.ctx.beginPath();
@@ -32,21 +36,16 @@ export default class Thread extends AL {
             this.ctx.stroke();
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 450) === 0) {
-            this.angle = 0;
-            this.rotate = AL.random(1, 35);
-            this.radius = AL.random(25, 350);
-            this.offset = AL.random(30, this.h * 0.75);
+            this.initializeProperties();
+            this.setupDrawingStyles();
 
             this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
-            this.ctx.strokeStyle = AL.randomColor(20, 255, 0.15, 1);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
