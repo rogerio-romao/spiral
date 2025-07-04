@@ -4,21 +4,25 @@ export default class Triangulate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.rotations = [
             10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120,
         ];
-        this.rotate = this.rotations[AL.random(0, this.rotations.length)];
+        this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
+    }
+
+    initializeProperties() {
+        this.rotate = AL.pickRandomElement(this.rotations);
         this.radius = AL.random(60, Math.max(this.w, this.h) / 2);
         this.angle = 0;
-        this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
-        this.triangles = this.divisions[AL.random(0, this.divisions.length)];
+        this.triangles = AL.pickRandomElement(this.divisions);
         this.size = AL.random(15, 100);
     }
 
@@ -50,14 +54,13 @@ export default class Triangulate extends AL {
             }
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((this.rotate * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 60) === 0) {
             this.size = AL.random(15, 100);
-            this.triangles =
-                this.divisions[AL.random(0, this.divisions.length)];
+            this.triangles = AL.pickRandomElement(this.divisions);
             this.angle = 0;
             this.radius = AL.random(60, Math.max(this.w, this.h) / 2);
 
@@ -65,10 +68,8 @@ export default class Triangulate extends AL {
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rotate = this.rotations[AL.random(0, this.rotations.length)];
+            this.rotate = AL.pickRandomElement(this.rotations);
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
