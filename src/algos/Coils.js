@@ -12,7 +12,7 @@ export default class Coils extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.tl = null;
     }
 

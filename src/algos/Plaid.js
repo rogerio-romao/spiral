@@ -4,14 +4,14 @@ export default class Plaid extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.rows = Math.ceil(this.h / 100) + 2;
         this.cols = Math.ceil(this.w / 100) + 2;
     }

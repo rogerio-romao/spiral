@@ -4,7 +4,7 @@ export default class Dye extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -14,7 +14,7 @@ export default class Dye extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             3405, 3423, 3424, 3437, 3442, 3443, 3444, 3458, 3459, 3461, 3465,
             3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493,

@@ -4,7 +4,7 @@ export default class Sandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Sandala extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             3201, 3202, 3203, 3204, 3206, 3207, 3208, 3209, 3212, 3214, 3215,
             3218, 3219, 3221, 3222, 3223, 3226, 3227, 3228, 3231, 3232, 3234,

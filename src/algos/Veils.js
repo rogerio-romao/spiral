@@ -4,7 +4,7 @@ export default class Veils extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Veils extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             2801, 2817, 2819, 2822, 2824, 2827, 2832, 2835, 2837, 2849, 2855,
             2856, 2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893,

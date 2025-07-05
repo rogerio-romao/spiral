@@ -4,14 +4,14 @@ export default class Trance extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.divisions = [2, 4, 6, 8, 10, 12];
     }
 

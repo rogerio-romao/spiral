@@ -4,7 +4,7 @@ export default class Picnic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Picnic extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.rows = Math.ceil(this.h / 150) + 2;
         this.cols = Math.ceil(this.w / 150) + 2;
     }

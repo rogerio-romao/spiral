@@ -4,7 +4,7 @@ export default class Harmonie extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Harmonie extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924,
             2925, 2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947,

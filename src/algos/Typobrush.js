@@ -4,7 +4,7 @@ export default class Typobrush extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Typobrush extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             2703, 2705, 2709, 2713, 2715, 2716, 2718, 2719, 2720, 2721, 2722,
             2725, 2726, 2731, 2732, 2735, 2738, 2739, 2741, 2742, 2743, 2745,

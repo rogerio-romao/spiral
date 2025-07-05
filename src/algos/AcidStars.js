@@ -4,7 +4,7 @@ export default class AcidStars extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class AcidStars extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             1606, 1607, 1608, 1610, 1611, 1613, 1614, 1616, 1618, 1619, 1621,
             1622, 1623, 1624, 1627, 1628, 1629, 1631, 1632, 1633, 1634, 1635,

@@ -4,7 +4,7 @@ export default class Encoded extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Encoded extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
         this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
         this.angle = AL.pickRandomElement(this.angles);

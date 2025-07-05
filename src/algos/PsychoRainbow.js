@@ -4,14 +4,14 @@ export default class PsychoRainbow extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.blends = ['hard-light', 'difference', 'color', 'luminosity'];
         this.blend = AL.pickRandomElement(this.blends);
     }

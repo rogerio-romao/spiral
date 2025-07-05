@@ -4,14 +4,14 @@ export default class SpaceGears extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             402, 406, 407, 409, 410, 412, 414, 415, 418, 420, 423, 424, 425,
             428, 429, 430, 433, 437, 438, 439, 440, 443, 444, 448, 449, 450,

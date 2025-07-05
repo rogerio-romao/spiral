@@ -4,14 +4,14 @@ export default class VanishingRays extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829,
             1830, 1831, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872,

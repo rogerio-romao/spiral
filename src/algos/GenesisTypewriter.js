@@ -4,7 +4,7 @@ export default class GenesisTypewriter extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -14,7 +14,7 @@ export default class GenesisTypewriter extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.tl = null;
         this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     }

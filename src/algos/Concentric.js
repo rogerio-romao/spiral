@@ -4,7 +4,7 @@ export default class Concentric extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.initializeConstantProperties();
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -12,7 +12,7 @@ export default class Concentric extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeConstantProperties() {
+    initializeBaseProperties() {
         this.letters = [
             2605, 2608, 2617, 2626, 2632, 2635, 2641, 2652, 2654, 2662, 2663,
             2667, 2670, 2676, 2677, 2691, 2694, 2695, 2696, 2700,
