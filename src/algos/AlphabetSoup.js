@@ -4,13 +4,14 @@ export default class AlphabetSoup extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeBaseProperties() {
         this.letters = [
             1301, 1302, 1303, 1305, 1306, 1307, 1308, 1309, 1311, 1313, 1314,
             1315, 1316, 1317, 1319, 1324, 1325, 1326, 1328, 1329, 1330, 1331,
@@ -19,12 +20,15 @@ export default class AlphabetSoup extends AL {
             1373, 1374, 1375, 1376, 1377, 1378, 1383, 1384, 1385, 1386, 1388,
             1390, 1392, 1393, 1397, 1399, 1400,
         ];
+
+        this.rotate = AL.random(8, 35);
+    }
+
+    initializeProperties() {
         this.letter1 = String.fromCharCode(AL.pickRandomElement(this.letters));
         this.letter2 = String.fromCharCode(AL.pickRandomElement(this.letters));
         this.letter3 = String.fromCharCode(AL.pickRandomElement(this.letters));
         this.letter4 = String.fromCharCode(AL.pickRandomElement(this.letters));
-
-        this.rot1 = AL.random(8, 35);
     }
 
     setupDrawingStyles() {
@@ -35,7 +39,7 @@ export default class AlphabetSoup extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.rotateCanvasDegrees(this.rot1);
+            this.rotateCanvasDegrees(this.rotate);
 
             this.ctx.fillText(
                 `${this.letter1} ${this.letter2} ${this.letter3} ${this.letter4}`,
@@ -51,22 +55,11 @@ export default class AlphabetSoup extends AL {
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.rot1 = AL.random(8, 35);
+            this.rotate = AL.random(8, 35);
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.letter1 = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
-            );
-            this.letter2 = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
-            );
-            this.letter3 = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
-            );
-            this.letter4 = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
-            );
+            this.initializeProperties();
         }
 
         requestAnimationFrame(this.draw);

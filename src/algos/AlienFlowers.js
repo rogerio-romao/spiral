@@ -19,6 +19,10 @@ export default class AlienFlowers extends AL {
         ];
 
         this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.lineJoin = 'bevel';
+        this.ctx.lineCap = 'round';
+        this.ctx.shadowBlur = 5;
+        this.ctx.setLineDash([AL.random(1, 100), AL.random(5, 200)]);
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             5,
             255,
@@ -29,10 +33,6 @@ export default class AlienFlowers extends AL {
             this.ctx.shadowOffsetY =
             this.ctx.lineWidth =
                 AL.random(3, 36);
-        this.ctx.lineJoin = 'bevel';
-        this.ctx.setLineDash([AL.random(1, 100), AL.random(5, 200)]);
-        this.ctx.lineCap = 'round';
-        this.ctx.shadowBlur = 5;
         this.ctx.beginPath();
     }
 
