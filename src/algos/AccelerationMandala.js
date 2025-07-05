@@ -18,7 +18,7 @@ export default class AccelerationMandala extends AL {
         ];
         this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
-        this.rot = 1;
+        this.rotate = 1;
     }
 
     setupDrawingStyles() {
@@ -31,13 +31,13 @@ export default class AccelerationMandala extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
 
-            this.rotateCanvasDegrees(this.rot + 1);
+            this.rotateCanvasDegrees(this.rotate + 1);
         }
 
         this.t++;
 
         if (this.t % (this.speed * 45) === 0) {
-            this.rot++;
+            this.rotate++;
         }
 
         if (this.t % (this.speed * 90) === 0) {

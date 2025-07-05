@@ -4,13 +4,15 @@ export default class AcidStars extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             1606, 1607, 1608, 1610, 1611, 1613, 1614, 1616, 1618, 1619, 1621,
             1622, 1623, 1624, 1627, 1628, 1629, 1631, 1632, 1633, 1634, 1635,
@@ -20,17 +22,22 @@ export default class AcidStars extends AL {
             1691, 1693, 1695, 1697,
         ];
         this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+    }
 
+    initializeProperties() {
         this.side = AL.random(30, 300);
         this.change = this.side / 1.618;
         this.rotate = AL.random(2, 44);
         this.fontSize = AL.random(12, 20);
     }
 
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 15;
+    }
+
     setupDrawingStyles() {
         this.ctx.font = this.fontSize + 'px serif';
         this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(0, 255, 1);
-        this.ctx.shadowBlur = 15;
     }
 
     draw() {
@@ -77,18 +84,9 @@ export default class AcidStars extends AL {
         this.t++;
 
         if (this.t % (this.speed * 240) === 0) {
-            this.rotate = AL.random(2, 44);
-            this.side = AL.random(30, 300);
-            this.change = this.side / 1.618;
-            this.fontSize = AL.random(12, 20);
-
+            this.initializeProperties();
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.font = this.fontSize + 'px serif';
-            this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(
-                0,
-                255,
-                1
-            );
         }
 
         if (this.t % (this.speed * 720) === 0) {
