@@ -5,6 +5,7 @@ export default class Vortrix extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -17,6 +18,11 @@ export default class Vortrix extends AL {
         this.rot = AL.random(1, 60);
     }
 
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 10;
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
             0,
@@ -24,8 +30,6 @@ export default class Vortrix extends AL {
             0.5,
             1
         );
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-        this.ctx.shadowBlur = 10;
     }
 
     draw() {
@@ -34,25 +38,14 @@ export default class Vortrix extends AL {
             this.size--;
         }
 
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.t++;
+
+        this.rotateCanvasRadians(this.rot);
 
         if (this.t % (this.speed * 360) === 0) {
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
-            this.size = AL.random(60, 400);
-            this.rot = AL.random(1, 60);
-
-            this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-                0,
-                255,
-                0.5,
-                1
-            );
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
-
-        this.t++;
 
         requestAnimationFrame(this.draw);
     }
