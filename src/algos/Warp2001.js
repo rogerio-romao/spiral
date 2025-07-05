@@ -4,22 +4,30 @@ export default class Warp2001 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.x = 1;
         this.y = 1;
+    }
+
+    initializeProperties() {
         this.rotate = (AL.random(5, 355) * Math.PI) / 180;
+    }
+
+    setupConstantStyles() {
+        this.ctx.shadowColor = 'black';
+        this.ctx.shadowBlur = 3;
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.shadowColor = 'black';
-        this.ctx.shadowBlur = 3;
         this.ctx.lineWidth = AL.random(5, 45);
     }
 
@@ -39,14 +47,13 @@ export default class Warp2001 extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
-        if (this.t % (this.speed * 180) === 0) {
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor();
-            this.ctx.lineWidth = AL.random(5, 45);
-            this.rotate = (AL.random(5, 355) * Math.PI) / 180;
-        }
-
         this.t++;
+
+        if (this.t % (this.speed * 180) === 0) {
+            this.initializeProperties();
+            this.setupDrawingStyles();
+            this.ctx.beginPath();
+        }
 
         requestAnimationFrame(this.draw);
     }
