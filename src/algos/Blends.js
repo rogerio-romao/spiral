@@ -5,6 +5,7 @@ export default class Blends extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -22,8 +23,11 @@ export default class Blends extends AL {
         this.currentShape = AL.random(0, 3);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.lineWidth = 3;
+    }
+
+    setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor();
     }
 
@@ -54,9 +58,8 @@ export default class Blends extends AL {
 
         if (this.t % (this.speed * 270) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor();
         }
 
         requestAnimationFrame(this.draw);

@@ -17,13 +17,13 @@ export default class BehindBars extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'bevel';
         this.ctx.lineWidth = AL.random(3, 75);
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = AL.randomColor();
         this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.shadowBlur = Math.min(30, this.ctx.lineWidth);
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'bevel';
     }
 
     draw() {

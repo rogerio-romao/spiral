@@ -4,10 +4,17 @@ export default class Boxes extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeBaseProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeBaseProperties() {
+        this.angles = [15, 20, 24, 30, 36, 45, 48, 72, 80, 90];
+        this.rotate = AL.pickRandomElement(this.angles);
     }
 
     initializeProperties() {
@@ -15,12 +22,13 @@ export default class Boxes extends AL {
         this.cols = AL.random(3, 17);
         this.width = this.w / this.cols;
         this.height = this.h / this.rows;
-        this.angles = [15, 20, 24, 30, 36, 45, 48, 72, 80, 90];
-        this.rot = AL.pickRandomElement(this.angles);
+    }
+
+    setupConstantStyles() {
+        this.ctx.strokeStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.075, 0.075);
     }
 
@@ -44,21 +52,18 @@ export default class Boxes extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 100) === 0) {
-            this.rows = AL.random(3, 17);
-            this.cols = AL.random(3, 17);
-            this.width = this.w / this.cols;
-            this.height = this.h / this.rows;
+            this.initializeProperties();
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.rot = this.angles[AL.random(0, this.angles.length)];
+            this.rotate = AL.pickRandomElement(this.angles);
         }
 
         if (this.t % (this.speed * 400) === 0) {
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.075, 0.075);
+            this.setupDrawingStyles();
         }
 
         requestAnimationFrame(this.draw);

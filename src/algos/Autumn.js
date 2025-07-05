@@ -4,16 +4,20 @@ export default class Autumn extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
+    initializeBaseProperties() {
+        this.size = AL.random(13, 110);
+    }
+
     initializeProperties() {
         this.y = 0;
         this.x = 0;
-        this.size = AL.random(13, 110);
         this.rotate = AL.random(1, 90);
     }
 
@@ -34,10 +38,7 @@ export default class Autumn extends AL {
                 this.size = AL.random(15, 110);
             }
             if (this.y > this.h) {
-                this.x = 0;
-                this.y = 0;
-                this.rotate = AL.random(1, 90);
-
+                this.initializeProperties();
                 this.setupDrawingStyles();
             }
         }

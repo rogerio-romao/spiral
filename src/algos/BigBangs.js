@@ -12,9 +12,9 @@ export default class BigBangs extends AL {
     }
 
     initializeProperties() {
-        this.r = 1;
-        this.i = AL.random(5, 30);
-        this.a = AL.random(1, 180);
+        this.radius = 1;
+        this.increase = AL.random(5, 30);
+        this.angle = AL.random(1, 180);
     }
 
     setupConstantStyles() {
@@ -28,20 +28,20 @@ export default class BigBangs extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(this.w / 2, this.h / 2, this.r, 0, 2 * Math.PI);
+            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.stroke();
 
-            this.r += this.i;
+            this.radius += this.increase;
         }
 
-        this.rotateCanvasDegrees(this.a);
+        this.rotateCanvasDegrees(this.angle);
 
-        if (this.r > Math.max(this.w, this.h)) {
+        if (this.radius > Math.max(this.w, this.h)) {
             this.initializeProperties();
             this.setupDrawingStyles();
 
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
             this.ctx.beginPath();
         }
 

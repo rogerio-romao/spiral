@@ -45,6 +45,14 @@ export default class AlgorithmLoader {
         this.draw = this.draw.bind(this); // Bind draw method to the instance
     }
 
+    clearScreen() {
+        this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+    }
+
+    fillScreen() {
+        this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+    }
+
     rotateCanvasRadians(angle) {
         this.ctx.translate(this.w / 2, this.h / 2);
         this.ctx.rotate(angle);

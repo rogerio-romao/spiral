@@ -24,9 +24,12 @@ export default class Blur extends AL {
         this.rotate = AL.random(1, 71);
     }
 
+    setupConstantStyles() {
+        this.ctx.lineWidth = 0.25;
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
-        this.ctx.lineWidth = 0.25;
     }
 
     draw() {
@@ -48,8 +51,7 @@ export default class Blur extends AL {
 
         if (this.t % (this.speed * 90) === 0) {
             this.initializeProperties();
-
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 630) === 0) {

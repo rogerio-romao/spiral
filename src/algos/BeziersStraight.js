@@ -17,7 +17,7 @@ export default class BeziersStraight extends AL {
         this.cp1Y = AL.random(0, this.h);
         this.cp2X = AL.random(0, this.w);
         this.cp2Y = AL.random(0, this.h);
-        this.rot = AL.random(2, 25);
+        this.rotate = AL.random(2, 25);
     }
 
     setupDrawingStyles() {
@@ -65,7 +65,7 @@ export default class BeziersStraight extends AL {
                 );
                 this.ctx.stroke();
 
-                this.rotateCanvasRadians(this.rot);
+                this.rotateCanvasRadians(this.rotate);
             }
 
             this.stagger++;
@@ -75,10 +75,13 @@ export default class BeziersStraight extends AL {
 
         if (this.t % (this.speed * 280) === 0) {
             this.ctx.closePath();
-            this.ctx.beginPath();
+
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.rotateCanvasRadians(this.rot);
+
+            this.rotateCanvasRadians(this.rotate);
+
+            this.ctx.beginPath();
         }
 
         requestAnimationFrame(this.draw);
