@@ -5,6 +5,7 @@ export default class Atom extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -16,10 +17,13 @@ export default class Atom extends AL {
         this.rotate = AL.random(5, 24);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.shadowBlur = 2;
         this.ctx.shadowColor = 'black';
         this.ctx.lineWidth = 5;
+    }
+
+    setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(65, 255, 0.5, 1);
     }
 
@@ -43,9 +47,8 @@ export default class Atom extends AL {
 
         if (this.t % (this.speed * 450) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(65, 255, 0.5, 1);
         }
 
         requestAnimationFrame(this.draw);

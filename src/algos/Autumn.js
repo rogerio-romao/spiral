@@ -38,13 +38,13 @@ export default class Autumn extends AL {
                 this.y = 0;
                 this.rotate = AL.random(1, 90);
 
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.6);
+                this.setupDrawingStyles();
             }
         }
 
-        this.rotateCanvasDegrees(this.rotate);
-
         this.t++;
+
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }

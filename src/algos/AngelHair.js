@@ -28,8 +28,8 @@ export default class AngelHair extends AL {
     setupDrawingStyles() {
         this.ctx.lineWidth = 0.3;
         this.ctx.setLineDash([1, 4]);
-        this.ctx.strokeStyle = AL.randomColor(120, 255, 0.66, 0.95);
         this.ctx.globalCompositeOperation = 'hard-light';
+        this.ctx.strokeStyle = AL.randomColor(120, 255, 0.66, 0.95);
     }
 
     draw() {
@@ -68,6 +68,7 @@ export default class AngelHair extends AL {
         }
 
         this.t++;
+
         this.stagger++;
 
         if (this.t % (this.speed * 360) === 0) {

@@ -51,6 +51,7 @@ export default class Aperture extends AL {
         }
 
         this.t++;
+
         this.x += this.incX;
         this.height += this.incH;
 
