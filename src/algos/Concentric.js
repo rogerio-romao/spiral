@@ -26,10 +26,11 @@ export default class Concentric extends AL {
         this.letter3 = String.fromCharCode(AL.pickRandomElement(this.letters));
         this.letter4 = String.fromCharCode(AL.pickRandomElement(this.letters));
 
-        this.size = AL.random(25, 160);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
         this.angle = AL.pickRandomElement(this.angles);
+
+        this.size = AL.random(25, 160);
+        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, this.w);
     }
 
     setupConstantStyles() {
@@ -41,8 +42,8 @@ export default class Concentric extends AL {
 
     setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.fillStyle = AL.randomColor();
         this.ctx.font = `bold ${this.size}px serif`;
+        this.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
@@ -54,9 +55,9 @@ export default class Concentric extends AL {
             );
         }
 
-        this.rotateCanvasRadians(this.angle);
-
         this.t++;
+
+        this.rotateCanvasRadians(this.angle);
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();

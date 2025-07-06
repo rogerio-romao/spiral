@@ -22,11 +22,11 @@ export default class CounterClock extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.font = AL.random(75, 750) + 'px sans-serif';
-        this.ctx.lineWidth = 2;
-        this.ctx.textAlign = 'center';
         this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
+        this.ctx.font = AL.random(75, 750) + 'px sans-serif';
+        this.ctx.textAlign = 'center';
         this.ctx.shadowBlur = 3;
+        this.ctx.lineWidth = 2;
     }
 
     draw() {

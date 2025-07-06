@@ -11,10 +11,11 @@ export default class Cornucopia2 extends AL {
     }
 
     initializeProperties() {
+        this.height = AL.random(35, 350);
+        this.width = AL.random(35, 440);
+        this.rotate = AL.random(1, 75);
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
-        this.width = AL.random(35, 440);
-        this.height = AL.random(35, 350);
         this.ul = AL.random(4, 135);
         this.ulc = AL.random(-5, 5);
         this.ur = AL.random(4, 135);
@@ -23,7 +24,6 @@ export default class Cornucopia2 extends AL {
         this.dlc = AL.random(-5, 5);
         this.dr = AL.random(4, 135);
         this.drc = AL.random(-5, 5);
-        this.rotate = AL.random(1, 75);
     }
 
     setupDrawingStyles() {
