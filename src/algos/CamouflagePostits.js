@@ -4,21 +4,15 @@ export default class CamouflagePostits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeBaseProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
-        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
-        this.rot1 = (AL.random(0, 360) * Math.PI) / 180;
-        this.randCol = AL.random(0, 255);
-    }
-
-    setupDrawingStyles() {
+    initializeBaseProperties() {
         this.modes = [
             'xor',
             'difference',
@@ -30,18 +24,33 @@ export default class CamouflagePostits extends AL {
             'overlay',
             'source-atop',
         ];
+    }
 
-        this.ctx.fillStyle = `rgb(${this.randCol + AL.random(-8, 8)},${
-            this.randCol + AL.random(-8, 8)
-        },${this.randCol + AL.random(-8, 8)})`;
-        this.ctx.strokeStyle = 'white';
+    initializeProperties() {
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.randCol = AL.random(0, 255);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+    }
+
+    setupConstantStyles() {
         this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = 'white';
         this.ctx.moveTo(this.w / 2, this.h / 2);
+    }
+
+    setupDrawingStyles() {
+        this.ctx.fillStyle = `rgb(
+        ${this.randCol + AL.random(-8, 8)},
+        ${this.randCol + AL.random(-8, 8)},
+        ${this.randCol + AL.random(-8, 8)}
+        )`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.fillRect(this.x, this.y, this.length, this.length);
+
             this.x = AL.random(0, this.w);
             this.y = AL.random(0, this.h);
 
@@ -53,6 +62,7 @@ export default class CamouflagePostits extends AL {
         if (this.t % (this.speed * 25) === 0) {
             this.length = AL.random(5, 125);
             this.randCol = AL.random(0, 255);
+
             this.ctx.fillRect(
                 this.w / 2 - this.length * 1.5,
                 this.h / 2 - this.length * 1.5,
@@ -65,13 +75,11 @@ export default class CamouflagePostits extends AL {
                 3 * this.length,
                 3 * this.length
             );
-            this.ctx.fillStyle = `rgb(${this.randCol + AL.random(-8, 8)},${
-                this.randCol + AL.random(-8, 8)
-            },${this.randCol + AL.random(-8, 8)})`;
+
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.rot1 = AL.random(0, 360);
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
                 this.modes
             );

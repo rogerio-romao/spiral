@@ -39,12 +39,12 @@ export default class Clock extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.font = AL.random(60, 600) + 'px sans-serif';
-        this.ctx.textAlign = 'center';
-        this.ctx.lineWidth = 3;
         this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
+        this.ctx.font = AL.random(60, 600) + 'px sans-serif';
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.textAlign = 'center';
         this.ctx.shadowBlur = 8;
+        this.ctx.lineWidth = 3;
     }
 
     draw() {

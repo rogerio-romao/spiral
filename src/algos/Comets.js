@@ -22,10 +22,10 @@ export default class Comets extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.beginPath();
         this.ctx.lineWidth = AL.random(3, 12);
         this.ctx.shadowBlur = this.ctx.lineWidth;
-        this.ctx.beginPath();
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
@@ -47,6 +47,7 @@ export default class Comets extends AL {
         }
 
         this.t++;
+
         this.stagger++;
 
         if (this.t % (this.speed * 1024) === 0) {
