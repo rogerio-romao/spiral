@@ -13,9 +13,9 @@ export default class Division extends AL {
 
     initializeProperties() {
         this.radius = AL.random(25, Math.min(this.w, this.h) / 2);
-        this.angle = 0;
         this.circles = AL.random(5, 30);
         this.size = AL.random(3, 24);
+        this.angle = 0;
     }
 
     setupConstantStyles() {

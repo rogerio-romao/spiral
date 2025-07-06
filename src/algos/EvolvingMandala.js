@@ -4,13 +4,14 @@ export default class EvolvingMandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeConstantProperties() {
         this.letters = [
             1101, 1102, 1103, 1104, 1107, 1111, 1114, 1115, 1116, 1118, 1120,
             1121, 1123, 1126, 1127, 1130, 1133, 1135, 1136, 1137, 1139, 1140,
@@ -21,10 +22,13 @@ export default class EvolvingMandala extends AL {
             1254, 1255, 1261, 1262, 1265, 1266, 1267, 1269, 1270, 1271, 1273,
             1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
 
-        this.rot = AL.random(4, 356);
         this.speed *= 2;
+    }
+
+    initializeProperties() {
+        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.rotate = AL.random(4, 356);
     }
 
     setupDrawingStyles() {
@@ -41,7 +45,7 @@ export default class EvolvingMandala extends AL {
                 this.h / 2
             );
 
-            this.rotateCanvasDegrees(this.rot);
+            this.rotateCanvasDegrees(this.rotate);
         }
 
         this.t++;
@@ -56,7 +60,7 @@ export default class EvolvingMandala extends AL {
                 this.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
             }
 
-            this.rot += 2;
+            this.rotate += 2;
         }
 
         if (this.t % (this.speed * 90) === 0) {
@@ -64,10 +68,7 @@ export default class EvolvingMandala extends AL {
         }
 
         if (this.t % (this.speed * 360) === 0) {
-            this.rot = AL.random(4, 356);
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
-            );
+            this.initializeProperties();
         }
 
         requestAnimationFrame(this.draw);

@@ -19,7 +19,6 @@ export default class DeepSea extends AL {
     }
 
     initializeProperties() {
-        this.rot = AL.pickRandomElement(this.rotations);
         this.startX = AL.random(0, this.w);
         this.startY = AL.random(0, this.h);
         this.cp1x = AL.random(0, this.w);
@@ -30,6 +29,7 @@ export default class DeepSea extends AL {
         this.endY = AL.random(0, this.h);
         this.factor = AL.random(180, 850);
         this.factor2 = AL.random(36, 170);
+        this.rotate = AL.pickRandomElement(this.rotations);
     }
 
     setupConstantStyles() {
@@ -65,7 +65,7 @@ export default class DeepSea extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 270) === 0) {
             this.initializeProperties();

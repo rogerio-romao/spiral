@@ -13,7 +13,7 @@ export default class DysonSpheres extends AL {
     initializeProperties() {
         this.length = AL.random(60, Math.max(this.h / 2, this.h - 60));
         this.height = AL.random(20, this.h / 2 - 40);
-        this.rot1 = AL.random(1, 6);
+        this.rotate = AL.random(1, 6);
     }
 
     setupDrawingStyles() {
@@ -35,7 +35,7 @@ export default class DysonSpheres extends AL {
                 this.h / 2,
                 this.length,
                 this.height,
-                this.rot1,
+                this.rotate,
                 0,
                 0
             );
@@ -72,7 +72,7 @@ export default class DysonSpheres extends AL {
             this.height = AL.random(20, this.h / 2 - 40);
         }
 
-        this.rot1 = AL.random(0, 360);
+        this.rotate = AL.random(0, 360);
 
         requestAnimationFrame(this.draw);
     }

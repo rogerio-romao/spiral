@@ -14,8 +14,8 @@ export default class Discos extends AL {
         this.color1 = AL.randomColor(5, 255, 0.5, 0.5);
         this.color2 = AL.randomColor(5, 255, 0.5, 0.5);
         this.startAngle = AL.random(0, 100);
-        this.endAngle = (180 * Math.PI) / 180;
         this.radius = AL.random(10, this.h);
+        this.endAngle = Math.PI;
         this.anti = false;
     }
 

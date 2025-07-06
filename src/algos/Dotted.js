@@ -20,9 +20,9 @@ export default class Dotted extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.strokeStyle = AL.randomColor(5, 255, 0.75, 0.75);
         this.ctx.fillStyle = AL.randomColor(5, 255, 0.015, 0.015);
+        this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.setLineDash([14, 6]);
         this.ctx.lineWidth = 2;
     }

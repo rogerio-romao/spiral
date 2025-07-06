@@ -11,9 +11,10 @@ export default class Entropy extends AL {
     }
 
     initializeProperties() {
+        this.rotate = AL.random(1, 181);
         this.width = AL.random(50, this.w);
         this.height = AL.random(50, this.h);
-        this.rotate = AL.random(1, 181);
+
         this.ul = AL.random(10, Math.min(this.w, this.h));
         this.ur = AL.random(10, Math.min(this.w, this.h));
         this.ll = AL.random(10, Math.min(this.w, this.h));

@@ -13,9 +13,9 @@ export default class Encoded extends AL {
     }
 
     initializeBaseProperties() {
-        this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
         this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
         this.angle = AL.pickRandomElement(this.angles);
+        this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
     }
 
     initializeProperties() {
