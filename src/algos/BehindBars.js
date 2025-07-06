@@ -5,6 +5,7 @@ export default class BehindBars extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -16,13 +17,19 @@ export default class BehindBars extends AL {
         this.rotate = AL.random(1, 60);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'bevel';
-        this.ctx.lineWidth = AL.random(3, 75);
+    }
+
+    setupBaseStyles() {
         this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.shadowColor = AL.randomColor();
         this.ctx.globalCompositeOperation = 'overlay';
+    }
+
+    setupDrawingStyles() {
+        this.ctx.lineWidth = AL.random(3, 75);
+        this.ctx.shadowColor = AL.randomColor();
         this.ctx.shadowBlur = Math.min(30, this.ctx.lineWidth);
     }
 
@@ -51,9 +58,7 @@ export default class BehindBars extends AL {
             this.rotate = AL.random(1, 60);
 
             this.ctx.globalCompositeOperation = 'source-over';
-            this.ctx.lineWidth = AL.random(3, 75);
-            this.ctx.shadowBlur = Math.min(30, this.ctx.lineWidth);
-            this.ctx.shadowColor = AL.randomColor();
+            this.setupDrawingStyles();
         }
 
         requestAnimationFrame(this.draw);

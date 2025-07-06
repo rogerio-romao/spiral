@@ -16,12 +16,12 @@ export default class Blur extends AL {
     }
 
     initializeProperties() {
-        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
         this.angle = 0;
-        this.circles = AL.random(8, 25);
         this.size = AL.random(8, 40);
         this.factor = AL.random(3, 20);
         this.rotate = AL.random(1, 71);
+        this.circles = AL.random(8, 25);
+        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
     }
 
     setupConstantStyles() {

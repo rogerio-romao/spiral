@@ -11,14 +11,14 @@ export default class BlacknWhite extends AL {
     }
 
     initializeProperties() {
-        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
         this.height = this.length / AL.random(1, 5);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
     }
 
     setupDrawingStyles() {
-        this.modes = ['source-over', 'difference', 'destination-out'];
-        this.ctx.strokeStyle = 'white';
         this.ctx.lineWidth = 4;
+        this.ctx.strokeStyle = 'white';
+        this.modes = ['source-over', 'difference', 'destination-out'];
     }
 
     draw() {

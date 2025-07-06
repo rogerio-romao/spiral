@@ -32,9 +32,9 @@ export default class AlphabetSoup extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
         this.fontChange = AL.random(35, 180);
         this.ctx.font = `${this.fontChange}px sans-serif`;
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
     }
 
     draw() {

@@ -16,14 +16,14 @@ export default class Aperture extends AL {
     }
 
     initializeProperties() {
-        this.x = this.w / 2;
-        this.y = AL.random(100, this.h - 100);
-        this.width = AL.random(100, this.w - 100);
         this.height = AL.random(100, this.h - 100);
+        this.width = AL.random(100, this.w - 100);
+        this.y = AL.random(100, this.h - 100);
         this.round = AL.random(5, 100);
         this.rotate = AL.random(1, 70);
         this.incX = Math.random();
         this.incH = Math.random();
+        this.x = this.w / 2;
     }
 
     setupDrawingStyles() {

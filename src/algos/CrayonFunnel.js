@@ -13,9 +13,9 @@ export default class CrayonFunnel extends AL {
     initializeProperties() {
         this.x = AL.random(this.w / 3, this.w * 0.66);
         this.y = AL.random(this.h / 3, this.h * 0.66);
-        this.inc = AL.random(1, 6);
-        this.radius = AL.random(5, 60);
+        this.increment = AL.random(1, 6);
         this.rotate = AL.random(1, 150);
+        this.radius = AL.random(5, 60);
     }
 
     setupDrawingStyles() {
@@ -27,7 +27,7 @@ export default class CrayonFunnel extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
             this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-            this.radius += this.inc;
+            this.radius += this.increment;
             this.ctx.stroke();
         }
 

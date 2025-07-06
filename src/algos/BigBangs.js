@@ -13,8 +13,8 @@ export default class BigBangs extends AL {
 
     initializeProperties() {
         this.radius = 1;
-        this.increase = AL.random(5, 30);
         this.angle = AL.random(1, 180);
+        this.increment = AL.random(5, 30);
     }
 
     setupConstantStyles() {
@@ -32,7 +32,7 @@ export default class BigBangs extends AL {
             this.ctx.fill();
             this.ctx.stroke();
 
-            this.radius += this.increase;
+            this.radius += this.increment;
         }
 
         this.rotateCanvasDegrees(this.angle);

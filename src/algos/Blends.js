@@ -18,9 +18,9 @@ export default class Blends extends AL {
         this.y2 = AL.random(0, this.h);
         this.length = AL.random(30, 250);
         this.rotation = AL.random(2, 140);
+        this.currentShape = AL.random(0, 3);
         this.color1 = AL.randomColor(0, 255, 0.025, 0.075);
         this.color2 = AL.randomColor(0, 255, 0.025, 0.075);
-        this.currentShape = AL.random(0, 3);
     }
 
     setupConstantStyles() {

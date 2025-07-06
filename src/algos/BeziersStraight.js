@@ -13,11 +13,11 @@ export default class BeziersStraight extends AL {
     initializeProperties() {
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
+        this.rotate = AL.random(2, 25);
         this.cp1X = AL.random(0, this.w);
         this.cp1Y = AL.random(0, this.h);
         this.cp2X = AL.random(0, this.w);
         this.cp2Y = AL.random(0, this.h);
-        this.rotate = AL.random(2, 25);
     }
 
     setupDrawingStyles() {

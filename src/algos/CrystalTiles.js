@@ -32,18 +32,18 @@ export default class CrystalTiles extends AL {
             'overlay',
         ];
 
-        this.speed = 2;
         this.gray = AL.random(50, 215);
-        this.y = 0;
-        this.x = 0;
         this.size = AL.random(50, 150);
         this.rotate = AL.random(1, 15);
+        this.speed = 2;
+        this.y = 0;
+        this.x = 0;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'white';
         this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.lineWidth = AL.random(1, 4);
+        this.ctx.strokeStyle = 'white';
     }
 
     draw() {

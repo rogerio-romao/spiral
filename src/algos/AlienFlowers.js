@@ -4,12 +4,14 @@ export default class AlienFlowers extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.setupBaseStyles();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.modes = [
             'hard-light',
             'color-dodge',
@@ -18,22 +20,30 @@ export default class AlienFlowers extends AL {
             'color-burn',
         ];
 
-        this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.lineJoin = 'bevel';
         this.ctx.lineCap = 'round';
         this.ctx.shadowBlur = 5;
+
+        this.ctx.beginPath();
+    }
+
+    setupBaseStyles() {
         this.ctx.setLineDash([AL.random(1, 100), AL.random(5, 200)]);
+        this.ctx.globalCompositeOperation = 'source-over';
+    }
+
+    setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             5,
             255,
             0.1,
             0.1
         );
+
         this.ctx.shadowOffsetX =
             this.ctx.shadowOffsetY =
             this.ctx.lineWidth =
                 AL.random(3, 36);
-        this.ctx.beginPath();
     }
 
     draw() {
@@ -102,24 +112,16 @@ export default class AlienFlowers extends AL {
         }
 
         if (this.t % (this.speed * 32) === 0) {
-            this.ctx.beginPath();
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
                 this.modes
             );
+
+            this.ctx.beginPath();
         }
 
         if (this.t % (this.speed * 64) === 0) {
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-                5,
-                255,
-                0.1,
-                0.1
-            );
-            this.ctx.shadowOffsetX =
-                this.ctx.shadowOffsetY =
-                this.ctx.lineWidth =
-                    AL.random(3, 36);
         }
 
         if (this.t % (this.speed * 256) === 0) {

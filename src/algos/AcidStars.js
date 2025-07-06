@@ -25,10 +25,10 @@ export default class AcidStars extends AL {
     }
 
     initializeProperties() {
-        this.side = AL.random(30, 300);
-        this.change = this.side / 1.618;
-        this.rotate = AL.random(2, 44);
         this.fontSize = AL.random(12, 20);
+        this.change = this.side / 1.618;
+        this.side = AL.random(30, 300);
+        this.rotate = AL.random(2, 44);
     }
 
     setupConstantStyles() {

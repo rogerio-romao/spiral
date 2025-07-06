@@ -18,8 +18,8 @@ export default class Atom extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 2;
         this.ctx.shadowColor = 'black';
+        this.ctx.shadowBlur = 2;
         this.ctx.lineWidth = 5;
     }
 
