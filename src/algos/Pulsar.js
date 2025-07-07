@@ -35,7 +35,7 @@ export default class Pulsar extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.clearScreen();
 
             for (let i = 0; i < 20; i++) {
                 this.drawBezier(i * 15);

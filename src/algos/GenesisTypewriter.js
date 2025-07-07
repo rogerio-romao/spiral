@@ -15,20 +15,19 @@ export default class GenesisTypewriter extends AL {
     }
 
     initializeBaseProperties() {
-        this.tl = null;
         this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        this.tl = null;
     }
 
     initializeProperties() {
-        this.text = AL.pickRandomElement(this.letters);
-        this.font1 = { size: AL.random(20, 100) };
-        this.font2 = { size: AL.random(160, 600) };
         this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
         this.pos2 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
-        this.line1 = { width: 1 };
+        this.text = AL.pickRandomElement(this.letters);
+        this.font2 = { size: AL.random(160, 600) };
+        this.font1 = { size: AL.random(20, 100) };
+        this.rotate = { angle: AL.random(1, 44) };
         this.line2 = { width: AL.random(3, 7) };
-        this.rot1 = { angle: AL.random(1, 44) };
-        this.rot2 = { angle: AL.random(1, 44) };
+        this.line1 = { width: 1 };
     }
 
     setupConstantStyles() {
@@ -59,7 +58,7 @@ export default class GenesisTypewriter extends AL {
             this.getTweens();
         }
 
-        this.rotateCanvasDegrees(this.rot1.angle);
+        this.rotateCanvasDegrees(this.rotate.angle);
 
         requestAnimationFrame(this.draw);
     }

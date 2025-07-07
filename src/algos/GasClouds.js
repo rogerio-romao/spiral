@@ -13,13 +13,13 @@ export default class GasClouds extends AL {
     initializeProperties() {
         this.width = AL.random(0, this.w / 2);
         this.height = AL.random(0, this.h / 2);
+        this.rotate = AL.random(1, 200);
         this.ul = AL.random(0, 300);
         this.ur = AL.random(0, 300);
         this.dl = AL.random(0, 300);
         this.dr = AL.random(0, 300);
         this.x = 0;
         this.y = 0;
-        this.rotate = AL.random(1, 200);
     }
 
     setupDrawingStyles() {

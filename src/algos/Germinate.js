@@ -37,13 +37,13 @@ export default class Germinate extends AL {
     }
 
     setupDrawingStyles() {
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
         this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
             0,
             255,
             1,
             1
         );
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
     }
 
     draw() {
@@ -82,7 +82,7 @@ export default class Germinate extends AL {
             this.initializeProperties();
             this.setupDrawingStyles();
 
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
         }
 
         this.rotateCanvasDegrees(this.rotate);

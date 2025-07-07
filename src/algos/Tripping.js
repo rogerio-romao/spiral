@@ -63,7 +63,7 @@ export default class Tripping extends AL {
             this.initializeProperties();
             this.setupDrawingStyles();
 
-            this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.clearScreen();
             this.ctx.beginPath();
         }
 

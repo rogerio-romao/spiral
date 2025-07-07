@@ -45,7 +45,7 @@ export default class DeepSea extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
             this.ctx.moveTo(this.startX, this.startY);
             this.ctx.bezierCurveTo(
                 this.cp1x,

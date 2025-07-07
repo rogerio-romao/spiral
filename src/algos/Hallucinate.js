@@ -46,7 +46,7 @@ export default class Hallucinate extends AL {
         }
 
         if (this.t % (this.speed * 750) === 0) {
-            this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.clearScreen();
         }
 
         requestAnimationFrame(this.draw);

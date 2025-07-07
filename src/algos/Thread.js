@@ -44,7 +44,7 @@ export default class Thread extends AL {
             this.initializeProperties();
             this.setupDrawingStyles();
 
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
         }
 
         requestAnimationFrame(this.draw);

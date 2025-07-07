@@ -38,7 +38,7 @@ export default class Maelstrom extends AL {
         if (this.t % (this.speed * 300) === 0) {
             this.initializeProperties();
 
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
             this.ctx.beginPath();
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
         }

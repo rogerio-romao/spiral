@@ -17,9 +17,9 @@ export default class Geometer extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = 'black';
         this.ctx.strokeStyle = AL.randomColor();
         this.ctx.lineWidth = AL.random(2, 7);
+        this.ctx.shadowColor = 'black';
         this.ctx.shadowBlur = 1;
     }
 

@@ -49,7 +49,7 @@ export default class Shards extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.01)';
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
             this.ctx.fillStyle = this.color;
             this.drawTriangle();
         }

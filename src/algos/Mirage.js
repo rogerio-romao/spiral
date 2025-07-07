@@ -49,7 +49,7 @@ export default class Mirage extends AL {
         if (this.t % (this.speed * 200) === 0) {
             this.initializeProperties();
 
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
             this.setupDrawingStyles();
         }
 

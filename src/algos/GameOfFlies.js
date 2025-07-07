@@ -10,16 +10,17 @@ export default class GameOfFlies extends AL {
     }
 
     initializeProperties() {
+        this.springPoint = { x: this.w / 2, y: this.h / 2 };
+
         this.p = AL.createParticle(
             AL.random(0, this.w),
             AL.random(0, this.h),
             AL.random(5, 50),
             Math.random() * Math.PI * 2
         );
-        this.p.radius = AL.random(3, 9);
         this.p.color = AL.randomColor(60, 255, 0.5, 1);
+        this.p.radius = AL.random(3, 9);
         this.particles = [this.p];
-        this.springPoint = { x: this.w / 2, y: this.h / 2 };
         this.k = 0.14;
     }
 
@@ -61,8 +62,8 @@ export default class GameOfFlies extends AL {
                 AL.random(5, 50),
                 Math.random() * Math.PI * 2
             );
-            newParticle.radius = AL.random(3, 9);
             newParticle.color = AL.randomColor(60, 255, 0.5, 1);
+            newParticle.radius = AL.random(3, 9);
             this.particles.push(newParticle);
         }
 

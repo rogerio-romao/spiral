@@ -51,7 +51,7 @@ export default class Wormholes extends AL {
             );
 
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
 
             this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
         }

@@ -18,11 +18,12 @@ export default class GravityTurbulence extends AL {
             Math.random() * Math.PI * 2
         );
 
-        this.sun1.mass = 50000;
         this.sun1.radius = 40;
-        this.sun2.mass = -10000;
         this.sun2.radius = 30;
+        this.sun1.mass = 50000;
+        this.sun2.mass = -10000;
         this.numParticles = 225;
+
         this.particles = [];
 
         for (let i = 0; i < this.numParticles; i++) {
@@ -97,6 +98,7 @@ export default class GravityTurbulence extends AL {
             this.sun1.radius = AL.mathUtils.randomRange(3, 25);
             this.sun1.direction = Math.random() * Math.PI * 2;
             this.sun1.speed = Math.random() * 5 - 2.5;
+
             this.sun2.mass = AL.mathUtils.randomRange(-100000, 100000);
             this.sun2.radius = AL.mathUtils.randomRange(5, 40);
             this.sun2.direction = Math.random() * Math.PI * 2;

@@ -91,7 +91,7 @@ export default class Mesmerize extends AL {
         if (this.t % (this.speed * 1620) === 0) {
             this.tl.kill();
 
-            this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.clearScreen();
 
             this.initializeProperties();
             this.setupDrawingStyles();

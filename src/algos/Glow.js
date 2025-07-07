@@ -11,12 +11,12 @@ export default class Glow extends AL {
     }
 
     initializeProperties() {
-        this.margin1 = AL.random(25, this.w / 4);
-        this.margin2 = AL.random(25, this.w / 4);
+        this.modes = ['color', 'source-over', 'overlay', 'soft-light'];
         this.color1 = AL.randomColor(0, 255, 0.05, 0.2);
         this.color2 = AL.randomColor(0, 255, 0.05, 0.2);
-        this.rot = AL.random(1, 60);
-        this.modes = ['color', 'source-over', 'overlay', 'soft-light'];
+        this.margin1 = AL.random(25, this.w / 4);
+        this.margin2 = AL.random(25, this.w / 4);
+        this.rotate = AL.random(1, 60);
     }
 
     setupDrawingStyles() {
@@ -34,7 +34,7 @@ export default class Glow extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 60) === 0) {
             this.margin1 = AL.random(25, this.w / 4);
@@ -47,7 +47,7 @@ export default class Glow extends AL {
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rot = AL.random(1, 60);
+            this.rotate = AL.random(1, 60);
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
                 this.modes
             );

@@ -59,7 +59,7 @@ export default class Unfocused extends AL {
 
         if (this.t % (this.speed * 500) === 0) {
             this.ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
             this.ctx.fillStyle = AL.randomColor(10, 255, 0.1, 0.1);
         }
 

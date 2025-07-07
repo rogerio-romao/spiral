@@ -61,7 +61,7 @@ export default class Typobrush extends AL {
                 AL.pickRandomElement(this.letters)
             );
 
-            this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+            this.fillScreen();
         }
 
         requestAnimationFrame(this.draw);
