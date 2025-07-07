@@ -13,18 +13,18 @@ export default class LisaJou extends AL {
     initializeProperties() {
         this.radiusX = AL.random(100, this.w * 0.75);
         this.radiusY = AL.random(100, this.h * 0.75);
-        this.angleX = 0;
-        this.angleY = 0;
         this.speedX = Math.random() * 3;
         this.speedY = Math.random() * 3;
         this.size = AL.random(2, 16);
+        this.angleX = 0;
+        this.angleY = 0;
     }
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = AL.randomColor();
-        this.ctx.fillRect(0, 0, this.w, this.h);
         this.ctx.fillStyle = AL.randomColor();
+        this.ctx.fillRect(0, 0, this.w, this.h);
     }
 
     draw() {

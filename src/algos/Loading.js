@@ -17,15 +17,15 @@ export default class Loading extends AL {
     }
 
     initializeProperties() {
-        this.rot = AL.random(2, 45);
-        this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
+        this.rotate = AL.random(2, 45);
         this.width1 = AL.random(4, 51);
         this.width2 = AL.random(4, 51);
+        this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
     }
 
     setupDrawingStyles() {
         this.ctx.fillStyle = 'black';
-        this.ctx.fillRect(-this.w, -this.h, this.w * 3, this.h * 3);
+        this.fillScreen();
     }
 
     draw() {
@@ -50,7 +50,7 @@ export default class Loading extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 45) === 0) {
             this.initializeProperties();

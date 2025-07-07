@@ -22,9 +22,9 @@ export default class Lollipottery extends AL {
 
     setupDrawingStyles() {
         this.ctx.lineWidth = AL.random(2, 14);
-        this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = AL.randomColor();
+        this.ctx.globalCompositeOperation = 'overlay';
     }
 
     draw() {

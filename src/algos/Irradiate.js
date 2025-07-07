@@ -5,24 +5,28 @@ export default class Irradiate extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
     initializeProperties() {
+        this.rotate = AL.random(1, 181);
         this.width = AL.random(50, this.w / 2);
         this.height = AL.random(50, this.h / 2);
-        this.rotate = AL.random(1, 181);
         this.ul = AL.random(10, Math.min(this.w, this.h));
         this.ur = AL.random(10, Math.min(this.w, this.h));
         this.ll = AL.random(10, Math.min(this.w, this.h));
         this.lr = AL.random(10, Math.min(this.w, this.h));
     }
 
+    setupConstantStyles() {
+        this.ctx.globalCompositeOperation = 'hard-light';
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
-        this.ctx.globalCompositeOperation = 'hard-light';
     }
 
     draw() {
@@ -47,9 +51,8 @@ export default class Irradiate extends AL {
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
         }
 
         requestAnimationFrame(this.draw);
