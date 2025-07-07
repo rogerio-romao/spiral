@@ -19,8 +19,8 @@ export default class Fruits extends AL {
     initializeProperties() {
         this.row = 0;
         this.col = 0;
-        this.cell = AL.pickRandomElement(this.cellSizes);
         this.size = AL.random(10, 100);
+        this.cell = AL.pickRandomElement(this.cellSizes);
     }
 
     setupConstantStyles() {
