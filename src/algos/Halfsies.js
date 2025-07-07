@@ -15,12 +15,12 @@ export default class Halfsies extends AL {
     }
 
     initializeProperties() {
-        this.rot = AL.random(3, 37);
+        this.rotate = AL.random(3, 37);
+        this.width1 = AL.random(2, 11);
+        this.width2 = AL.random(2, 11);
         this.radius = AL.random(40, 400);
         this.x = AL.random(this.w / 2 - this.radius, this.w / 2 + this.radius);
         this.y = AL.random(this.h / 2 - this.radius, this.h / 2 + this.radius);
-        this.width1 = AL.random(2, 11);
-        this.width2 = AL.random(2, 11);
     }
 
     draw() {
@@ -39,11 +39,10 @@ export default class Halfsies extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 120) === 0) {
             this.initializeProperties();
-
             this.ctx.beginPath();
         }
 

@@ -11,13 +11,13 @@ export default class HyperTunnel extends AL {
     }
 
     initializeProperties() {
-        this.side = AL.random(25, Math.min(this.w, this.h));
         this.rotate = AL.random(95, 175);
+        this.side = AL.random(25, Math.min(this.w, this.h));
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
         this.setFillStyle();
+        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
     }
 
     draw() {
@@ -49,17 +49,12 @@ export default class HyperTunnel extends AL {
 
         if (this.t % (this.speed * (360 / this.rotate)) === 0) {
             this.side = AL.random(25, Math.min(this.w, this.h));
-
-            this.setFillStyle();
-            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 75) === 0) {
-            this.rotate = AL.random(95, 175);
-            this.side = AL.random(25, Math.max(this.w, this.h));
-
-            this.setFillStyle();
-            this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
+            this.initializeProperties();
+            this.setupDrawingStyles();
         }
 
         requestAnimationFrame(this.draw);

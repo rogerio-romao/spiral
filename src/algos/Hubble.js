@@ -11,29 +11,16 @@ export default class Hubble extends AL {
     }
 
     initializeProperties() {
-        this.seq = this.createSeq(13);
         this.index = 0;
-        this.currentVal = this.seq[this.index];
+        this.seq = this.createSeq(13);
         this.rotate = AL.random(1, 44);
+        this.currentVal = this.seq[this.index];
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
         this.ctx.filter = 'blur(5px)';
         this.ctx.globalCompositeOperation = 'hard-light';
-    }
-
-    createSeq(num) {
-        const start = [0, 1];
-        const values = [];
-        for (let i = 1; i <= num; i++) {
-            for (let j = 1; j <= num; j++) {
-                values.push(
-                    j * i * (start[start.length - 2] + start[start.length - 1])
-                );
-            }
-        }
-        return values;
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
@@ -77,5 +64,18 @@ export default class Hubble extends AL {
         this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
+    }
+
+    createSeq(num) {
+        const start = [0, 1];
+        const values = [];
+        for (let i = 1; i <= num; i++) {
+            for (let j = 1; j <= num; j++) {
+                values.push(
+                    j * i * (start[start.length - 2] + start[start.length - 1])
+                );
+            }
+        }
+        return values;
     }
 }

@@ -28,9 +28,9 @@ export default class Hive extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.strokeStyle = AL.randomColor();
         this.ctx.shadowColor = AL.randomColor();
+        this.ctx.globalCompositeOperation = 'overlay';
     }
 
     draw() {

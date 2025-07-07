@@ -13,6 +13,7 @@ export default class Harmonie extends AL {
     }
 
     initializeBaseProperties() {
+        this.rotate = 23;
         this.letters = [
             2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924,
             2925, 2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947,
@@ -27,7 +28,6 @@ export default class Harmonie extends AL {
         this.x = AL.random(40, this.w - 40);
         this.y = AL.random(25, this.h - 25);
         this.size = AL.random(20, 55);
-        this.rot = 23;
     }
 
     setupConstantStyles() {
@@ -52,14 +52,11 @@ export default class Harmonie extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 180) === 0) {
-            this.size = AL.random(20, 55);
-            this.x = AL.random(40, this.w - 40);
-            this.y = AL.random(25, this.h - 25);
-            this.rot = AL.random(1, 400);
-
+            this.initializeProperties();
+            this.rotate = AL.random(1, 400);
             this.setupDrawingStyles();
         }
 

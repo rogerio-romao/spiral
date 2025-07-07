@@ -11,13 +11,14 @@ export default class Hallucinate extends AL {
     }
 
     initializeProperties() {
-        this.rows = AL.random(3, 17);
-        this.rot = AL.random(1, 180);
-        this.height = this.h / this.rows;
         this.colors = [];
         for (let i = 0; i <= this.rows; i++) {
             this.colors.push(AL.randomColor());
         }
+
+        this.rows = AL.random(3, 17);
+        this.rot = AL.random(1, 180);
+        this.height = this.h / this.rows;
     }
 
     setupDrawingStyles() {
