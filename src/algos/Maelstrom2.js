@@ -12,6 +12,7 @@ export default class Maelstrom2 extends AL {
     }
 
     initializeProperties() {
+        this.angle = AL.random(10, 350);
         this.cp1 = AL.random(0, this.w);
         this.cp2 = AL.random(0, this.h);
         this.alter1 = AL.random(-5, 5);
@@ -20,7 +21,6 @@ export default class Maelstrom2 extends AL {
         this.alter4 = AL.random(-5, 5);
         this.x1 = AL.random(0, this.w);
         this.y1 = AL.random(0, this.h);
-        this.angle = AL.random(10, 350);
     }
 
     setupConstantStyles() {
@@ -65,11 +65,9 @@ export default class Maelstrom2 extends AL {
 
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.fillScreen();
             this.ctx.beginPath();
-
-            this.setupDrawingStyles();
         }
 
         requestAnimationFrame(this.draw);

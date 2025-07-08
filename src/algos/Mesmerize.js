@@ -13,27 +13,27 @@ export default class Mesmerize extends AL {
     }
 
     initializeProperties() {
-        this.rot = AL.random(1, 199);
-        this.w1 = AL.random(30, 300);
-        this.h1 = AL.random(30, 300);
-        this.w2 = AL.random(60, 600);
-        this.h2 = AL.random(60, 600);
-        this.x1 = AL.random(0, this.w - this.w1);
-        this.x2 = AL.random(0, this.w - this.w2);
-        this.y1 = AL.random(0, this.h - this.h1);
-        this.y2 = AL.random(0, this.h - this.h2);
         this.ul1 = AL.random(0, 30);
         this.ur1 = AL.random(0, 30);
         this.ll1 = AL.random(0, 30);
         this.lr1 = AL.random(0, 30);
+        this.w1 = AL.random(30, 300);
+        this.h1 = AL.random(30, 300);
+        this.w2 = AL.random(60, 600);
+        this.h2 = AL.random(60, 600);
         this.ul2 = AL.random(-300, 600);
         this.ur2 = AL.random(-300, 600);
         this.ll2 = AL.random(-300, 600);
         this.lr2 = AL.random(-300, 600);
-        this.color1 = AL.randomColor(127, 255);
+        this.rotate = AL.random(1, 199);
         this.color2 = AL.randomColor(0, 127);
-        this.fill1 = AL.randomColor(0, 255, 0.01, 0.04);
+        this.color1 = AL.randomColor(127, 255);
+        this.x1 = AL.random(0, this.w - this.w1);
+        this.x2 = AL.random(0, this.w - this.w2);
+        this.y1 = AL.random(0, this.h - this.h1);
+        this.y2 = AL.random(0, this.h - this.h2);
         this.fill2 = AL.randomColor(0, 255, 0.04, 0.1);
+        this.fill1 = AL.randomColor(0, 255, 0.01, 0.04);
 
         this.obj1 = {
             width: this.w1,
@@ -86,7 +86,7 @@ export default class Mesmerize extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 1620) === 0) {
             this.tl.kill();

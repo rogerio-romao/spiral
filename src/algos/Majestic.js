@@ -21,10 +21,10 @@ export default class Majestic extends AL {
 
     initializeProperties() {
         this.rotate = AL.pickRandomElement(this.rotations);
-        this.x = AL.random(40, this.w - 40);
-        this.y = AL.random(40, this.h - 40);
         this.width = AL.random(30, this.w - 100);
         this.height = AL.random(30, this.h - 100);
+        this.x = AL.random(40, this.w - 40);
+        this.y = AL.random(40, this.h - 40);
         this.ul = AL.random(10, this.w);
         this.ur = AL.random(10, this.h);
         this.ll = AL.random(10, this.h);
@@ -60,9 +60,7 @@ export default class Majestic extends AL {
 
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();
-
             this.fillScreen();
-
             this.setupDrawingStyles();
         }
 

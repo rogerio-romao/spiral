@@ -22,12 +22,12 @@ export default class Matter extends AL {
     initializeProperties() {
         this.x1 = this.w / 2;
         this.y1 = this.h / 2;
-        this.radius1 = AL.random(5, 150);
         this.x2 = AL.random(0, this.w);
         this.y2 = AL.random(0, this.h);
-        this.radius2 = AL.random(5, 150);
         this.x3 = AL.random(0, this.w);
         this.y3 = AL.random(0, this.h);
+        this.radius1 = AL.random(5, 150);
+        this.radius2 = AL.random(5, 150);
         this.radius3 = AL.random(5, 150);
         this.rotate = AL.pickRandomElement(this.rotations);
     }

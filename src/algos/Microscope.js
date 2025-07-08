@@ -6,6 +6,7 @@ export default class Microscope extends AL {
 
         this.initializeBaseProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -37,6 +38,10 @@ export default class Microscope extends AL {
         this.cols = Math.ceil(this.w / this.radiusX) + 5;
     }
 
+    setupConstantStyles() {
+        this.ctx.shadowBlur = 6;
+    }
+
     setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             0,
@@ -44,7 +49,6 @@ export default class Microscope extends AL {
             0.5,
             0.5
         );
-        this.ctx.shadowBlur = 6;
     }
 
     draw() {
@@ -75,12 +79,7 @@ export default class Microscope extends AL {
         this.t++;
 
         if (this.t % (this.speed * 50) === 0) {
-            this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-                0,
-                255,
-                0.5,
-                0.5
-            );
+            this.setupDrawingStyles();
         }
 
         if (this.t % (this.speed * 100) === 0) {

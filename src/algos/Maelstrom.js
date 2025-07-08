@@ -5,6 +5,7 @@ export default class Maelstrom extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -18,10 +19,13 @@ export default class Maelstrom extends AL {
         this.angle = AL.random(1, 200);
     }
 
-    setupDrawingStyles() {
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
+    setupConstantStyles() {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.225)';
+        this.ctx.lineWidth = 2;
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
     }
 
     draw() {
@@ -37,10 +41,9 @@ export default class Maelstrom extends AL {
 
         if (this.t % (this.speed * 300) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.fillScreen();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
         }
 
         requestAnimationFrame(this.draw);

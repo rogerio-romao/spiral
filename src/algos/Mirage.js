@@ -11,13 +11,13 @@ export default class Mirage extends AL {
     }
 
     initializeProperties() {
-        this.width = AL.random(100, this.w);
-        this.height = AL.random(100, this.h);
         this.ul = AL.random(10, 300);
         this.ur = AL.random(10, 300);
         this.ll = AL.random(10, 300);
         this.lr = AL.random(10, 300);
         this.rotate = AL.random(1, 50);
+        this.width = AL.random(100, this.w);
+        this.height = AL.random(100, this.h);
     }
 
     setupDrawingStyles() {
@@ -48,7 +48,6 @@ export default class Mirage extends AL {
 
         if (this.t % (this.speed * 200) === 0) {
             this.initializeProperties();
-
             this.fillScreen();
             this.setupDrawingStyles();
         }
