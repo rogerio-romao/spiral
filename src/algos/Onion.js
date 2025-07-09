@@ -6,6 +6,7 @@ export default class Onion extends AL {
 
         this.initializeBaseProperties();
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -16,13 +17,16 @@ export default class Onion extends AL {
     }
 
     initializeProperties() {
-        this.radius = AL.random(45, 500);
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
+        this.radius = AL.random(45, 500);
+    }
+
+    setupConstantStyles() {
+        this.ctx.strokeStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
     }
 
@@ -41,9 +45,8 @@ export default class Onion extends AL {
 
         if (this.t % (this.speed * 135) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
         }
 
         if (this.t % (this.speed * 540) === 0) {

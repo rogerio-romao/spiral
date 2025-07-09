@@ -12,14 +12,14 @@ export default class Orbits extends AL {
     }
 
     initializeBaseProperties() {
-        this.rot = AL.random(1, 6);
+        this.rotate = AL.random(1, 6);
         this.endAngle = AL.random(101, 360);
     }
 
     initializeProperties() {
+        this.startAngle = AL.random(0, 100);
         this.radius = AL.random(30, this.h);
         this.radius2 = AL.random(10, this.radius);
-        this.startAngle = AL.random(0, 100);
     }
 
     setupDrawingStyles() {
@@ -33,7 +33,7 @@ export default class Orbits extends AL {
                 this.h / 2,
                 this.radius,
                 this.radius2,
-                this.rot,
+                this.rotate,
                 this.startAngle,
                 this.endAngle
             );
@@ -42,11 +42,11 @@ export default class Orbits extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();
-            this.rot = AL.random(-3, 3);
+            this.rotate = AL.random(-3, 3);
 
             this.setupDrawingStyles();
             this.ctx.beginPath();

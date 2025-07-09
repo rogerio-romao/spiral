@@ -22,15 +22,15 @@ export default class Ourobouros extends AL {
     }
 
     initializeProperties() {
+        this.rotate = AL.random(4, 30);
         this.x = AL.random(100, this.w - 100);
         this.y = AL.random(100, this.h - 100);
-        this.rotate = AL.random(4, 30);
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'difference';
         this.ctx.lineWidth = 20;
         this.ctx.textAlign = 'center';
+        this.ctx.globalCompositeOperation = 'difference';
     }
 
     setupDrawingStyles() {
