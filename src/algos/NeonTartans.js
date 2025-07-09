@@ -10,11 +10,11 @@ export default class NeonTartans extends AL {
     }
 
     initializeProperties() {
+        this.color1 = AL.randomColor();
+        this.color2 = AL.randomColor();
         this.lineX = AL.random(0, this.h);
         this.lineY = AL.random(0, this.w);
         this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
-        this.color1 = AL.randomColor();
-        this.color2 = AL.randomColor();
     }
 
     draw() {

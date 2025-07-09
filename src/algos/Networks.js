@@ -18,7 +18,7 @@ export default class Networks extends AL {
 
     initializeProperties() {
         this.drawAmount = 0.01;
-        this.rot = AL.random(1, 71);
+        this.rotate = AL.random(1, 71);
         this.size = AL.random(30, 200);
         this.sizeIncrease = Math.random() * AL.random(0, 5);
     }
@@ -45,7 +45,7 @@ export default class Networks extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 480) === 0) {
             this.x = AL.random(0, this.w);
