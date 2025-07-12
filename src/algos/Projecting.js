@@ -36,19 +36,19 @@ export default class Projecting extends AL {
     }
 
     initializeProperties() {
-        this.width = AL.random(4, 19);
-        this.rot1 = { rot: AL.random(1, 90) };
-        this.rot2 = { rot: AL.random(1, 90) };
+        this.rotate1 = { rot: AL.random(1, 90) };
+        this.rotate2 = { rot: AL.random(1, 90) };
         this.color1 = { color: AL.randomColor() };
         this.color2 = { color: AL.randomColor() };
         this.color3 = { color: AL.randomColor() };
         this.color4 = { color: AL.randomColor() };
+        this.width = AL.random(4, 19);
     }
 
     setupConstantStyles() {
+        this.ctx.shadowBlur = 10;
         this.ctx.strokeStyle = 'black';
         this.ctx.shadowColor = this.color3.color;
-        this.ctx.shadowBlur = 10;
     }
 
     setupDrawingStyles() {
@@ -58,7 +58,7 @@ export default class Projecting extends AL {
 
     draw() {
         this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rot1.rot * (Math.PI / 180));
+        this.ctx.rotate(this.rotate1.rot * (Math.PI / 180));
         this.ctx.fillRect(0, 0, this.w, this.width);
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
@@ -81,10 +81,10 @@ export default class Projecting extends AL {
             defaults: { repeat: -1, yoyo: true },
         });
         this.tl.to(
-            this.rot1,
+            this.rotate1,
             {
                 duration: AL.random(3, 8),
-                rot: this.rot2.rot,
+                rot: this.rotate2.rot,
             },
             '<'
         );

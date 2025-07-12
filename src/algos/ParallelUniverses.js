@@ -10,10 +10,7 @@ export default class ParallelUniverses extends AL {
     }
 
     initializeProperties() {
-        this.rounded1 = AL.random(5, 250);
-        this.rounded2 = AL.random(5, 250);
-        this.rounded3 = AL.random(5, 250);
-        this.rounded4 = AL.random(5, 250);
+        this.rotate = AL.random(1, 11);
         this.x1 = AL.random(0, this.w);
         this.y1 = AL.random(0, this.h);
         this.x2 = AL.random(0, this.w);
@@ -22,6 +19,10 @@ export default class ParallelUniverses extends AL {
         this.y3 = AL.random(0, this.h);
         this.x4 = AL.random(0, this.w);
         this.y4 = AL.random(0, this.h);
+        this.rounded1 = AL.random(5, 250);
+        this.rounded2 = AL.random(5, 250);
+        this.rounded3 = AL.random(5, 250);
+        this.rounded4 = AL.random(5, 250);
         this.side1 = AL.random(20, this.w);
         this.side2 = AL.random(20, this.h);
         this.side3 = AL.random(20, this.w);
@@ -30,7 +31,6 @@ export default class ParallelUniverses extends AL {
         this.side6 = AL.random(20, this.h);
         this.side7 = AL.random(20, this.w);
         this.side8 = AL.random(20, this.h);
-        this.rotate = AL.random(1, 11);
         this.color1 = AL.randomColor(0, 255, 0.05, 0.1);
         this.color2 = AL.randomColor(0, 255, 0.05, 0.1);
     }

@@ -25,10 +25,10 @@ export default class PietriDish extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
         this.ctx.fillStyle = AL.randomColor();
-        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.lineWidth = AL.random(2, 18);
+        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
     }
 
     draw() {

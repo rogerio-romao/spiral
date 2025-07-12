@@ -12,16 +12,16 @@ export default class Pulsar extends AL {
     }
 
     initializeProperties() {
+        this.x = AL.random(0, this.w);
+        this.y = AL.random(0, this.h);
+        this.rotate1 = AL.random(1, 90);
+        this.rotate2 = AL.random(1, 90);
+        this.pulse1 = AL.random(50, 300);
+        this.pulse2 = AL.random(30, 200);
         this.cp1x = AL.random(0, this.w);
         this.cp1y = AL.random(0, this.h);
         this.cp2x = AL.random(0, this.w);
         this.cp2y = AL.random(0, this.h);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
-        this.rot1 = AL.random(1, 90);
-        this.rot2 = AL.random(1, 90);
-        this.pulse1 = AL.random(50, 300);
-        this.pulse2 = AL.random(30, 200);
     }
 
     setupConstantProperties() {
@@ -45,7 +45,7 @@ export default class Pulsar extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot1);
+        this.rotateCanvasDegrees(this.rotate1);
 
         if (this.t % (this.speed * 160) === 0) {
             this.initializeProperties();

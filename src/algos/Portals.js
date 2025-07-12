@@ -12,12 +12,12 @@ export default class Portals extends AL {
     }
 
     initializeProperties() {
+        this.height = AL.random(20, this.h / this.rows + 3);
+        this.width = AL.random(20, this.w / this.cols + 3);
+        this.rotate = AL.random(1, 33);
+        this.round = AL.random(0, 60);
         this.cols = AL.random(3, 13);
         this.rows = AL.random(3, 13);
-        this.width = AL.random(20, this.w / this.cols + 3);
-        this.height = AL.random(20, this.h / this.rows + 3);
-        this.round = AL.random(0, 60);
-        this.rot = AL.random(1, 33);
     }
 
     setupConstantStyles() {
@@ -26,8 +26,8 @@ export default class Portals extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.45);
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
     }
 
     draw() {
@@ -59,7 +59,7 @@ export default class Portals extends AL {
             this.setupDrawingStyles();
         }
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }

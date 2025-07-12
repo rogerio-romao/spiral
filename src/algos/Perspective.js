@@ -16,10 +16,10 @@ export default class Perspective extends AL {
     }
 
     initializeProperties() {
-        this.color1 = AL.randomColor(0, 255, 0.2, 0.6);
-        this.color2 = AL.randomColor(0, 255, 0.2, 0.6);
         this.skewX = Math.random();
         this.skewY = Math.random();
+        this.color1 = AL.randomColor(0, 255, 0.2, 0.6);
+        this.color2 = AL.randomColor(0, 255, 0.2, 0.6);
     }
 
     setupDrawingStyles() {

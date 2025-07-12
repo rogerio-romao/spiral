@@ -17,10 +17,10 @@ export default class Patterns extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'overlay';
+        this.ctx.lineWidth = 3;
         this.ctx.globalAlpha = 0.1;
         this.ctx.strokeStyle = 'white';
-        this.ctx.lineWidth = 3;
+        this.ctx.globalCompositeOperation = 'overlay';
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.6);
     }
 

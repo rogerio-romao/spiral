@@ -22,11 +22,11 @@ export default class Plaid extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.globalAlpha = 0.3;
+        this.ctx.lineWidth = AL.random(1, 13);
+        this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.fillStyle = AL.randomColor(10, 255, 0.2, 0.7);
         this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.7);
-        this.ctx.lineWidth = AL.random(1, 13);
     }
 
     draw() {

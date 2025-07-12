@@ -11,10 +11,10 @@ export default class Progression extends AL {
     }
 
     initializeProperties() {
-        this.width = AL.random(40, this.w);
         this.height = AL.random(40, this.h);
-        this.round = AL.random(1, 350);
+        this.width = AL.random(40, this.w);
         this.rotate = AL.random(1, 180);
+        this.round = AL.random(1, 350);
     }
 
     setupDrawingStyles() {

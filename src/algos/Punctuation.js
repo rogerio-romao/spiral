@@ -33,14 +33,14 @@ export default class Punctuation extends AL {
     }
 
     initializeProperties() {
+        this.rotate = AL.random(-359, -1);
         this.letter = AL.pickRandomElement(this.letters);
-        this.rot1 = AL.random(-359, -1);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.66, 0.66);
         this.fontChange = AL.random(35, 250);
         this.ctx.font = `${this.fontChange}px sans-serif`;
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.66, 0.66);
     }
 
     draw() {
@@ -48,7 +48,7 @@ export default class Punctuation extends AL {
             this.stagger = this.stagger % 4;
 
             if (this.stagger === 0) {
-                this.rotateCanvasDegrees(this.rot1);
+                this.rotateCanvasDegrees(this.rotate);
 
                 this.ctx.fillText(this.letter, this.w / 2, this.h / 2);
             }
@@ -56,7 +56,7 @@ export default class Punctuation extends AL {
             if (this.stagger === 1) {
                 this.ctx.fillText(`  ${this.letter}`, this.w / 2, this.h / 2);
 
-                this.rotateCanvasDegrees(this.rot1);
+                this.rotateCanvasDegrees(this.rotate);
             }
 
             if (this.stagger === 2) {
@@ -77,7 +77,7 @@ export default class Punctuation extends AL {
         this.t++;
 
         if (this.t % (this.speed * 100) === 0) {
-            this.rot1 = AL.random(-35, -10);
+            this.rotate = AL.random(-35, -10);
             this.fontChange = AL.random(35, 250);
             this.ctx.font = `${this.fontChange}px sans-serif`;
         }

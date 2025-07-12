@@ -26,8 +26,8 @@ export default class Picnic extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
         this.ctx.lineWidth = AL.random(1, 25);
+        this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
     }
 
     draw() {

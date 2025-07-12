@@ -18,8 +18,9 @@ export default class PsychoRainbow extends AL {
 
     initializeProperties() {
         this.rows = AL.random(3, 10);
-        this.rot = AL.random(1, 50);
+        this.rotate = AL.random(1, 50);
         this.height = this.h / this.rows;
+
         this.colors = [];
         for (let i = 0; i <= this.rows; i++) {
             this.colors.push(AL.randomColor(0, 255, 0.1, 0.5));
@@ -45,7 +46,7 @@ export default class PsychoRainbow extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 100) === 0) {
             this.initializeProperties();
