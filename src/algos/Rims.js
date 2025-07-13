@@ -5,23 +5,27 @@ export default class Rims extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
     initializeProperties() {
-        this.radius = AL.random(30, this.h);
-        this.radius2 = AL.random(10, this.radius);
-        this.rot = AL.random(1, 6);
+        this.gap = AL.random(4, 100);
+        this.rotate = AL.random(1, 6);
         this.startAngle = AL.random(0, 100);
         this.endAngle = AL.random(101, 360);
-        this.gap = AL.random(4, 100);
+        this.radius = AL.random(30, this.h);
+        this.radius2 = AL.random(10, this.radius);
+    }
+
+    setupConstantStyles() {
+        this.ctx.strokeStyle = ' black';
     }
 
     setupDrawingStyles() {
         this.ctx.fillStyle = AL.randomColor(5, 255, 0.01, 0.01);
-        this.ctx.strokeStyle = ' black';
     }
 
     draw() {
@@ -34,7 +38,7 @@ export default class Rims extends AL {
                     this.h / 2,
                     this.radius,
                     this.radius2,
-                    this.rot,
+                    this.rotate,
                     this.startAngle,
                     this.endAngle
                 );
@@ -46,7 +50,7 @@ export default class Rims extends AL {
                     this.h / 2,
                     this.radius2,
                     this.radius,
-                    this.rot,
+                    this.rotate,
                     this.startAngle + this.gap,
                     this.endAngle + this.gap
                 );
@@ -58,7 +62,7 @@ export default class Rims extends AL {
                     this.endAngle + this.gap,
                     this.radius,
                     this.radius2,
-                    -this.rot,
+                    -this.rotate,
                     this.w / 2,
                     this.h / 2
                 );
@@ -70,14 +74,13 @@ export default class Rims extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
-            this.initializeProperties();
             this.speed = AL.random(1, 10);
-
+            this.initializeProperties();
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.fillStyle = AL.randomColor(5, 255, 0.01, 0.01);
         }
 
         requestAnimationFrame(this.draw);

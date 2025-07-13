@@ -16,18 +16,18 @@ export default class Radiance extends AL {
     }
 
     initializeProperties() {
+        this.color1 = AL.randomColor();
+        this.color2 = AL.randomColor();
+        this.color3 = AL.randomColor();
+        this.color4 = AL.randomColor();
         this.rounded1 = AL.random(15, 50);
         this.rounded2 = AL.random(15, 50);
         this.rounded3 = AL.random(15, 50);
         this.rounded4 = AL.random(15, 50);
         this.x1 = AL.random(0, this.w / 2);
         this.y1 = AL.random(0, this.h / 2);
-        this.x2 = AL.random(this.w / 2, this.w);
         this.y2 = AL.random(0, this.h / 2);
-        this.x3 = AL.random(this.w / 2, this.w);
-        this.y3 = AL.random(this.h / 2, this.h);
         this.x4 = AL.random(0, this.w / 2);
-        this.y4 = AL.random(this.h / 2, this.h);
         this.side1 = AL.random(60, this.w / 2);
         this.side2 = AL.random(60, this.h / 2);
         this.side3 = AL.random(60, this.w / 2);
@@ -36,10 +36,10 @@ export default class Radiance extends AL {
         this.side6 = AL.random(60, this.h / 2);
         this.side7 = AL.random(60, this.w / 2);
         this.side8 = AL.random(60, this.h / 2);
-        this.color1 = AL.randomColor();
-        this.color2 = AL.randomColor();
-        this.color3 = AL.randomColor();
-        this.color4 = AL.randomColor();
+        this.x2 = AL.random(this.w / 2, this.w);
+        this.x3 = AL.random(this.w / 2, this.w);
+        this.y3 = AL.random(this.h / 2, this.h);
+        this.y4 = AL.random(this.h / 2, this.h);
     }
 
     setupDrawingStyles() {
@@ -124,9 +124,7 @@ export default class Radiance extends AL {
 
             this.stagger++;
 
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            this.rotateCanvasRadians(this.rotate);
         }
 
         this.t++;
@@ -137,7 +135,7 @@ export default class Radiance extends AL {
         }
 
         if (this.t % (this.speed * 1500) === 0) {
-            this.rotate = AL.random(1, 11);
+            this.initializeBaseProperties();
         }
 
         requestAnimationFrame(this.draw);

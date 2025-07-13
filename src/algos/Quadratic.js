@@ -12,7 +12,7 @@ export default class Quadratic extends AL {
     }
 
     initializeBaseProperties() {
-        this.rot = AL.random(4, 91);
+        this.rotate = AL.random(4, 91);
     }
 
     initializeProperties() {
@@ -32,11 +32,13 @@ export default class Quadratic extends AL {
 
     createQuadraticSequence(startNum, firstDiff, secondDiff) {
         const arr = [startNum];
+
         while (startNum < Math.max(this.w, this.h)) {
             startNum += firstDiff;
             firstDiff += secondDiff;
             arr.push(startNum);
         }
+
         return arr;
     }
 
@@ -54,7 +56,7 @@ export default class Quadratic extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         if (this.t % (this.speed * 90) === 0) {
             this.initializeProperties();
@@ -63,7 +65,7 @@ export default class Quadratic extends AL {
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rot = AL.random(4, 91);
+            this.initializeBaseProperties();
         }
 
         requestAnimationFrame(this.draw);

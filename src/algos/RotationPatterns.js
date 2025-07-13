@@ -23,9 +23,9 @@ export default class RotationPatterns extends AL {
     }
 
     setupDrawingStyles() {
+        this.ctx.lineWidth = 2;
         this.ctx.globalAlpha = 0.33;
         this.ctx.strokeStyle = 'black';
-        this.ctx.lineWidth = 2;
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.5);
     }
 

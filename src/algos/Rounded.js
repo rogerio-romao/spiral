@@ -5,6 +5,7 @@ export default class Rounded extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -20,10 +21,13 @@ export default class Rounded extends AL {
         this.rotate = (AL.random(1, 359) * Math.PI) / 180;
     }
 
-    setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(50, 255, 0.5, 1);
+    setupConstantStyles() {
         this.ctx.filter = 'contrast(2)';
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = AL.randomColor(50, 255, 0.5, 1);
     }
 
     draw() {
@@ -51,9 +55,8 @@ export default class Rounded extends AL {
 
         if (this.t % (this.speed * 125) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(50, 255, 0.5, 1);
         }
 
         requestAnimationFrame(this.draw);

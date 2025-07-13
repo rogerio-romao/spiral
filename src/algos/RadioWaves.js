@@ -4,6 +4,7 @@ export default class RadioWaves extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
@@ -11,14 +12,17 @@ export default class RadioWaves extends AL {
         this.interval = requestAnimationFrame(this.draw);
     }
 
-    initializeProperties() {
+    initializeBaseProperties() {
         this.first = 0;
         this.second = 1;
+        this.seq = [this.first, this.second];
         this.divisors = [2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 20, 24, 30, 36];
-        this.divisor = AL.pickRandomElement(this.divisors);
+    }
+
+    initializeProperties() {
         this.posX = AL.pickRandomElement(this.divisors);
         this.posY = AL.pickRandomElement(this.divisors);
-        this.seq = [this.first, this.second];
+        this.divisor = AL.pickRandomElement(this.divisors);
     }
 
     setupConstantStyles() {
@@ -63,12 +67,9 @@ export default class RadioWaves extends AL {
         this.t++;
 
         if (this.t % (this.speed * 360) === 0) {
-            this.ctx.beginPath();
+            this.initializeProperties();
             this.setupDrawingStyles();
-
-            this.divisor = AL.pickRandomElement(this.divisors);
-            this.posX = AL.pickRandomElement(this.divisors);
-            this.posY = AL.pickRandomElement(this.divisors);
+            this.ctx.beginPath();
         }
 
         if (this.t % (this.speed * 1440) === 0) {
