@@ -12,9 +12,9 @@ export default class Smooth extends AL {
 
     initializeProperties() {
         this.size = AL.random(50, 500);
+        this.rotate = AL.random(1, 11);
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
-        this.rot = AL.random(1, 11);
     }
 
     setupDrawingStyles() {
@@ -28,7 +28,7 @@ export default class Smooth extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 60) === 0) {
             this.initializeProperties();

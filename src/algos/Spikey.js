@@ -5,6 +5,7 @@ export default class Spikey extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -22,11 +23,14 @@ export default class Spikey extends AL {
         this.rotate = (AL.random(2, 358) * Math.PI) / 180;
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.beginPath();
-        this.ctx.moveTo(this.w / 2, this.h / 2);
-        this.ctx.strokeStyle = AL.randomColor(60, 255, 1, 1);
         this.ctx.lineWidth = 0.1;
+        this.ctx.moveTo(this.w / 2, this.h / 2);
+    }
+
+    setupDrawingStyles() {
+        this.ctx.strokeStyle = AL.randomColor(60, 255, 1, 1);
     }
 
     draw() {

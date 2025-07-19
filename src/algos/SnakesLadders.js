@@ -20,9 +20,9 @@ export default class SnakesLadders extends AL {
     initializeProperties() {
         this.div = AL.random(3, 17);
         this.div2 = AL.random(3, 17);
+        this.rotate = AL.random(1, 83);
         this.colSize = this.w / this.div;
         this.rowSize = this.h / this.div2;
-        this.rotate = AL.random(1, 83);
     }
 
     setupConstantStyles() {
@@ -66,11 +66,9 @@ export default class SnakesLadders extends AL {
 
         if (this.t % (this.speed * 720) === 0) {
             this.initializeProperties();
-
             this.fillScreen();
-            this.ctx.beginPath();
-
             this.setupDrawingStyles();
+            this.ctx.beginPath();
         }
 
         requestAnimationFrame(this.draw);

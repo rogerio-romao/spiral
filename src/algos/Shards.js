@@ -33,11 +33,11 @@ export default class Shards extends AL {
     }
 
     initializeProperties() {
+        this.rotate = AL.random(1, 90);
         this.c1x1 = AL.random(0, this.w);
         this.c1y1 = AL.random(0, this.h);
         this.c1x2 = AL.random(0, this.w);
         this.c1y2 = AL.random(0, this.h);
-        this.rot = AL.random(1, 90);
         this.color = AL.randomColor(0, 255, 1, 1);
     }
 
@@ -56,7 +56,7 @@ export default class Shards extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();

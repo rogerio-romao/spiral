@@ -5,6 +5,7 @@ export default class Solar extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -18,9 +19,12 @@ export default class Solar extends AL {
         this.rotate = AL.random(1, 359);
     }
 
+    setupConstantStyles() {
+        this.ctx.globalCompositeOperation = 'hard-light';
+    }
+
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.globalCompositeOperation = 'hard-light';
     }
 
     draw() {
@@ -43,9 +47,8 @@ export default class Solar extends AL {
 
         if (this.t % (this.speed * 120) === 0) {
             this.initializeProperties();
-
+            this.setupDrawingStyles();
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor();
         }
 
         requestAnimationFrame(this.draw);

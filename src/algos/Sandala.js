@@ -24,7 +24,7 @@ export default class Sandala extends AL {
     initializeProperties() {
         this.cols = AL.random(5, 12);
         this.rows = AL.random(5, 12);
-        this.rot = AL.random(1, 60);
+        this.rotate = AL.random(1, 60);
     }
 
     setupConstantStyles() {
@@ -38,7 +38,7 @@ export default class Sandala extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             for (let row = 0; row <= this.rows; row++) {
-                this.rotateCanvasRadians(this.rot);
+                this.rotateCanvasRadians(this.rotate);
 
                 for (let col = 0; col <= this.cols; col++) {
                     this.ctx.strokeText(

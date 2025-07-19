@@ -12,12 +12,12 @@ export default class Spikral extends AL {
     }
 
     initializeBaseProperties() {
-        this.rot = AL.random(1, 22);
+        this.rotate = AL.random(1, 22);
     }
 
     initializeProperties() {
-        this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
         this.size = AL.random(30, 100);
+        this.fillAmount = (Math.random() + 0.05) * (Math.PI / 2);
     }
 
     setupDrawingStyles() {
@@ -35,7 +35,7 @@ export default class Spikral extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(-this.rot);
+        this.rotateCanvasRadians(-this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();
@@ -43,7 +43,7 @@ export default class Spikral extends AL {
         }
 
         if (this.t % (this.speed * 1500) === 0) {
-            this.rot = AL.random(1, 22);
+            this.rotate = AL.random(1, 22);
         }
 
         requestAnimationFrame(this.draw);

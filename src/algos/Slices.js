@@ -12,13 +12,13 @@ export default class Slices extends AL {
     }
 
     initializeProperties() {
-        this.offsetX = AL.random(50, this.w / 2);
-        this.offsetY = AL.random(50, this.h / 2);
-        this.angleChange = Math.random() * 2 - 1;
         this.angle = 0;
         this.slice = Math.random();
         this.radius = AL.random(70, 220);
         this.rotate = AL.random(2, 90);
+        this.offsetX = AL.random(50, this.w / 2);
+        this.offsetY = AL.random(50, this.h / 2);
+        this.angleChange = Math.random() * 2 - 1;
     }
 
     setupConstantStyles() {

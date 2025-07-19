@@ -12,10 +12,11 @@ export default class SoapyBubbles extends AL {
 
     initializeProperties() {
         this.size = AL.random(5, 50);
+        this.rotate = AL.random(1, 61);
         this.length = Math.random() * 5 + 1;
-        this.angle = Math.random() * (Math.PI / 4) + 0.1;
-        this.rot = AL.random(1, 61);
         this.position = AL.createVector(0, 0);
+        this.angle = Math.random() * (Math.PI / 4) + 0.1;
+
         this.velocity = AL.createVector(0, 0);
         this.velocity.setLength(this.length);
         this.velocity.setAngle(this.angle);
@@ -58,7 +59,7 @@ export default class SoapyBubbles extends AL {
             this.setupDrawingStyles();
         }
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }
