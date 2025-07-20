@@ -10,11 +10,11 @@ export default class Spinner extends AL {
     }
 
     initializeProperties() {
-        this.color1 = AL.randomColor(0, 255, 1, 1);
-        this.color2 = AL.randomColor(0, 255, 1, 1);
-        this.side = Math.min(this.w, this.h);
         this.gap1 = AL.random(15, 150);
         this.gap2 = AL.random(-150, -15);
+        this.side = Math.min(this.w, this.h);
+        this.color1 = AL.randomColor(0, 255, 1, 1);
+        this.color2 = AL.randomColor(0, 255, 1, 1);
     }
 
     draw() {
@@ -50,10 +50,10 @@ export default class Spinner extends AL {
         this.t++;
 
         if (this.t % (this.speed * 50) === 0) {
-            this.side = AL.random(200, Math.max(this.w, this.h) / 2);
             this.gap1 = AL.random(15, 150);
             this.gap2 = AL.random(-150, -15);
             this.color2 = AL.randomColor(0, 255, 1, 1);
+            this.side = AL.random(200, Math.max(this.w, this.h) / 2);
         }
 
         if (this.t % (this.speed * 100) === 0) {

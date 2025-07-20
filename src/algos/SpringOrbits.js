@@ -13,8 +13,8 @@ export default class SpringOrbits extends AL {
     }
 
     initializeBaseProperties() {
-        this.springPoint = { x: this.w / 2, y: this.h / 2 };
         this.k = 0.04;
+        this.springPoint = { x: this.w / 2, y: this.h / 2 };
     }
 
     initializeProperties() {
@@ -28,8 +28,8 @@ export default class SpringOrbits extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 2;
         this.ctx.lineWidth = 3;
+        this.ctx.shadowBlur = 2;
         this.ctx.fillStyle = 'white';
     }
 

@@ -14,13 +14,13 @@ export default class SpiralText extends AL {
     initializeProperties() {
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
-        this.rot = AL.random(1, 20);
+        this.rotate = AL.random(1, 20);
         this.picker = AL.random(0, 11);
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'color';
         this.ctx.textAlign = 'center';
+        this.ctx.globalCompositeOperation = 'color';
     }
 
     setupDrawingStyles() {
@@ -32,7 +32,7 @@ export default class SpiralText extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText('SPIRAL', this.x, this.y);
 
-            this.rotateCanvasDegrees(this.rot);
+            this.rotateCanvasDegrees(this.rotate);
 
             this.x = AL.random(0, this.w);
         }
@@ -63,7 +63,7 @@ export default class SpiralText extends AL {
         }
 
         if (this.t % (this.speed * 180) === 0) {
-            this.rot = AL.random(1, 30);
+            this.rotate = AL.random(1, 30);
         }
 
         requestAnimationFrame(this.draw);

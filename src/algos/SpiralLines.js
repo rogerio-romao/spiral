@@ -11,19 +11,19 @@ export default class SpiralLines extends AL {
     }
 
     initializeProperties() {
-        this.radius = AL.random(10, this.h);
-        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
-        this.gap = AL.random(4, 100);
-        this.rot = AL.random(1, 359);
         this.cycles = 1;
         this.bw = Math.random();
+        this.gap = AL.random(4, 100);
+        this.rotate = AL.random(1, 359);
+        this.radius = AL.random(10, this.h);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.5, 0.5);
+        this.ctx.beginPath();
         this.ctx.lineWidth = AL.random(1, 8);
         this.ctx.moveTo(this.w / 2, this.h / 2);
-        this.ctx.beginPath();
+        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.5, 0.5);
     }
 
     draw() {
@@ -58,7 +58,7 @@ export default class SpiralLines extends AL {
                 this.ctx.stroke();
             }
 
-            this.rotateCanvasDegrees(this.rot);
+            this.rotateCanvasDegrees(this.rotate);
 
             this.length += this.gap;
             if (this.length > Math.max(this.w, this.h)) {

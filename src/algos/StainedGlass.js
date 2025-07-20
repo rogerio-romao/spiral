@@ -5,6 +5,7 @@ export default class StainedGlass extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
@@ -13,18 +14,21 @@ export default class StainedGlass extends AL {
     initializeProperties() {
         this.length = this.w / 6;
         this.height = this.h / 5;
-        this.rand1 = AL.random(0, 3);
-        this.rand2 = AL.random(1, 359);
+        this.random1 = AL.random(0, 3);
+        this.random2 = AL.random(1, 359);
+    }
+
+    setupConstantStyles() {
+        this.modes = ['color', 'hue', 'saturation', 'overlay'];
+
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 5;
+        this.ctx.strokeStyle = 'black';
+        this.ctx.globalCompositeOperation = 'color';
     }
 
     setupDrawingStyles() {
-        this.modes = ['color', 'hue', 'saturation', 'overlay'];
-
-        this.ctx.globalCompositeOperation = 'color';
-        this.ctx.strokeStyle = 'black';
-        this.ctx.lineWidth = 5;
         this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
-        this.ctx.beginPath();
     }
 
     draw() {
@@ -34,13 +38,13 @@ export default class StainedGlass extends AL {
             if (this.stagger === 0) {
                 this.ctx.strokeRect(0, 0, this.length, this.height);
                 this.ctx.fillRect(0, 0, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 1) {
                 this.ctx.strokeRect(this.length, 0, this.length, this.height);
                 this.ctx.fillRect(this.length, 0, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 2) {
@@ -51,7 +55,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(2 * this.length, 0, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 3) {
@@ -62,7 +66,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(3 * this.length, 0, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 4) {
@@ -73,7 +77,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(4 * this.length, 0, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 5) {
@@ -84,7 +88,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(5 * this.length, 0, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 6) {
@@ -100,7 +104,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 7) {
@@ -116,7 +120,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 8) {
@@ -132,7 +136,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 9) {
@@ -148,7 +152,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 10) {
@@ -164,13 +168,13 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 11) {
                 this.ctx.strokeRect(0, this.height, this.length, this.height);
                 this.ctx.fillRect(0, this.height, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 12) {
@@ -181,7 +185,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(0, 2 * this.height, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 13) {
@@ -197,7 +201,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 14) {
@@ -213,7 +217,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 15) {
@@ -229,7 +233,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 16) {
@@ -245,7 +249,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 17) {
@@ -261,7 +265,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 18) {
@@ -277,7 +281,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 19) {
@@ -293,7 +297,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 20) {
@@ -309,7 +313,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 21) {
@@ -325,7 +329,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 22) {
@@ -341,7 +345,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 23) {
@@ -352,7 +356,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(0, 3 * this.height, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 24) {
@@ -363,7 +367,7 @@ export default class StainedGlass extends AL {
                     this.height
                 );
                 this.ctx.fillRect(0, 4 * this.height, this.length, this.height);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 25) {
@@ -379,7 +383,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 26) {
@@ -395,7 +399,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 27) {
@@ -411,7 +415,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 28) {
@@ -427,7 +431,7 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
 
             if (this.stagger === 29) {
@@ -443,31 +447,31 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height
                 );
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
+                this.setupDrawingStyles();
             }
         }
 
         this.t++;
 
         if (this.t % (this.speed * 50) === 0) {
-            this.rand1 = AL.random(0, 3);
+            this.random1 = AL.random(0, 3);
 
-            this.rotateCanvasDegrees(this.rand2);
+            this.rotateCanvasDegrees(this.random2);
 
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
                 this.modes
             );
 
             this.ctx.fillRect(
-                this.w / 2 - this.rand1 * this.length,
+                this.w / 2 - this.random1 * this.length,
                 this.h / 2 - this.height * 1.5,
-                this.rand1 * 2 * this.length,
+                this.random1 * 2 * this.length,
                 3 * this.height
             );
             this.ctx.strokeRect(
-                this.w / 2 - this.rand1 * this.length,
+                this.w / 2 - this.random1 * this.length,
                 this.h / 2 - this.height * 2.5,
-                this.rand1 * 2 * this.length,
+                this.random1 * 2 * this.length,
                 5 * this.height
             );
         }
