@@ -12,8 +12,8 @@ export default class Sushi extends AL {
     }
 
     initializeProperties() {
-        this.radius = 40;
         this.gap = 4;
+        this.radius = 40;
         this.rows = Math.round(this.h / (this.radius + this.gap));
         this.cols = Math.round(this.w / (this.radius + this.gap));
     }

@@ -5,15 +5,16 @@ export default class Subwoofer extends AL {
         super(ctx, w, h);
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.interval = requestAnimationFrame(this.draw);
     }
 
     initializeProperties() {
-        this.size = AL.random(15, 200);
         this.factor = AL.random(10, this.size);
         this.divisor = AL.random(1, 25);
+        this.size = AL.random(15, 200);
         this.color1 = AL.randomColor();
         this.color2 = AL.randomColor();
         this.color3 = AL.randomColor();
@@ -28,8 +29,11 @@ export default class Subwoofer extends AL {
         ];
     }
 
-    setupDrawingStyles() {
+    setupConstantStyles() {
         this.ctx.strokeStyle = 'white';
+    }
+
+    setupDrawingStyles() {
         this.ctx.lineWidth = AL.random(7, 70);
     }
 
@@ -58,7 +62,7 @@ export default class Subwoofer extends AL {
 
         if (this.t % (this.speed * 110) === 0) {
             this.initializeProperties();
-            this.ctx.lineWidth = AL.random(7, 70);
+            this.setupDrawingStyles();
         }
 
         requestAnimationFrame(this.draw);

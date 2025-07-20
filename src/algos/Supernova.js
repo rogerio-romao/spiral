@@ -11,11 +11,11 @@ export default class Supernova extends AL {
     }
 
     initializeProperties() {
+        this.rotate = AL.random(1, 20);
+        this.approach = AL.random(5, 31);
         this.fib = [0, +Math.random().toFixed(3)];
         this.length =
             this.fib[this.fib.length - 2] + this.fib[this.fib.length - 1] + 3;
-        this.rot = AL.random(1, 20);
-        this.approach = AL.random(5, 31);
     }
 
     setupDrawingStyles() {
@@ -29,7 +29,7 @@ export default class Supernova extends AL {
             this.ctx.moveTo(0, 0);
             this.ctx.fillRect(0, 0, this.length, this.length);
             this.ctx.strokeRect(0, 0, this.length, this.length);
-            this.ctx.rotate(1.618 * this.rot);
+            this.ctx.rotate(1.618 * this.rotate);
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
@@ -51,7 +51,7 @@ export default class Supernova extends AL {
                 this.fib[this.fib.length - 2] +
                 this.fib[this.fib.length - 1] +
                 3;
-            this.rot = AL.random(1, 20);
+            this.rotate = AL.random(1, 20);
             this.setupDrawingStyles();
         }
 
