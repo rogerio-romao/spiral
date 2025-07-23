@@ -16,16 +16,16 @@ export default class Trance extends AL {
     }
 
     initializeProperties() {
-        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
         this.angle = 0;
-        this.squares = AL.pickRandomElement(this.divisions);
         this.size = AL.random(15, 220);
         this.rotate = AL.random(1, 71);
+        this.squares = AL.pickRandomElement(this.divisions);
+        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.fillStyle = AL.randomColor();
+        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.globalCompositeOperation = 'overlay';
     }
 

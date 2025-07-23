@@ -13,9 +13,9 @@ export default class Thread extends AL {
 
     initializeProperties() {
         this.offset = AL.random(30, this.h * 0.75);
-        this.angle = 0;
         this.radius = AL.random(25, 350);
         this.rotate = AL.random(1, 35);
+        this.angle = 0;
     }
 
     setupConstentProperties() {

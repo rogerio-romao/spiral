@@ -12,24 +12,24 @@ export default class Triangulate extends AL {
     }
 
     initializeBaseProperties() {
+        this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
         this.rotations = [
             10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120,
         ];
-        this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
     }
 
     initializeProperties() {
-        this.rotate = AL.pickRandomElement(this.rotations);
-        this.radius = AL.random(60, Math.max(this.w, this.h) / 2);
         this.angle = 0;
-        this.triangles = AL.pickRandomElement(this.divisions);
         this.size = AL.random(15, 100);
+        this.rotate = AL.pickRandomElement(this.rotations);
+        this.triangles = AL.pickRandomElement(this.divisions);
+        this.radius = AL.random(60, Math.max(this.w, this.h) / 2);
     }
 
     setupDrawingStyles() {
+        this.ctx.lineWidth = 3;
         this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.45);
-        this.ctx.lineWidth = 3;
     }
 
     drawTriangle(x, y, i) {

@@ -12,9 +12,9 @@ export default class TheBadge extends AL {
     }
 
     initializeProperties() {
-        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
-        this.rot = AL.random(0, 360);
+        this.rotate = AL.random(0, 360);
         this.randCol = AL.random(0, 255);
+        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
     }
 
     setupConstantStyles() {
@@ -28,8 +28,8 @@ export default class TheBadge extends AL {
             'source-atop',
         ];
 
-        this.ctx.strokeStyle = 'white';
         this.ctx.lineWidth = 3;
+        this.ctx.strokeStyle = 'white';
     }
 
     setupDrawingStyles() {
@@ -54,7 +54,7 @@ export default class TheBadge extends AL {
                 3 * this.length
             );
 
-            this.rotateCanvasDegrees(this.rot);
+            this.rotateCanvasDegrees(this.rotate);
         }
 
         this.t++;
@@ -67,7 +67,7 @@ export default class TheBadge extends AL {
         }
 
         if (this.t % (this.speed * 50) === 0) {
-            this.rot = AL.random(0, 360);
+            this.rotate = AL.random(0, 360);
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
                 this.modes
             );

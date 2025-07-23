@@ -12,15 +12,15 @@ export default class TheFan extends AL {
     }
 
     initializeProperties() {
+        this.rotate = AL.random(1, 359);
         this.x1 = AL.random(0, this.w / 2);
         this.y1 = AL.random(0, this.h / 2);
-        this.x2 = AL.random(this.w / 2, this.w);
-        this.y2 = AL.random(this.h / 2, this.h);
         this.ox = AL.random(0, this.w / 2);
         this.oy = AL.random(0, this.h / 2);
+        this.x2 = AL.random(this.w / 2, this.w);
+        this.y2 = AL.random(this.h / 2, this.h);
         this.dx = AL.random(this.w / 2, this.w);
         this.dy = AL.random(this.h / 2, this.h);
-        this.rotate = AL.random(1, 359);
     }
 
     setupConstantStyles() {

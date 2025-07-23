@@ -23,33 +23,33 @@ export default class Typobrush extends AL {
     }
 
     initializeProperties() {
+        this.size = 20;
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
-        this.size = 20;
-        this.sizeInc = AL.random(1, 6);
-        this.rot = AL.random(1, 400);
+        this.rotate = AL.random(1, 400);
+        this.sizeIncrease = AL.random(1, 6);
     }
 
     setupConstantStyles() {
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         this.ctx.textAlign = 'center';
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33, 0.33);
         this.ctx.font = `${this.size}px serif`;
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33, 0.33);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.x, this.y);
             this.ctx.font = `${this.size}px serif`;
-            this.size += this.sizeInc;
+            this.size += this.sizeIncrease;
         }
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();

@@ -16,9 +16,9 @@ export default class Tripping extends AL {
         this.y1 = AL.random(0, this.h);
         this.x2 = AL.random(0, this.w);
         this.y2 = AL.random(0, this.h);
+        this.rotate = AL.random(1, 360);
         this.width = AL.random(50, this.w);
         this.height = AL.random(50, this.h);
-        this.rotate = AL.random(1, 360);
         this.ul = AL.random(10, Math.max(this.w, this.h));
         this.ur = AL.random(10, Math.max(this.w, this.h));
         this.ll = AL.random(10, Math.max(this.w, this.h));
@@ -62,7 +62,6 @@ export default class Tripping extends AL {
         if (this.t % (this.speed * 540) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-
             this.clearScreen();
             this.ctx.beginPath();
         }
