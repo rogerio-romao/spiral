@@ -16,15 +16,15 @@ export default class Unfocused extends AL {
     }
 
     initializeProperties() {
+        this.radius1 = AL.random(5, 55);
+        this.radius2 = AL.random(5, 55);
+        this.radius3 = AL.random(5, 55);
         this.x1 = AL.random(0, this.w);
         this.y1 = AL.random(0, this.h);
-        this.radius1 = AL.random(5, 55);
         this.x2 = AL.random(0, this.w);
         this.y2 = AL.random(0, this.h);
-        this.radius2 = AL.random(5, 55);
         this.x3 = AL.random(0, this.w);
         this.y3 = AL.random(0, this.h);
-        this.radius3 = AL.random(5, 55);
     }
 
     setupDrawingStyles() {
@@ -54,13 +54,13 @@ export default class Unfocused extends AL {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.rotate = AL.random(1, 61);
+            this.initializeBaseProperties();
         }
 
         if (this.t % (this.speed * 500) === 0) {
             this.ctx.fillStyle = 'rgba(0,0,0,0.5)';
             this.fillScreen();
-            this.ctx.fillStyle = AL.randomColor(10, 255, 0.1, 0.1);
+            this.setupDrawingStyles();
         }
 
         requestAnimationFrame(this.draw);

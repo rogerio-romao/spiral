@@ -12,14 +12,14 @@ export default class Upholstery extends AL {
     }
 
     initializeProperties() {
+        this.dash1 = AL.random(1, 15);
+        this.dash3 = AL.random(1, 50);
+        this.dash2 = AL.random(20, 40);
+        this.rotate = AL.random(1, 55);
         this.x1 = AL.random(0, this.w);
         this.y1 = AL.random(0, this.h);
         this.x2 = AL.random(0, this.w);
         this.y2 = AL.random(0, this.h);
-        this.rotate = AL.random(1, 55);
-        this.dash1 = AL.random(1, 15);
-        this.dash2 = AL.random(20, 40);
-        this.dash3 = AL.random(1, 50);
     }
 
     setupConstantStyles() {

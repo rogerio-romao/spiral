@@ -11,6 +11,14 @@ export default class Universe extends AL {
     }
 
     initializeProperties() {
+        this.side1 = AL.random(20, this.w);
+        this.side2 = AL.random(20, this.h);
+        this.side3 = AL.random(20, this.w);
+        this.side4 = AL.random(20, this.h);
+        this.side5 = AL.random(20, this.w);
+        this.side6 = AL.random(20, this.h);
+        this.side7 = AL.random(20, this.w);
+        this.side8 = AL.random(20, this.h);
         this.rounded1 = AL.random(5, 250);
         this.rounded2 = AL.random(5, 250);
         this.rounded3 = AL.random(5, 250);
@@ -23,14 +31,6 @@ export default class Universe extends AL {
         this.y3 = AL.random(0, this.h);
         this.x4 = AL.random(0, this.w);
         this.y4 = AL.random(0, this.h);
-        this.side1 = AL.random(20, this.w);
-        this.side2 = AL.random(20, this.h);
-        this.side3 = AL.random(20, this.w);
-        this.side4 = AL.random(20, this.h);
-        this.side5 = AL.random(20, this.w);
-        this.side6 = AL.random(20, this.h);
-        this.side7 = AL.random(20, this.w);
-        this.side8 = AL.random(20, this.h);
         this.rotate = AL.random(1, 11);
     }
 

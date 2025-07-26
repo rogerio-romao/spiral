@@ -11,12 +11,12 @@ export default class UFOs extends AL {
     }
 
     initializeProperties() {
+        this.repeats = AL.random(10, 150);
         this.color1 = AL.randomColor();
         this.color2 = AL.randomColor();
         this.color3 = AL.randomColor();
         this.perc1 = AL.random(1, 45);
         this.perc2 = AL.random(1, 45);
-        this.repeats = AL.random(10, 150);
     }
 
     setupDrawingStyles() {
