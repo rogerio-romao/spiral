@@ -21,12 +21,11 @@ export default class VanishingRays extends AL {
     }
 
     initializeProperties() {
+        this.angle = 1;
+        this.incAlpha = 0;
+        this.fontSize = AL.random(30, 500);
         this.rotate = AL.pickRandomElement(this.rotations);
         this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
-
-        this.incAlpha = 0;
-        this.angle = 1;
-        this.fontSize = AL.random(30, 500);
     }
 
     setupDrawingStyles() {

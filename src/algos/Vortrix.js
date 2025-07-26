@@ -15,7 +15,7 @@ export default class Vortrix extends AL {
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
         this.size = AL.random(60, 400);
-        this.rot = AL.random(1, 60);
+        this.rotate = AL.random(1, 60);
     }
 
     setupConstantStyles() {
@@ -40,7 +40,7 @@ export default class Vortrix extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();

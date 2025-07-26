@@ -17,7 +17,7 @@ export default class VanishingPoint extends AL {
     }
 
     initializeProperties() {
-        this.rot = AL.random(1, 90);
+        this.rotate = AL.random(1, 90);
         this.color1 = AL.randomColor(0, 255, 1, 1);
         this.color2 = AL.randomColor(0, 255, 1, 1);
         this.color3 = AL.randomColor(0, 255, 1, 1);
@@ -50,7 +50,7 @@ export default class VanishingPoint extends AL {
 
         this.t++;
 
-        this.rotateCanvasDegrees(this.rot);
+        this.rotateCanvasDegrees(this.rotate);
 
         requestAnimationFrame(this.draw);
     }

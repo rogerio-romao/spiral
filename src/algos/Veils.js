@@ -13,11 +13,11 @@ export default class Veils extends AL {
     }
 
     initializeBaseProperties() {
+        this.rotate = 1;
         this.letters = [
             2801, 2817, 2819, 2822, 2824, 2827, 2832, 2835, 2837, 2849, 2855,
             2856, 2858, 2859, 2860, 2862, 2873, 2877, 2878, 2880, 2891, 2893,
         ];
-        this.rot = 1;
     }
 
     initializeProperties() {
@@ -33,8 +33,8 @@ export default class Veils extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
         this.ctx.font = `${this.size}px serif`;
+        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
     }
 
     draw() {
@@ -47,7 +47,7 @@ export default class Veils extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rot);
+        this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 540) === 0) {
             this.initializeProperties();
@@ -55,7 +55,7 @@ export default class Veils extends AL {
         }
 
         if (this.t % (this.speed * 1620) === 0) {
-            this.rot++;
+            this.rotate++;
         }
 
         requestAnimationFrame(this.draw);
