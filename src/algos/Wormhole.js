@@ -11,15 +11,15 @@ export default class Wormhole extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(50, this.w - 50);
-        this.y = AL.random(50, this.h - 50);
-        this.width = AL.random(30, this.w);
-        this.height = AL.random(30, this.h);
         this.ul = AL.random(10, 50);
         this.ur = AL.random(10, 50);
         this.ll = AL.random(10, 50);
         this.lr = AL.random(10, 50);
         this.rotate = AL.random(1, 44);
+        this.width = AL.random(30, this.w);
+        this.height = AL.random(30, this.h);
+        this.x = AL.random(50, this.w - 50);
+        this.y = AL.random(50, this.h - 50);
     }
 
     setupDrawingStyles() {

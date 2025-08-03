@@ -38,8 +38,8 @@ export default class Wallpapering extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'black';
         this.ctx.lineWidth = 3;
+        this.ctx.strokeStyle = 'black';
         this.ctx.globalCompositeOperation = 'overlay';
     }
 

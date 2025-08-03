@@ -26,9 +26,9 @@ export default class Wormholes extends AL {
 
     setupDrawingStyles() {
         this.ctx.textAlign = 'center';
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
-        this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
         this.ctx.font = `${this.size}px sans-serif`;
+        this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+        this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
     }
 
     draw() {

@@ -22,13 +22,13 @@ export default class Warp2001 extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowColor = 'black';
         this.ctx.shadowBlur = 3;
+        this.ctx.shadowColor = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
         this.ctx.lineWidth = AL.random(5, 45);
+        this.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
