@@ -4,6 +4,8 @@ export default class Swirls extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Swirls';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

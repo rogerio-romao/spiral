@@ -4,6 +4,8 @@ export default class StainedGlass extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Stained Glass';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

@@ -4,6 +4,8 @@ export default class VanishingRays extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Vanishing Rays';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

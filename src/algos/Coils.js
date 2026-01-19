@@ -4,6 +4,8 @@ export default class Coils extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Coils';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

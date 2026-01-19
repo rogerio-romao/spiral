@@ -4,6 +4,8 @@ export default class VanishingPoint extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Vanishing Point';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

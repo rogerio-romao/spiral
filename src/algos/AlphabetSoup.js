@@ -4,6 +4,8 @@ export default class AlphabetSoup extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Alphabet Soup';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

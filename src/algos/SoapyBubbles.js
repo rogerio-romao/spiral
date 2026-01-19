@@ -4,6 +4,8 @@ export default class SoapyBubbles extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Soapy Bubbles';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

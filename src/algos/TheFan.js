@@ -4,6 +4,8 @@ export default class TheFan extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'The Fan';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

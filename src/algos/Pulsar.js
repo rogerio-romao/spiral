@@ -4,6 +4,8 @@ export default class Pulsar extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Pulsar';
+
         this.initializeProperties();
         this.setupConstantProperties();
         this.setupDrawingStyles();

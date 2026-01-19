@@ -4,6 +4,8 @@ export default class ThreeD extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Three D';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

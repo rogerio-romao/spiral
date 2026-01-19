@@ -4,6 +4,8 @@ export default class Sushi extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Sushi';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

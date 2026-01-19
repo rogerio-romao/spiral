@@ -4,6 +4,8 @@ export default class Dotted extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Dotted';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

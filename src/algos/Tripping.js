@@ -4,6 +4,8 @@ export default class Tripping extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Tripping';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

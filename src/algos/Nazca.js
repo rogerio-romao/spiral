@@ -4,6 +4,8 @@ export default class Nazca extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Nazca';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

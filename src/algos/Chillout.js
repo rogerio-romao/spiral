@@ -4,6 +4,8 @@ export default class Chillout extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Chillout';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

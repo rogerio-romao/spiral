@@ -4,6 +4,8 @@ export default class Discos extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Discos';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

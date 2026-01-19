@@ -4,6 +4,8 @@ export default class Entropy extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Entropy';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

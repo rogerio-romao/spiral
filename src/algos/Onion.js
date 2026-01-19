@@ -4,6 +4,8 @@ export default class Onion extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Onion';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

@@ -4,6 +4,8 @@ export default class Halfsies extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Halfsies';
+
         this.initializeBaseProperties();
         this.initializeProperties();
 

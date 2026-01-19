@@ -4,6 +4,8 @@ export default class Fruits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Fruits';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

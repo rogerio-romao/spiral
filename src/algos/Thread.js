@@ -4,6 +4,8 @@ export default class Thread extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Thread';
+
         this.initializeProperties();
         this.setupConstentProperties();
         this.setupDrawingStyles();

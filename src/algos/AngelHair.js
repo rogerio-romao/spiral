@@ -4,6 +4,8 @@ export default class AngelHair extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Angel Hair';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

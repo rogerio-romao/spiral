@@ -4,6 +4,8 @@ export default class Subwoofer extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Subwoofer';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

@@ -4,6 +4,8 @@ export default class AlienFlowers extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Alien Flowers';
+
         this.setupBaseStyles();
         this.setupConstantStyles();
         this.setupDrawingStyles();

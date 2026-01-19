@@ -4,6 +4,8 @@ export default class Radiance extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Radiance';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

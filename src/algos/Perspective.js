@@ -4,6 +4,8 @@ export default class Perspective extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Perspective';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

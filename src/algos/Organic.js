@@ -4,6 +4,8 @@ export default class Organic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Organic';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

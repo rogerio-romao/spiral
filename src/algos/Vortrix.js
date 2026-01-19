@@ -4,6 +4,8 @@ export default class Vortrix extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Vortrix';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

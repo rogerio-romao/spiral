@@ -4,6 +4,8 @@ export default class Orbits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Orbits';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

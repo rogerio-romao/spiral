@@ -4,6 +4,8 @@ export default class Lollipottery extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Lollipottery';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

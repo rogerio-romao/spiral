@@ -4,6 +4,8 @@ export default class RadioWaves extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Radio Waves';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

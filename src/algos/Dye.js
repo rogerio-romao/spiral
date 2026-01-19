@@ -4,6 +4,8 @@ export default class Dye extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Dye';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

@@ -4,6 +4,8 @@ export default class NeonTartans extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Neon Tartans';
+
         this.initializeProperties();
 
         this.interval = requestAnimationFrame(this.draw);

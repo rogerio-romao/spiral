@@ -4,6 +4,8 @@ export default class SpaceGears extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Space Gears';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

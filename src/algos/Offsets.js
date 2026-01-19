@@ -4,6 +4,8 @@ export default class Offsets extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Offsets';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

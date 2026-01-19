@@ -4,6 +4,8 @@ export default class Microscope extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Microscope';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

@@ -4,6 +4,8 @@ export default class Universe extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Universe';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

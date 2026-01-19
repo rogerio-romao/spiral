@@ -4,6 +4,8 @@ export default class Punctuation extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Punctuation';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

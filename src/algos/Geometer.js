@@ -4,6 +4,8 @@ export default class Geometer extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Geometer';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

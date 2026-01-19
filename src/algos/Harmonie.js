@@ -4,6 +4,8 @@ export default class Harmonie extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Harmonie';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

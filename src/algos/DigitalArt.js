@@ -4,6 +4,8 @@ export default class DigitalArt extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Digital Art';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

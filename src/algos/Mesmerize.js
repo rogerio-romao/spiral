@@ -4,6 +4,8 @@ export default class Mesmerize extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Mesmerize';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

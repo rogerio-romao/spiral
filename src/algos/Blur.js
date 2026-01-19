@@ -4,6 +4,8 @@ export default class Blur extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Blur';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

@@ -4,6 +4,8 @@ export default class Picnic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Picnic';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

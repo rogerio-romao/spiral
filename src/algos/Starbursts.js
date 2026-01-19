@@ -4,6 +4,8 @@ export default class Starbursts extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Starbursts';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

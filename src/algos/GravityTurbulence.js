@@ -4,6 +4,8 @@ export default class GravityTurbulence extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Gravity Turbulence';
+
         this.initializeProperties();
 
         this.interval = requestAnimationFrame(this.draw);

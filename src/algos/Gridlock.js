@@ -4,6 +4,8 @@ export default class Gridlock extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Gridlock';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

@@ -4,6 +4,8 @@ export default class HyperTunnel extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'HyperTunnel';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

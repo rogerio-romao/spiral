@@ -4,6 +4,8 @@ export default class Veils extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Veils';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

@@ -4,6 +4,8 @@ export default class Spikey extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Spikey';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

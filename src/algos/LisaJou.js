@@ -4,6 +4,8 @@ export default class LisaJou extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'LisaJou';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

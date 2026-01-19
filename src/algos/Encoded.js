@@ -4,6 +4,8 @@ export default class Encoded extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Encoded';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

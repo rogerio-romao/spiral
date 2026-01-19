@@ -4,6 +4,8 @@ export default class Hubble extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Hubble';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

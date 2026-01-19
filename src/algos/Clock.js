@@ -4,6 +4,8 @@ export default class Clock extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Clock';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

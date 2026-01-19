@@ -4,6 +4,8 @@ export default class Wormhole extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Wormhole';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

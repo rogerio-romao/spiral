@@ -4,6 +4,8 @@ export default class Concentric extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Concentric';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

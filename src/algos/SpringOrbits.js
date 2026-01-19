@@ -4,6 +4,8 @@ export default class SpringOrbits extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Spring Orbits';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

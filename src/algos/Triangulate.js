@@ -4,6 +4,8 @@ export default class Triangulate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Triangulate';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

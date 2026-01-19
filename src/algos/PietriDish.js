@@ -4,6 +4,8 @@ export default class PietriDish extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Pietri Dish';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

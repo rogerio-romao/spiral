@@ -4,6 +4,8 @@ export default class Mirage extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Mirage';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

@@ -4,6 +4,8 @@ export default class SquareNebulas extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Square Nebulas';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

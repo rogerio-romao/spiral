@@ -4,6 +4,8 @@ export default class Hive extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Hive';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

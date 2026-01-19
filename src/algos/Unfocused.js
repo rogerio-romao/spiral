@@ -4,6 +4,8 @@ export default class Unfocused extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Unfocused';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

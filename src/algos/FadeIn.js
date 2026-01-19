@@ -4,6 +4,8 @@ export default class FadeIn extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Fade In';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

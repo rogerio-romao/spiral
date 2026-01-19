@@ -4,6 +4,8 @@ export default class Wallpapering extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Wallpapering';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

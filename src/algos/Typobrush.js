@@ -4,6 +4,8 @@ export default class Typobrush extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Typobrush';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

@@ -4,6 +4,8 @@ export default class CrayonFunnel extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Crayon Funnel';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

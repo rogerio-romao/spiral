@@ -4,6 +4,8 @@ export default class AccelerationMandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Acceleration Mandala';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

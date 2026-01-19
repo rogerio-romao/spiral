@@ -4,6 +4,8 @@ export default class Quadrants extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Quadrants';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

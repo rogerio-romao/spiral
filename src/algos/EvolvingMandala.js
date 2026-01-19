@@ -4,6 +4,8 @@ export default class EvolvingMandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Evolving Mandala';
+
         this.initializeConstantProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

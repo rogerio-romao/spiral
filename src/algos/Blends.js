@@ -4,6 +4,8 @@ export default class Blends extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Blends';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

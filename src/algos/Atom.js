@@ -4,6 +4,8 @@ export default class Atom extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Atom';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

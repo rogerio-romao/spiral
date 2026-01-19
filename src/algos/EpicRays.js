@@ -4,6 +4,8 @@ export default class EpicRays extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Epic Rays';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

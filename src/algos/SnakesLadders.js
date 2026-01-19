@@ -4,6 +4,8 @@ export default class SnakesLadders extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Snakes n Ladders';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

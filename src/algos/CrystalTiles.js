@@ -4,6 +4,8 @@ export default class CrystalTiles extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Crystal Tiles';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

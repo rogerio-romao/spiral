@@ -4,6 +4,8 @@ export default class Polyhedra extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Polyhedra';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

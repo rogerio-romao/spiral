@@ -4,6 +4,8 @@ export default class Hallucinate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Hallucinate';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

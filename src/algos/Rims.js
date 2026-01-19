@@ -4,6 +4,8 @@ export default class Rims extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Rims';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

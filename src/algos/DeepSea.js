@@ -4,6 +4,8 @@ export default class DeepSea extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Deep Sea';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

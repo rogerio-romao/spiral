@@ -4,6 +4,8 @@ export default class PsychoRainbow extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Psycho Rainbow';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

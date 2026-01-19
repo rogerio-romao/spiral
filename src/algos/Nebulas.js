@@ -4,6 +4,8 @@ export default class Nebulas extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Nebulas';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

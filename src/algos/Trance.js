@@ -4,6 +4,8 @@ export default class Trance extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Trance';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

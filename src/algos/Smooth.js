@@ -4,6 +4,8 @@ export default class Smooth extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Smooth';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

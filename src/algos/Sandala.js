@@ -4,6 +4,8 @@ export default class Sandala extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Sandala';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

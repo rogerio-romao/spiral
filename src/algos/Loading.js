@@ -4,6 +4,8 @@ export default class Loading extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Loading';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

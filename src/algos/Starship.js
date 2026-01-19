@@ -4,6 +4,8 @@ export default class Starship extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Starship';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

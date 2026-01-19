@@ -4,6 +4,8 @@ export default class TheBadge extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'The Badge';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

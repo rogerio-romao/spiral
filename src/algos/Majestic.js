@@ -4,6 +4,8 @@ export default class Majestic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Majestic';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

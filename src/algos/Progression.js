@@ -4,6 +4,8 @@ export default class Progression extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Progression';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

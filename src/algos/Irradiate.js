@@ -4,6 +4,8 @@ export default class Irradiate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Irradiate';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

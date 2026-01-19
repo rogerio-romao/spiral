@@ -4,6 +4,8 @@ export default class Germinate extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Germinate';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

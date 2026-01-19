@@ -4,6 +4,8 @@ export default class DysonSpheres extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Dyson Spheres';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

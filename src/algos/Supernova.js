@@ -4,6 +4,8 @@ export default class Supernova extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Supernova';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

@@ -4,6 +4,8 @@ export default class ChalkGalaxy extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Chalk Galaxy';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

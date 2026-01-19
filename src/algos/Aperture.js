@@ -4,6 +4,8 @@ export default class Aperture extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Aperture';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

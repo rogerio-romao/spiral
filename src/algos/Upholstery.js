@@ -4,6 +4,8 @@ export default class Upholstery extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Upholstery';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

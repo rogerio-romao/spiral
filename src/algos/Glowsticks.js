@@ -4,6 +4,8 @@ export default class Glowsticks extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Glowsticks';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

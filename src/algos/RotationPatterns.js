@@ -4,6 +4,8 @@ export default class RotationPatterns extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Rotation Patterns';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

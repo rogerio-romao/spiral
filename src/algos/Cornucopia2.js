@@ -4,6 +4,8 @@ export default class Cornucopia2 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Cornucopia 2';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

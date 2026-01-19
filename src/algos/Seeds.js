@@ -4,6 +4,8 @@ export default class Seeds extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Seeds';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

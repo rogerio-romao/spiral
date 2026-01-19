@@ -4,6 +4,8 @@ export default class Portals extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Portals';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

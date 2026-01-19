@@ -4,6 +4,8 @@ export default class Matter extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Matter';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

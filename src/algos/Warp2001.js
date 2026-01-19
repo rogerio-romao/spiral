@@ -4,6 +4,8 @@ export default class Warp2001 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Warp 2001';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

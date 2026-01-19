@@ -4,6 +4,8 @@ export default class ParallelUniverses extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Parallel Universes';
+
         this.initializeProperties();
 
         this.interval = requestAnimationFrame(this.draw);

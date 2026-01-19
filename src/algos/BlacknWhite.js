@@ -4,6 +4,8 @@ export default class BlacknWhite extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Black & White';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

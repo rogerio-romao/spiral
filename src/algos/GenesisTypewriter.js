@@ -4,6 +4,8 @@ export default class GenesisTypewriter extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Genesis Typewriter';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

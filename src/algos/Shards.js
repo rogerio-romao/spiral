@@ -4,6 +4,8 @@ export default class Shards extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Shards';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

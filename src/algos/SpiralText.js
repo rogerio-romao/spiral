@@ -4,6 +4,8 @@ export default class SpiralText extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Spiral Text';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

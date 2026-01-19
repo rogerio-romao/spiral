@@ -4,6 +4,8 @@ export default class Solar extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Solar';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

@@ -4,6 +4,8 @@ export default class Quadratic extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Quadratic';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

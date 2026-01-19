@@ -4,6 +4,8 @@ export default class Plaid extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Plaid';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

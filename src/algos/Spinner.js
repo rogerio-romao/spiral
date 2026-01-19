@@ -4,6 +4,8 @@ export default class Spinner extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Spinner';
+
         this.initializeProperties();
 
         this.interval = requestAnimationFrame(this.draw);

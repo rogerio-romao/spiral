@@ -4,6 +4,8 @@ export default class Networks extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Networks';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

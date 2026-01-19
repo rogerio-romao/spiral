@@ -4,6 +4,8 @@ export default class BehindBars extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Behind Bars';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

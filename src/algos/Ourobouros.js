@@ -4,6 +4,8 @@ export default class Ourobouros extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Ourobouros';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

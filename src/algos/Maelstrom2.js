@@ -4,6 +4,8 @@ export default class Maelstrom2 extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Maelstrom 2';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

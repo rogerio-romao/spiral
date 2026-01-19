@@ -4,6 +4,8 @@ export default class Slices extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Slices';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

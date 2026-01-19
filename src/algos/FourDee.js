@@ -4,6 +4,8 @@ export default class FourDee extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Four Dee';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

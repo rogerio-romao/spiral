@@ -4,6 +4,8 @@ export default class BigBangs extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Big Bangs';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

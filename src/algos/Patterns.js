@@ -4,6 +4,8 @@ export default class Patterns extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Patterns';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

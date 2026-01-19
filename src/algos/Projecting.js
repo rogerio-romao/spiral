@@ -4,6 +4,8 @@ export default class Projecting extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Projecting';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

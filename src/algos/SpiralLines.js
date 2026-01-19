@@ -4,6 +4,8 @@ export default class SpiralLines extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Spiral Lines';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

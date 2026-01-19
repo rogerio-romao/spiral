@@ -4,6 +4,8 @@ export default class Fluor extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Fluor';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

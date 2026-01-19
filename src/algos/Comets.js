@@ -4,6 +4,8 @@ export default class Comets extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Comets';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupDrawingStyles();

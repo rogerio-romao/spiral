@@ -4,6 +4,8 @@ export default class CounterClock extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Counter Clock';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

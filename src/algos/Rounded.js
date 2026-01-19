@@ -4,6 +4,8 @@ export default class Rounded extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Rounded';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

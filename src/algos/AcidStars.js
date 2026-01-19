@@ -4,6 +4,8 @@ export default class AcidStars extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Acid Stars';
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

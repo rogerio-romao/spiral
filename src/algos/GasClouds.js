@@ -4,6 +4,8 @@ export default class GasClouds extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Gas Clouds';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

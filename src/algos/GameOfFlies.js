@@ -4,6 +4,8 @@ export default class GameOfFlies extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Game Of Flies';
+
         this.initializeProperties();
 
         this.interval = requestAnimationFrame(this.draw);

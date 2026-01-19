@@ -4,6 +4,8 @@ export default class Records extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Records';
+
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();

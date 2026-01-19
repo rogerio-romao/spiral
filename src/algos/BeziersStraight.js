@@ -4,6 +4,8 @@ export default class BeziersStraight extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
+        this.name = 'Beziers Straight';
+
         this.initializeProperties();
         this.setupDrawingStyles();
 
