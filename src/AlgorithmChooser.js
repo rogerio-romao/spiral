@@ -1,142 +1,311 @@
-import Abstractions from './src/algos/Abstractions.js';
-import AccelerationMandala from './src/algos/AccelerationMandala.js';
-import AcidStars from './src/algos/AcidStars.js';
-import AlienFlowers from './src/algos/AlienFlowers.js';
-import AlphabetSoup from './src/algos/AlphabetSoup.js';
-import AngelHair from './src/algos/AngelHair.js';
-import Aperture from './src/algos/Aperture.js';
-import Atom from './src/algos/Atom.js';
-import Autumn from './src/algos/Autumn.js';
-import BehindBars from './src/algos/BehindBars.js';
-import BeziersStraight from './src/algos/BeziersStraight.js';
-import BigBangs from './src/algos/BigBangs.js';
-import BlacknWhite from './src/algos/BlacknWhite.js';
-import Blends from './src/algos/Blends.js';
-import Blur from './src/algos/Blur.js';
-import Boxes from './src/algos/Boxes.js';
-import CamouflagePostits from './src/algos/CamouflagePostits.js';
-import ChalkGalaxy from './src/algos/ChalkGalaxy.js';
-import Chillout from './src/algos/Chillout.js';
-import Clock from './src/algos/Clock.js';
-import Coils from './src/algos/Coils.js';
-import Comets from './src/algos/Comets.js';
-import Concentric from './src/algos/Concentric.js';
-import Cornucopia from './src/algos/Cornucopia.js';
-import Cornucopia2 from './src/algos/Cornucopia2.js';
-import CounterClock from './src/algos/CounterClock.js';
-import CrayonFunnel from './src/algos/CrayonFunnel.js';
-import CrystalTiles from './src/algos/CrystalTiles.js';
-import DeepSea from './src/algos/DeepSea.js';
-import DigitalArt from './src/algos/DigitalArt.js';
-import Discos from './src/algos/Discos.js';
-import Division from './src/algos/Division.js';
-import Dotted from './src/algos/Dotted.js';
-import Dye from './src/algos/Dye.js';
-import DysonSpheres from './src/algos/DysonSpheres.js';
-import Encoded from './src/algos/Encoded.js';
-import Entropy from './src/algos/Entropy.js';
-import EpicRays from './src/algos/EpicRays.js';
-import EvolvingMandala from './src/algos/EvolvingMandala.js';
-import FadeIn from './src/algos/FadeIn.js';
-import Fluor from './src/algos/Fluor.js';
-import FourDee from './src/algos/FourDee.js';
-import Fruits from './src/algos/Fruits.js';
-import GameOfFlies from './src/algos/GameOfFlies.js';
-import GasClouds from './src/algos/GasClouds.js';
-import GenesisTypewriter from './src/algos/GenesisTypewriter.js';
-import Geometer from './src/algos/Geometer.js';
-import Germinate from './src/algos/Germinate.js';
-import Glow from './src/algos/Glow.js';
-import Glowsticks from './src/algos/Glowsticks.js';
-import GravityTurbulence from './src/algos/GravityTurbulence.js';
-import Gridlock from './src/algos/Gridlock.js';
-import Halfsies from './src/algos/Halfsies.js';
-import Hallucinate from './src/algos/Hallucinate.js';
-import Harmonie from './src/algos/Harmonie.js';
-import Hive from './src/algos/Hive.js';
-import Hubble from './src/algos/Hubble.js';
-import HyperTunnel from './src/algos/HyperTunnel.js';
-import Irradiate from './src/algos/Irradiate.js';
-import LisaJou from './src/algos/LisaJou.js';
-import Loading from './src/algos/Loading.js';
-import Lollipottery from './src/algos/Lollipottery.js';
-import Maelstrom from './src/algos/Maelstrom.js';
-import Maelstrom2 from './src/algos/Maelstrom2.js';
-import Majestic from './src/algos/Majestic.js';
-import Matter from './src/algos/Matter.js';
-import Mesmerize from './src/algos/Mesmerize.js';
-import Microscope from './src/algos/Microscope.js';
-import Mirage from './src/algos/Mirage.js';
-import Nazca from './src/algos/Nazca.js';
-import Nebulas from './src/algos/Nebulas.js';
-import NeonTartans from './src/algos/NeonTartans.js';
-import Networks from './src/algos/Networks.js';
-import Offsets from './src/algos/Offsets.js';
-import Onion from './src/algos/Onion.js';
-import Orbits from './src/algos/Orbits.js';
-import Organic from './src/algos/Organic.js';
-import Ourobouros from './src/algos/Ourobouros.js';
-import ParallelUniverses from './src/algos/ParallelUniverses.js';
-import Patterns from './src/algos/Patterns.js';
-import Perspective from './src/algos/Perspective.js';
-import Picnic from './src/algos/Picnic.js';
-import PietriDish from './src/algos/PietriDish.js';
-import Plaid from './src/algos/Plaid.js';
-import Polyhedra from './src/algos/Polyhedra.js';
-import Portals from './src/algos/Portals.js';
-import Progression from './src/algos/Progression.js';
-import Projecting from './src/algos/Projecting.js';
-import PsychoRainbow from './src/algos/PsychoRainbow.js';
-import Pulsar from './src/algos/Pulsar.js';
-import Punctuation from './src/algos/Punctuation.js';
-import Quadrants from './src/algos/Quadrants.js';
-import Quadratic from './src/algos/Quadratic.js';
-import Radiance from './src/algos/Radiance.js';
-import RadioWaves from './src/algos/RadioWaves.js';
-import Records from './src/algos/Records.js';
-import Rims from './src/algos/Rims.js';
-import RotationPatterns from './src/algos/RotationPatterns.js';
-import Rounded from './src/algos/Rounded.js';
-import Sandala from './src/algos/Sandala.js';
-import Seeds from './src/algos/Seeds.js';
-import Shards from './src/algos/Shards.js';
-import Slices from './src/algos/Slices.js';
-import Smooth from './src/algos/Smooth.js';
-import SnakesLadders from './src/algos/SnakesLadders.js';
-import SoapyBubbles from './src/algos/SoapyBubbles.js';
-import Solar from './src/algos/Solar.js';
-import SpaceGears from './src/algos/SpaceGears.js';
-import Spikey from './src/algos/Spikey.js';
-import Spikral from './src/algos/Spikral.js';
-import Spinner from './src/algos/Spinner.js';
-import SpiralLines from './src/algos/SpiralLines.js';
-import SpiralText from './src/algos/SpiralText.js';
-import SpringOrbits from './src/algos/SpringOrbits.js';
-import SquareNebulas from './src/algos/SquareNebulas.js';
-import StainedGlass from './src/algos/StainedGlass.js';
-import Starbursts from './src/algos/Starbursts.js';
-import Starship from './src/algos/Starship.js';
-import Subwoofer from './src/algos/Subwoofer.js';
-import Supernova from './src/algos/Supernova.js';
-import Sushi from './src/algos/Sushi.js';
-import Swirls from './src/algos/Swirls.js';
-import TheBadge from './src/algos/TheBadge.js';
-import TheFan from './src/algos/TheFan.js';
-import Thread from './src/algos/Thread.js';
-import ThreeD from './src/algos/ThreeD.js';
-import Trance from './src/algos/Trance.js';
-import Triangulate from './src/algos/Triangulate.js';
-import Tripping from './src/algos/Tripping.js';
-import Typobrush from './src/algos/Typobrush.js';
-import UFOs from './src/algos/Ufos.js';
-import Unfocused from './src/algos/Unfocused.js';
-import Universe from './src/algos/Universe.js';
-import Upholstery from './src/algos/Upholstery.js';
-import VanishingPoint from './src/algos/VanishingPoint.js';
-import VanishingRays from './src/algos/VanishingRays.js';
-import Veils from './src/algos/Veils.js';
-import Vortrix from './src/algos/Vortrix.js';
-import Wallpapering from './src/algos/Wallpapering.js';
-import Warp2001 from './src/algos/Warp2001.js';
-import Wormhole from './src/algos/Wormhole.js';
-import Wormholes from './src/algos/Wormholes.js';
+import Abstractions from './algos/Abstractions.js';
+import AccelerationMandala from './algos/AccelerationMandala.js';
+import AcidStars from './algos/AcidStars.js';
+import AlienFlowers from './algos/AlienFlowers.js';
+import AlphabetSoup from './algos/AlphabetSoup.js';
+import AngelHair from './algos/AngelHair.js';
+import Aperture from './algos/Aperture.js';
+import Atom from './algos/Atom.js';
+import Autumn from './algos/Autumn.js';
+import BehindBars from './algos/BehindBars.js';
+import BeziersStraight from './algos/BeziersStraight.js';
+import BigBangs from './algos/BigBangs.js';
+import BlacknWhite from './algos/BlacknWhite.js';
+import Blends from './algos/Blends.js';
+import Blur from './algos/Blur.js';
+import Boxes from './algos/Boxes.js';
+import CamouflagePostits from './algos/CamouflagePostits.js';
+import ChalkGalaxy from './algos/ChalkGalaxy.js';
+import Chillout from './algos/Chillout.js';
+import Clock from './algos/Clock.js';
+import Coils from './algos/Coils.js';
+import Comets from './algos/Comets.js';
+import Concentric from './algos/Concentric.js';
+import Cornucopia from './algos/Cornucopia.js';
+import Cornucopia2 from './algos/Cornucopia2.js';
+import CounterClock from './algos/CounterClock.js';
+import CrayonFunnel from './algos/CrayonFunnel.js';
+import CrystalTiles from './algos/CrystalTiles.js';
+import DeepSea from './algos/DeepSea.js';
+import DigitalArt from './algos/DigitalArt.js';
+import Discos from './algos/Discos.js';
+import Division from './algos/Division.js';
+import Dotted from './algos/Dotted.js';
+import Dye from './algos/Dye.js';
+import DysonSpheres from './algos/DysonSpheres.js';
+import Encoded from './algos/Encoded.js';
+import Entropy from './algos/Entropy.js';
+import EpicRays from './algos/EpicRays.js';
+import EvolvingMandala from './algos/EvolvingMandala.js';
+import FadeIn from './algos/FadeIn.js';
+import Fluor from './algos/Fluor.js';
+import FourDee from './algos/FourDee.js';
+import Fruits from './algos/Fruits.js';
+import GameOfFlies from './algos/GameOfFlies.js';
+import GasClouds from './algos/GasClouds.js';
+import GenesisTypewriter from './algos/GenesisTypewriter.js';
+import Geometer from './algos/Geometer.js';
+import Germinate from './algos/Germinate.js';
+import Glow from './algos/Glow.js';
+import Glowsticks from './algos/Glowsticks.js';
+import GravityTurbulence from './algos/GravityTurbulence.js';
+import Gridlock from './algos/Gridlock.js';
+import Halfsies from './algos/Halfsies.js';
+import Hallucinate from './algos/Hallucinate.js';
+import Harmonie from './algos/Harmonie.js';
+import Hive from './algos/Hive.js';
+import Hubble from './algos/Hubble.js';
+import HyperTunnel from './algos/HyperTunnel.js';
+import Irradiate from './algos/Irradiate.js';
+import LisaJou from './algos/LisaJou.js';
+import Loading from './algos/Loading.js';
+import Lollipottery from './algos/Lollipottery.js';
+import Maelstrom from './algos/Maelstrom.js';
+import Maelstrom2 from './algos/Maelstrom2.js';
+import Majestic from './algos/Majestic.js';
+import Matter from './algos/Matter.js';
+import Mesmerize from './algos/Mesmerize.js';
+import Microscope from './algos/Microscope.js';
+import Mirage from './algos/Mirage.js';
+import Nazca from './algos/Nazca.js';
+import Nebulas from './algos/Nebulas.js';
+import NeonTartans from './algos/NeonTartans.js';
+import Networks from './algos/Networks.js';
+import Offsets from './algos/Offsets.js';
+import Onion from './algos/Onion.js';
+import Orbits from './algos/Orbits.js';
+import Organic from './algos/Organic.js';
+import Ourobouros from './algos/Ourobouros.js';
+import ParallelUniverses from './algos/ParallelUniverses.js';
+import Patterns from './algos/Patterns.js';
+import Perspective from './algos/Perspective.js';
+import Picnic from './algos/Picnic.js';
+import PietriDish from './algos/PietriDish.js';
+import Plaid from './algos/Plaid.js';
+import Polyhedra from './algos/Polyhedra.js';
+import Portals from './algos/Portals.js';
+import Progression from './algos/Progression.js';
+import Projecting from './algos/Projecting.js';
+import PsychoRainbow from './algos/PsychoRainbow.js';
+import Pulsar from './algos/Pulsar.js';
+import Punctuation from './algos/Punctuation.js';
+import Quadrants from './algos/Quadrants.js';
+import Quadratic from './algos/Quadratic.js';
+import Radiance from './algos/Radiance.js';
+import RadioWaves from './algos/RadioWaves.js';
+import Records from './algos/Records.js';
+import Rims from './algos/Rims.js';
+import RotationPatterns from './algos/RotationPatterns.js';
+import Rounded from './algos/Rounded.js';
+import Sandala from './algos/Sandala.js';
+import Seeds from './algos/Seeds.js';
+import Shards from './algos/Shards.js';
+import Slices from './algos/Slices.js';
+import Smooth from './algos/Smooth.js';
+import SnakesLadders from './algos/SnakesLadders.js';
+import SoapyBubbles from './algos/SoapyBubbles.js';
+import Solar from './algos/Solar.js';
+import SpaceGears from './algos/SpaceGears.js';
+import Spikey from './algos/Spikey.js';
+import Spikral from './algos/Spikral.js';
+import Spinner from './algos/Spinner.js';
+import SpiralLines from './algos/SpiralLines.js';
+import SpiralText from './algos/SpiralText.js';
+import SpringOrbits from './algos/SpringOrbits.js';
+import SquareNebulas from './algos/SquareNebulas.js';
+import StainedGlass from './algos/StainedGlass.js';
+import Starbursts from './algos/Starbursts.js';
+import Starship from './algos/Starship.js';
+import Subwoofer from './algos/Subwoofer.js';
+import Supernova from './algos/Supernova.js';
+import Sushi from './algos/Sushi.js';
+import Swirls from './algos/Swirls.js';
+import TheBadge from './algos/TheBadge.js';
+import TheFan from './algos/TheFan.js';
+import Thread from './algos/Thread.js';
+import ThreeD from './algos/ThreeD.js';
+import Trance from './algos/Trance.js';
+import Triangulate from './algos/Triangulate.js';
+import Tripping from './algos/Tripping.js';
+import Typobrush from './algos/Typobrush.js';
+import UFOs from './algos/Ufos.js';
+import Unfocused from './algos/Unfocused.js';
+import Universe from './algos/Universe.js';
+import Upholstery from './algos/Upholstery.js';
+import VanishingPoint from './algos/VanishingPoint.js';
+import VanishingRays from './algos/VanishingRays.js';
+import Veils from './algos/Veils.js';
+import Vortrix from './algos/Vortrix.js';
+import Wallpapering from './algos/Wallpapering.js';
+import Warp2001 from './algos/Warp2001.js';
+import Wormhole from './algos/Wormhole.js';
+import Wormholes from './algos/Wormholes.js';
+
+const algorithms = [
+    Abstractions,
+    AccelerationMandala,
+    AcidStars,
+    AlienFlowers,
+    AlphabetSoup,
+    AngelHair,
+    Aperture,
+    Atom,
+    Autumn,
+    BehindBars,
+    BeziersStraight,
+    BigBangs,
+    BlacknWhite,
+    Blends,
+    Blur,
+    Boxes,
+    CamouflagePostits,
+    ChalkGalaxy,
+    Chillout,
+    Clock,
+    Coils,
+    Comets,
+    Concentric,
+    Cornucopia,
+    Cornucopia2,
+    CounterClock,
+    CrayonFunnel,
+    CrystalTiles,
+    DeepSea,
+    DigitalArt,
+    Discos,
+    Division,
+    Dotted,
+    Dye,
+    DysonSpheres,
+    Encoded,
+    Entropy,
+    EpicRays,
+    EvolvingMandala,
+    FadeIn,
+    Fluor,
+    FourDee,
+    Fruits,
+    GameOfFlies,
+    GasClouds,
+    GenesisTypewriter,
+    Geometer,
+    Germinate,
+    Glow,
+    Glowsticks,
+    GravityTurbulence,
+    Gridlock,
+    Halfsies,
+    Hallucinate,
+    Harmonie,
+    Hive,
+    Hubble,
+    HyperTunnel,
+    Irradiate,
+    LisaJou,
+    Loading,
+    Lollipottery,
+    Maelstrom,
+    Maelstrom2,
+    Majestic,
+    Matter,
+    Mesmerize,
+    Microscope,
+    Mirage,
+    Nazca,
+    Nebulas,
+    NeonTartans,
+    Networks,
+    Offsets,
+    Onion,
+    Orbits,
+    Organic,
+    Ourobouros,
+    ParallelUniverses,
+    Patterns,
+    Perspective,
+    Picnic,
+    PietriDish,
+    Plaid,
+    Polyhedra,
+    Portals,
+    Progression,
+    Projecting,
+    PsychoRainbow,
+    Pulsar,
+    Punctuation,
+    Quadrants,
+    Quadratic,
+    Radiance,
+    RadioWaves,
+    Records,
+    Rims,
+    RotationPatterns,
+    Rounded,
+    Sandala,
+    Seeds,
+    Shards,
+    Slices,
+    Smooth,
+    SnakesLadders,
+    SoapyBubbles,
+    Solar,
+    SpaceGears,
+    Spikey,
+    Spikral,
+    Spinner,
+    SpiralLines,
+    SpiralText,
+    SpringOrbits,
+    SquareNebulas,
+    StainedGlass,
+    Starbursts,
+    Starship,
+    Subwoofer,
+    Supernova,
+    Sushi,
+    Swirls,
+    TheBadge,
+    TheFan,
+    Thread,
+    ThreeD,
+    Trance,
+    Triangulate,
+    Tripping,
+    Typobrush,
+    UFOs,
+    Unfocused,
+    Universe,
+    Upholstery,
+    VanishingPoint,
+    VanishingRays,
+    Veils,
+    Vortrix,
+    Wallpapering,
+    Warp2001,
+    Wormhole,
+    Wormholes,
+];
+
+export default class AlgorithmChooser {
+    constructor() {
+        this.algorithms = algorithms;
+        this.lastAlgos = [];
+        this.lastAlgosCapacity = 50;
+    }
+
+    getRandomAlgorithm() {
+        const picks = this.algorithms.filter(
+            (algo) => !this.lastAlgos.includes(algo)
+        );
+
+        const randomIndex = Math.floor(Math.random() * picks.length);
+        const AlgorithmClass = picks[randomIndex];
+
+        this.lastAlgos.push(AlgorithmClass);
+        if (this.lastAlgos.length > this.lastAlgosCapacity) {
+            this.lastAlgos.shift();
+        }
+
+        return AlgorithmClass;
+    }
+}

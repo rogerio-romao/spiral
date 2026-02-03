@@ -1,5 +1,6 @@
-import AlgorithmLoader from './AlgorithmLoader';
-import { random, randomColor } from './utils/randomUtils';
+import AlgorithmChooser from './AlgorithmChooser.js';
+import AlgorithmLoader from './AlgorithmLoader.js';
+import { random, randomColor } from './utils/randomUtils.js';
 
 export default class Spiral {
     constructor() {
@@ -11,6 +12,12 @@ export default class Spiral {
 
         // Algorithm loader instance
         this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
+
+        // Algorithm chooser instance
+        this.algorithmChooser = new AlgorithmChooser();
+
+        // running algorithm instance
+        this.currentAlgorithm = null;
 
         // Setup message display
         this.messageTimer = null;
@@ -26,7 +33,6 @@ export default class Spiral {
         // Auto change interval
         this.autoChange = 100;
         this.regen = null;
-        this.interval = null;
 
         // Manual mode toggle
         this.manual = false;
@@ -67,6 +73,9 @@ export default class Spiral {
 
         // add event listeners
         this.addEventListeners();
+
+        // trigger the first algorithm
+        this.chooseAlgos();
     }
 
     addEventListeners() {
@@ -106,13 +115,13 @@ export default class Spiral {
                 case 'KeyM':
                     this.manual = !this.manual;
                     this.displayMessage(
-                        this.manual ? 'Manual mode' : 'Auto mode'
+                        this.manual ? 'Manual mode' : 'Auto mode',
                     );
                     break;
                 case 'KeyS':
                     this.silent = !this.silent;
                     this.displayMessage(
-                        this.silent ? 'Silent mode' : 'Display mode'
+                        this.silent ? 'Silent mode' : 'Display mode',
                     );
                     this.algosDisplayElement.textContent = '';
                     this.algosDisplayElement.style.display = 'none';
@@ -130,9 +139,10 @@ export default class Spiral {
 
         // on canvas click, generate a new spiral
         this.canvas.addEventListener('click', () => {
+            this.ctx.save();
             // clear any timers
-            cancelAnimationFrame(this.interval);
-            this.interval = null;
+            this.stopCurrentAlgorithm();
+
             clearInterval(this.regen);
             this.t = 0;
             this.stagger = 0;
@@ -162,21 +172,52 @@ export default class Spiral {
             this.ctx.beginPath();
 
             // selects next algorithm
-            chooseAlgos(); //TODO: implement chooseAlgos function
+            this.chooseAlgos();
         });
+
+        // on mousemove, show the cursor
+        this.canvas.addEventListener('mousemove', () => {
+            this.canvas.style.cursor = 'pointer';
+            setTimeout(() => {
+                this.canvas.style.cursor = 'none';
+            }, 4000);
+        });
+    }
+
+    chooseAlgos() {
+        this.ctx.save();
+        // clear any timers
+        this.stopCurrentAlgorithm();
+        const AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
+        this.currentAlgorithm = new AlgorithmClass(this.ctx, this.w, this.h);
+        // display algorithm name
+        this.displayAlgorithmName(this.currentAlgorithm.name);
+    }
+
+    stopCurrentAlgorithm() {
+        if (this.currentAlgorithm?.stop) {
+            this.currentAlgorithm.stop();
+        } else if (this.currentAlgorithm?.interval) {
+            cancelAnimationFrame(this.currentAlgorithm.interval);
+            this.currentAlgorithm.interval = null;
+        }
+        this.currentAlgorithm = null;
     }
 
     // chooses a transition method when spirals change
     clearMethod() {
-        const pick = Math.random();
+        // clear the running algorithm
+        this.stopCurrentAlgorithm();
+
+        const clearMethodPick = Math.random();
         // clears to black a portion of the screen based on the canvas size and its rotation at the moment
-        if (pick < 0.25) {
+        if (clearMethodPick < 0.25) {
             this.ctx.clearRect(0, 0, this.w, this.h);
-        } else if (pick < 0.5) {
+        } else if (clearMethodPick < 0.5) {
             // makes semi-transparent a portion of the screen based on the canvas size and its rotation at the moment
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
             this.ctx.fillRect(0, 0, this.w, this.h);
-        } else if (pick < 0.75) {
+        } else if (clearMethodPick < 0.75) {
             // colors a portion of the screen based on the canvas size and its rotation at the moment, with random transparency
             this.ctx.fillStyle = randomColor(5, 255, 0.15, 0.9);
             this.ctx.fillRect(0, 0, this.w, this.h);
@@ -188,6 +229,17 @@ export default class Spiral {
         }
 
         this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
+    }
+
+    displayAlgorithmName(name) {
+        if (this.silent) return;
+        this.algosDisplayElement.textContent = `${name.toUpperCase()}`;
+        this.algosDisplayElement.style.display = 'block';
+
+        setTimeout(() => {
+            this.algosDisplayElement.style.display = 'none';
+            this.algosDisplayElement.textContent = '';
+        }, 5000);
     }
 
     displayMessage(message) {

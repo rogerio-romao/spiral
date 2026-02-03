@@ -41,8 +41,13 @@ export default class AlgorithmLoader {
         this.interval = null; // To store requestAnimationFrame ID
         this.speed = AlgorithmLoader.random(2, 6);
         this.stagger = 0; // Used for staggered animations
+        this.isRunning = true;
 
-        this.draw = this.draw.bind(this); // Bind draw method to the instance
+        const originalDraw = this.draw.bind(this);
+        this.draw = () => {
+            if (!this.isRunning) return;
+            originalDraw();
+        };
     }
 
     clearScreen() {
@@ -68,5 +73,13 @@ export default class AlgorithmLoader {
     draw() {
         // This method should be overridden by subclasses
         throw new Error('Draw method must be implemented by subclass');
+    }
+
+    stop() {
+        this.isRunning = false;
+        if (this.interval) {
+            cancelAnimationFrame(this.interval);
+        }
+        this.interval = null;
     }
 }
