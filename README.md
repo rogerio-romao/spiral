@@ -1,44 +1,74 @@
-# electron-quick-start
+# Spiral
 
-**Clone and run for a quick way to see Electron in action.**
+**A music player that turns your screen into a living canvas.**
 
-This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start) within the Electron documentation.
+Spiral is a desktop app that plays your favorite tunes while creating
+mesmerizing generative art in real-time. Watch as 142 different procedural
+algorithms paint ever-changing patterns, spirals, and abstract visuals
+synchronized to your music.
 
-**Use this app along with the [Electron API Demos](https://electronjs.org/#get-started) app for API code examples to help you get started.**
+## What Makes It Cool
 
-A basic Electron application needs just these files:
+- **142 unique visual algorithms** — Each one creates a completely different
+  animation style, from psychedelic spirals to geometric mandalas to organic
+  flowing patterns
+- **Auto-cycling mode** — Sit back and watch as visuals automatically transition
+  every few seconds, creating an endless stream of eye candy
+- **Manual control** — Hit spacebar to instantly switch to a new visualization,
+  or use keyboard shortcuts to control the experience
+- **HTML5 Canvas magic** — All visuals are rendered in real-time using pure
+  Canvas 2D (no WebGL trickery needed)
+- **GSAP-powered animations** — Smooth, buttery transitions between different
+  visual states
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+## Getting Started
 
-You can learn more about each of these components within the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start).
+### Installation
 
-## To Use
-
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+You'll need [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/)
+installed on your computer.
 
 ```bash
 # Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
+git clone https://github.com/rogerio-romao/spiral.git
+
+# Go into the directory
+cd spiral
+
 # Install dependencies
-npm install
-# Run the app
-npm start
+pnpm install
+
+# Launch the app
+pnpm start
 ```
 
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+That's it! The app should open up and you can start playing music and enjoying
+the visuals.
 
-## Resources for Learning Electron
+## How to Use It
 
-- [electronjs.org/docs](https://electronjs.org/docs) - all of Electron's documentation
-- [electronjs.org/community#boilerplates](https://electronjs.org/community#boilerplates) - sample starter apps created by the community
-- [electron/electron-quick-start](https://github.com/electron/electron-quick-start) - a very basic starter Electron app
-- [electron/simple-samples](https://github.com/electron/simple-samples) - small applications with ideas for taking them further
-- [electron/electron-api-demos](https://github.com/electron/electron-api-demos) - an Electron app that teaches you how to use Electron
-- [hokein/electron-sample-apps](https://github.com/hokein/electron-sample-apps) - small demo apps for the various Electron APIs
+- **Space** — Switch to a random new visualization
+- **P** — Toggle the music player open/closed
+- **H** — Show the help menu with all keyboard shortcuts
+- **F** — Toggle fullscreen mode
+- **I** — Show the current algorithm info
+- **M** — Mute/unmute audio
+- **S** — Take a screenshot
+
+Load up your favorite tracks, hit play, and let the algorithms do their thing.
+Each visualization is unique and will never look exactly the same twice.
+
+## What's the Point?
+
+Sometimes you just want to zone out with some good music and watch something
+beautiful. Spiral is perfect for:
+
+- Background visuals during parties or gatherings
+- Relaxing after a long day
+- Creative inspiration while working
+- Just having something cool to look at
+
+No complicated controls, no setup hassle — just music and art working together.
 
 ## License
 
