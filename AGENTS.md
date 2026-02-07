@@ -28,7 +28,7 @@ No TypeScript. No bundler. No test framework. No linter/formatter config.
 main.js              Electron main process — creates BrowserWindow
 preload.js           Injects version info via contextBridge
 index.html           DOM: canvas, HUD overlay, help screen, music player UI
-renderer.js          Renderer entry — instantiates Spiral + MusicPlayer, roundRect polyfill
+renderer.js          Renderer entry — imports polyfills, instantiates Spiral + MusicPlayer
 src/
   Spiral.js          Orchestrator — algorithm lifecycle, keyboard shortcuts, HUD, transitions
   MusicPlayer.js     Audio playback, playlist management, progress bar, P-key toggle
@@ -40,6 +40,7 @@ src/
     Particle.js      Physics particle (position, velocity, gravity, springs, friction, bounce)
     math.js          norm, lerp, map, clamp, distance, collision, deg↔rad, randomRange, bezier
     randomUtils.js   random(min, max), randomColor() — used by renderer.js and Spiral.js
+    roundRect.js     Side-effect polyfill — patches CanvasRenderingContext2D prototype
 assets/
   js/gsap.min.js     GSAP library (global)
   fonts/             Custom font files
@@ -62,7 +63,7 @@ assets/
 | ------------------------- | ---------------------------------------------------- |
 | `main.js`                 | Electron main process entry                          |
 | `preload.js`              | Context bridge, version injection                    |
-| `renderer.js`             | Renderer entry: Spiral + MusicPlayer init, polyfills |
+| `renderer.js`             | Renderer entry: imports polyfills, Spiral + MusicPlayer init |
 | `index.html`              | DOM structure: canvas, HUD, player controls          |
 | `style.css`               | All styles                                           |
 | `src/Spiral.js`           | Core orchestrator                                    |
@@ -70,7 +71,7 @@ assets/
 | `src/AlgorithmChooser.js` | Algorithm registry and random picker                 |
 | `src/AlgorithmLoader.js`  | Base class for algorithms                            |
 | `src/algos/*.js`          | Individual algorithm classes (142 files)             |
-| `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random)    |
+| `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill) |
 | `assets/js/`              | GSAP (loaded globally, not via npm)                  |
 | `assets/fonts/`           | Custom font files                                    |
 
