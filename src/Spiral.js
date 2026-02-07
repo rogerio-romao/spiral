@@ -3,12 +3,15 @@ import AlgorithmLoader from './AlgorithmLoader.js';
 import { random, randomColor } from './utils/randomUtils.js';
 
 export default class Spiral {
-    constructor() {
+    constructor(options = {}) {
         // Setup canvas
         this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
         this.w = this.canvas.width = window.innerWidth;
         this.h = this.canvas.height = window.innerHeight;
+
+        this.devMode = options.devMode === true;
+        this.devAlgorithmClass = options.devAlgorithmClass || null;
 
         // Algorithm loader instance
         this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
@@ -56,7 +59,7 @@ export default class Spiral {
         }, 20000);
 
         // make algorithms auto-change if not in manual mode
-        if (!this.manual) {
+        if (!this.manual && !this.devMode) {
             this.regen = setInterval(() => {
                 this.canvas.click();
             }, this.autoChange * 1000);
@@ -88,22 +91,27 @@ export default class Spiral {
         window.addEventListener('keyup', (e) => {
             switch (e.code) {
                 case 'Space':
-                    this.canvas.click();
+                    if (!this.devMode) {
+                        this.canvas.click();
+                    }
                     break;
                 case 'KeyF':
                     document.body.requestFullscreen();
                     break;
                 case 'KeyI':
+                    if (this.devMode) break;
                     this.autoChange += 10;
                     if (this.autoChange > 300) this.autoChange = 300;
                     this.displayMessage(`Auto-change: ${this.autoChange}secs`);
                     break;
                 case 'KeyD':
+                    if (this.devMode) break;
                     this.autoChange -= 10;
                     if (this.autoChange < 10) this.autoChange = 10;
                     this.displayMessage(`Auto-change: ${this.autoChange}secs`);
                     break;
                 case 'KeyM':
+                    if (this.devMode) break;
                     this.manual = !this.manual;
                     this.displayMessage(
                         this.manual ? 'Manual mode' : 'Auto mode',
@@ -130,6 +138,7 @@ export default class Spiral {
 
         // on canvas click, generate a new spiral
         this.canvas.addEventListener('click', () => {
+            if (this.devMode) return;
             this.ctx.save();
             // clear any timers
             this.stopCurrentAlgorithm();
@@ -188,7 +197,18 @@ export default class Spiral {
         this.ctx.save();
         // clear any timers
         this.stopCurrentAlgorithm();
-        const AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
+        let AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
+        if (this.devMode) {
+            if (
+                !this.devAlgorithmClass ||
+                typeof this.devAlgorithmClass !== 'function'
+            ) {
+                throw new Error(
+                    'Dev mode enabled but no devAlgorithmClass provided.',
+                );
+            }
+            AlgorithmClass = this.devAlgorithmClass;
+        }
         this.currentAlgorithm = new AlgorithmClass(this.ctx, this.w, this.h);
         // display algorithm name
         this.displayAlgorithmName(this.currentAlgorithm.name);

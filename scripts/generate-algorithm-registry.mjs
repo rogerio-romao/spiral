@@ -47,7 +47,8 @@ const run = async () => {
     const files = entries
         .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
         .map((entry) => entry.name)
-        .sort((a, b) => a.localeCompare(b));
+        .sort((a, b) => a.localeCompare(b))
+        .filter((filename) => filename !== 'Test.js');
 
     if (files.length === 0) {
         throw new Error(
