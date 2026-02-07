@@ -8,6 +8,21 @@ self-contained algorithm classes produce distinct visual patterns that
 auto-cycle or can be manually triggered. No bundler — ES modules run directly in
 Electron.
 
+## Task Workflow
+
+When requesting new work, I follow a standardized task workflow documented in
+[WORKFLOW.md](WORKFLOW.md). This covers:
+
+- Task intake and clarification
+- GitHub issue creation
+- Feature branch naming (conventional commits)
+- Implementation per code conventions
+- Verification and testing
+- CHANGELOG updates
+- Pull request creation
+
+See [WORKFLOW.md](WORKFLOW.md) for the complete workflow and decision points.
+
 ## Tech Stack
 
 | Layer           | Technology        | Notes                                        |
