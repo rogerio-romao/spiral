@@ -45,4 +45,5 @@ When executing tasks, follow the workflow in `WORKFLOW.md`:
 6. **Changelog** — Update CHANGELOG.md with approval
 7. **PR** — Create pull request with gh CLI
 
-See [WORKFLOW.md](../WORKFLOW.md) for detailed instructions and decision points.
+See WORKFLOW.md at the project root for detailed instructions and decision
+points.
