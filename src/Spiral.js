@@ -55,15 +55,6 @@ export default class Spiral {
             this.displayMessage('TIP: F FOR FULLSCREEN');
         }, 20000);
 
-        // set the basic canvas settings
-        this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
-        this.ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
-        this.canvas.style.background = 'transparent';
-        this.ctx.imageSmoothingQuality = 'high';
-        this.ctx.lineWidth = 1;
-        this.ctx.shadowBlur = 0;
-        this.ctx.save();
-
         // make algorithms auto-change if not in manual mode
         if (!this.manual) {
             this.regen = setInterval(() => {
@@ -185,6 +176,14 @@ export default class Spiral {
     }
 
     chooseAlgos() {
+        // set the basic canvas settings
+        this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
+        this.ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
+        this.canvas.style.background = 'transparent';
+        this.ctx.imageSmoothingQuality = 'high';
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.lineWidth = 1;
+        this.ctx.shadowBlur = 0;
         this.ctx.save();
         // clear any timers
         this.stopCurrentAlgorithm();
@@ -192,16 +191,6 @@ export default class Spiral {
         this.currentAlgorithm = new AlgorithmClass(this.ctx, this.w, this.h);
         // display algorithm name
         this.displayAlgorithmName(this.currentAlgorithm.name);
-    }
-
-    stopCurrentAlgorithm() {
-        if (this.currentAlgorithm?.stop) {
-            this.currentAlgorithm.stop();
-        } else if (this.currentAlgorithm?.interval) {
-            cancelAnimationFrame(this.currentAlgorithm.interval);
-            this.currentAlgorithm.interval = null;
-        }
-        this.currentAlgorithm = null;
     }
 
     // chooses a transition method when spirals change
@@ -250,5 +239,15 @@ export default class Spiral {
             this.messageElement.style.display = 'none';
             this.messageElement.textContent = '';
         }, 7500);
+    }
+
+    stopCurrentAlgorithm() {
+        if (this.currentAlgorithm?.stop) {
+            this.currentAlgorithm.stop();
+        } else if (this.currentAlgorithm?.interval) {
+            cancelAnimationFrame(this.currentAlgorithm.interval);
+            this.currentAlgorithm.interval = null;
+        }
+        this.currentAlgorithm = null;
     }
 }
