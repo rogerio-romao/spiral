@@ -1,4 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&display=swap');
+@font-face {
+    font-family: 'DM Mono';
+    src: url('../assets/fonts/DMMono-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
 
 body {
     background: black;
