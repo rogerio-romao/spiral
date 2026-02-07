@@ -4,6 +4,8 @@
     "description": "Music Player with generative art visualizer.",
     "main": "main.js",
     "scripts": {
+        "generate:algos": "node scripts/generate-algorithm-registry.mjs",
+        "prestart": "pnpm generate:algos",
         "start": "electron ."
     },
     "keywords": [

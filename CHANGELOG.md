@@ -5,3 +5,4 @@
 ## 2026-02-07
 
 - docs: Rewrite README for end users with friendly tone
+- chore: automate AlgorithmChooser registry generation
