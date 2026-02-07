@@ -74,21 +74,21 @@ assets/
 
 ## File Structure Map
 
-| Path                      | Purpose                                              |
-| ------------------------- | ---------------------------------------------------- |
-| `main.js`                 | Electron main process entry                          |
-| `preload.js`              | Context bridge, version injection                    |
-| `renderer.js`             | Renderer entry: imports polyfills, Spiral + MusicPlayer init |
-| `index.html`              | DOM structure: canvas, HUD, player controls          |
-| `style.css`               | All styles                                           |
-| `src/Spiral.js`           | Core orchestrator                                    |
-| `src/MusicPlayer.js`      | Audio playback, playlist, progress bar, P-key toggle |
-| `src/AlgorithmChooser.js` | Algorithm registry and random picker                 |
-| `src/AlgorithmLoader.js`  | Base class for algorithms                            |
-| `src/algos/*.js`          | Individual algorithm classes (142 files)             |
+| Path                      | Purpose                                                               |
+| ------------------------- | --------------------------------------------------------------------- |
+| `main.js`                 | Electron main process entry                                           |
+| `preload.js`              | Context bridge, version injection                                     |
+| `renderer.js`             | Renderer entry: imports polyfills, Spiral + MusicPlayer init          |
+| `index.html`              | DOM structure: canvas, HUD, player controls                           |
+| `style.css`               | All styles                                                            |
+| `src/Spiral.js`           | Core orchestrator                                                     |
+| `src/MusicPlayer.js`      | Audio playback, playlist, progress bar, P-key toggle                  |
+| `src/AlgorithmChooser.js` | Algorithm registry and random picker                                  |
+| `src/AlgorithmLoader.js`  | Base class for algorithms                                             |
+| `src/algos/*.js`          | Individual algorithm classes (142 files)                              |
 | `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill) |
-| `assets/js/`              | GSAP (loaded globally, not via npm)                  |
-| `assets/fonts/`           | Custom font files                                    |
+| `assets/js/`              | GSAP (loaded globally, not via npm)                                   |
+| `assets/fonts/`           | Custom font files                                                     |
 
 ## Code Conventions
 
@@ -129,15 +129,17 @@ assets/
 
 ## Common Pitfalls
 
-- `AlgorithmChooser.js` **manually imports every algorithm** — adding or
-  removing an algo requires updating this file (both the import and the array
-  entry)
+- `AlgorithmChooser.js` reads from the generated registry at
+  `src/generated/algorithmRegistry.js` — run `pnpm generate:algos` (or rely on
+  the `prestart` hook) whenever algorithms are added or removed and never edit
+  the generated file directly
 - Algorithm `stop()` cancels `requestAnimationFrame` — always ensure `stop()` is
   called before switching algorithms
 - `this.draw` in algorithms is **wrapped by `AlgorithmLoader`** to check
   `isRunning` — do not bypass this mechanism
 - Keyboard shortcuts are split between `Spiral.js` (Space, F, I, D, M, S, H) and
-  `MusicPlayer.js` (P key for player) — check both files when modifying shortcuts
+  `MusicPlayer.js` (P key for player) — check both files when modifying
+  shortcuts
 - GSAP is **global** (`window.gsap`) from the vendored file — `AlgorithmLoader`
   exposes it as a static ref
 - No tests exist — when adding test tooling, there is no existing infrastructure
@@ -149,8 +151,9 @@ assets/
 
 ## Run Commands
 
-| Command      | Description                   |
-| ------------ | ----------------------------- |
-| `pnpm start` | Launch the app (`electron .`) |
+| Command               | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `pnpm start`          | Launch the app (`electron .`)                   |
+| `pnpm generate:algos` | Regenerate `src/generated/algorithmRegistry.js` |
 
 No test, lint, or build scripts are currently defined.

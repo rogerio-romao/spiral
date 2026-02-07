@@ -184,6 +184,7 @@ export default class Spiral {
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.lineWidth = 1;
         this.ctx.shadowBlur = 0;
+        this.ctx.setLineDash([]);
         this.ctx.save();
         // clear any timers
         this.stopCurrentAlgorithm();
