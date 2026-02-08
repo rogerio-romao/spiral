@@ -78,6 +78,7 @@ export default class MusicPlayer {
             this.isPlaying = true;
             this.playIcon.name = 'pause-outline';
             this._updatePlaylistStyle();
+            this._resumeAnalyser();
             this.audio.play();
         } else if (this.playlistEls) {
             this.isPlaying = false;
@@ -164,6 +165,19 @@ export default class MusicPlayer {
         [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
         this.playlistEls[this.currentSong].style.color = 'orange';
         this.playlistEls[this.currentSong].scrollIntoView();
+    }
+
+    /**
+     * Resume the AudioContext used by the frequency analyser.
+     * Must be called from a user gesture to satisfy autoplay policy.
+     * Safe to call when no analyser is wired up.
+     */
+    _resumeAnalyser() {
+        // Dynamically import to avoid circular dependency —
+        // AlgorithmLoader is set up by renderer.js after MusicPlayer.
+        import('./AlgorithmLoader.js').then(({ default: AlgorithmLoader }) => {
+            AlgorithmLoader.frequencyAnalyser?.resume();
+        });
     }
 
     /** Toggle player visibility with the P key. */

@@ -155,13 +155,21 @@ gh pr create \
   --title "<TYPE>: <DESCRIPTION>" \
   --body "<Detailed description of changes>" \
   --head <branch-name> \
-  --base spiral2
+  --base spiral2 \
+  --label "<LABEL>" \
+  --assignee rogerio-romao
 ```
+
+**Rules:**
+
+- Always include `--assignee rogerio-romao`
+- Always include `--label` matching the issue label (e.g., `enhancement`, `bug`,
+  `documentation`)
 
 **Before submitting, I will:**
 
 - Show you the draft PR title and description
-- Ask if you want to add labels (e.g., `ready-to-merge`, `review-pending`)
+- Ask if you want to add extra labels (e.g., `ready-to-merge`, `review-pending`)
 - Ask for any additional context or notes
 - Confirm you're ready to merge before creating the PR
 
