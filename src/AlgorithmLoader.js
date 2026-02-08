@@ -20,6 +20,8 @@ export default class AlgorithmLoader {
 
     static gsap = gsap;
 
+    static frequencyAnalyser = null;
+
     static createVector(x, y) {
         return new Vector(x, y);
     }
