@@ -18,7 +18,10 @@ export default class FrequencyAnalyser {
      * @param {number}  [options.fftSize=2048] — FFT window size (power of 2).
      * @param {number}  [options.smoothing=0.8] — smoothingTimeConstant (0–1).
      */
-    constructor(audioElement, { bandCount = 3, fftSize = 2048, smoothing = 0.8 } = {}) {
+    constructor(
+        audioElement,
+        { bandCount = 5, fftSize = 2048, smoothing = 0.8 } = {},
+    ) {
         this._bandCount = bandCount;
 
         // Create the audio context and graph
@@ -79,9 +82,8 @@ export default class FrequencyAnalyser {
         for (let b = 0; b < this._bandCount; b++) {
             const start = b * binsPerBand;
             // Last band absorbs any remainder bins
-            const end = b === this._bandCount - 1
-                ? binCount
-                : start + binsPerBand;
+            const end =
+                b === this._bandCount - 1 ? binCount : start + binsPerBand;
 
             let sum = 0;
             for (let i = start; i < end; i++) {

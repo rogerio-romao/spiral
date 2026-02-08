@@ -56,6 +56,7 @@ src/
     math.js          norm, lerp, map, clamp, distance, collision, deg↔rad, randomRange, bezier
     randomUtils.js   random(min, max), randomColor() — used by renderer.js and Spiral.js
     roundRect.js     Side-effect polyfill — patches CanvasRenderingContext2D prototype
+    FrequencyAnalyser.js  Web Audio API wrapper — splits FFT into configurable bands (default 5)
 assets/
   js/gsap.min.js     GSAP library (global)
   fonts/             Custom font files
@@ -74,21 +75,21 @@ assets/
 
 ## File Structure Map
 
-| Path                      | Purpose                                                               |
-| ------------------------- | --------------------------------------------------------------------- |
-| `main.js`                 | Electron main process entry                                           |
-| `preload.js`              | Context bridge, version injection                                     |
-| `renderer.js`             | Renderer entry: imports polyfills, Spiral + MusicPlayer init          |
-| `index.html`              | DOM structure: canvas, HUD, player controls                           |
-| `style.css`               | All styles                                                            |
-| `src/Spiral.js`           | Core orchestrator                                                     |
-| `src/MusicPlayer.js`      | Audio playback, playlist, progress bar, P-key toggle                  |
-| `src/AlgorithmChooser.js` | Algorithm registry and random picker                                  |
-| `src/AlgorithmLoader.js`  | Base class for algorithms                                             |
-| `src/algos/*.js`          | Individual algorithm classes (142 files)                              |
-| `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill) |
-| `assets/js/`              | GSAP (loaded globally, not via npm)                                   |
-| `assets/fonts/`           | Custom font files                                                     |
+| Path                      | Purpose                                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------------------- |
+| `main.js`                 | Electron main process entry                                                              |
+| `preload.js`              | Context bridge, version injection                                                        |
+| `renderer.js`             | Renderer entry: imports polyfills, Spiral + MusicPlayer init                             |
+| `index.html`              | DOM structure: canvas, HUD, player controls                                              |
+| `style.css`               | All styles                                                                               |
+| `src/Spiral.js`           | Core orchestrator                                                                        |
+| `src/MusicPlayer.js`      | Audio playback, playlist, progress bar, P-key toggle                                     |
+| `src/AlgorithmChooser.js` | Algorithm registry and random picker                                                     |
+| `src/AlgorithmLoader.js`  | Base class for algorithms                                                                |
+| `src/algos/*.js`          | Individual algorithm classes (142 files)                                                 |
+| `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill, FrequencyAnalyser) |
+| `assets/js/`              | GSAP (loaded globally, not via npm)                                                      |
+| `assets/fonts/`           | Custom font files                                                                        |
 
 ## Code Conventions
 
@@ -119,6 +120,25 @@ assets/
 - The draw loop uses `requestAnimationFrame` — cancelled via `stop()` in
   `AlgorithmLoader`
 
+## Frequency Analyser
+
+- `FrequencyAnalyser` (`src/utils/FrequencyAnalyser.js`) wraps the Web Audio API
+  to provide real-time frequency data from the `<audio>` element
+- Audio graph: `MediaElementAudioSourceNode` → `AnalyserNode` →
+  `AudioContext.destination` (audio still plays through speakers)
+- `createMediaElementSource` can only be called **once** per `<audio>` element —
+  the analyser is created once in `renderer.js`
+- Exposed as `AlgorithmLoader.frequencyAnalyser` (static property, same pattern
+  as `AlgorithmLoader.gsap`)
+- `getBands()` returns a plain `Array` of normalised 0–1 values; band count
+  defaults to 3 (low / mid / high) but is configurable via the `bandCount`
+  setter
+- `getRawData()` returns the full `Uint8Array` FFT buffer for advanced use
+- `AudioContext` starts suspended — `MusicPlayer.playTrack()` calls `resume()`
+  on the first user gesture
+- Algorithms opt in by calling `AlgorithmLoader.frequencyAnalyser?.getBands()`
+  inside their `draw()` loop; the call returns all zeros when nothing is playing
+
 ## Dependency Rules
 
 - **No new runtime dependencies** without explicit approval
@@ -142,6 +162,9 @@ assets/
   shortcuts
 - GSAP is **global** (`window.gsap`) from the vendored file — `AlgorithmLoader`
   exposes it as a static ref
+- `FrequencyAnalyser` is instantiated once in `renderer.js` —
+  `createMediaElementSource` throws if called twice on the same `<audio>`
+  element
 - No tests exist — when adding test tooling, there is no existing infrastructure
   to extend
 - The `AlgorithmLoader` constructor receives `(ctx, w, h)` — these are the

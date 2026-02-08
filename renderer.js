@@ -2,10 +2,10 @@
 import './src/utils/roundRect.js';
 
 import AlgorithmLoader from './src/AlgorithmLoader.js';
-import FrequencyAnalyser from './src/utils/FrequencyAnalyser.js';
 import MusicPlayer from './src/MusicPlayer.js';
 import Spiral from './src/Spiral.js';
 import Test from './src/algos/Test.js';
+import FrequencyAnalyser from './src/utils/FrequencyAnalyser.js';
 
 const devMode = false;
 const devAlgorithmClass = Test;
