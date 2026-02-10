@@ -7,7 +7,7 @@ import Spiral from './src/Spiral.js';
 import Test from './src/algos/Test.js';
 import FrequencyAnalyser from './src/utils/FrequencyAnalyser.js';
 
-const devMode = false;
+const devMode = true;
 const devAlgorithmClass = Test;
 
 new Spiral({ devMode, devAlgorithmClass });

@@ -45,10 +45,14 @@ const buildFileContents = (files) => {
 const run = async () => {
     const entries = await fs.readdir(algosDir, { withFileTypes: true });
     const files = entries
-        .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
+        .filter(
+            (entry) =>
+                entry.isFile() &&
+                entry.name.endsWith('.js') &&
+                entry.name !== 'Template.js',
+        )
         .map((entry) => entry.name)
-        .sort((a, b) => a.localeCompare(b))
-        .filter((filename) => filename !== 'Test.js');
+        .sort((a, b) => a.localeCompare(b));
 
     if (files.length === 0) {
         throw new Error(
