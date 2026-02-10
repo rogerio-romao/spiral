@@ -43,9 +43,10 @@ No TypeScript. No bundler. No test framework. No linter/formatter config.
 main.js              Electron main process — creates BrowserWindow
 preload.js           Injects version info via contextBridge
 index.html           DOM: canvas, HUD overlay, help screen, music player UI
-renderer.js          Renderer entry — imports polyfills, instantiates Spiral + MusicPlayer
+renderer.js          Renderer entry — imports polyfills, instantiates Spiral
 src/
-  Spiral.js          Orchestrator — algorithm lifecycle, keyboard shortcuts, HUD, transitions
+  Spiral.js          Orchestrator — algorithm lifecycle, keyboard shortcuts, HUD, transitions,
+                       owns MusicPlayer and FrequencyAnalyser
   MusicPlayer.js     Audio playback, playlist management, progress bar, P-key toggle
   AlgorithmChooser.js  Static imports of all 142 algos, random selection (avoids last 50)
   AlgorithmLoader.js   Base class for all algorithms (draw loop, helpers, stop/start)
@@ -79,10 +80,10 @@ assets/
 | ------------------------- | ---------------------------------------------------------------------------------------- |
 | `main.js`                 | Electron main process entry                                                              |
 | `preload.js`              | Context bridge, version injection                                                        |
-| `renderer.js`             | Renderer entry: imports polyfills, Spiral + MusicPlayer init                             |
+| `renderer.js`             | Renderer entry: imports polyfills, instantiates Spiral                                   |
 | `index.html`              | DOM structure: canvas, HUD, player controls                                              |
 | `style.css`               | All styles                                                                               |
-| `src/Spiral.js`           | Core orchestrator                                                                        |
+| `src/Spiral.js`           | Core orchestrator — owns MusicPlayer and FrequencyAnalyser                               |
 | `src/MusicPlayer.js`      | Audio playback, playlist, progress bar, P-key toggle                                     |
 | `src/AlgorithmChooser.js` | Algorithm registry and random picker                                                     |
 | `src/AlgorithmLoader.js`  | Base class for algorithms                                                                |
@@ -127,15 +128,15 @@ assets/
 - Audio graph: `MediaElementAudioSourceNode` → `AnalyserNode` →
   `AudioContext.destination` (audio still plays through speakers)
 - `createMediaElementSource` can only be called **once** per `<audio>` element —
-  the analyser is created once in `renderer.js`
+  the analyser is created once in `Spiral.js` constructor
 - Exposed as `AlgorithmLoader.frequencyAnalyser` (static property, same pattern
-  as `AlgorithmLoader.gsap`)
+  as `AlgorithmLoader.gsap`) — set by `Spiral.js`
 - `getBands()` returns a plain `Array` of normalised 0–1 values; band count
   defaults to 3 (low / mid / high) but is configurable via the `bandCount`
   setter
 - `getRawData()` returns the full `Uint8Array` FFT buffer for advanced use
-- `AudioContext` starts suspended — `MusicPlayer.playTrack()` calls `resume()`
-  on the first user gesture
+- `AudioContext` starts suspended — `Spiral.js` listens for the `audio` element's
+  `play` event and calls `resume()` automatically
 - Algorithms opt in by calling `AlgorithmLoader.frequencyAnalyser?.getBands()`
   inside their `draw()` loop; the call returns all zeros when nothing is playing
 
@@ -162,7 +163,7 @@ assets/
   shortcuts
 - GSAP is **global** (`window.gsap`) from the vendored file — `AlgorithmLoader`
   exposes it as a static ref
-- `FrequencyAnalyser` is instantiated once in `renderer.js` —
+- `FrequencyAnalyser` is instantiated once in `Spiral.js` constructor —
   `createMediaElementSource` throws if called twice on the same `<audio>`
   element
 - No tests exist — when adding test tooling, there is no existing infrastructure
