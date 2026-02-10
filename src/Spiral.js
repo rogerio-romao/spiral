@@ -1,5 +1,7 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
+import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
+import MusicPlayer from './MusicPlayer.js';
 import { random, randomColor } from './utils/randomUtils.js';
 
 export default class Spiral {
@@ -21,6 +23,18 @@ export default class Spiral {
 
         // running algorithm instance
         this.currentAlgorithm = null;
+
+        // Music player — Spiral owns the player and wires up the analyser
+        this.musicPlayer = new MusicPlayer();
+
+        // Frequency analyser — connects to the audio element owned by MusicPlayer
+        this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
+        AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
+
+        // Resume AudioContext on any play event (covers play, next, prev)
+        this.musicPlayer.audio.addEventListener('play', () => {
+            this.frequencyAnalyser.resume();
+        });
 
         // Setup message display
         this.messageTimer = null;
