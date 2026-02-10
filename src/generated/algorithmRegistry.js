@@ -123,6 +123,7 @@ import Subwoofer from '../algos/Subwoofer.js';
 import Supernova from '../algos/Supernova.js';
 import Sushi from '../algos/Sushi.js';
 import Swirls from '../algos/Swirls.js';
+import Test from '../algos/Test.js';
 import TheBadge from '../algos/TheBadge.js';
 import TheFan from '../algos/TheFan.js';
 import Thread from '../algos/Thread.js';
@@ -267,6 +268,7 @@ export const algorithms = [
     Supernova,
     Sushi,
     Swirls,
+    Test,
     TheBadge,
     TheFan,
     Thread,
