@@ -132,11 +132,11 @@ assets/
 - Exposed as `AlgorithmLoader.frequencyAnalyser` (static property, same pattern
   as `AlgorithmLoader.gsap`) — set by `Spiral.js`
 - `getBands()` returns a plain `Array` of normalised 0–1 values; band count
-  defaults to 3 (low / mid / high) but is configurable via the `bandCount`
-  setter
+  defaults to 5 (low / low-mid / mid / high-mid/ high) but is configurable via
+  the `bandCount` setter
 - `getRawData()` returns the full `Uint8Array` FFT buffer for advanced use
-- `AudioContext` starts suspended — `Spiral.js` listens for the `audio` element's
-  `play` event and calls `resume()` automatically
+- `AudioContext` starts suspended — `Spiral.js` listens for the `audio`
+  element's `play` event and calls `resume()` automatically
 - Algorithms opt in by calling `AlgorithmLoader.frequencyAnalyser?.getBands()`
   inside their `draw()` loop; the call returns all zeros when nothing is playing
 

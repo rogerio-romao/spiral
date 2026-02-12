@@ -49,7 +49,7 @@ const run = async () => {
             (entry) =>
                 entry.isFile() &&
                 entry.name.endsWith('.js') &&
-                entry.name !== 'Template.js',
+                !entry.name.startsWith('Template'),
         )
         .map((entry) => entry.name)
         .sort((a, b) => a.localeCompare(b));

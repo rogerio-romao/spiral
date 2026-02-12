@@ -6,15 +6,15 @@
  * (audio still plays through speakers).
  *
  * Usage:
- *   const analyser = new FrequencyAnalyser(audioElement, { bandCount: 3 });
+ *   const analyser = new FrequencyAnalyser(audioElement, { bandCount: 5 });
  *   analyser.resume();          // call on user gesture
- *   const bands = analyser.getBands(); // [0.72, 0.35, 0.11]  (0–1 normalised)
+ *   const bands = analyser.getBands(); // [0.72, 0.35, 0.11, ...] (0–1 normalised)
  */
 export default class FrequencyAnalyser {
     /**
      * @param {HTMLAudioElement} audioElement — the <audio> element to analyse.
      * @param {object}  [options]
-     * @param {number}  [options.bandCount=3]  — number of frequency bands.
+     * @param {number}  [options.bandCount=5]  — number of frequency bands.
      * @param {number}  [options.fftSize=2048] — FFT window size (power of 2).
      * @param {number}  [options.smoothing=0.8] — smoothingTimeConstant (0–1).
      */
@@ -66,7 +66,8 @@ export default class FrequencyAnalyser {
     }
 
     /**
-     * Get the current frequency data split into `bandCount` bands,
+     * Get the current frequency data split into `bandCount` logarithmic bands,
+     * with more resolution in lower frequencies and broader ranges up high,
      * each normalised to 0–1.
      *
      * @returns {number[]} Array of length `bandCount` with values 0–1.
@@ -76,21 +77,31 @@ export default class FrequencyAnalyser {
         this._analyser.getByteFrequencyData(this._dataArray);
 
         const binCount = this._dataArray.length;
-        const binsPerBand = Math.floor(binCount / this._bandCount);
-        const bands = new Array(this._bandCount);
+        const bands = Array.from({ length: this._bandCount }, () => 0);
 
-        for (let b = 0; b < this._bandCount; b++) {
-            const start = b * binsPerBand;
-            // Last band absorbs any remainder bins
-            const end =
-                b === this._bandCount - 1 ? binCount : start + binsPerBand;
+        if (this._bandCount <= 0 || binCount <= 0) {
+            return bands;
+        }
+
+        const activeBandCount = Math.min(this._bandCount, binCount);
+        const logMax = Math.log(binCount + 1);
+
+        for (let b = 0; b < activeBandCount; b++) {
+            let start =
+                Math.floor(Math.exp((b / activeBandCount) * logMax)) - 1;
+            let end =
+                Math.floor(Math.exp(((b + 1) / activeBandCount) * logMax)) - 1;
+
+            start = Math.max(0, Math.min(start, binCount - 1));
+            end = Math.max(start + 1, Math.min(end, binCount));
 
             let sum = 0;
             for (let i = start; i < end; i++) {
                 sum += this._dataArray[i];
             }
-            // Normalise: byte values are 0–255
-            bands[b] = sum / ((end - start) * 255);
+
+            const binSpan = end - start;
+            bands[b] = binSpan > 0 ? sum / (binSpan * 255) : 0;
         }
 
         return bands;

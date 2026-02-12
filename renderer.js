@@ -2,9 +2,9 @@
 import './src/utils/roundRect.js';
 
 import Spiral from './src/Spiral.js';
-import Test from './src/algos/Test.js';
+import TemplateFrequency from './src/algos/TemplateFrequency.js';
 
-const devMode = true;
-const devAlgorithmClass = Test;
+const devMode = false;
+const devAlgorithmClass = TemplateFrequency;
 
 new Spiral({ devMode, devAlgorithmClass });
