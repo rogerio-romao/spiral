@@ -1,10 +1,10 @@
 import AL from '../AlgorithmLoader.js';
 
-export default class Template extends AL {
+export default class TemplateBase extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
 
-        this.name = 'Template';
+        this.name = 'TemplateBase';
 
         this.initializeProperties();
         this.setupDrawingStyles();
