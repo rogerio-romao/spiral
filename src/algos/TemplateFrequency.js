@@ -12,6 +12,7 @@ export default class TemplateFrequency extends AL {
     }
 
     initializeProperties() {
+        this.alpha = Math.random();
         this.rotate = AL.random(0, 360);
         this.numberOfBands = AL.random(3, 9);
         AL.frequencyAnalyser.bandCount = this.numberOfBands;
@@ -31,6 +32,8 @@ export default class TemplateFrequency extends AL {
 
             if (noMovement) {
                 this.rotateCanvasRadians(this.rotate * this.t * 0.0005);
+                this.ctx.fillStyle = `rgba(0, 0, 0, 0.1)`;
+                this.fillScreen();
             } else {
                 this.ctx.clearRect(0, 0, this.w, this.h);
             }
@@ -42,13 +45,13 @@ export default class TemplateFrequency extends AL {
                 const y = centerY - rectHeight / 2;
                 const hue = Math.round(bandValue * 360);
 
-                this.ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                this.ctx.fillStyle = `hsl(${hue} 100% 50% / ${this.alpha})`;
                 this.ctx.fillRect(x, y, bandWidth, rectHeight);
             }
 
             this.ctx.restore();
 
-            if (this.t % (this.speed * 240) === 0) {
+            if (this.t % (this.speed * 120) === 0) {
                 this.initializeProperties();
             }
         }
