@@ -4,7 +4,7 @@ import './src/utils/roundRect.js';
 import Spiral from './src/Spiral.js';
 import TemplateFrequency from './src/algos/TemplateFrequency.js';
 
-const devMode = true;
+const devMode = false;
 const devAlgorithmClass = TemplateFrequency;
 
 new Spiral({ devMode, devAlgorithmClass });

@@ -5,18 +5,21 @@ export default class TemplateFrequency extends AL {
         super(ctx, w, h);
 
         this.name = 'TemplateFrequency';
-        this.numberOfBands = 5;
 
-        AL.frequencyAnalyser.bands = this.numberOfBands;
+        this.initializeProperties();
 
         this.interval = requestAnimationFrame(this.draw);
+    }
+
+    initializeProperties() {
+        this.rotate = AL.random(0, 360);
+        this.numberOfBands = AL.random(3, 9);
+        AL.frequencyAnalyser.bandCount = this.numberOfBands;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.save();
-
-            this.ctx.clearRect(0, 0, this.w, this.h);
 
             const bands = AL.frequencyAnalyser
                 ? AL.frequencyAnalyser.getBands()
@@ -25,6 +28,12 @@ export default class TemplateFrequency extends AL {
             const centerY = this.h / 2;
 
             const noMovement = bands.every((b) => b === 0);
+
+            if (noMovement) {
+                this.rotateCanvasRadians(this.rotate * this.t * 0.0005);
+            } else {
+                this.ctx.clearRect(0, 0, this.w, this.h);
+            }
 
             for (let i = 0; i < this.numberOfBands; i++) {
                 const bandValue = noMovement ? Math.random() : bands[i];
@@ -38,6 +47,10 @@ export default class TemplateFrequency extends AL {
             }
 
             this.ctx.restore();
+
+            if (this.t % (this.speed * 240) === 0) {
+                this.initializeProperties();
+            }
         }
 
         this.t++;
