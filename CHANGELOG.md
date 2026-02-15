@@ -12,6 +12,8 @@
 - fix: Move electron from dependencies to devDependencies
 - fix: Rewrite preload.js to use contextBridge, remove dead DOM references
 - fix: Add blob URL revocation in MusicPlayer to prevent memory leaks
+- fix: Debounce resize handler and stop running algorithm on resize to prevent
+  repeated restarts (TODO 3.4)
 
 ## 2026-02-10
 

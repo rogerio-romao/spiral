@@ -52,6 +52,8 @@ export default class Spiral {
 
         // Cursor hide timeout ID for debouncing
         this.cursorHideTimeout = null;
+        // Resize debounce timeout ID (TODO 3.4)
+        this.resizeTimeout = null;
 
         // Initialize the application
         this.init();
@@ -99,13 +101,24 @@ export default class Spiral {
     }
 
     addEventListeners() {
-        //change canvas size on window resize
+        // change canvas size on window resize
         window.addEventListener('resize', () => {
+            // Ensure the running algorithm is stopped immediately
+            this.stopCurrentAlgorithm();
+
             const rect = this.canvas.getBoundingClientRect();
             this.w = rect.width;
             this.h = rect.height;
             this._applyDpr();
-            this.canvas.click();
+
+            // Debounce subsequent restarts during continuous resize
+            if (this.resizeTimeout) {
+                clearTimeout(this.resizeTimeout);
+            }
+            this.resizeTimeout = setTimeout(() => {
+                this.canvas.click();
+                this.resizeTimeout = null;
+            }, 250);
         });
 
         // keystroke listeners
@@ -319,7 +332,17 @@ export default class Spiral {
             'change',
             () => {
                 this._applyDpr();
-                this.canvas.click();
+
+                // Stop current algorithm immediately and debounce restart
+                this.stopCurrentAlgorithm();
+                if (this.resizeTimeout) {
+                    clearTimeout(this.resizeTimeout);
+                }
+                this.resizeTimeout = setTimeout(() => {
+                    this.canvas.click();
+                    this.resizeTimeout = null;
+                }, 250);
+
                 // Re-register for the new DPR value
                 this._watchDprChange();
             },
