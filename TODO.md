@@ -119,7 +119,7 @@
 - **Fix:** Use `window.devicePixelRatio` for the canvas backing store scale in
   both the resize handler and initial setup.
 
-- [ ] Implement `devicePixelRatio` scaling in `Spiral.js`
+- [x] Implement `devicePixelRatio` scaling in `Spiral.js`
 
 ### 3.2 — `clearScreen`/`fillScreen` clear 9x the canvas area
 

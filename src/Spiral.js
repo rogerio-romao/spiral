@@ -9,8 +9,9 @@ export default class Spiral {
         // Setup canvas
         this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
-        this.w = this.canvas.width = window.innerWidth;
-        this.h = this.canvas.height = window.innerHeight;
+        this.w = window.innerWidth;
+        this.h = window.innerHeight;
+        this._applyDpr();
 
         this.devMode = options.devMode === true;
         this.devAlgorithmClass = options.devAlgorithmClass || null;
@@ -94,15 +95,10 @@ export default class Spiral {
     addEventListeners() {
         //change canvas size on window resize
         window.addEventListener('resize', () => {
-            const scale = 1;
             const rect = this.canvas.getBoundingClientRect();
-            this.canvas.width = rect.width * scale;
-            this.canvas.height = rect.height * scale;
-            this.w = this.canvas.width;
-            this.h = this.canvas.height;
-            this.ctx.scale(scale, scale);
-            this.canvas.style.width = rect.width + 'px';
-            this.canvas.style.height = rect.height + 'px';
+            this.w = rect.width;
+            this.h = rect.height;
+            this._applyDpr();
             this.canvas.click();
         });
 
@@ -201,6 +197,9 @@ export default class Spiral {
                 this.canvas.style.cursor = 'none';
             }, 4000);
         });
+
+        // Detect devicePixelRatio changes (e.g. dragging between monitors)
+        this._watchDprChange();
     }
 
     chooseAlgos() {
@@ -253,8 +252,7 @@ export default class Spiral {
         } else {
             // completely fills the screen with black
             this.canvas.width = this.canvas.height = 0;
-            this.canvas.width = this.w;
-            this.canvas.height = this.h;
+            this._applyDpr();
         }
 
         this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
@@ -279,6 +277,40 @@ export default class Spiral {
             this.messageElement.style.display = 'none';
             this.messageElement.textContent = '';
         }, 7500);
+    }
+
+    /**
+     * Sets up the canvas backing store for the current devicePixelRatio.
+     * Keeps this.w / this.h as logical CSS pixels; the canvas buffer is
+     * scaled up so rendering is sharp on HiDPI / Retina displays.
+     */
+    _applyDpr() {
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = this.w * dpr;
+        this.canvas.height = this.h * dpr;
+        this.canvas.style.width = this.w + 'px';
+        this.canvas.style.height = this.h + 'px';
+        this.ctx.scale(dpr, dpr);
+    }
+
+    /**
+     * Watches for devicePixelRatio changes via matchMedia.
+     * Re-registers on each change since the media query targets a specific DPR.
+     */
+    _watchDprChange() {
+        const mql = window.matchMedia(
+            `(resolution: ${window.devicePixelRatio}dppx)`,
+        );
+        mql.addEventListener(
+            'change',
+            () => {
+                this._applyDpr();
+                this.canvas.click();
+                // Re-register for the new DPR value
+                this._watchDprChange();
+            },
+            { once: true },
+        );
     }
 
     stopCurrentAlgorithm() {
