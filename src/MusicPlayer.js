@@ -22,6 +22,7 @@ export default class MusicPlayer {
         this.playerShow = false;
         this.player.style.display = 'none';
         this.trackList = [];
+        this.blobUrls = [];
         this.currentSong = 0;
         this.isPlaying = false;
         this.playlistEls = null;
@@ -52,6 +53,9 @@ export default class MusicPlayer {
         this._setPlayIcon(false);
         this.playList.innerHTML = '';
         this.currentSong = 0;
+
+        // Revoke any existing blob URLs before creating new ones
+        this._revokeBlobUrls();
         this.trackList = [];
 
         const files = this.input.files;
@@ -63,7 +67,9 @@ export default class MusicPlayer {
                 files[i].name.indexOf('.'),
             );
             this.playList.appendChild(listItem);
-            this.trackList.push(window.URL.createObjectURL(files[i]));
+            const blobUrl = window.URL.createObjectURL(files[i]);
+            this.trackList.push(blobUrl);
+            this.blobUrls.push(blobUrl);
         }
 
         this.audio.src = this.trackList[this.currentSong];
@@ -171,6 +177,14 @@ export default class MusicPlayer {
     _setPlayIcon(playing) {
         this.iconPlay.style.display = playing ? 'none' : 'inline';
         this.iconPause.style.display = playing ? 'inline' : 'none';
+    }
+
+    /** Revoke all stored blob URLs to free memory. */
+    _revokeBlobUrls() {
+        for (const url of this.blobUrls) {
+            window.URL.revokeObjectURL(url);
+        }
+        this.blobUrls = [];
     }
 
     /** Toggle player visibility with the P key. */

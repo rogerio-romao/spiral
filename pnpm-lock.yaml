@@ -7,11 +7,10 @@ settings:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       electron:
         specifier: ^33.2.1
         version: 33.2.1
-    devDependencies:
       electron-packager:
         specifier: ^17.1.2
         version: 17.1.2

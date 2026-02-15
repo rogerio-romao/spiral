@@ -71,7 +71,8 @@
   `session.defaultSession.webRequest.onHeadersReceived`. Restrict to `'self'`
   with exceptions for inline styles and the Ionicons CDN if still needed.
 
-- [ ] Add CSP to `index.html` or `main.js`
+- [x] Add CSP to `index.html` — added meta tag restricting to `'self'` with
+      `'unsafe-inline'` for styles and `blob:` for audio media
 
 ### 2.2 — Electron listed as runtime dependency
 
@@ -80,7 +81,7 @@
   This is against Electron best practices and would bloat packaging.
 - **Fix:** Move to `devDependencies`.
 
-- [ ] Move `electron` to `devDependencies` in `package.json`
+- [x] Move `electron` to `devDependencies` in `package.json`
 
 ### 2.3 — `preload.js` doesn't use `contextBridge`
 
@@ -91,8 +92,8 @@
   `index.html` — the code is dead.
 - **Fix:** Rewrite using `contextBridge` pattern. Remove dead DOM references.
 
-- [ ] Rewrite `preload.js` to use `contextBridge`
-- [ ] Remove references to nonexistent DOM IDs
+- [x] Rewrite `preload.js` to use `contextBridge`
+- [x] Remove references to nonexistent DOM IDs
 
 ### 2.4 — Blob URLs never revoked
 
@@ -103,7 +104,8 @@
 - **Fix:** Track blob URLs and revoke them when tracks are removed, replaced, or
   the playlist is cleared.
 
-- [ ] Add `URL.revokeObjectURL` cleanup in `MusicPlayer.js`
+- [x] Add `URL.revokeObjectURL` cleanup in `MusicPlayer.js` — blob URLs revoked
+      via `_revokeBlobUrls()` before each new playlist load
 
 ---
 
