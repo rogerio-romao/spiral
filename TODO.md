@@ -139,7 +139,8 @@
   previous one, spawning many concurrent timers during mouse movement.
 - **Fix:** Store the timeout ID and `clearTimeout` before creating a new one.
 
-- [ ] Debounce cursor hide timeout in `Spiral.js`
+- [x] Debounce cursor hide timeout in `Spiral.js`
+- [x] Hide cursor by default on app launch (shows only on mouse movement)
 
 ### 3.4 — Resize handler triggers immediate algorithm restart
 
