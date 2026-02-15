@@ -10,7 +10,7 @@ export default class Majestic extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -66,6 +66,6 @@ export default class Majestic extends AL {
             this.setupDrawingStyles();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

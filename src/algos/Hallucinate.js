@@ -9,7 +9,7 @@ export default class Hallucinate extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -52,6 +52,6 @@ export default class Hallucinate extends AL {
             this.clearScreen();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

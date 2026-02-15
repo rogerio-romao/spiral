@@ -9,7 +9,7 @@ export default class Discos extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -84,6 +84,6 @@ export default class Discos extends AL {
             this.color2 = AL.randomColor(5, 255, 0.5, 0.5);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

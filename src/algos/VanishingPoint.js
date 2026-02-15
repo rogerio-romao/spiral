@@ -10,12 +10,13 @@ export default class VanishingPoint extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
         this.size = Math.min(this.w, this.h);
         this.decrease = AL.random(2, 11);
+        this.timer = null;
     }
 
     initializeProperties() {
@@ -43,7 +44,7 @@ export default class VanishingPoint extends AL {
 
                 this.initializeProperties();
 
-                setTimeout(() => {
+                this.timer = setTimeout(() => {
                     this.size = Math.min(this.w, this.h);
                     this.decrease = AL.random(2, 11);
                 }, 3500);
@@ -54,7 +55,12 @@ export default class VanishingPoint extends AL {
 
         this.rotateCanvasDegrees(this.rotate);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
+    }
+
+    stop() {
+        clearTimeout(this.timer);
+        super.stop();
     }
 
     drawTriangle = (x, y) => {

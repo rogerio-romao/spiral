@@ -8,7 +8,7 @@ export default class GameOfFlies extends AL {
 
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -69,6 +69,6 @@ export default class GameOfFlies extends AL {
             this.particles.push(newParticle);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

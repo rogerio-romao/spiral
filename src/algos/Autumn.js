@@ -10,7 +10,7 @@ export default class Autumn extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -49,6 +49,6 @@ export default class Autumn extends AL {
 
         this.rotateCanvasDegrees(this.rotate);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

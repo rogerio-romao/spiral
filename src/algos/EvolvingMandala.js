@@ -10,7 +10,7 @@ export default class EvolvingMandala extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeConstantProperties() {
@@ -73,6 +73,6 @@ export default class EvolvingMandala extends AL {
             this.initializeProperties();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

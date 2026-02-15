@@ -10,7 +10,7 @@ export default class Glowsticks extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -52,6 +52,6 @@ export default class Glowsticks extends AL {
 
         this.rotateCanvasRadians(this.rotation);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -10,7 +10,7 @@ export default class Thread extends AL {
         this.setupConstentProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -49,6 +49,6 @@ export default class Thread extends AL {
             this.fillScreen();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

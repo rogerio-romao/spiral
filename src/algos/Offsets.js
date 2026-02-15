@@ -9,7 +9,7 @@ export default class Offsets extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -65,6 +65,6 @@ export default class Offsets extends AL {
             this.rotate = AL.random(1, 37);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

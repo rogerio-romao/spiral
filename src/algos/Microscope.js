@@ -11,7 +11,7 @@ export default class Microscope extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -88,6 +88,6 @@ export default class Microscope extends AL {
             this.initializeProperties();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

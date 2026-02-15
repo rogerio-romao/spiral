@@ -8,7 +8,7 @@ export default class ParallelUniverses extends AL {
 
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -124,6 +124,6 @@ export default class ParallelUniverses extends AL {
             this.initializeProperties();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

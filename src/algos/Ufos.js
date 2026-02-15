@@ -9,7 +9,7 @@ export default class UFOs extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -45,6 +45,6 @@ export default class UFOs extends AL {
                 .perc1--}% ${this.repeats}px)`;
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

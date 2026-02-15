@@ -10,7 +10,7 @@ export default class RotationPatterns extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -61,6 +61,6 @@ export default class RotationPatterns extends AL {
             this.ctx.lineWidth = AL.random(2, 9);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

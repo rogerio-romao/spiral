@@ -13,7 +13,7 @@ export default class Projecting extends AL {
 
         this.getTweens();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -75,7 +75,7 @@ export default class Projecting extends AL {
             this.getTweens();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     getTweens() {

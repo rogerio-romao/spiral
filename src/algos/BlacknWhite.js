@@ -9,7 +9,7 @@ export default class BlacknWhite extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -78,6 +78,6 @@ export default class BlacknWhite extends AL {
             );
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

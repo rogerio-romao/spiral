@@ -8,7 +8,7 @@ export default class TemplateFrequency extends AL {
 
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -57,6 +57,6 @@ export default class TemplateFrequency extends AL {
         }
 
         this.t++;
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

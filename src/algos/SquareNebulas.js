@@ -9,7 +9,7 @@ export default class SquareNebulas extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -85,6 +85,6 @@ export default class SquareNebulas extends AL {
             this.rotateCanvasRadians(Math.random() * Math.PI);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -8,7 +8,7 @@ export default class GravityTurbulence extends AL {
 
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -107,7 +107,7 @@ export default class GravityTurbulence extends AL {
             this.sun2.speed = Math.random() * 5 - 2.5;
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     drawPart(p, color) {

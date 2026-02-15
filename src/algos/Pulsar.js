@@ -10,7 +10,7 @@ export default class Pulsar extends AL {
         this.setupConstantProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -54,7 +54,7 @@ export default class Pulsar extends AL {
             this.setupDrawingStyles();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     drawBezier(rot) {
