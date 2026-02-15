@@ -50,6 +50,9 @@ export default class Spiral {
         // Silent mode toggle
         this.silent = false;
 
+        // Cursor hide timeout ID for debouncing
+        this.cursorHideTimeout = null;
+
         // Initialize the application
         this.init();
     }
@@ -57,6 +60,9 @@ export default class Spiral {
     init() {
         // display some user tips on screen
         this.canvas.focus();
+
+        // Hide cursor by default on launch
+        this.canvas.style.cursor = 'none';
         this.displayMessage('WELCOME');
         setTimeout(() => {
             this.displayMessage('PRESS H FOR HELP');
@@ -192,8 +198,16 @@ export default class Spiral {
 
         // on mousemove, show the cursor
         this.canvas.addEventListener('mousemove', () => {
+            // Show cursor
             this.canvas.style.cursor = 'pointer';
-            setTimeout(() => {
+
+            // Clear existing timeout to prevent unbounded setTimeout accumulation
+            if (this.cursorHideTimeout) {
+                clearTimeout(this.cursorHideTimeout);
+            }
+
+            // Set new timeout and store ID for debouncing
+            this.cursorHideTimeout = setTimeout(() => {
                 this.canvas.style.cursor = 'none';
             }, 4000);
         });

@@ -4,6 +4,7 @@
 
 ## 2026-02-15
 
+- fix: Debounce cursor hide timeout and hide cursor on app launch
 - fix: Optimize clearScreen/fillScreen to clear exact canvas area instead of 9x
 - feat: Implement devicePixelRatio scaling for sharp rendering on HiDPI displays
 - perf: Defer MusicPlayer and FrequencyAnalyser instantiation to init()
