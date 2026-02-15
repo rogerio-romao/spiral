@@ -5,6 +5,10 @@
 ## 2026-02-15
 
 - perf: Defer MusicPlayer and FrequencyAnalyser instantiation to init()
+- fix: Add Content Security Policy meta tag to index.html
+- fix: Move electron from dependencies to devDependencies
+- fix: Rewrite preload.js to use contextBridge, remove dead DOM references
+- fix: Add blob URL revocation in MusicPlayer to prevent memory leaks
 
 ## 2026-02-10
 
