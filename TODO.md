@@ -150,7 +150,7 @@
 - **Fix:** Debounce the resize handler (e.g., 250ms) to batch rapid resize
   events.
 
-- [ ] Debounce resize handler in `Spiral.js`
+- [x] Debounce resize handler in `Spiral.js`
 
 ---
 
