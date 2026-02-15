@@ -4,6 +4,7 @@
 
 ## 2026-02-15
 
+- feat: Implement devicePixelRatio scaling for sharp rendering on HiDPI displays
 - perf: Defer MusicPlayer and FrequencyAnalyser instantiation to init()
 - fix: Add Content Security Policy meta tag to index.html
 - fix: Move electron from dependencies to devDependencies
