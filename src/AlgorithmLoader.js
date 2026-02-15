@@ -61,11 +61,17 @@ export default class AlgorithmLoader {
     }
 
     clearScreen() {
-        this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+        this.ctx.save();
+        this.ctx.resetTransform();
+        this.ctx.clearRect(0, 0, this.w, this.h);
+        this.ctx.restore();
     }
 
     fillScreen() {
-        this.ctx.fillRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
+        this.ctx.save();
+        this.ctx.resetTransform();
+        this.ctx.fillRect(0, 0, this.w, this.h);
+        this.ctx.restore();
     }
 
     rotateCanvasRadians(angle) {
