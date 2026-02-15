@@ -184,6 +184,12 @@ input[type='file'] {
     outline: none;
 }
 
+#controls button .icon {
+    width: 1.15em;
+    height: 1.15em;
+    vertical-align: middle;
+}
+
 #controls button:hover {
     border-color: orangered;
     color: whitesmoke;
