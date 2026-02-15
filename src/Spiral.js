@@ -1,7 +1,7 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
-import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import MusicPlayer from './MusicPlayer.js';
+import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import { random, randomColor } from './utils/randomUtils.js';
 
 export default class Spiral {
@@ -24,17 +24,9 @@ export default class Spiral {
         // running algorithm instance
         this.currentAlgorithm = null;
 
-        // Music player — Spiral owns the player and wires up the analyser
-        this.musicPlayer = new MusicPlayer();
-
-        // Frequency analyser — connects to the audio element owned by MusicPlayer
-        this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
-        AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
-
-        // Resume AudioContext on any play event (covers play, next, prev)
-        this.musicPlayer.audio.addEventListener('play', () => {
-            this.frequencyAnalyser.resume();
-        });
+        // Music player and frequency analyser — deferred to init()
+        this.musicPlayer = null;
+        this.frequencyAnalyser = null;
 
         // Setup message display
         this.messageTimer = null;
@@ -84,6 +76,19 @@ export default class Spiral {
 
         // trigger the first algorithm
         this.chooseAlgos();
+
+        // Music player — deferred from constructor so algorithm loading
+        // and first render are not blocked by audio subsystem setup
+        this.musicPlayer = new MusicPlayer();
+
+        // Frequency analyser — connects to the audio element owned by MusicPlayer
+        this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
+        AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
+
+        // Resume AudioContext on any play event (covers play, next, prev)
+        this.musicPlayer.audio.addEventListener('play', () => {
+            this.frequencyAnalyser.resume();
+        });
     }
 
     addEventListeners() {
