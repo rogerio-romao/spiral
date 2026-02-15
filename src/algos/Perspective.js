@@ -10,7 +10,7 @@ export default class Perspective extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -57,6 +57,6 @@ export default class Perspective extends AL {
             this.ctx.clearRect(-200, -200, this.w, this.h);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

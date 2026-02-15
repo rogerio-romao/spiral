@@ -9,7 +9,7 @@ export default class Halfsies extends AL {
         this.initializeBaseProperties();
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -48,6 +48,6 @@ export default class Halfsies extends AL {
             this.ctx.beginPath();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

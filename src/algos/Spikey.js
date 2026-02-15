@@ -10,7 +10,7 @@ export default class Spikey extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -95,6 +95,6 @@ export default class Spikey extends AL {
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.15, 0.6);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

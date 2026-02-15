@@ -10,7 +10,7 @@ export default class Polyhedra extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -46,6 +46,6 @@ export default class Polyhedra extends AL {
             this.ctx.beginPath();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

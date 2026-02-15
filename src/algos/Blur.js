@@ -10,7 +10,7 @@ export default class Blur extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -60,6 +60,6 @@ export default class Blur extends AL {
             this.ctx.strokeStyle = 'black';
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

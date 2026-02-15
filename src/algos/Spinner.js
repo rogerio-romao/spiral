@@ -8,7 +8,7 @@ export default class Spinner extends AL {
 
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -63,6 +63,6 @@ export default class Spinner extends AL {
             this.color1 = AL.randomColor(0, 255, 1, 1);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

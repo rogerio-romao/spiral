@@ -10,7 +10,7 @@ export default class Portals extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -63,6 +63,6 @@ export default class Portals extends AL {
 
         this.rotateCanvasDegrees(this.rotate);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -10,7 +10,7 @@ export default class Slices extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -53,6 +53,6 @@ export default class Slices extends AL {
             this.setupDrawingStyles();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -10,7 +10,7 @@ export default class BigBangs extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -49,6 +49,6 @@ export default class BigBangs extends AL {
 
         this.t++;
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

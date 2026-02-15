@@ -9,7 +9,7 @@ export default class FadeIn extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -72,6 +72,6 @@ export default class FadeIn extends AL {
             this.ctx.beginPath();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

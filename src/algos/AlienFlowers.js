@@ -10,7 +10,7 @@ export default class AlienFlowers extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     setupConstantStyles() {
@@ -130,6 +130,6 @@ export default class AlienFlowers extends AL {
             this.ctx.setLineDash([AL.random(1, 100), AL.random(5, 200)]);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

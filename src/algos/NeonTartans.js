@@ -8,7 +8,7 @@ export default class NeonTartans extends AL {
 
         this.initializeProperties();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -75,6 +75,6 @@ export default class NeonTartans extends AL {
         this.lineX = AL.random(0, this.h);
         this.lineY = AL.random(0, this.w);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -9,7 +9,7 @@ export default class CrystalTiles extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -74,6 +74,6 @@ export default class CrystalTiles extends AL {
 
         this.t++;
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -10,7 +10,7 @@ export default class Quadratic extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -70,6 +70,6 @@ export default class Quadratic extends AL {
             this.initializeBaseProperties();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

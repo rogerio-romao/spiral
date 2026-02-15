@@ -10,7 +10,7 @@ export default class TheBadge extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -75,6 +75,6 @@ export default class TheBadge extends AL {
             );
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

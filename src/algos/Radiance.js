@@ -10,7 +10,7 @@ export default class Radiance extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -140,6 +140,6 @@ export default class Radiance extends AL {
             this.initializeBaseProperties();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

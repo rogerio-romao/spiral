@@ -10,7 +10,7 @@ export default class Spikral extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -48,6 +48,6 @@ export default class Spikral extends AL {
             this.rotate = AL.random(1, 22);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

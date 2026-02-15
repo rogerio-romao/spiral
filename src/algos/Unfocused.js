@@ -10,7 +10,7 @@ export default class Unfocused extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -65,6 +65,6 @@ export default class Unfocused extends AL {
             this.setupDrawingStyles();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

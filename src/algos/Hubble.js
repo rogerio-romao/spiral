@@ -9,7 +9,7 @@ export default class Hubble extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -65,7 +65,7 @@ export default class Hubble extends AL {
 
         this.rotateCanvasDegrees(this.rotate);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     createSeq(num) {

@@ -9,7 +9,7 @@ export default class Progression extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -51,6 +51,6 @@ export default class Progression extends AL {
             this.ctx.beginPath();
         }
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

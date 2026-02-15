@@ -12,14 +12,14 @@ const utils = {
         return this.lerp(
             this.norm(value, sourceMin, sourceMax),
             destMin,
-            destMax
+            destMax,
         );
     },
 
     clamp(value, min, max) {
         return Math.min(
             Math.max(value, Math.min(min, max)),
-            Math.max(min, max)
+            Math.max(min, max),
         );
     },
 
@@ -85,7 +85,7 @@ const utils = {
     },
 
     roundToPlaces(value, places) {
-        return Math.round(value * mult) / mult;
+        return Math.round(value * places) / places;
     },
 
     roundNearest(value, nearest) {

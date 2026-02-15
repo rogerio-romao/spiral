@@ -13,7 +13,7 @@ export default class GenesisTypewriter extends AL {
 
         this.getTweens();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -62,7 +62,7 @@ export default class GenesisTypewriter extends AL {
 
         this.rotateCanvasDegrees(this.rotate.angle);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     getTweens() {

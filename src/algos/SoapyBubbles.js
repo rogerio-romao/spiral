@@ -9,7 +9,7 @@ export default class SoapyBubbles extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -63,6 +63,6 @@ export default class SoapyBubbles extends AL {
 
         this.rotateCanvasDegrees(this.rotate);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

@@ -9,7 +9,7 @@ export default class HyperTunnel extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -59,7 +59,7 @@ export default class HyperTunnel extends AL {
             this.setupDrawingStyles();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     setFillStyle() {

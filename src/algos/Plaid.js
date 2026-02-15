@@ -10,7 +10,7 @@ export default class Plaid extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -83,6 +83,6 @@ export default class Plaid extends AL {
             this.ctx.globalCompositeOperation = 'hue';
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

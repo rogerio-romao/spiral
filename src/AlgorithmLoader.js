@@ -52,6 +52,14 @@ export default class AlgorithmLoader {
         };
     }
 
+    /**
+     * Schedule the next animation frame and track its ID so that
+     * stop() can cancel the correct pending frame.
+     */
+    requestFrame() {
+        this.interval = requestAnimationFrame(this.draw);
+    }
+
     clearScreen() {
         this.ctx.clearRect(-this.w, -this.h, 3 * this.w, 3 * this.h);
     }

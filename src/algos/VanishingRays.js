@@ -10,7 +10,7 @@ export default class VanishingRays extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -72,6 +72,6 @@ export default class VanishingRays extends AL {
             );
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

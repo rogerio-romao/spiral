@@ -9,7 +9,7 @@ export default class Smooth extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -37,6 +37,6 @@ export default class Smooth extends AL {
             this.setupDrawingStyles();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

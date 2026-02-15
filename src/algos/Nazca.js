@@ -11,7 +11,7 @@ export default class Nazca extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -66,6 +66,6 @@ export default class Nazca extends AL {
             this.ctx.beginPath();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

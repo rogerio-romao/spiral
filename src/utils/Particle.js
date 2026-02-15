@@ -52,21 +52,21 @@ export default class Particle {
     }
     handleGravitations() {
         this.gravitations.forEach((gravitation) =>
-            this.gravitateTo(gravitation)
+            this.gravitateTo(gravitation),
         );
     }
     handleSprings() {
         this.springs.forEach((spring) =>
-            this.springTo(spring.point, spring.k, spring.length)
+            this.springTo(spring.point, spring.k, spring.length),
         );
     }
     removeGravitation(p) {
         const gravIndex = this.gravitations.findIndex((g) => g === p);
-        this.gravitations.splice(gravIndex, 1);
+        if (gravIndex !== -1) this.gravitations.splice(gravIndex, 1);
     }
     removeSpring(point) {
         const springIndex = this.springs.findIndex((s) => s.point === point);
-        this.springs.splice(springIndex, 1);
+        if (springIndex !== -1) this.springs.splice(springIndex, 1);
     }
     setHeading(heading) {
         const speed = this.getSpeed();

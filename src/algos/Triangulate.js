@@ -10,7 +10,7 @@ export default class Triangulate extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -73,6 +73,6 @@ export default class Triangulate extends AL {
             this.rotate = AL.pickRandomElement(this.rotations);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

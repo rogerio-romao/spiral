@@ -11,7 +11,7 @@ export default class Onion extends AL {
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -55,6 +55,6 @@ export default class Onion extends AL {
             this.angle = AL.random(2, 50);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

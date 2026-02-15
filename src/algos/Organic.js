@@ -10,7 +10,7 @@ export default class Organic extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeBaseProperties() {
@@ -68,6 +68,6 @@ export default class Organic extends AL {
             this.ctx.beginPath();
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

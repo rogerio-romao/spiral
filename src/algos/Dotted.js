@@ -9,7 +9,7 @@ export default class Dotted extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -75,6 +75,6 @@ export default class Dotted extends AL {
             this.ctx.strokeStyle = AL.randomColor(5, 255, 0.75, 0.75);
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

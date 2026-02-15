@@ -9,7 +9,7 @@ export default class SpiralLines extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -85,6 +85,6 @@ export default class SpiralLines extends AL {
                 : (this.ctx.strokeStyle = 'rgba(0,0,0, .75)');
         }
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }

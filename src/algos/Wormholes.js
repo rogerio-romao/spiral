@@ -9,7 +9,7 @@ export default class Wormholes extends AL {
         this.initializeProperties();
         this.setupDrawingStyles();
 
-        this.interval = requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 
     initializeProperties() {
@@ -62,6 +62,6 @@ export default class Wormholes extends AL {
 
         this.rotateCanvasRadians(this.rotate);
 
-        requestAnimationFrame(this.draw);
+        this.requestFrame();
     }
 }
