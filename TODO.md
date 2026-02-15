@@ -130,7 +130,7 @@
   `ctx.save() → ctx.resetTransform() → ctx.clearRect(0, 0, w, h) → ctx.restore()`
   for efficient clearing regardless of transform state.
 
-- [ ] Optimize `clearScreen`/`fillScreen` in `AlgorithmLoader.js`
+- [x] Optimize `clearScreen`/`fillScreen` in `AlgorithmLoader.js`
 
 ### 3.3 — Cursor hide spawns unbounded timeouts
 
