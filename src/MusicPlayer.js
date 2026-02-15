@@ -10,7 +10,8 @@ export default class MusicPlayer {
         this.label = document.getElementById('click-label');
         this.playList = document.getElementById('playlist');
         this.playBtn = document.getElementById('play');
-        this.playIcon = document.getElementById('play-pause-icon');
+        this.iconPlay = document.getElementById('icon-play');
+        this.iconPause = document.getElementById('icon-pause');
         this.stopBtn = document.getElementById('stop');
         this.prevBtn = document.getElementById('prev');
         this.nextBtn = document.getElementById('next');
@@ -48,7 +49,7 @@ export default class MusicPlayer {
     _handleFiles() {
         this.audio.pause();
         this.isPlaying = false;
-        this.playIcon.name = 'play-outline';
+        this._setPlayIcon(false);
         this.playList.innerHTML = '';
         this.currentSong = 0;
         this.trackList = [];
@@ -76,14 +77,14 @@ export default class MusicPlayer {
     playTrack() {
         if (!this.isPlaying && this.playlistEls) {
             this.isPlaying = true;
-            this.playIcon.name = 'pause-outline';
+            this._setPlayIcon(true);
             this._updatePlaylistStyle();
             this.audio.play();
         } else if (this.playlistEls) {
             this.isPlaying = false;
             this.playlistEls[this.currentSong].style.color =
                 'rgba(255, 165, 0, 0.5)';
-            this.playIcon.name = 'play-outline';
+            this._setPlayIcon(false);
             this.audio.pause();
         }
     }
@@ -94,7 +95,7 @@ export default class MusicPlayer {
             this.audio.pause();
             this.audio.currentTime = 0;
             this.isPlaying = false;
-            this.playIcon.name = 'play-outline';
+            this._setPlayIcon(false);
             [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
             this.playlistEls[this.currentSong].style.color =
                 'rgba(255, 165, 0, 0.5)';
@@ -164,6 +165,12 @@ export default class MusicPlayer {
         [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
         this.playlistEls[this.currentSong].style.color = 'orange';
         this.playlistEls[this.currentSong].scrollIntoView();
+    }
+
+    /** Toggle the play/pause icon SVGs. */
+    _setPlayIcon(playing) {
+        this.iconPlay.style.display = playing ? 'none' : 'inline';
+        this.iconPause.style.display = playing ? 'inline' : 'none';
     }
 
     /** Toggle player visibility with the P key. */

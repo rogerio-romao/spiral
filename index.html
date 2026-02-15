@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <meta charset="UTF-8" />
@@ -78,19 +78,102 @@
                 <ol id="playlist"></ol>
                 <div id="controls">
                     <button id="prev">
-                        <ion-icon name="play-skip-back-outline"></ion-icon>
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                        >
+                            <path
+                                d="M400 111v290c0 17.44-17 28.52-31 20.16L121.09 272.79c-12.12-7.25-12.12-26.33 0-33.58L369 90.84c14-8.36 31 2.72 31 20.16z"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-miterlimit="10"
+                                stroke-width="32"
+                            />
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-miterlimit="10"
+                                stroke-width="32"
+                                d="M112 80v352"
+                            />
+                        </svg>
                     </button>
                     <button id="play">
-                        <ion-icon
-                            id="play-pause-icon"
-                            name="play-outline"
-                        ></ion-icon>
+                        <svg
+                            id="icon-play"
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                        >
+                            <path
+                                d="M112 111v290c0 17.44 17 28.52 31 20.16l247.9-148.37c12.12-7.25 12.12-26.33 0-33.58L143 90.84c-14-8.36-31 2.72-31 20.16z"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-miterlimit="10"
+                                stroke-width="32"
+                            />
+                        </svg>
+                        <svg
+                            id="icon-pause"
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                            style="display: none"
+                        >
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="32"
+                                d="M176 96h16v320h-16zM320 96h16v320h-16z"
+                            />
+                        </svg>
                     </button>
                     <button id="stop">
-                        <ion-icon name="stop-outline"></ion-icon>
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                        >
+                            <rect
+                                x="96"
+                                y="96"
+                                width="320"
+                                height="320"
+                                rx="24"
+                                ry="24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linejoin="round"
+                                stroke-width="32"
+                            />
+                        </svg>
                     </button>
                     <button id="next">
-                        <ion-icon name="play-skip-forward-outline"></ion-icon>
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                        >
+                            <path
+                                d="M112 111v290c0 17.44 17 28.52 31 20.16l247.9-148.37c12.12-7.25 12.12-26.33 0-33.58L143 90.84c-14-8.36-31 2.72-31 20.16z"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-miterlimit="10"
+                                stroke-width="32"
+                            />
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-miterlimit="10"
+                                stroke-width="32"
+                                d="M400 80v352"
+                            />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -101,10 +184,6 @@
 
         <audio id="audio"></audio>
 
-        <script
-            type="module"
-            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-        ></script>
         <script src="./assets/js/gsap.min.js"></script>
         <script src="./renderer.js" type="module"></script>
     </body>
