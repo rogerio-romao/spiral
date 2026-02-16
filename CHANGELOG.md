@@ -4,6 +4,8 @@
 
 ## 2026-02-16
 
+- feat: Add accessibility labels to player controls, progress bar, and canvas —
+  add aria-label and title attributes for screen reader support
 - refactor: Replace canvas.click() with direct method calls — decouple algorithm
   transition logic from DOM events by extracting changeAlgorithm() method
 - refactor: Deduplicate stopCurrentAlgorithm() calls — remove redundant calls from
