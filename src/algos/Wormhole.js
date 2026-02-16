@@ -31,7 +31,7 @@ export default class Wormhole extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.x,
                 this.y,
                 this.width,
@@ -43,7 +43,7 @@ export default class Wormhole extends AL {
                     lowerRight: this.lr,
                 },
                 true,
-                true
+                true,
             );
         }
 

@@ -33,7 +33,7 @@ export default class Irradiate extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.w / 2 - this.width / 2,
                 this.h / 2 - this.height / 2,
                 this.width,
@@ -43,7 +43,7 @@ export default class Irradiate extends AL {
                     upperRight: this.ur,
                     lowerLeft: this.ll,
                     lowerRight: this.lr,
-                }
+                },
             );
         }
 

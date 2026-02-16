@@ -36,7 +36,7 @@ export default class Rounded extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.translate(this.w / 2, this.h / 2);
             this.ctx.rotate(this.rotate);
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.side1,
                 this.side2,
                 this.side1,
@@ -48,7 +48,7 @@ export default class Rounded extends AL {
                     lowerRight: this.rounded4,
                 },
                 true,
-                true
+                true,
             );
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }

@@ -56,7 +56,7 @@ src/
     Particle.js      Physics particle (position, velocity, gravity, springs, friction, bounce)
     math.js          norm, lerp, map, clamp, distance, collision, deg↔rad, randomRange, bezier
     randomUtils.js   random(min, max), randomColor() — used by renderer.js and Spiral.js
-    roundRect.js     Side-effect polyfill — patches CanvasRenderingContext2D prototype
+    roundRectExtra.js     Side-effect polyfill — patches CanvasRenderingContext2D prototype
     FrequencyAnalyser.js  Web Audio API wrapper — splits FFT into configurable bands (default 5)
 assets/
   js/gsap.min.js     GSAP library (global)
@@ -115,7 +115,7 @@ assets/
   composite operations
 - `globalCompositeOperation` persists across draw calls if not reset — always be
   explicit
-- `roundRect` polyfill is added in `renderer.js` — available on all
+- `roundRectExtra` polyfill is added in `renderer.js` — available on all
   `CanvasRenderingContext2D` instances
 - Canvas dimensions are set by `Spiral.js` — never hardcode canvas width/height
 - The draw loop uses `requestAnimationFrame` — cancelled via `stop()` in

@@ -37,7 +37,7 @@ export default class Tripping extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.x1++,
                 this.y1++,
                 this.width++,
@@ -47,14 +47,20 @@ export default class Tripping extends AL {
                     upperRight: this.ur--,
                     lowerLeft: this.ll--,
                     lowerRight: this.lr--,
-                }
+                },
             );
-            this.ctx.roundRect(this.x2--, this.y2--, this.height, this.width, {
-                upperLeft: this.lr,
-                upperRight: this.ll,
-                lowerLeft: this.ur,
-                lowerRight: this.ul,
-            });
+            this.ctx.roundRectExtra(
+                this.x2--,
+                this.y2--,
+                this.height,
+                this.width,
+                {
+                    upperLeft: this.lr,
+                    upperRight: this.ll,
+                    lowerLeft: this.ur,
+                    lowerRight: this.ul,
+                },
+            );
         }
 
         this.t++;

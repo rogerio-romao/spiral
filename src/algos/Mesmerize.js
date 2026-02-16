@@ -70,7 +70,7 @@ export default class Mesmerize extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.obj1.width,
                 this.obj1.height,
                 this.obj1.x,
@@ -82,7 +82,7 @@ export default class Mesmerize extends AL {
                     lowerRight: this.obj1.lowerRight,
                 },
                 true,
-                true
+                true,
             );
         }
 
@@ -119,7 +119,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(10, 100),
                     height: this.obj2.height,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -127,7 +127,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(10, 100),
                     x: this.obj2.x,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -135,7 +135,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(10, 100),
                     y: this.obj2.y,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -143,7 +143,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(10, 100),
                     upperLeft: this.obj2.upperLeft,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -151,7 +151,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(10, 100),
                     upperRight: this.obj2.upperRight,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -159,7 +159,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(10, 100),
                     lowerLeft: this.obj2.lowerLeft,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -167,7 +167,7 @@ export default class Mesmerize extends AL {
                     duration: AL.random(1, 10),
                     lowerRight: this.obj2.lowerRight,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -176,7 +176,7 @@ export default class Mesmerize extends AL {
                     color: this.obj2.color,
                     onUpdate: () => (this.ctx.strokeStyle = this.obj1.color),
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
@@ -185,7 +185,7 @@ export default class Mesmerize extends AL {
                     fill: this.obj2.fill,
                     onUpdate: () => (this.ctx.fillStyle = this.obj1.fill),
                 },
-                '<'
+                '<',
             );
     }
 }

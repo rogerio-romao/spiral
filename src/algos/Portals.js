@@ -36,7 +36,7 @@ export default class Portals extends AL {
         if (this.t % this.speed === 0) {
             for (let row = 0; row <= this.rows; row++) {
                 for (let col = 0; col <= this.cols; col++) {
-                    this.ctx.roundRect(
+                    this.ctx.roundRectExtra(
                         col * (this.w / this.cols),
                         row * (this.h / this.rows),
                         this.width,
@@ -48,7 +48,7 @@ export default class Portals extends AL {
                             lowerRight: this.round,
                         },
                         true,
-                        true
+                        true,
                     );
                 }
             }

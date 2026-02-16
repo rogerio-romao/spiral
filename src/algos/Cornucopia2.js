@@ -35,7 +35,7 @@ export default class Cornucopia2 extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.x,
                 this.y,
                 this.width,
@@ -47,7 +47,7 @@ export default class Cornucopia2 extends AL {
                     lowerRight: this.dr,
                 },
                 false,
-                true
+                true,
             );
 
             this.ul += this.ulc;

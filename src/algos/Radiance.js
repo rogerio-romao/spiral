@@ -54,7 +54,7 @@ export default class Radiance extends AL {
 
             if (this.stagger === 0) {
                 this.ctx.strokeStyle = this.color1;
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x1,
                     this.y1,
                     this.side1,
@@ -66,13 +66,13 @@ export default class Radiance extends AL {
                         lowerRight: this.rounded1,
                     },
                     true,
-                    true
+                    true,
                 );
             }
 
             if (this.stagger === 1) {
                 this.ctx.strokeStyle = this.color2;
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x2,
                     this.y2,
                     this.side3,
@@ -84,13 +84,13 @@ export default class Radiance extends AL {
                         lowerRight: this.rounded2,
                     },
                     true,
-                    true
+                    true,
                 );
             }
 
             if (this.stagger === 2) {
                 this.ctx.strokeStyle = this.color3;
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x3,
                     this.y3,
                     this.side5,
@@ -102,13 +102,13 @@ export default class Radiance extends AL {
                         lowerRight: this.rounded3,
                     },
                     true,
-                    true
+                    true,
                 );
             }
 
             if (this.stagger === 3) {
                 this.ctx.strokeStyle = this.color4;
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x4,
                     this.y4,
                     this.side7,
@@ -120,7 +120,7 @@ export default class Radiance extends AL {
                         lowerRight: this.rounded4,
                     },
                     true,
-                    true
+                    true,
                 );
             }
 

@@ -46,7 +46,7 @@ export default class Universe extends AL {
             this.stagger = this.stagger % 4;
 
             if (this.stagger === 0) {
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x1++,
                     this.y1++,
                     this.side1++,
@@ -58,12 +58,12 @@ export default class Universe extends AL {
                         lowerRight: this.rounded1++,
                     },
                     false,
-                    true
+                    true,
                 );
             }
 
             if (this.stagger === 1) {
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x2--,
                     this.y2--,
                     this.side3--,
@@ -75,12 +75,12 @@ export default class Universe extends AL {
                         lowerRight: this.rounded2++,
                     },
                     false,
-                    true
+                    true,
                 );
             }
 
             if (this.stagger === 2) {
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x3++,
                     this.y3++,
                     this.side5++,
@@ -92,12 +92,12 @@ export default class Universe extends AL {
                         lowerRight: this.rounded3--,
                     },
                     false,
-                    true
+                    true,
                 );
             }
 
             if (this.stagger === 3) {
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.x4,
                     this.y4,
                     this.side7,
@@ -109,7 +109,7 @@ export default class Universe extends AL {
                         lowerRight: this.rounded4--,
                     },
                     false,
-                    true
+                    true,
                 );
             }
 
