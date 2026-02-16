@@ -5,7 +5,7 @@ export default class Vector {
         this.x = x;
         this.y = y;
     }
-    setPosX(value) {
+    setX(value) {
         this.x = value;
     }
     getX() {

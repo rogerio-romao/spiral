@@ -197,8 +197,8 @@
   naming suggests copy-paste error.
 - **Fix:** Rename `setPosX` to `setX` (check for usages first).
 
-- [ ] Rename `setPosX` → `setX` in `Vector.js`
-- [ ] Update all call sites
+- [x] Rename `setPosX` → `setX` in `Vector.js`
+- [x] Update all call sites
 
 ### 4.5 — Guard `roundRect` polyfill
 
