@@ -40,7 +40,7 @@ export default class Majestic extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.x,
                 this.y,
                 this.width,
@@ -52,7 +52,7 @@ export default class Majestic extends AL {
                     lowerRight: this.lr,
                 },
                 true,
-                true
+                true,
             );
         }
 

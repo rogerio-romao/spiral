@@ -29,13 +29,13 @@ export default class Entropy extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(0, 0, this.width++, this.height++, {
+            this.ctx.roundRectExtra(0, 0, this.width++, this.height++, {
                 upperLeft: this.ul--,
                 upperRight: this.ur--,
                 lowerLeft: this.ll--,
                 lowerRight: this.lr--,
             });
-            this.ctx.roundRect(this.w, this.h, this.height, this.width, {
+            this.ctx.roundRectExtra(this.w, this.h, this.height, this.width, {
                 upperLeft: this.lr,
                 upperRight: this.ll,
                 lowerLeft: this.ur,
@@ -55,8 +55,8 @@ export default class Entropy extends AL {
                 colorRoll < 0.1
                     ? 'black'
                     : colorRoll < 0.2
-                    ? 'white'
-                    : AL.randomColor(0, 255, 1);
+                      ? 'white'
+                      : AL.randomColor(0, 255, 1);
 
             this.ctx.beginPath();
         }

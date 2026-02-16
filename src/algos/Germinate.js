@@ -44,13 +44,13 @@ export default class Germinate extends AL {
             0,
             255,
             1,
-            1
+            1,
         );
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.w / 2,
                 this.h / 2,
                 this.width,
@@ -62,7 +62,7 @@ export default class Germinate extends AL {
                     lowerRight: this.dr,
                 },
                 false,
-                true
+                true,
             );
         }
 

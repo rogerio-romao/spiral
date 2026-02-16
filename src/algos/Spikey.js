@@ -42,7 +42,7 @@ export default class Spikey extends AL {
             if (this.stagger === 0) {
                 this.ctx.translate(this.w / 2, this.h / 2);
                 this.ctx.rotate(this.rotate);
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.side1--,
                     this.side2--,
                     this.side1--,
@@ -54,7 +54,7 @@ export default class Spikey extends AL {
                         lowerRight: this.rounded4++,
                     },
                     false,
-                    true
+                    true,
                 );
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
@@ -62,7 +62,7 @@ export default class Spikey extends AL {
             if (this.stagger === 1) {
                 this.ctx.translate(this.w / 2, this.h / 2);
                 this.ctx.rotate(this.rotate);
-                this.ctx.roundRect(
+                this.ctx.roundRectExtra(
                     this.side3++,
                     this.side4++,
                     this.side3++,
@@ -74,7 +74,7 @@ export default class Spikey extends AL {
                         lowerRight: this.rounded1--,
                     },
                     false,
-                    true
+                    true,
                 );
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }

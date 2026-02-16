@@ -1,9 +1,9 @@
 /**
- * roundRect polyfill for CanvasRenderingContext2D.
+ * roundRectExtra polyfill for CanvasRenderingContext2D.
  * Import this module for its side effect — it patches the prototype
- * so roundRect is available on every canvas context.
+ * so roundRectExtra is available on every canvas context.
  */
-CanvasRenderingContext2D.prototype.roundRect = function (
+CanvasRenderingContext2D.prototype.roundRectExtra = function (
     x,
     y,
     width,

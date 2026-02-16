@@ -25,7 +25,7 @@ export default class Progression extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.w / 2,
                 this.h / 2,
                 this.width,
@@ -37,7 +37,7 @@ export default class Progression extends AL {
                     lowerRight: this.round,
                 },
                 true,
-                false
+                false,
             );
         }
 

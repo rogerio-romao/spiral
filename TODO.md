@@ -1,12 +1,5 @@
 # Code Review & Improvement Plan
 
-> Senior review of the Spiral codebase — Electron music visualizer with 142
-> algorithm classes, Canvas 2D rendering, and audio playback.
->
-> Created: 15 February 2026
-
----
-
 ## Phase 1: Bug Fixes (Critical)
 
 ### 1.1 — `roundToPlaces` uses undefined variable
@@ -16,7 +9,7 @@
   at runtime.
 - **Fix:** Add `const mult = Math.pow(10, places);` before the return statement.
 
-- [ x ] Fix `roundToPlaces` in `src/utils/math.js`
+- [x] Fix `roundToPlaces` in `src/utils/math.js`
 
 ### 1.2 — `Particle.removeGravitation` / `removeSpring` corrupts arrays
 
@@ -27,8 +20,8 @@
   non-empty array corrupts state.
 - **Fix:** Guard with `if (index !== -1)` before splicing in both methods.
 
-- [ x ] Guard `removeGravitation` in `src/utils/Particle.js`
-- [ x ] Guard `removeSpring` in `src/utils/Particle.js`
+- [x] Guard `removeGravitation` in `src/utils/Particle.js`
+- [x] Guard `removeSpring` in `src/utils/Particle.js`
 
 ### 1.3 — `cancelAnimationFrame` is a no-op after frame 1
 
@@ -210,7 +203,7 @@
   `if (!CanvasRenderingContext2D.prototype.roundRect)`, or rename the custom
   method to avoid shadowing the native API.
 
-- [ ] Guard or rename the `roundRect` polyfill
+- [x] Guard or rename the `roundRect` polyfill
 
 ### 4.6 — `Spiral.js` God Object (future refactor)
 

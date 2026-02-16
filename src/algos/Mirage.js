@@ -28,7 +28,7 @@ export default class Mirage extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRect(
+            this.ctx.roundRectExtra(
                 this.w / 2 - this.width / 2,
                 this.h / 2 - this.height / 2,
                 this.width,
@@ -40,7 +40,7 @@ export default class Mirage extends AL {
                     lowerRight: this.lr,
                 },
                 true,
-                false
+                false,
             );
         }
 
