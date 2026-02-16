@@ -1,19 +1,15 @@
 import Particle from './utils/Particle.js';
 import Vector from './utils/Vector.js';
 import mathUtils from './utils/math.js';
+import { random, randomColor } from './utils/randomUtils.js';
 
 export default class AlgorithmLoader {
     static random(min, max) {
-        const num = Math.floor(Math.random() * (max - min)) + min;
-        return num;
+        return random(min, max);
     }
 
     static randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
-        const r = this.random(minC, maxC);
-        const g = this.random(minC, maxC);
-        const b = this.random(minC, maxC);
-        const a = +(Math.random() * (maxA - minA) + minA).toFixed(3);
-        return `rgba(${r}, ${g}, ${b}, ${a})`;
+        return randomColor(minC, maxC, minA, maxA);
     }
 
     static mathUtils = mathUtils;

@@ -188,7 +188,7 @@
 - **Fix:** Make `AlgorithmLoader` static methods delegate to `randomUtils.js`
   (single source of truth).
 
-- [ ] Consolidate `random`/`randomColor` into one implementation
+- [x] Consolidate `random`/`randomColor` into one implementation
 
 ### 4.4 — Fix `Vector` naming inconsistency
 
