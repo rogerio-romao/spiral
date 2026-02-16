@@ -165,8 +165,8 @@
 - **Fix:** Extract a `changeAlgorithm()` method and call it directly from the
   timer and resize handler. Keep the click listener as a thin wrapper.
 
-- [ ] Extract `changeAlgorithm()` method in `Spiral.js`
-- [ ] Replace all programmatic `canvas.click()` calls
+- [x] Extract `changeAlgorithm()` method in `Spiral.js`
+- [x] Replace all programmatic `canvas.click()` calls
 
 ### 4.2 — `stopCurrentAlgorithm()` called 3 times per transition
 
