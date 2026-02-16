@@ -76,7 +76,7 @@ export default class Spiral {
         // make algorithms auto-change if not in manual mode
         if (!this.manual && !this.devMode) {
             this.regen = setInterval(() => {
-                this.canvas.click();
+                this.changeAlgorithm();
             }, this.autoChange * 1000);
         }
 
@@ -116,7 +116,7 @@ export default class Spiral {
                 clearTimeout(this.resizeTimeout);
             }
             this.resizeTimeout = setTimeout(() => {
-                this.canvas.click();
+                this.changeAlgorithm();
                 this.resizeTimeout = null;
             }, 250);
         });
@@ -126,7 +126,7 @@ export default class Spiral {
             switch (e.code) {
                 case 'Space':
                     if (!this.devMode) {
-                        this.canvas.click();
+                        this.changeAlgorithm();
                     }
                     break;
                 case 'KeyF':
@@ -172,41 +172,7 @@ export default class Spiral {
 
         // on canvas click, generate a new spiral
         this.canvas.addEventListener('click', () => {
-            if (this.devMode) return;
-            this.ctx.save();
-            // clear any timers
-            this.stopCurrentAlgorithm();
-
-            clearInterval(this.regen);
-            this.t = 0;
-            this.stagger = 0;
-
-            // setup new auto-change timer if not in manual mode
-            if (!this.manual) {
-                this.regen = setInterval(() => {
-                    this.canvas.click();
-                }, this.autoChange * 1000);
-            }
-
-            // new random speed
-            this.algorithmLoader.speed = random(2, 6);
-
-            // canvas resets
-            this.ctx.restore();
-
-            // picks a transition mode
-            this.canvas.style.background = 'transparent';
-            this.clearMethod();
-
-            // reset stroke and fill styles
-            this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
-            this.ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
-
-            // begin new path
-            this.ctx.beginPath();
-
-            // selects next algorithm
-            this.chooseAlgos();
+            this.changeAlgorithm();
         });
 
         // on mousemove, show the cursor
@@ -257,6 +223,46 @@ export default class Spiral {
         this.currentAlgorithm = new AlgorithmClass(this.ctx, this.w, this.h);
         // display algorithm name
         this.displayAlgorithmName(this.currentAlgorithm.name);
+    }
+
+    // Triggers a new algorithm transition — called by auto-change timer,
+    // resize handler, keyboard shortcuts, and canvas click events
+    changeAlgorithm() {
+        if (this.devMode) return;
+        this.ctx.save();
+        // clear any timers
+        this.stopCurrentAlgorithm();
+
+        clearInterval(this.regen);
+        this.t = 0;
+        this.stagger = 0;
+
+        // setup new auto-change timer if not in manual mode
+        if (!this.manual) {
+            this.regen = setInterval(() => {
+                this.changeAlgorithm();
+            }, this.autoChange * 1000);
+        }
+
+        // new random speed
+        this.algorithmLoader.speed = random(2, 6);
+
+        // canvas resets
+        this.ctx.restore();
+
+        // picks a transition mode
+        this.canvas.style.background = 'transparent';
+        this.clearMethod();
+
+        // reset stroke and fill styles
+        this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
+        this.ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
+
+        // begin new path
+        this.ctx.beginPath();
+
+        // selects next algorithm
+        this.chooseAlgos();
     }
 
     // chooses a transition method when spirals change
@@ -339,7 +345,7 @@ export default class Spiral {
                     clearTimeout(this.resizeTimeout);
                 }
                 this.resizeTimeout = setTimeout(() => {
-                    this.canvas.click();
+                    this.changeAlgorithm();
                     this.resizeTimeout = null;
                 }, 250);
 

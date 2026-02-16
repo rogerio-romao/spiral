@@ -2,6 +2,11 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-02-16
+
+- refactor: Replace canvas.click() with direct method calls — decouple algorithm
+  transition logic from DOM events by extracting changeAlgorithm() method
+
 ## 2026-02-15
 
 - fix: Debounce cursor hide timeout and hide cursor on app launch
