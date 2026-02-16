@@ -11,7 +11,7 @@
         <title>The Spiral</title>
     </head>
     <body>
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" role="img" aria-label="Music visualizer"></canvas>
         <div id="hud">
             <div id="msg"></div>
             <div id="algos"></div>
@@ -81,7 +81,7 @@
                 <input type="file" id="input" accept="audio/*" multiple />
                 <ol id="playlist"></ol>
                 <div id="controls">
-                    <button id="prev">
+                    <button id="prev" aria-label="Previous track" title="Previous track">
                         <svg
                             class="icon"
                             xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +104,7 @@
                             />
                         </svg>
                     </button>
-                    <button id="play">
+                    <button id="play" aria-label="Play" title="Play">
                         <svg
                             id="icon-play"
                             class="icon"
@@ -136,7 +136,7 @@
                             />
                         </svg>
                     </button>
-                    <button id="stop">
+                    <button id="stop" aria-label="Stop" title="Stop">
                         <svg
                             class="icon"
                             xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +156,7 @@
                             />
                         </svg>
                     </button>
-                    <button id="next">
+                    <button id="next" aria-label="Next track" title="Next track">
                         <svg
                             class="icon"
                             xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +182,7 @@
                 </div>
             </div>
             <div id="progress">
-                <progress id="progress-percent" max="100" value="0"></progress>
+                <progress id="progress-percent" max="100" value="0" aria-label="Playback progress"></progress>
             </div>
         </div>
 

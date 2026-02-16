@@ -231,8 +231,8 @@
   `aria-label`, no `title` attributes. Invisible to screen readers.
 - **Fix:** Add `aria-label` and `title` attributes to all player buttons.
 
-- [ ] Add `aria-label` to all player control buttons
-- [ ] Add `title` tooltips to player control buttons
+- [x] Add `aria-label` to all player control buttons
+- [x] Add `title` tooltips to player control buttons
 
 ### 5.2 — `<progress>` element has no accessible label
 
@@ -240,7 +240,7 @@
 - **Issue:** The progress bar has no label for assistive technology.
 - **Fix:** Add `aria-label="Playback progress"` or a visually hidden `<label>`.
 
-- [ ] Add accessible label to `<progress>` element
+- [x] Add accessible label to `<progress>` element
 
 ### 5.3 — Canvas has no text alternative
 
@@ -248,7 +248,7 @@
 - **Issue:** The `<canvas>` element has no `role` or `aria-label`.
 - **Fix:** Add `role="img"` and `aria-label="Music visualizer"`.
 
-- [ ] Add `role` and `aria-label` to canvas
+- [x] Add `role` and `aria-label` to canvas
 
 ---
 
