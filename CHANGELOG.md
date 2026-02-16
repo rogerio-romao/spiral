@@ -8,6 +8,8 @@
   transition logic from DOM events by extracting changeAlgorithm() method
 - refactor: Deduplicate stopCurrentAlgorithm() calls — remove redundant calls from
   clearMethod() and chooseAlgos(), keeping only the call in changeAlgorithm()
+- refactor: Consolidate duplicate random/randomColor implementations — make
+  AlgorithmLoader delegate to randomUtils.js for single source of truth
 
 ## 2026-02-15
 
