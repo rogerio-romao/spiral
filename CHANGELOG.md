@@ -6,6 +6,8 @@
 
 - refactor: Replace canvas.click() with direct method calls — decouple algorithm
   transition logic from DOM events by extracting changeAlgorithm() method
+- refactor: Deduplicate stopCurrentAlgorithm() calls — remove redundant calls from
+  clearMethod() and chooseAlgos(), keeping only the call in changeAlgorithm()
 
 ## 2026-02-15
 

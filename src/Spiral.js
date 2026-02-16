@@ -206,8 +206,6 @@ export default class Spiral {
         this.ctx.shadowBlur = 0;
         this.ctx.setLineDash([]);
         this.ctx.save();
-        // clear any timers
-        this.stopCurrentAlgorithm();
         let AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
         if (this.devMode) {
             if (
@@ -267,9 +265,6 @@ export default class Spiral {
 
     // chooses a transition method when spirals change
     clearMethod() {
-        // clear the running algorithm
-        this.stopCurrentAlgorithm();
-
         const clearMethodPick = Math.random();
         // clears to black a portion of the screen based on the canvas size and its rotation at the moment
         if (clearMethodPick < 0.25) {

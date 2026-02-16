@@ -177,7 +177,7 @@
 - **Fix:** Remove redundant calls; keep only the first one in the transition
   flow.
 
-- [ ] Deduplicate `stopCurrentAlgorithm()` calls
+- [x] Deduplicate `stopCurrentAlgorithm()` calls
 
 ### 4.3 — Consolidate duplicate `random`/`randomColor`
 
