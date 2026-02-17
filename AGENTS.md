@@ -30,7 +30,6 @@ See [WORKFLOW.md](WORKFLOW.md) for the complete workflow and decision points.
 | Desktop shell   | Electron v33      | ESM (`"type": "module"`)                     |
 | Rendering       | HTML5 Canvas 2D   | No WebGL                                     |
 | Animation lib   | GSAP              | Loaded from `assets/js/gsap.min.js`, not npm |
-| Icons           | Ionicons v7       | CDN ESM — requires internet                  |
 | Fonts           | DM Mono, Oswald   | Custom TTFs in `assets/fonts/`               |
 | Package manager | pnpm              | Required — do not use npm/yarn               |
 | Packaging       | electron-packager | Dev dependency                               |
@@ -146,7 +145,6 @@ assets/
 - **Dev dependencies** (linters, test frameworks, build tools) are allowed
 - **Use pnpm** — do not use npm or yarn
 - GSAP is vendored in `assets/js/` — do not add it as an npm dependency
-- Ionicons loaded via CDN — do not bundle locally
 
 ## Common Pitfalls
 
