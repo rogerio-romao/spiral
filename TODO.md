@@ -261,7 +261,7 @@
   doesn't load Ionicons at all. SVG icons are inlined.
 - **Fix:** Remove or correct the Ionicons reference.
 
-- [ ] Update Ionicons reference in `AGENTS.md`
+- [x] Update Ionicons reference in `AGENTS.md`
 
 ### 6.2 — Dead preload DOM references
 
