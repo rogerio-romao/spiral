@@ -27,12 +27,12 @@ See [WORKFLOW.md](WORKFLOW.md) for the complete workflow and decision points.
 
 | Layer           | Technology        | Notes                                        |
 | --------------- | ----------------- | -------------------------------------------- |
-| Desktop shell   | Electron v33      | ESM (`"type": "module"`)                     |
+| Desktop shell   | Electron v40      | ESM (`"type": "module"`)                     |
 | Rendering       | HTML5 Canvas 2D   | No WebGL                                     |
 | Animation lib   | GSAP              | Loaded from `assets/js/gsap.min.js`, not npm |
 | Fonts           | DM Mono, Oswald   | Custom TTFs in `assets/fonts/`               |
 | Package manager | pnpm              | Required — do not use npm/yarn               |
-| Packaging       | electron-packager | Dev dependency                               |
+| Packaging       | @electron/packager | Dev dependency                              |
 
 No TypeScript. No bundler. No test framework. No linter/formatter config.
 

@@ -275,7 +275,7 @@
   `@electron/packager` is the maintained successor.
 - **Fix:** `pnpm remove electron-packager && pnpm add -D @electron/packager`
 
-- [ ] Migrate to `@electron/packager`
+- [x] Migrate to `@electron/packager`
 
 ### 6.4 — GSAP version untracked
 
