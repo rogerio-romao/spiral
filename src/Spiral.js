@@ -250,7 +250,13 @@ export default class Spiral {
 
         // picks a transition mode
         this.canvas.style.background = 'transparent';
-        this.clearMethod();
+
+        // fill entire canvas with black, ignoring any accumulated rotation
+        this.ctx.save();
+        this.ctx.resetTransform();
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.restore();
 
         // reset stroke and fill styles
         this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
@@ -261,29 +267,6 @@ export default class Spiral {
 
         // selects next algorithm
         this.chooseAlgos();
-    }
-
-    // chooses a transition method when spirals change
-    clearMethod() {
-        const clearMethodPick = Math.random();
-        // clears to black a portion of the screen based on the canvas size and its rotation at the moment
-        if (clearMethodPick < 0.25) {
-            this.ctx.clearRect(0, 0, this.w, this.h);
-        } else if (clearMethodPick < 0.5) {
-            // makes semi-transparent a portion of the screen based on the canvas size and its rotation at the moment
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-            this.ctx.fillRect(0, 0, this.w, this.h);
-        } else if (clearMethodPick < 0.75) {
-            // colors a portion of the screen based on the canvas size and its rotation at the moment, with random transparency
-            this.ctx.fillStyle = randomColor(5, 255, 0.15, 0.9);
-            this.ctx.fillRect(0, 0, this.w, this.h);
-        } else {
-            // completely fills the screen with black
-            this.canvas.width = this.canvas.height = 0;
-            this._applyDpr();
-        }
-
-        this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
     }
 
     displayAlgorithmName(name) {
