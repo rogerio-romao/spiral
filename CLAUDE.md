@@ -29,10 +29,13 @@ Pause for user confirmation at each decision point (see WORKFLOW.md table).
 | `main.js` | Electron main process — creates BrowserWindow |
 | `preload.js` | contextBridge — injects version info |
 | `renderer.js` | Entry — imports polyfills, instantiates `Spiral` |
-| `src/Spiral.js` | **Orchestrator** — algorithm lifecycle, keyboard shortcuts, HUD, transitions, owns MusicPlayer + FrequencyAnalyser |
+| `src/Spiral.js` | **Orchestrator** — canvas setup, DPR handling, resize, cursor; wires all modules |
+| `src/HUDController.js` | HUD overlay — messages, algorithm name, silent mode, help toggle |
+| `src/KeyboardController.js` | Centralized keyboard shortcuts (Space, F, I, D, M, S, H, P) |
+| `src/TransitionManager.js` | Algorithm lifecycle, canvas context reset, auto-change timer |
 | `src/AlgorithmLoader.js` | **Base class** for all algorithms — draw-loop wrapping, helpers, stop/start |
 | `src/AlgorithmChooser.js` | Static imports from generated registry, random picker (avoids last 50) |
-| `src/MusicPlayer.js` | Audio playback, playlist, progress bar, P-key toggle |
+| `src/MusicPlayer.js` | Audio playback, playlist, progress bar |
 | `src/utils/FrequencyAnalyser.js` | Web Audio wrapper — FFT split into configurable bands (default 5) |
 | `src/utils/math.js` | norm, lerp, map, clamp, distance, collision, deg/rad, randomRange, bezier |
 | `src/utils/randomUtils.js` | `random(min, max)`, `randomColor()` |
@@ -43,30 +46,31 @@ Pause for user confirmation at each decision point (see WORKFLOW.md table).
 
 ## Algorithm Lifecycle
 
-Exact sequence when switching algorithms (`Spiral.changeAlgorithm()`):
+Exact sequence when switching algorithms (`TransitionManager.changeAlgorithm()`):
 
 ```
-1. stopCurrentAlgorithm()      → calls algo.stop(), cancels rAF, nulls ref
-2. clearInterval(this.regen)    → cancels auto-change timer
-3. Reset canvas state:
+1. Re-entrancy guard            → if already transitioning, return immediately
+2. stopCurrentAlgorithm()       → calls algo.stop(), cancels rAF, nulls ref
+3. clearInterval(this._regen)   → cancels auto-change timer
+4. _resetCanvasContext() — comprehensive reset of ALL canvas properties:
    a. ctx.resetTransform()      → clears accumulated rotation/scale
-   b. ctx.globalAlpha = 1
-   c. ctx.globalCompositeOperation = 'source-over'
-   d. ctx.fillStyle = '#191919' → dark gray (NOT black — prevents color drift)
-   e. ctx.fillRect(0, 0, canvas.width, canvas.height)  → physical pixels
-   f. ctx.scale(dpr, dpr)       → reapply DPR so next algo uses logical pixels
-   g. Reset stroke/fill to random colors
-   h. ctx.beginPath()
-4. chooseAlgos():
-   a. Reset remaining ctx properties:
-      - canvas.style.background = 'transparent'
-      - imageSmoothingQuality, globalCompositeOperation, lineWidth
-      - shadowBlur/Color/Offset → all cleared
-      - globalAlpha = 1, filter = 'none', lineDash = []
-   b. algorithmChooser.getRandomAlgorithm() → returns class
-   c. new AlgorithmClass(ctx, w, h)         → constructor runs
-   d. displayAlgorithmName()
-5. Inside algorithm constructor:
+   b. ctx.globalAlpha = 1, ctx.globalCompositeOperation = 'source-over'
+   c. ctx.fillStyle = '#191919' → dark gray (NOT black — prevents color drift)
+   d. ctx.fillRect(0, 0, canvas.width, canvas.height)  → physical pixels
+   e. ctx.scale(dpr, dpr)       → reapply DPR so next algo uses logical pixels
+   f. Reset stroke/fill to random colors, lineWidth = 1
+   g. Reset line: setLineDash([]), lineDashOffset, lineCap, lineJoin, miterLimit
+   h. Reset shadow: shadowBlur/Color/OffsetX/OffsetY → all cleared
+   i. Reset text: textAlign, textBaseline, direction
+   j. Reset smoothing: imageSmoothingEnabled, imageSmoothingQuality
+   k. Reset filter = 'none', canvas.style.background = 'transparent'
+   l. ctx.beginPath()
+5. _chooseAlgos():
+   a. algorithmChooser.getRandomAlgorithm() → returns class
+   b. new AlgorithmClass(ctx, w, h)         → constructor runs
+   c. hud.displayAlgorithmName()
+   d. On error: retry up to 3 times with different algorithms
+6. Inside algorithm constructor:
    → super(ctx, w, h) → sets this.t=0, this.speed=random(2,6), wraps draw()
    → algorithm-specific init (particles, colors, geometry)
    → this.requestFrame()                    → starts the draw loop
@@ -84,9 +88,10 @@ convergence — colours gradually wash out to black. Dark gray avoids this.
 and never touch the physical buffer size. On DPR change (monitor switch),
 `_watchDprChange()` re-applies DPR and debounce-restarts the algorithm.
 
-**Full reset between algorithms:** The reset is split across `changeAlgorithm()`
-(transform, alpha, composite, fill) and `chooseAlgos()` (shadow, filter, lineDash,
-lineWidth). Both must run — never call `chooseAlgos()` without the prior reset.
+**Full reset between algorithms:** `TransitionManager._resetCanvasContext()`
+consolidates ALL canvas property resets into a single method — called once per
+transition before instantiating the next algorithm. Never call `_chooseAlgos()`
+without the prior reset.
 
 ## AlgorithmLoader Base Class
 
@@ -154,11 +159,11 @@ These bugs have been fixed. Understand them to avoid regressions:
 
 | Issue | Root Cause | Fix |
 |-------|-----------|-----|
-| **Transform leak** | Algorithms using `rotateCanvas*` accumulated transforms across transitions | `ctx.resetTransform()` in `changeAlgorithm()` before fill |
-| **Filter leak** | `ctx.filter` persisted across algorithms (e.g. blur from previous algo) | `ctx.filter = 'none'` in `chooseAlgos()` |
-| **Shadow leak** | `shadowBlur`/`shadowColor`/`shadowOffset` persisted | Reset all shadow properties in `chooseAlgos()` |
-| **DPR bug** | Canvas not re-scaled on monitor change → blurry or offset rendering | `_watchDprChange()` + `_applyDpr()` + DPR re-scale in `changeAlgorithm()` |
-| **Black screen (blend modes)** | `globalCompositeOperation` not reset → additive/multiply modes on wrong base | Explicit reset to `'source-over'` in both `changeAlgorithm()` and `chooseAlgos()` |
+| **Transform leak** | Algorithms using `rotateCanvas*` accumulated transforms across transitions | `ctx.resetTransform()` in `_resetCanvasContext()` |
+| **Filter leak** | `ctx.filter` persisted across algorithms (e.g. blur from previous algo) | `ctx.filter = 'none'` in `_resetCanvasContext()` |
+| **Shadow leak** | `shadowBlur`/`shadowColor`/`shadowOffset` persisted | Reset all shadow properties in `_resetCanvasContext()` |
+| **DPR bug** | Canvas not re-scaled on monitor change → blurry or offset rendering | `_watchDprChange()` + `_applyDpr()` + DPR re-scale in `_resetCanvasContext()` |
+| **Black screen (blend modes)** | `globalCompositeOperation` not reset → additive/multiply modes on wrong base | Explicit reset to `'source-over'` in `_resetCanvasContext()` |
 | **Color convergence** | `fillRect` with `#000` + blend modes → gradual colour washout | Changed canvas fill to `#191919` (dark gray) |
 
 ## Run Commands
@@ -171,4 +176,4 @@ These bugs have been fixed. Understand them to avoid regressions:
 No test, lint, or build scripts. Use **pnpm** only (not npm/yarn).
 
 # currentDate
-Today's date is 2026-02-19.
+Today's date is 2026-02-22.

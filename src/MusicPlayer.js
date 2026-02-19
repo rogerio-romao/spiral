@@ -1,6 +1,6 @@
 /**
  * MusicPlayer — handles audio playback, playlist management,
- * progress bar, and keyboard toggle (P key).
+ * and progress bar.
  */
 export default class MusicPlayer {
     constructor() {
@@ -43,7 +43,6 @@ export default class MusicPlayer {
         this.audio.addEventListener('ended', () => this.playNext());
         this.progress.addEventListener('mousedown', () => this.audio.pause());
         this.progress.addEventListener('mouseup', (e) => this._scrub(e));
-        window.addEventListener('keyup', (e) => this._handleKeyboard(e));
     }
 
     /** Process file input and build the playlist. */
@@ -187,11 +186,9 @@ export default class MusicPlayer {
         this.blobUrls = [];
     }
 
-    /** Toggle player visibility with the P key. */
-    _handleKeyboard(e) {
-        if (e.code === 'KeyP') {
-            this.playerShow = !this.playerShow;
-            this.player.style.display = this.playerShow ? 'block' : 'none';
-        }
+    /** Toggle player panel visibility. Called by KeyboardController. */
+    togglePlayerVisibility() {
+        this.playerShow = !this.playerShow;
+        this.player.style.display = this.playerShow ? 'block' : 'none';
     }
 }

@@ -44,22 +44,26 @@ preload.js           Injects version info via contextBridge
 index.html           DOM: canvas, HUD overlay, help screen, music player UI
 renderer.js          Renderer entry — imports polyfills, instantiates Spiral
 src/
-  Spiral.js          Orchestrator — algorithm lifecycle, keyboard shortcuts, HUD, transitions,
-                       owns MusicPlayer and FrequencyAnalyser
-  MusicPlayer.js     Audio playback, playlist management, progress bar, P-key toggle
+  Spiral.js            Orchestrator — canvas setup, DPR handling, resize, cursor;
+                         owns and wires all modules below
+  HUDController.js     HUD overlay — messages, algorithm name display, silent mode, help toggle
+  KeyboardController.js  Centralized keyboard shortcuts (all keys in one handler)
+  TransitionManager.js   Algorithm lifecycle, canvas context reset, auto-change timer,
+                           one-algorithm-at-a-time guarantee
+  MusicPlayer.js       Audio playback, playlist management, progress bar
   AlgorithmChooser.js  Static imports of all 142 algos, random selection (avoids last 50)
   AlgorithmLoader.js   Base class for all algorithms (draw loop, helpers, stop/start)
-  algos/             142 self-contained algorithm classes (one per file)
+  algos/               142 self-contained algorithm classes (one per file)
   utils/
-    Vector.js        2D vector (add, subtract, multiply, divide, angle, length)
-    Particle.js      Physics particle (position, velocity, gravity, springs, friction, bounce)
-    math.js          norm, lerp, map, clamp, distance, collision, deg↔rad, randomRange, bezier
-    randomUtils.js   random(min, max), randomColor() — used by renderer.js and Spiral.js
-    roundRectExtra.js     Side-effect polyfill — patches CanvasRenderingContext2D prototype
-    FrequencyAnalyser.js  Web Audio API wrapper — splits FFT into configurable bands (default 5)
+    Vector.js          2D vector (add, subtract, multiply, divide, angle, length)
+    Particle.js        Physics particle (position, velocity, gravity, springs, friction, bounce)
+    math.js            norm, lerp, map, clamp, distance, collision, deg↔rad, randomRange, bezier
+    randomUtils.js     random(min, max), randomColor() — used across modules
+    roundRectExtra.js       Side-effect polyfill — patches CanvasRenderingContext2D prototype
+    FrequencyAnalyser.js    Web Audio API wrapper — splits FFT into configurable bands (default 5)
 assets/
-  js/gsap.min.js     GSAP library (global)
-  fonts/             Custom font files
+  js/gsap.min.js       GSAP library (global)
+  fonts/               Custom font files
 ```
 
 ## Electron Process Rules
@@ -82,10 +86,13 @@ assets/
 | `renderer.js`             | Renderer entry: imports polyfills, instantiates Spiral                                   |
 | `index.html`              | DOM structure: canvas, HUD, player controls                                              |
 | `style.css`               | All styles                                                                               |
-| `src/Spiral.js`           | Core orchestrator — owns MusicPlayer and FrequencyAnalyser                               |
-| `src/MusicPlayer.js`      | Audio playback, playlist, progress bar, P-key toggle                                     |
-| `src/AlgorithmChooser.js` | Algorithm registry and random picker                                                     |
-| `src/AlgorithmLoader.js`  | Base class for algorithms                                                                |
+| `src/Spiral.js`              | Orchestrator — canvas, DPR, resize, cursor; wires all modules                         |
+| `src/HUDController.js`      | HUD overlay — messages, algorithm name, silent mode, help toggle                      |
+| `src/KeyboardController.js` | Centralized keyboard shortcuts (Space, F, I, D, M, S, H, P)                          |
+| `src/TransitionManager.js`  | Algorithm lifecycle, canvas context reset, auto-change timer                          |
+| `src/MusicPlayer.js`        | Audio playback, playlist, progress bar                                                |
+| `src/AlgorithmChooser.js`   | Algorithm registry and random picker                                                  |
+| `src/AlgorithmLoader.js`    | Base class for algorithms                                                             |
 | `src/algos/*.js`          | Individual algorithm classes (142 files)                                                 |
 | `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill, FrequencyAnalyser) |
 | `assets/js/`              | GSAP (loaded globally, not via npm)                                                      |
@@ -108,8 +115,8 @@ assets/
 
 ## Canvas 2D Rules
 
-- `Spiral.js` resets canvas state (`save`/`restore`, styles,
-  `globalCompositeOperation`) between algorithms — do not rely on prior state
+- `TransitionManager` comprehensively resets all canvas context properties
+  between algorithms — do not rely on prior state
 - Always use `ctx.save()` / `ctx.restore()` when modifying transforms or
   composite operations
 - `globalCompositeOperation` persists across draw calls if not reset — always be
@@ -156,18 +163,17 @@ assets/
   called before switching algorithms
 - `this.draw` in algorithms is **wrapped by `AlgorithmLoader`** to check
   `isRunning` — do not bypass this mechanism
-- Keyboard shortcuts are split between `Spiral.js` (Space, F, I, D, M, S, H) and
-  `MusicPlayer.js` (P key for player) — check both files when modifying
-  shortcuts
+- All keyboard shortcuts are centralized in `KeyboardController.js` — modify
+  shortcuts there (Space, F, I, D, M, S, H, P)
 - GSAP is **global** (`window.gsap`) from the vendored file — `AlgorithmLoader`
   exposes it as a static ref
-- `FrequencyAnalyser` is instantiated once in `Spiral.js` constructor —
+- `FrequencyAnalyser` is instantiated once in `Spiral.js` init —
   `createMediaElementSource` throws if called twice on the same `<audio>`
   element
 - No tests exist — when adding test tooling, there is no existing infrastructure
   to extend
 - The `AlgorithmLoader` constructor receives `(ctx, w, h)` — these are the
-  canvas context and dimensions, passed by `Spiral.js`
+  canvas context and dimensions, passed by `TransitionManager`
 - Algorithm frame counter `this.t` and timing via `this.speed` are inherited
   from `AlgorithmLoader` — respect this pattern
 

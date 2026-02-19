@@ -2,7 +2,9 @@ import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
 import MusicPlayer from './MusicPlayer.js';
 import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
-import { random, randomColor } from './utils/randomUtils.js';
+import HUDController from './HUDController.js';
+import KeyboardController from './KeyboardController.js';
+import TransitionManager from './TransitionManager.js';
 
 export default class Spiral {
     constructor(options = {}) {
@@ -22,38 +24,35 @@ export default class Spiral {
         // Algorithm chooser instance
         this.algorithmChooser = new AlgorithmChooser();
 
-        // running algorithm instance
-        this.currentAlgorithm = null;
+        // HUD controller
+        this.hud = new HUDController({
+            messageElement: document.querySelector('#msg'),
+            algosDisplayElement: document.querySelector('#algos'),
+            helpElement: document.querySelector('#help'),
+        });
+
+        // Transition manager
+        this.transitionManager = new TransitionManager({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            algorithmLoader: this.algorithmLoader,
+            algorithmChooser: this.algorithmChooser,
+            hud: this.hud,
+            getDimensions: () => ({ w: this.w, h: this.h }),
+            devMode: this.devMode,
+            devAlgorithmClass: this.devAlgorithmClass,
+        });
 
         // Music player and frequency analyser — deferred to init()
         this.musicPlayer = null;
         this.frequencyAnalyser = null;
 
-        // Setup message display
-        this.messageTimer = null;
-        this.messageElement = document.querySelector('#msg');
-
-        // Setup algorithm display
-        this.algorithmNameTimer = null;
-        this.algosDisplayElement = document.querySelector('#algos');
-
-        // Setup help display
-        this.helpElement = document.querySelector('#help');
-        this.helpView = false;
-
-        // Auto change interval
-        this.autoChange = 100;
-        this.regen = null;
-
-        // Manual mode toggle
-        this.manual = false;
-
-        // Silent mode toggle
-        this.silent = false;
+        // Keyboard controller — deferred to init() (needs musicPlayer)
+        this.keyboardController = null;
 
         // Cursor hide timeout ID for debouncing
         this.cursorHideTimeout = null;
-        // Resize debounce timeout ID (TODO 3.4)
+        // Resize debounce timeout ID
         this.resizeTimeout = null;
 
         // Initialize the application
@@ -66,26 +65,22 @@ export default class Spiral {
 
         // Hide cursor by default on launch
         this.canvas.style.cursor = 'none';
-        this.displayMessage('WELCOME');
+        this.hud.displayMessage('WELCOME');
         setTimeout(() => {
-            this.displayMessage('PRESS H FOR HELP');
+            this.hud.displayMessage('PRESS H FOR HELP');
         }, 10000);
         setTimeout(() => {
-            this.displayMessage('TIP: F FOR FULLSCREEN');
+            this.hud.displayMessage('TIP: F FOR FULLSCREEN');
         }, 20000);
 
         // make algorithms auto-change if not in manual mode
-        if (!this.manual && !this.devMode) {
-            this.regen = setInterval(() => {
-                this.changeAlgorithm();
-            }, this.autoChange * 1000);
-        }
+        this.transitionManager.resetAutoChangeTimer();
 
-        // add event listeners
-        this.addEventListeners();
+        // add canvas-level event listeners
+        this._addCanvasListeners();
 
         // trigger the first algorithm
-        this.chooseAlgos();
+        this.transitionManager.startFirst();
 
         // Music player — deferred from constructor so algorithm loading
         // and first render are not blocked by audio subsystem setup
@@ -99,18 +94,27 @@ export default class Spiral {
         this.musicPlayer.audio.addEventListener('play', () => {
             this.frequencyAnalyser.resume();
         });
+
+        // Keyboard controller (created after musicPlayer exists)
+        this.keyboardController = new KeyboardController({
+            hud: this.hud,
+            transition: this.transitionManager,
+            musicPlayer: this.musicPlayer,
+            spiral: this,
+        });
+        this.keyboardController.bind();
     }
 
-    addEventListeners() {
+    _addCanvasListeners() {
         // recover from algorithm draw() errors by loading the next algorithm
         this.canvas.addEventListener('algorithm-error', () => {
-            this.changeAlgorithm();
+            this.transitionManager.changeAlgorithm();
         });
 
         // change canvas size on window resize
         window.addEventListener('resize', () => {
             // Ensure the running algorithm is stopped immediately
-            this.stopCurrentAlgorithm();
+            this.transitionManager.stopCurrentAlgorithm();
 
             const rect = this.canvas.getBoundingClientRect();
             this.w = rect.width;
@@ -122,63 +126,14 @@ export default class Spiral {
                 clearTimeout(this.resizeTimeout);
             }
             this.resizeTimeout = setTimeout(() => {
-                this.changeAlgorithm();
+                this.transitionManager.changeAlgorithm();
                 this.resizeTimeout = null;
             }, 250);
         });
 
-        // keystroke listeners
-        window.addEventListener('keyup', (e) => {
-            switch (e.code) {
-                case 'Space':
-                    if (!this.devMode) {
-                        this.changeAlgorithm();
-                    }
-                    break;
-                case 'KeyF':
-                    document.body.requestFullscreen();
-                    break;
-                case 'KeyI':
-                    if (this.devMode) break;
-                    this.autoChange += 10;
-                    if (this.autoChange > 300) this.autoChange = 300;
-                    this.displayMessage(`Auto-change: ${this.autoChange}secs`);
-                    break;
-                case 'KeyD':
-                    if (this.devMode) break;
-                    this.autoChange -= 10;
-                    if (this.autoChange < 10) this.autoChange = 10;
-                    this.displayMessage(`Auto-change: ${this.autoChange}secs`);
-                    break;
-                case 'KeyM':
-                    if (this.devMode) break;
-                    this.manual = !this.manual;
-                    this.displayMessage(
-                        this.manual ? 'Manual mode' : 'Auto mode',
-                    );
-                    break;
-                case 'KeyS':
-                    this.silent = !this.silent;
-                    this.displayMessage(
-                        this.silent ? 'Silent mode' : 'Display mode',
-                    );
-                    this.algosDisplayElement.textContent = '';
-                    this.algosDisplayElement.style.display = 'none';
-                    break;
-                case 'KeyH':
-                    this.helpView = !this.helpView;
-                    this.helpElement.style.display = this.helpView
-                        ? 'block'
-                        : 'none';
-                    break;
-                default:
-                    break;
-            }
-        });
-
         // on canvas click, generate a new spiral
         this.canvas.addEventListener('click', () => {
-            this.changeAlgorithm();
+            this.transitionManager.changeAlgorithm();
         });
 
         // on mousemove, show the cursor
@@ -199,124 +154,6 @@ export default class Spiral {
 
         // Detect devicePixelRatio changes (e.g. dragging between monitors)
         this._watchDprChange();
-    }
-
-    chooseAlgos() {
-        // set the basic canvas settings
-        this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
-        this.ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
-        this.canvas.style.background = 'transparent';
-        this.ctx.imageSmoothingQuality = 'high';
-        this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.lineWidth = 1;
-        this.ctx.shadowBlur = 0;
-        this.ctx.shadowColor = 'transparent';
-        this.ctx.shadowOffsetX = 0;
-        this.ctx.shadowOffsetY = 0;
-        this.ctx.globalAlpha = 1;
-        this.ctx.filter = 'none';
-        this.ctx.setLineDash([]);
-        let AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
-        if (this.devMode) {
-            if (
-                !this.devAlgorithmClass ||
-                typeof this.devAlgorithmClass !== 'function'
-            ) {
-                throw new Error(
-                    'Dev mode enabled but no devAlgorithmClass provided.',
-                );
-            }
-            AlgorithmClass = this.devAlgorithmClass;
-        }
-        try {
-            this.currentAlgorithm = new AlgorithmClass(
-                this.ctx,
-                this.w,
-                this.h,
-            );
-            this.displayAlgorithmName(this.currentAlgorithm.name);
-            this._algoRetries = 0;
-        } catch (err) {
-            console.error('[Spiral] Algorithm constructor threw:', err);
-            this._algoRetries = (this._algoRetries || 0) + 1;
-            if (this._algoRetries < 3) {
-                this.changeAlgorithm();
-            } else {
-                console.error(
-                    '[Spiral] 3 algorithms failed in a row, stopping.',
-                );
-                this._algoRetries = 0;
-            }
-        }
-    }
-
-    // Triggers a new algorithm transition — called by auto-change timer,
-    // resize handler, keyboard shortcuts, and canvas click events
-    changeAlgorithm() {
-        if (this.devMode) return;
-        // clear any timers
-        this.stopCurrentAlgorithm();
-
-        clearInterval(this.regen);
-        this.t = 0;
-        this.stagger = 0;
-
-        // setup new auto-change timer if not in manual mode
-        if (!this.manual) {
-            this.regen = setInterval(() => {
-                this.changeAlgorithm();
-            }, this.autoChange * 1000);
-        }
-
-        // new random speed
-        this.algorithmLoader.speed = random(2, 6);
-
-        // picks a transition mode
-        this.canvas.style.background = 'transparent';
-
-        // Reset transform fully (clears accumulated rotation from previous algo)
-        // and fill entire canvas with black using physical-pixel dimensions
-        this.ctx.resetTransform();
-        this.ctx.globalAlpha = 1;
-        this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.fillStyle = '#191919';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Reapply DPR scale so the next algorithm draws in logical CSS pixels
-        const dpr = window.devicePixelRatio || 1;
-        this.ctx.scale(dpr, dpr);
-
-        // reset stroke and fill styles
-        this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);
-        this.ctx.fillStyle = randomColor(5, 255, 0.5, 0.5);
-
-        // begin new path
-        this.ctx.beginPath();
-
-        // selects next algorithm
-        this.chooseAlgos();
-    }
-
-    displayAlgorithmName(name) {
-        if (this.silent) return;
-        clearTimeout(this.algorithmNameTimer);
-        this.algosDisplayElement.textContent = `${name.toUpperCase()}`;
-        this.algosDisplayElement.style.display = 'block';
-
-        this.algorithmNameTimer = setTimeout(() => {
-            this.algosDisplayElement.style.display = 'none';
-            this.algosDisplayElement.textContent = '';
-        }, 5000);
-    }
-
-    displayMessage(message) {
-        clearTimeout(this.messageTimer);
-        this.messageElement.textContent = message;
-        this.messageElement.style.display = 'block';
-        this.messageTimer = setTimeout(() => {
-            this.messageElement.style.display = 'none';
-            this.messageElement.textContent = '';
-        }, 7500);
     }
 
     /**
@@ -347,12 +184,12 @@ export default class Spiral {
                 this._applyDpr();
 
                 // Stop current algorithm immediately and debounce restart
-                this.stopCurrentAlgorithm();
+                this.transitionManager.stopCurrentAlgorithm();
                 if (this.resizeTimeout) {
                     clearTimeout(this.resizeTimeout);
                 }
                 this.resizeTimeout = setTimeout(() => {
-                    this.changeAlgorithm();
+                    this.transitionManager.changeAlgorithm();
                     this.resizeTimeout = null;
                 }, 250);
 
@@ -361,15 +198,5 @@ export default class Spiral {
             },
             { once: true },
         );
-    }
-
-    stopCurrentAlgorithm() {
-        if (this.currentAlgorithm?.stop) {
-            this.currentAlgorithm.stop();
-        } else if (this.currentAlgorithm?.interval) {
-            cancelAnimationFrame(this.currentAlgorithm.interval);
-            this.currentAlgorithm.interval = null;
-        }
-        this.currentAlgorithm = null;
     }
 }
