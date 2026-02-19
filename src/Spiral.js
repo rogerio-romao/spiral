@@ -204,7 +204,11 @@ export default class Spiral {
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.lineWidth = 1;
         this.ctx.shadowBlur = 0;
+        this.ctx.shadowColor = 'transparent';
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
         this.ctx.globalAlpha = 1;
+        this.ctx.filter = 'none';
         this.ctx.setLineDash([]);
         let AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
         if (this.devMode) {
@@ -247,14 +251,17 @@ export default class Spiral {
         // picks a transition mode
         this.canvas.style.background = 'transparent';
 
-        // fill entire canvas with black, ignoring any accumulated rotation
-        this.ctx.save();
+        // Reset transform fully (clears accumulated rotation from previous algo)
+        // and fill entire canvas with black using physical-pixel dimensions
         this.ctx.resetTransform();
         this.ctx.globalAlpha = 1;
         this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.fillStyle = 'black';
+        this.ctx.fillStyle = '#191919';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.restore();
+
+        // Reapply DPR scale so the next algorithm draws in logical CSS pixels
+        const dpr = window.devicePixelRatio || 1;
+        this.ctx.scale(dpr, dpr);
 
         // reset stroke and fill styles
         this.ctx.strokeStyle = randomColor(5, 255, 0.8, 0.8);

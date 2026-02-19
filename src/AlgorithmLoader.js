@@ -59,14 +59,14 @@ export default class AlgorithmLoader {
     clearScreen() {
         this.ctx.save();
         this.ctx.resetTransform();
-        this.ctx.clearRect(0, 0, this.w, this.h);
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.restore();
     }
 
     fillScreen() {
         this.ctx.save();
         this.ctx.resetTransform();
-        this.ctx.fillRect(0, 0, this.w, this.h);
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.restore();
     }
 
