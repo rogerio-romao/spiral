@@ -74,6 +74,11 @@ export default class Coils extends AL {
         this.requestFrame();
     }
 
+    stop() {
+        this.tl?.kill();
+        super.stop();
+    }
+
     getTweens() {
         this.tl = AL.gsap.timeline({ defaults: { repeat: -1, yoyo: true } });
         this.tl
