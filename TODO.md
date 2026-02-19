@@ -284,7 +284,7 @@
   issues.
 - **Fix:** Add a `assets/js/GSAP_VERSION` file or a comment header.
 
-- [ ] Add GSAP version marker
+- [x] Add GSAP version marker
 
 ### 6.5 — `TODO.md` is empty
 
@@ -292,7 +292,7 @@
 - **Issue:** Has section headers but no tasks. This review document supersedes
   it.
 
-- [ ] Populate or remove `TODO.md`
+- [x] Populate or remove `TODO.md`
 
 ---
 
