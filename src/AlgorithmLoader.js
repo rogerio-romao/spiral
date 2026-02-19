@@ -44,7 +44,15 @@ export default class AlgorithmLoader {
         const originalDraw = this.draw.bind(this);
         this.draw = () => {
             if (!this.isRunning) return;
-            originalDraw();
+            try {
+                originalDraw();
+            } catch (err) {
+                console.error('[AlgorithmLoader] draw() threw:', err);
+                this.stop();
+                this.ctx.canvas.dispatchEvent(
+                    new CustomEvent('algorithm-error'),
+                );
+            }
         };
     }
 

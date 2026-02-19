@@ -4,6 +4,8 @@
 
 ## 2026-02-19
 
+- fix: Add error handling around algorithm lifecycle — try/catch in constructor
+  instantiation and draw wrapper with auto-recovery to next algorithm
 - fix: Algorithm name display now consistently shows for 5 seconds — clear stale
   timeout on each algorithm change to prevent premature hiding
 

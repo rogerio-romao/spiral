@@ -307,8 +307,8 @@
   in `AlgorithmLoader` with try/catch. On error, log to console and attempt to
   load next algorithm.
 
-- [ ] Add error handling around algorithm instantiation
-- [ ] Add error handling in the `AlgorithmLoader` draw wrapper
+- [x] Add error handling around algorithm instantiation
+- [x] Add error handling in the `AlgorithmLoader` draw wrapper
 
 ### E.2 — Event listeners never removed
 

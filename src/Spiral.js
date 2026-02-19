@@ -102,6 +102,11 @@ export default class Spiral {
     }
 
     addEventListeners() {
+        // recover from algorithm draw() errors by loading the next algorithm
+        this.canvas.addEventListener('algorithm-error', () => {
+            this.changeAlgorithm();
+        });
+
         // change canvas size on window resize
         window.addEventListener('resize', () => {
             // Ensure the running algorithm is stopped immediately
@@ -223,9 +228,26 @@ export default class Spiral {
             }
             AlgorithmClass = this.devAlgorithmClass;
         }
-        this.currentAlgorithm = new AlgorithmClass(this.ctx, this.w, this.h);
-        // display algorithm name
-        this.displayAlgorithmName(this.currentAlgorithm.name);
+        try {
+            this.currentAlgorithm = new AlgorithmClass(
+                this.ctx,
+                this.w,
+                this.h,
+            );
+            this.displayAlgorithmName(this.currentAlgorithm.name);
+            this._algoRetries = 0;
+        } catch (err) {
+            console.error('[Spiral] Algorithm constructor threw:', err);
+            this._algoRetries = (this._algoRetries || 0) + 1;
+            if (this._algoRetries < 3) {
+                this.changeAlgorithm();
+            } else {
+                console.error(
+                    '[Spiral] 3 algorithms failed in a row, stopping.',
+                );
+                this._algoRetries = 0;
+            }
+        }
     }
 
     // Triggers a new algorithm transition — called by auto-change timer,
