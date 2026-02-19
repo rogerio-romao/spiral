@@ -7,6 +7,21 @@ Electron desktop music-player + generative-art visualizer. 142 algorithm classes
 render procedural Canvas 2D animations while audio plays. No bundler — ES modules
 run directly in Electron.
 
+## Task Workflow (MANDATORY)
+
+**Every non-trivial task MUST follow the workflow defined in `WORKFLOW.md`.** Do not
+skip phases without explicit user approval. The phases are:
+
+1. **Intake** — clarify requirements, classify type (`feat`/`fix`/`docs`/`refactor`/`chore`), get approval
+2. **Issue** — create GitHub issue via `gh issue create` (show title/body to user first)
+3. **Branch** — create branch from `spiral2`: `<type>/issue-<N>-<slug>` (e.g. `feat/issue-42-fps-counter`)
+4. **Implement** — code per AGENTS.md conventions
+5. **Verify** — run `pnpm start`, check console, test the change
+6. **Changelog** — add entry to `CHANGELOG.md` (propose to user first)
+7. **PR** — create via `gh pr create --base spiral2 --assignee rogerio-romao` with the template from WORKFLOW.md
+
+Pause for user confirmation at each decision point (see WORKFLOW.md table).
+
 ## Quick Architecture Reference
 
 | File | Role |
