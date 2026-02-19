@@ -2,6 +2,20 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-02-22
+
+- refactor: Extract HUDController, KeyboardController, and TransitionManager
+  from Spiral.js — reduce god object from ~375 to ~200 lines by splitting HUD
+  overlay, keyboard shortcuts, and algorithm lifecycle into focused modules
+- fix: Add comprehensive canvas context reset between algorithm transitions —
+  add 7 missing property resets (textAlign, textBaseline, lineCap, lineJoin,
+  miterLimit, imageSmoothingEnabled, direction) to prevent state leakage
+- fix: Add re-entrancy guard to algorithm transitions — prevent overlapping
+  transitions from rapid input or timer races
+- refactor: Centralize all keyboard shortcuts in KeyboardController — consolidate
+  handlers from Spiral.js and MusicPlayer.js into single module with destroy()
+  cleanup
+
 ## 2026-02-19
 
 - fix: Add error handling around algorithm lifecycle — try/catch in constructor
