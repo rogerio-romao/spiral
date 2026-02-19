@@ -2,6 +2,11 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-02-19
+
+- fix: Algorithm name display now consistently shows for 5 seconds — clear stale
+  timeout on each algorithm change to prevent premature hiding
+
 ## 2026-02-16
 
 - feat: Add accessibility labels to player controls, progress bar, and canvas —

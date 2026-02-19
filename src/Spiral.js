@@ -34,6 +34,7 @@ export default class Spiral {
         this.messageElement = document.querySelector('#msg');
 
         // Setup algorithm display
+        this.algorithmNameTimer = null;
         this.algosDisplayElement = document.querySelector('#algos');
 
         // Setup help display
@@ -276,10 +277,11 @@ export default class Spiral {
 
     displayAlgorithmName(name) {
         if (this.silent) return;
+        clearTimeout(this.algorithmNameTimer);
         this.algosDisplayElement.textContent = `${name.toUpperCase()}`;
         this.algosDisplayElement.style.display = 'block';
 
-        setTimeout(() => {
+        this.algorithmNameTimer = setTimeout(() => {
             this.algosDisplayElement.style.display = 'none';
             this.algosDisplayElement.textContent = '';
         }, 5000);
