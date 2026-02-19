@@ -204,8 +204,8 @@ export default class Spiral {
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.lineWidth = 1;
         this.ctx.shadowBlur = 0;
+        this.ctx.globalAlpha = 1;
         this.ctx.setLineDash([]);
-        this.ctx.save();
         let AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
         if (this.devMode) {
             if (
@@ -227,7 +227,6 @@ export default class Spiral {
     // resize handler, keyboard shortcuts, and canvas click events
     changeAlgorithm() {
         if (this.devMode) return;
-        this.ctx.save();
         // clear any timers
         this.stopCurrentAlgorithm();
 
@@ -245,15 +244,14 @@ export default class Spiral {
         // new random speed
         this.algorithmLoader.speed = random(2, 6);
 
-        // canvas resets
-        this.ctx.restore();
-
         // picks a transition mode
         this.canvas.style.background = 'transparent';
 
         // fill entire canvas with black, ignoring any accumulated rotation
         this.ctx.save();
         this.ctx.resetTransform();
+        this.ctx.globalAlpha = 1;
+        this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.restore();
