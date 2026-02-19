@@ -317,4 +317,4 @@
   them. Harmless in a single-instance app but not a clean pattern.
 - **Note:** Low priority — document as known technical debt.
 
-- [ ] Document or address event listener cleanup
+- [x] Document or address event listener cleanup
