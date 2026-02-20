@@ -69,4 +69,10 @@ export default class HUDController {
         this._helpElement.style.display = this._helpView ? 'block' : 'none';
         return this._helpView;
     }
+
+    /** Clear all timers and reset HUD state. */
+    destroy() {
+        clearTimeout(this._messageTimer);
+        clearTimeout(this._algorithmNameTimer);
+    }
 }

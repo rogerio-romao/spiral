@@ -44,11 +44,11 @@
       O(n\*m) each call (m = lastAlgos size up to 50)
     - Suggestion: Use a Set for `lastAlgos` for O(1) lookups
 
-- [ ] [src/algos/Entropy.js:32-42] Performance: `width++` and `height++`
+- [x] [src/algos/Entropy.js:32-42] Performance: `width++` and `height++`
       unbounded growth can cause performance issues over time
     - Suggestion: Add bounds check or reset when dimensions exceed canvas
 
-- [ ] [src/HUDController.js:33-36] Memory: Timer IDs stored but never cleaned up
+- [x] [src/HUDController.js:33-36] Memory: Timer IDs stored but never cleaned up
       if component is destroyed
     - Suggestion: Add `destroy()` method to clear timers
 
