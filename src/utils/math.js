@@ -24,9 +24,7 @@ const utils = {
     },
 
     distance(p0, p1) {
-        const dx = p1.x - p0.x;
-        const dy = p1.y - p0.y;
-        return Math.sqrt(dx * dx + dy * dy);
+        return this.distanceXY(p0.x, p0.y, p1.x, p1.y);
     },
 
     distanceXY(x0, y0, x1, y1) {
