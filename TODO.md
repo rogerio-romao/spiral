@@ -2,109 +2,59 @@
 
 ## Critical (must fix)
 
-- None identified
+- [src/AlgorithmChooser.js:20] Performance: `Set.values().next().value` does not reliably return the oldest entry - Set iteration order is implementation-dependent. Use an array or queue instead.
+  Suggestion: Replace `this.lastAlgos` with an array and `shift()` to remove oldest entry.
+
+- [index.html:7] Security: CSP allows `'unsafe-inline'` for styles, which weakens XSS protection.
+  Suggestion: Move inline styles to external CSS classes.
 
 ## High (should fix soon)
 
-- [x] [src/utils/Particle.js:44-46] Security: Potential division by zero in
-      `gravitateTo()` if distance is 0
-    - Suggestion: Add guard: `if (dist === 0) return;` before calculating force
+- [src/MusicPlayer.js:64] Code Quality: File names are displayed directly without sanitization - potential XSS if malicious filenames are used.
+  Suggestion: Sanitize `files[i].name` before setting `textContent`.
 
-- [x] [src/utils/Particle.js:86-87] Security: Potential division by zero in
-      `springTo()` if distance is 0
-    - Suggestion: Add guard: `if (distance === 0) return;` before calculating
-      springForce
+- [src/Spiral.js:117-134] Performance: Resize handler stops and restarts algorithm on every resize event despite debounce - could cause visible flicker.
+  Suggestion: Only reset canvas dimensions, not full algorithm restart.
 
-- [x] [src/algos/Pulsar.js:66-78] Performance: Canvas transform is applied 40
-      times per frame without proper save/restore in `drawBezier()`
-    - Suggestion: Wrap translate/rotate with `ctx.save()`/`ctx.restore()` or
-      reset transform after each call
+- [src/algos/SoapyBubbles.js:27-30] Dead Code: `setupConstantStyles()` is defined but never called.
+  Suggestion: Either call it or remove it.
 
 ## Medium (should fix eventually)
 
-- [x] [src/MusicPlayer.js:182-186] Memory: `_revokeBlobUrls()` only called on
-      new file selection, not on app close or component destruction
-    - Fixed: Added `destroy()` methods to MusicPlayer and Spiral, wired to
-      `beforeunload` in renderer.js
+- [src/AlgorithmLoader.js:44-56] Code Quality: The draw wrapper in constructor is redundant since algorithms override `draw()` directly - creates unnecessary complexity.
+  Suggestion: Remove wrapper or document why it's needed.
 
-- [ ] [src/utils/randomUtils.js:1-3] Code Quality: `random()` returns integer
-      but name suggests generic random - inconsistent with `randomRange()` in
-      math.js
-    - Suggestion: Rename to `randomInt()` for clarity
+- [src/utils/math.js:26-36] DRY: `distance()` and `distanceXY()` duplicate logic - consolidate into one.
+  Suggestion: Make `distance()` call `distanceXY()` internally.
 
-- [x] [src/AlgorithmLoader.js:17] Code Quality: `gsap` referenced as global
-      without declaration - relies on script load order
-    - Suggestion: Add `/* global gsap */` comment or document the dependency
+- [src/Spiral.js:54-56] Simplification: `cursorHideTimeout` and `resizeTimeout` are stored but never cleared in destroy().
+  Suggestion: Add cleanup in `destroy()` method.
 
-- [x] [src/Spiral.js:69-74] Code Quality: Multiple `setTimeout` calls for
-      welcome messages create race conditions if app is closed quickly
-    - Suggestion: Store timeout IDs and clear them in a destroy method
-
-- [x] [src/AlgorithmChooser.js:11-12] Performance: `filter()` + `includes()` is
-      O(n\*m) each call (m = lastAlgos size up to 50)
-    - Suggestion: Use a Set for `lastAlgos` for O(1) lookups
-
-- [x] [src/algos/Entropy.js:32-42] Performance: `width++` and `height++`
-      unbounded growth can cause performance issues over time
-    - Suggestion: Add bounds check or reset when dimensions exceed canvas
-
-- [x] [src/HUDController.js:33-36] Memory: Timer IDs stored but never cleaned up
-      if component is destroyed
-    - Suggestion: Add `destroy()` method to clear timers
+- [src/utils/randomUtils.js:1-4] Naming: `random()` returns integers but doesn't indicate this in name.
+  Suggestion: Rename to `randomInt()` or document behavior.
 
 ## Low (nice to have)
 
-- [x] [src/TransitionManager.js:5] Naming: `random` and `randomColor` imported
-      but also available via AlgorithmLoader static methods
-    - Suggestion: Use consistent import pattern across codebase
+- [src/Spiral.js:18] Naming: `devAlgorithmClass` option is camelCase but passed to `devAlgorithmClass` in constructor - consistent.
+  Suggestion: Consider `devAlgorithm` for brevity.
 
-- [x] [src/utils/Vector.js:8-18] Code Quality: Getter/setter methods (`setX`,
-      `getX`) are unidiomatic in modern JS
-    - Suggestion: Use ES6 getters/setters or direct property access
+- [src/AlgorithmLoader.js:15-17] Code Style: Static properties `gsap` and `frequencyAnalyser` assume global `gsap` exists at class definition time.
+  Suggestion: Add null checks or lazy initialization.
 
-- [x] [src/algos/*.js] Code Quality: Inconsistent method naming - some use
-      `setupConstantStyles`, others `setupConstantProperties`, others combine
-      both
-    - Suggestion: Standardize to `initializeProperties()` and `setupStyles()`
-      across all algorithms
+- [src/TransitionManager.js:40] Magic Number: `_autoChange = 60` should be a named constant.
+  Suggestion: Add `DEFAULT_AUTO_CHANGE = 60` at top of file.
 
-- [ ] [src/AlgorithmLoader.js:39] Naming: `interval` is misleading - it stores
-      `requestAnimationFrame` ID, not an interval
-    - Suggestion: Rename to `animationFrameId` or `rafId`
+- [src/FrequencyAnalyser.js:33] Code Quality: No error handling if `createMediaElementSource` throws (second call on same element).
+  Suggestion: Wrap in try-catch or add guard.
 
-- [x] [src/KeyboardController.js:34] Code Quality: Switch statement missing
-      `e.preventDefault()` for Space key which may scroll page
-    - Suggestion: Add `e.preventDefault()` for Space case
+## Info (suggestions/observations)
 
-- [ ] [renderer.js:7] Code Quality: Hardcoded `devMode = false` requires code
-      change to enable
-    - Suggestion: Use environment variable or URL parameter
-
-## Info (observations)
-
-- [index.html:7] Security: CSP is well-configured with appropriate restrictions
-  for a desktop app
-- [main.js:14-18] Security: Correct use of `contextIsolation: true` and
-  `nodeIntegration: false`
-- [preload.js:1] Code Quality: Uses CommonJS `require` which is correct for
-  preload scripts
-- [src/utils/roundRectExtra.js:21] Code Quality: Uses `== undefined` instead of
-  `=== undefined`
-- [src/Spiral.js:177-200] Code Quality: `_watchDprChange()` is well-implemented
-  with proper cleanup via `{ once: true }`
-- [src/generated/algorithmRegistry.js] Code Quality: Auto-generated file follows
-  good patterns with clear header comments
-- [scripts/generate-algorithm-registry.mjs] Code Quality: Good validation of
-  file names as valid JS identifiers
-- [src/FrequencyAnalyser.js] Code Quality: Well-documented with clear JSDoc
-  comments
-- [src/algos/TemplateBase.js, TemplateFrequency.js] Code Quality: Good template
-  files for consistency
+- [index.html:54] Grammar: "Spiral will do it's own thing" should be "its" (missing apostrophe).
+- [style.css:2-11] Good: Custom fonts properly loaded via @font-face.
+- [main.js:25] Good: DevTools commented out as expected for production.
+- [src/TransitionManager.js:134] Code Quality: Comprehensive canvas context reset - well documented and implemented.
+- [src/AlgorithmLoader.js:47-55] Good: Error handling in draw wrapper catches and dispatches custom event.
 
 ---
 
-**Overall Assessment**: The codebase is well-structured with good separation of
-concerns. The architecture follows clean patterns with proper Electron security
-practices. Main areas for improvement are edge-case error handling (division by
-zero), memory cleanup for long-running sessions, and minor naming/consistency
-improvements across the 142 algorithm files.
+**Overall Assessment:** The codebase is well-structured with good separation of concerns. The critical issue with `AlgorithmChooser` could cause incorrect algorithm selection behavior. Security is generally good (CSP, contextIsolation), but inline styles and unsanitized filename display are concerns. Performance is acceptable with proper debouncing, though the algorithm restart on resize may cause UX issues.

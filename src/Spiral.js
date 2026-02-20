@@ -177,6 +177,14 @@ export default class Spiral {
         this._welcomeTimers.forEach(clearTimeout);
         this.hud.destroy();
         this.musicPlayer.destroy();
+
+        // clear pending timeouts created by Spiral (cursor hide + resize debounce)
+        if (this.cursorHideTimeout) {
+            clearTimeout(this.cursorHideTimeout);
+        }
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+        }
     }
 
     /**
