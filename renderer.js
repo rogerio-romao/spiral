@@ -2,10 +2,10 @@
 import './src/utils/roundRectExtra.js';
 
 import Spiral from './src/Spiral.js';
-import Pulsar from './src/algos/Pulsar.js';
+import SoapyBubbles from './src/algos/SoapyBubbles.js';
 
 const devMode = false;
-const devAlgorithmClass = Pulsar;
+const devAlgorithmClass = SoapyBubbles;
 
 const spiral = new Spiral({ devMode, devAlgorithmClass });
 

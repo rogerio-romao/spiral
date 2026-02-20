@@ -2,63 +2,63 @@
 // Vector class
 export default class Vector {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
     }
-    setX(value) {
-        this.x = value;
+    set x(value) {
+        this._x = value;
     }
-    getX() {
-        return this.x;
+    get x() {
+        return this._x;
     }
-    setY(value) {
-        this.y = value;
+    set y(value) {
+        this._y = value;
     }
-    getY() {
-        return this.y;
+    get y() {
+        return this._y;
     }
-    setAngle(angle) {
-        const length = this.getLength();
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
+    set angle(angle) {
+        const length = this.length;
+        this._x = Math.cos(angle) * length;
+        this._y = Math.sin(angle) * length;
     }
-    getAngle() {
-        return Math.atan2(this.y, this.x);
+    get angle() {
+        return Math.atan2(this._y, this._x);
     }
-    setLength(length) {
-        const angle = this.getAngle();
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
+    set length(length) {
+        const angle = this.angle;
+        this._x = Math.cos(angle) * length;
+        this._y = Math.sin(angle) * length;
     }
-    getLength() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
+    get length() {
+        return Math.sqrt(this._x * this._x + this._y * this._y);
     }
     add(v2) {
-        return new Vector(this.x + v2.getX(), this.y + v2.getY());
+        return new Vector(this._x + v2.x, this._y + v2.y);
     }
     subtract(v2) {
-        return new Vector(this.x - v2.getX(), this.y - v2.getY());
+        return new Vector(this._x - v2.x, this._y - v2.y);
     }
     multiply(val) {
-        return new Vector(this.x * val, this.y * val);
+        return new Vector(this._x * val, this._y * val);
     }
     divide(val) {
-        return new Vector(this.x / val, this.y / val);
+        return new Vector(this._x / val, this._y / val);
     }
     addTo(v2) {
-        this.x += v2.getX();
-        this.y += v2.getY();
+        this._x += v2.x;
+        this._y += v2.y;
     }
     subtractFrom(v2) {
-        this.x -= v2.getX();
-        this.y -= v2.getY();
+        this._x -= v2.x;
+        this._y -= v2.y;
     }
     multiplyBy(val) {
-        this.x *= val;
-        this.y *= val;
+        this._x *= val;
+        this._y *= val;
     }
     divideBy(val) {
-        this.x /= val;
-        this.y /= val;
+        this._x /= val;
+        this._y /= val;
     }
 }
