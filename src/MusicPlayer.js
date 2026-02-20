@@ -2,6 +2,8 @@
  * MusicPlayer — handles audio playback, playlist management,
  * and progress bar.
  */
+import { htmlEscape } from './utils/htmlEscape.js';
+
 export default class MusicPlayer {
     constructor() {
         // DOM references
@@ -61,10 +63,15 @@ export default class MusicPlayer {
         for (let i = 0; i < files.length; i++) {
             const listItem = document.createElement('li');
             listItem.classList.add('list-item');
-            listItem.textContent = files[i].name.slice(
-                0,
-                files[i].name.indexOf('.'),
-            );
+            // Sanitize filename for display
+            const baseName =
+                files[i].name.indexOf('.') > -1
+                    ? files[i].name.slice(0, files[i].name.indexOf('.'))
+                    : files[i].name;
+            listItem.textContent = baseName;
+            // Optionally, if you ever use innerHTML or attributes, escape:
+            // listItem.innerHTML = htmlEscape(baseName);
+            // listItem.setAttribute('data-filename', htmlEscape(files[i].name));
             this.playList.appendChild(listItem);
             const blobUrl = window.URL.createObjectURL(files[i]);
             this.trackList.push(blobUrl);
