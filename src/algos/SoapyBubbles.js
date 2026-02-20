@@ -7,6 +7,7 @@ export default class SoapyBubbles extends AL {
         this.name = 'Soapy Bubbles';
 
         this.initializeProperties();
+        this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.requestFrame();
@@ -34,7 +35,7 @@ export default class SoapyBubbles extends AL {
             50,
             255,
             0.5,
-            1
+            1,
         );
     }
 
@@ -46,7 +47,7 @@ export default class SoapyBubbles extends AL {
                 this.position.y,
                 this.size,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.stroke();
             this.ctx.fill();
