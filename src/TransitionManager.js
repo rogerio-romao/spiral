@@ -37,7 +37,7 @@ export default class TransitionManager {
 
         this._currentAlgorithm = null;
         this._regen = null;
-        this._autoChange = 100;
+        this._autoChange = 60;
         this._manual = false;
         this._isTransitioning = false;
         this._algoRetries = 0;
@@ -211,7 +211,10 @@ export default class TransitionManager {
             this._hud.displayAlgorithmName(this._currentAlgorithm.name);
             this._algoRetries = 0;
         } catch (err) {
-            console.error('[TransitionManager] Algorithm constructor threw:', err);
+            console.error(
+                '[TransitionManager] Algorithm constructor threw:',
+                err,
+            );
             this._algoRetries++;
             if (this._algoRetries < 3) {
                 // Retry directly (not via changeAlgorithm which has

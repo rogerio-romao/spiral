@@ -28,7 +28,7 @@ export default class HUDController {
     /** Show a temporary message for 7500 ms. Clears any prior message. */
     displayMessage(message) {
         clearTimeout(this._messageTimer);
-        this._messageElement.textContent = message;
+        this._messageElement.textContent = message.toUpperCase();
         this._messageElement.style.display = 'block';
         this._messageTimer = setTimeout(() => {
             this._messageElement.style.display = 'none';
@@ -68,5 +68,11 @@ export default class HUDController {
         this._helpView = !this._helpView;
         this._helpElement.style.display = this._helpView ? 'block' : 'none';
         return this._helpView;
+    }
+
+    /** Clear all timers and reset HUD state. */
+    destroy() {
+        clearTimeout(this._messageTimer);
+        clearTimeout(this._algorithmNameTimer);
     }
 }

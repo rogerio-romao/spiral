@@ -1,10 +1,10 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
-import MusicPlayer from './MusicPlayer.js';
-import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import HUDController from './HUDController.js';
 import KeyboardController from './KeyboardController.js';
+import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
+import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 
 export default class Spiral {
     constructor(options = {}) {
@@ -66,12 +66,14 @@ export default class Spiral {
         // Hide cursor by default on launch
         this.canvas.style.cursor = 'none';
         this.hud.displayMessage('WELCOME');
-        setTimeout(() => {
-            this.hud.displayMessage('PRESS H FOR HELP');
-        }, 10000);
-        setTimeout(() => {
-            this.hud.displayMessage('TIP: F FOR FULLSCREEN');
-        }, 20000);
+        this._welcomeTimers = [
+            setTimeout(() => {
+                this.hud.displayMessage('PRESS H FOR HELP');
+            }, 10000),
+            setTimeout(() => {
+                this.hud.displayMessage('TIP: F FOR FULLSCREEN');
+            }, 20000),
+        ];
 
         // make algorithms auto-change if not in manual mode
         this.transitionManager.resetAutoChangeTimer();
@@ -168,6 +170,13 @@ export default class Spiral {
         this.canvas.style.width = this.w + 'px';
         this.canvas.style.height = this.h + 'px';
         this.ctx.scale(dpr, dpr);
+    }
+
+    /** Clean up resources before the app closes. */
+    destroy() {
+        this._welcomeTimers.forEach(clearTimeout);
+        this.hud.destroy();
+        this.musicPlayer.destroy();
     }
 
     /**

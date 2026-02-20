@@ -33,6 +33,7 @@ export default class KeyboardController {
     _handleKeyup(e) {
         switch (e.code) {
             case 'Space':
+                e.preventDefault();
                 if (!this._spiral.devMode) {
                     this._transition.changeAlgorithm();
                 }

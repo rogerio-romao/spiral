@@ -20,8 +20,8 @@ export default class SoapyBubbles extends AL {
         this.angle = Math.random() * (Math.PI / 4) + 0.1;
 
         this.velocity = AL.createVector(0, 0);
-        this.velocity.setLength(this.length);
-        this.velocity.setAngle(this.angle);
+        this.velocity.length = this.length;
+        this.velocity.angle = this.angle;
     }
 
     setupConstantStyles() {
@@ -42,8 +42,8 @@ export default class SoapyBubbles extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
             this.ctx.arc(
-                this.position.getX(),
-                this.position.getY(),
+                this.position.x,
+                this.position.y,
                 this.size,
                 0,
                 2 * Math.PI

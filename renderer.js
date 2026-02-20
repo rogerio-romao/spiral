@@ -2,9 +2,11 @@
 import './src/utils/roundRectExtra.js';
 
 import Spiral from './src/Spiral.js';
-import TemplateFrequency from './src/algos/TemplateFrequency.js';
+import SoapyBubbles from './src/algos/SoapyBubbles.js';
 
 const devMode = false;
-const devAlgorithmClass = TemplateFrequency;
+const devAlgorithmClass = SoapyBubbles;
 
-new Spiral({ devMode, devAlgorithmClass });
+const spiral = new Spiral({ devMode, devAlgorithmClass });
+
+window.addEventListener('beforeunload', () => spiral.destroy());

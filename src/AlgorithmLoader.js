@@ -36,7 +36,7 @@ export default class AlgorithmLoader {
         this.h = h;
 
         this.t = 0; // Time variable or frame counter
-        this.interval = null; // To store requestAnimationFrame ID
+        this.animationFrameId = null; // To store requestAnimationFrame ID
         this.speed = AlgorithmLoader.random(2, 6);
         this.stagger = 0; // Used for staggered animations
         this.isRunning = true;
@@ -61,7 +61,7 @@ export default class AlgorithmLoader {
      * stop() can cancel the correct pending frame.
      */
     requestFrame() {
-        this.interval = requestAnimationFrame(this.draw);
+        this.animationFrameId = requestAnimationFrame(this.draw);
     }
 
     clearScreen() {
@@ -97,9 +97,9 @@ export default class AlgorithmLoader {
 
     stop() {
         this.isRunning = false;
-        if (this.interval) {
-            cancelAnimationFrame(this.interval);
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
         }
-        this.interval = null;
+        this.animationFrameId = null;
     }
 }
