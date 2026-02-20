@@ -22,10 +22,10 @@
 
 ## Medium (should fix eventually)
 
-- [ ] [src/MusicPlayer.js:182-186] Memory: `_revokeBlobUrls()` only called on
+- [x] [src/MusicPlayer.js:182-186] Memory: `_revokeBlobUrls()` only called on
       new file selection, not on app close or component destruction
-    - Suggestion: Add a `destroy()` method to clean up blob URLs when the app
-      closes
+    - Fixed: Added `destroy()` methods to MusicPlayer and Spiral, wired to
+      `beforeunload` in renderer.js
 
 - [ ] [src/utils/randomUtils.js:1-3] Code Quality: `random()` returns integer
       but name suggests generic random - inconsistent with `randomRange()` in

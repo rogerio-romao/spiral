@@ -1,10 +1,10 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
-import MusicPlayer from './MusicPlayer.js';
-import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import HUDController from './HUDController.js';
 import KeyboardController from './KeyboardController.js';
+import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
+import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 
 export default class Spiral {
     constructor(options = {}) {
@@ -168,6 +168,11 @@ export default class Spiral {
         this.canvas.style.width = this.w + 'px';
         this.canvas.style.height = this.h + 'px';
         this.ctx.scale(dpr, dpr);
+    }
+
+    /** Clean up resources before the app closes. */
+    destroy() {
+        this.musicPlayer.destroy();
     }
 
     /**

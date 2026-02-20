@@ -7,4 +7,6 @@ import Pulsar from './src/algos/Pulsar.js';
 const devMode = true;
 const devAlgorithmClass = Pulsar;
 
-new Spiral({ devMode, devAlgorithmClass });
+const spiral = new Spiral({ devMode, devAlgorithmClass });
+
+window.addEventListener('beforeunload', () => spiral.destroy());

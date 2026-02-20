@@ -186,6 +186,11 @@ export default class MusicPlayer {
         this.blobUrls = [];
     }
 
+    /** Clean up resources (blob URLs, etc.) on app close. */
+    destroy() {
+        this._revokeBlobUrls();
+    }
+
     /** Toggle player panel visibility. Called by KeyboardController. */
     togglePlayerVisibility() {
         this.playerShow = !this.playerShow;
