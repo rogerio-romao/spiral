@@ -72,7 +72,7 @@
       `requestAnimationFrame` ID, not an interval
     - Suggestion: Rename to `animationFrameId` or `rafId`
 
-- [ ] [src/KeyboardController.js:34] Code Quality: Switch statement missing
+- [x] [src/KeyboardController.js:34] Code Quality: Switch statement missing
       `e.preventDefault()` for Space key which may scroll page
     - Suggestion: Add `e.preventDefault()` for Space case
 
