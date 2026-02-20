@@ -2,9 +2,9 @@
 import './src/utils/roundRectExtra.js';
 
 import Spiral from './src/Spiral.js';
-import TemplateFrequency from './src/algos/TemplateFrequency.js';
+import Pulsar from './src/algos/Pulsar.js';
 
-const devMode = false;
-const devAlgorithmClass = TemplateFrequency;
+const devMode = true;
+const devAlgorithmClass = Pulsar;
 
 new Spiral({ devMode, devAlgorithmClass });

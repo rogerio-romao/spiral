@@ -43,6 +43,7 @@ export default class Particle {
         const dy = p2.y - this.y;
         const dSq = dx * dx + dy * dy;
         const dist = Math.sqrt(dSq);
+        if (dist === 0) return;
         const force = p2.mass / dSq;
         const ax = (dx / dist) * force;
         const ay = (dy / dist) * force;
@@ -82,6 +83,7 @@ export default class Particle {
         const dx = point.x - this.x;
         const dy = point.y - this.y;
         const distance = Math.hypot(dx, dy);
+        if (distance === 0) return;
         const springForce = (distance - length) * k;
         this.vx += (dx / distance) * springForce;
         this.vy += (dy / distance) * springForce;

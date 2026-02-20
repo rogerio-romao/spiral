@@ -58,10 +58,11 @@ export default class Pulsar extends AL {
     }
 
     drawBezier(rot) {
+        this.ctx.save();
         this.ctx.beginPath();
         this.ctx.moveTo(
             this.w / 2 + Math.sin(this.t) * this.pulse1,
-            this.h / 2 + Math.cos(this.t) * this.pulse2
+            this.h / 2 + Math.cos(this.t) * this.pulse2,
         );
         this.ctx.translate(this.w / 2, this.h / 2);
         this.ctx.rotate((rot * Math.PI) / 180);
@@ -71,10 +72,11 @@ export default class Pulsar extends AL {
             this.cp2x - rot,
             this.cp2y - this.pulse2,
             this.x,
-            this.y
+            this.y,
         );
         this.ctx.stroke();
         this.ctx.closePath();
         this.ctx.translate(-this.w / 2, -this.h / 2);
+        this.ctx.restore();
     }
 }
