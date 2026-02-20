@@ -66,12 +66,14 @@ export default class Spiral {
         // Hide cursor by default on launch
         this.canvas.style.cursor = 'none';
         this.hud.displayMessage('WELCOME');
-        setTimeout(() => {
-            this.hud.displayMessage('PRESS H FOR HELP');
-        }, 10000);
-        setTimeout(() => {
-            this.hud.displayMessage('TIP: F FOR FULLSCREEN');
-        }, 20000);
+        this._welcomeTimers = [
+            setTimeout(() => {
+                this.hud.displayMessage('PRESS H FOR HELP');
+            }, 10000),
+            setTimeout(() => {
+                this.hud.displayMessage('TIP: F FOR FULLSCREEN');
+            }, 20000),
+        ];
 
         // make algorithms auto-change if not in manual mode
         this.transitionManager.resetAutoChangeTimer();
@@ -172,6 +174,7 @@ export default class Spiral {
 
     /** Clean up resources before the app closes. */
     destroy() {
+        this._welcomeTimers.forEach(clearTimeout);
         this.musicPlayer.destroy();
     }
 

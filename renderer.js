@@ -4,7 +4,7 @@ import './src/utils/roundRectExtra.js';
 import Spiral from './src/Spiral.js';
 import Pulsar from './src/algos/Pulsar.js';
 
-const devMode = true;
+const devMode = false;
 const devAlgorithmClass = Pulsar;
 
 const spiral = new Spiral({ devMode, devAlgorithmClass });

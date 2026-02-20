@@ -32,15 +32,15 @@
       math.js
     - Suggestion: Rename to `randomInt()` for clarity
 
-- [ ] [src/AlgorithmLoader.js:17] Code Quality: `gsap` referenced as global
+- [x] [src/AlgorithmLoader.js:17] Code Quality: `gsap` referenced as global
       without declaration - relies on script load order
     - Suggestion: Add `/* global gsap */` comment or document the dependency
 
-- [ ] [src/Spiral.js:69-74] Code Quality: Multiple `setTimeout` calls for
+- [x] [src/Spiral.js:69-74] Code Quality: Multiple `setTimeout` calls for
       welcome messages create race conditions if app is closed quickly
     - Suggestion: Store timeout IDs and clear them in a destroy method
 
-- [ ] [src/AlgorithmChooser.js:11-12] Performance: `filter()` + `includes()` is
+- [x] [src/AlgorithmChooser.js:11-12] Performance: `filter()` + `includes()` is
       O(n\*m) each call (m = lastAlgos size up to 50)
     - Suggestion: Use a Set for `lastAlgos` for O(1) lookups
 
