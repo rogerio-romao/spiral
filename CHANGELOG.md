@@ -4,6 +4,7 @@
 
 ## 2026-02-22
 
+- feat: Add playlist accordion with track-jump to music player — current track name and chevron toggle displayed in player bar; clicking chevron opens/closes animated accordion showing full playlist; clicking a track jumps to it with a 200ms delay (debounced)
 - feat: Add elapsed/remaining and total time display to music player progress bar
 - refactor: Extract HUDController, KeyboardController, and TransitionManager
   from Spiral.js — reduce god object from ~375 to ~200 lines by splitting HUD

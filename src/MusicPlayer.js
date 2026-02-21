@@ -21,10 +21,15 @@ export default class MusicPlayer {
         this.progress = document.getElementById('progress-percent');
         this.elapsedEl = document.getElementById('time-elapsed');
         this.totalEl = document.getElementById('time-total');
+        this.trackNameEl = document.getElementById('track-name');
+        this.playlistToggle = document.getElementById('playlist-toggle');
+        this.accordionEl = document.getElementById('playlist-accordion');
 
         // State
         this.playerShow = false;
         this.showRemaining = false;
+        this.playlistOpen = false;
+        this._jumpTimeout = null;
         this.player.style.display = 'none';
         this.trackList = [];
         this.blobUrls = [];
@@ -56,6 +61,9 @@ export default class MusicPlayer {
             this.showRemaining = !this.showRemaining;
             this._displayProgress();
         });
+        this.playlistToggle.addEventListener('click', () =>
+            this._togglePlaylist(),
+        );
     }
 
     /** Process file input and build the playlist. */
@@ -87,6 +95,7 @@ export default class MusicPlayer {
             // Optionally, if you ever use innerHTML or attributes, escape:
             // listItem.innerHTML = htmlEscape(baseName);
             // listItem.setAttribute('data-filename', htmlEscape(files[i].name));
+            listItem.addEventListener('click', () => this.jumpToTrack(i));
             this.playList.appendChild(listItem);
             const blobUrl = window.URL.createObjectURL(files[i]);
             this.trackList.push(blobUrl);
@@ -95,9 +104,11 @@ export default class MusicPlayer {
 
         this.audio.src = this.trackList[this.currentSong];
         this.playlistEls = document.getElementsByClassName('list-item');
-        this.playlistEls[this.currentSong].scrollIntoView();
+        this.playlistEls[this.currentSong].scrollIntoView({ block: 'nearest' });
         this.playlistEls[this.currentSong].style.color =
             'rgba(255, 165, 0, 0.5)';
+        this.playlistToggle.classList.add('visible');
+        this._updateTrackName();
     }
 
     /** Play or pause the current track. */
@@ -215,13 +226,45 @@ export default class MusicPlayer {
     _updatePlaylistStyle() {
         [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
         this.playlistEls[this.currentSong].style.color = 'orange';
-        this.playlistEls[this.currentSong].scrollIntoView();
+        this.playlistEls[this.currentSong].scrollIntoView({ block: 'nearest' });
+        this._updateTrackName();
     }
 
     /** Toggle the play/pause icon SVGs. */
     _setPlayIcon(playing) {
         this.iconPlay.style.display = playing ? 'none' : 'inline';
         this.iconPause.style.display = playing ? 'inline' : 'none';
+    }
+
+    /** Toggle the playlist accordion open/closed. */
+    _togglePlaylist() {
+        this.playlistOpen = !this.playlistOpen;
+        this.accordionEl.classList.toggle('open', this.playlistOpen);
+        this.playlistToggle.classList.toggle('open', this.playlistOpen);
+    }
+
+    /** Update the now-playing track name display. */
+    _updateTrackName() {
+        if (!this.playlistEls) return;
+        this.trackNameEl.textContent =
+            this.playlistEls[this.currentSong]?.textContent ?? '';
+    }
+
+    /** Jump directly to a track and start playback. */
+    jumpToTrack(index) {
+        if (!this.playlistEls || index === this.currentSong) return;
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.progress.value = 0;
+        this.elapsedEl.textContent = '0:00';
+        this.totalEl.textContent = '0:00';
+        this.currentSong = index;
+        this._updatePlaylistStyle();
+        this.audio.src = this.trackList[this.currentSong];
+        this.isPlaying = true;
+        this._setPlayIcon(true);
+        clearTimeout(this._jumpTimeout);
+        this._jumpTimeout = setTimeout(() => this.audio.play(), 200);
     }
 
     /** Revoke all stored blob URLs to free memory. */

@@ -79,7 +79,29 @@
             <div id="picker">
                 <label id="click-label" for="input">Add Track(s)</label>
                 <input type="file" id="input" accept="audio/*" multiple />
-                <ol id="playlist"></ol>
+                <div id="now-playing">
+                    <span id="track-name"></span>
+                    <button
+                        id="playlist-toggle"
+                        aria-label="Toggle playlist"
+                        title="Toggle playlist"
+                    >
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                        >
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="48"
+                                d="M112 184l144 144 144-144"
+                            />
+                        </svg>
+                    </button>
+                </div>
                 <div id="controls">
                     <button
                         id="prev"
@@ -189,7 +211,10 @@
                     </button>
                 </div>
             </div>
-            <div id="progress">
+            <div id="playlist-accordion">
+            <ol id="playlist"></ol>
+        </div>
+        <div id="progress">
                 <span id="time-elapsed" title="Click to toggle remaining time"></span>
                 <progress
                     id="progress-percent"
