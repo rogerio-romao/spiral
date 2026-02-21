@@ -14,7 +14,13 @@ export default class AlgorithmLoader {
 
     static mathUtils = mathUtils;
 
-    static gsap = gsap;
+    /**
+     * Reference to GSAP animation library (global).
+     * This expects GSAP to be loaded globally via <script src="./assets/js/gsap.min.js"></script> in index.html.
+     * If GSAP is not present, this will be null and a warning will be logged.
+     */
+    static gsap =
+        typeof window !== 'undefined' && window.gsap ? window.gsap : null;
 
     static frequencyAnalyser = null;
 

@@ -169,6 +169,8 @@ export default class Spiral {
         this.canvas.height = this.h * dpr;
         this.canvas.style.width = this.w + 'px';
         this.canvas.style.height = this.h + 'px';
+        // Prevent compounding scale transforms
+        this.ctx.resetTransform();
         this.ctx.scale(dpr, dpr);
     }
 
