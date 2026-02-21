@@ -32,12 +32,12 @@
       conditions or stale content. Suggestion: Consider using a single timer for
       each HUD area, resetting/cancelling appropriately before setting a new
       timeout.
-- [ ] [src/Spiral.js:119-132, 204-211] Performance/Simplification: Multiple
+- [x] [src/Spiral.js:119-132, 204-211] Performance/Simplification: Multiple
       debounce timers are used for resizing and devicePixelRatio changes; logic
       is duplicated in window resize and DPR event handlers. Suggestion: Extract
       debounce logic into a utility method to avoid code repetition and
       potential inconsistency.
-- [ ] [src/algos/Wormhole.js:54-55, 56-57] Algorithmic Complexity: Variables
+- [x] [src/algos/Wormhole.js:54-55, 56-57] Algorithmic Complexity: Variables
       (`width`, `height`, `ul`, `ur`) are incremented every frame, potentially
       growing indefinitely and impacting rendering performance or visuals.
       Suggestion: Add limits, recycling, or boundary checks to prevent excessive
@@ -45,25 +45,25 @@
 
 ### Low (nice to have)
 
-- [ ] [src/algos/SoapyBubbles.js:7, src/algos/Wormhole.js:7] Naming: Algorithm
+- [x] [src/algos/SoapyBubbles.js:7, src/algos/Wormhole.js:7] Naming: Algorithm
       classes define a `.name` property, but this is not strictly enforced or
       validated anywhere. Suggestion: Consider defining a convention for
       algorithm metadata (name, description, tags) and validating presence
       automatically.
-- [ ] [src/Spiral.js:68-75] Info: The app displays welcome messages with tips
+- [x] [src/Spiral.js:68-75] Info: The app displays welcome messages with tips
       using timeouts, but these are not internationalized or configurable.
       Suggestion: Move tips/messages to a config or resource file and consider
       internationalization for future flexibility.
 
 ### Info (suggestions/observations)
 
-- [ ] [src/Spiral.js:112-114, src/AlgorithmLoader.js:51-54] Robustness: The
+- [x] [src/Spiral.js:112-114, src/AlgorithmLoader.js:51-54] Robustness: The
       orchestrator recovers gracefully from algorithm errors, auto-switching to
       the next algorithm, minimizing crash risk.
-- [ ] [src/HUDController.js:56-61, 67-71] Simplification: The toggle methods for
+- [x] [src/HUDController.js:56-61, 67-71] Simplification: The toggle methods for
       silent/help are clear and concise. State management is well handled.
-- [ ] [src/AlgorithmLoader.js:34-57] Error Handling: Wrapping the draw loop with
+- [x] [src/AlgorithmLoader.js:34-57] Error Handling: Wrapping the draw loop with
       error catching and dispatching `algorithm-error` is a robust pattern.
-- [ ] [src/algos/*] Naming Consistency: All algorithm classes use PascalCase for
+- [x] [src/algos/*] Naming Consistency: All algorithm classes use PascalCase for
       the class name, and extend the base AlgorithmLoader, following
       conventions.
