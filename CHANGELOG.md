@@ -4,6 +4,7 @@
 
 ## 2026-02-22
 
+- feat: Add elapsed/remaining and total time display to music player progress bar
 - refactor: Extract HUDController, KeyboardController, and TransitionManager
   from Spiral.js — reduce god object from ~375 to ~200 lines by splitting HUD
   overlay, keyboard shortcuts, and algorithm lifecycle into focused modules
