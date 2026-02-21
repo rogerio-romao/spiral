@@ -14,7 +14,13 @@ export default class AlgorithmLoader {
 
     static mathUtils = mathUtils;
 
-    static gsap = gsap;
+    /**
+     * Reference to GSAP animation library (global).
+     * This expects GSAP to be loaded globally via <script src="./assets/js/gsap.min.js"></script> in index.html.
+     * If GSAP is not present, this will be null and a warning will be logged.
+     */
+    static gsap =
+        typeof window !== 'undefined' && window.gsap ? window.gsap : null;
 
     static frequencyAnalyser = null;
 
@@ -90,9 +96,21 @@ export default class AlgorithmLoader {
         this.ctx.translate(-this.w / 2, -this.h / 2);
     }
 
+    /**
+     * Abstract draw method. Must be overridden by subclasses.
+     *
+     * Do NOT call super.draw() in your algorithm. If you see this error,
+     * it means your subclass did not implement draw(), or you called super.draw() by mistake.
+     *
+     * Example:
+     *   class MyAlgo extends AlgorithmLoader {
+     *       draw() {
+     *           // ...your drawing code...
+     *       }
+     *   }
+     */
     draw() {
-        // This method should be overridden by subclasses
-        throw new Error('Draw method must be implemented by subclass');
+        throw new Error('[AlgorithmLoader] draw() must be implemented by subclass. Do NOT call super.draw() in your algorithm.');
     }
 
     stop() {
