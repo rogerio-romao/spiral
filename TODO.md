@@ -21,7 +21,7 @@
 
 ### Medium (should fix eventually)
 
-- [ ] [src/AlgorithmLoader.js:93-96] Simplification: The base `draw()` method
+- [x] [src/AlgorithmLoader.js:93-96] Simplification: The base `draw()` method
       throws a generic error if not implemented. While clear, this pattern could
       cause confusion if subclasses call `super.draw()` by mistake. Suggestion:
       Add explicit documentation for subclassers, and catch this scenario
