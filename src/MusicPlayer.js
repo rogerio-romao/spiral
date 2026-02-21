@@ -60,6 +60,7 @@ export default class MusicPlayer {
         this.trackList = [];
 
         const files = this.input.files;
+        if (!files?.length) return;
         for (let i = 0; i < files.length; i++) {
             const listItem = document.createElement('li');
             listItem.classList.add('list-item');
@@ -154,6 +155,10 @@ export default class MusicPlayer {
 
     /** Update the progress bar based on current playback position. */
     _displayProgress() {
+        if (this.audio.duration === 0) {
+            this.progress.value = 0;
+            return;
+        }
         const currentTime = this.audio.currentTime;
         const progressPercent = (currentTime / this.audio.duration) * 100;
         this.progress.value = Number.isFinite(progressPercent)
