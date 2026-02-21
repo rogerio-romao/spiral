@@ -123,14 +123,8 @@ export default class Spiral {
             this.h = rect.height;
             this._applyDpr();
 
-            // Debounce subsequent restarts during continuous resize
-            if (this.resizeTimeout) {
-                clearTimeout(this.resizeTimeout);
-            }
-            this.resizeTimeout = setTimeout(() => {
-                this.transitionManager.changeAlgorithm();
-                this.resizeTimeout = null;
-            }, 250);
+            // Debounce algorithm restart
+            this._debounceAlgorithmRestart();
         });
 
         // on canvas click, generate a new spiral
@@ -190,6 +184,20 @@ export default class Spiral {
     }
 
     /**
+     * Debounce algorithm restart after resize or DPR change.
+     * Ensures only one restart is pending at a time.
+     */
+    _debounceAlgorithmRestart(delay = 250) {
+        if (this._debounceTimer) {
+            clearTimeout(this._debounceTimer);
+        }
+        this._debounceTimer = setTimeout(() => {
+            this.transitionManager.changeAlgorithm();
+            this._debounceTimer = null;
+        }, delay);
+    }
+
+    /**
      * Watches for devicePixelRatio changes via matchMedia.
      * Re-registers on each change since the media query targets a specific DPR.
      */
@@ -201,17 +209,9 @@ export default class Spiral {
             'change',
             () => {
                 this._applyDpr();
-
                 // Stop current algorithm immediately and debounce restart
                 this.transitionManager.stopCurrentAlgorithm();
-                if (this.resizeTimeout) {
-                    clearTimeout(this.resizeTimeout);
-                }
-                this.resizeTimeout = setTimeout(() => {
-                    this.transitionManager.changeAlgorithm();
-                    this.resizeTimeout = null;
-                }, 250);
-
+                this._debounceAlgorithmRestart();
                 // Re-register for the new DPR value
                 this._watchDprChange();
             },

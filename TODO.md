@@ -26,7 +26,7 @@
       cause confusion if subclasses call `super.draw()` by mistake. Suggestion:
       Add explicit documentation for subclassers, and catch this scenario
       specifically in algorithms to avoid accidental errors.
-- [ ] [src/HUDController.js:29-37, 40-50] Performance: Multiple `setTimeout`
+- [x] [src/HUDController.js:29-37, 40-50] Performance: Multiple `setTimeout`
       timers are managed for HUD updates, but these are not always cleared on
       new messages (`displayMessage`) or algorithm names, risking race
       conditions or stale content. Suggestion: Consider using a single timer for
