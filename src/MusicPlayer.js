@@ -19,9 +19,12 @@ export default class MusicPlayer {
         this.nextBtn = document.getElementById('next');
         this.audio = document.getElementById('audio');
         this.progress = document.getElementById('progress-percent');
+        this.elapsedEl = document.getElementById('time-elapsed');
+        this.totalEl = document.getElementById('time-total');
 
         // State
         this.playerShow = false;
+        this.showRemaining = false;
         this.player.style.display = 'none';
         this.trackList = [];
         this.blobUrls = [];
@@ -39,12 +42,20 @@ export default class MusicPlayer {
         this.stopBtn.addEventListener('click', () => this.stopPlayback());
         this.nextBtn.addEventListener('click', () => this.playNext());
         this.prevBtn.addEventListener('click', () => this.playPrev());
+        this.audio.addEventListener('loadedmetadata', () => {
+            this.totalEl.textContent = this._formatTime(this.audio.duration);
+            this.elapsedEl.textContent = '0:00';
+        });
         this.audio.addEventListener('timeupdate', () =>
             this._displayProgress(),
         );
         this.audio.addEventListener('ended', () => this.playNext());
         this.progress.addEventListener('mousedown', () => this.audio.pause());
         this.progress.addEventListener('mouseup', (e) => this._scrub(e));
+        this.elapsedEl.addEventListener('click', () => {
+            this.showRemaining = !this.showRemaining;
+            this._displayProgress();
+        });
     }
 
     /** Process file input and build the playlist. */
@@ -58,6 +69,9 @@ export default class MusicPlayer {
         // Revoke any existing blob URLs before creating new ones
         this._revokeBlobUrls();
         this.trackList = [];
+
+        this.elapsedEl.textContent = '';
+        this.totalEl.textContent = '';
 
         const files = this.input.files;
         if (!files?.length) return;
@@ -123,6 +137,8 @@ export default class MusicPlayer {
         this.audio.pause();
         this.audio.currentTime = 0;
         this.progress.value = 0;
+        this.elapsedEl.textContent = '0:00';
+        this.totalEl.textContent = '0:00';
         this.currentSong--;
         if (this.currentSong < 0) this.currentSong = this.trackList.length - 1;
         this._updatePlaylistStyle();
@@ -141,6 +157,8 @@ export default class MusicPlayer {
         this.audio.pause();
         this.audio.currentTime = 0;
         this.progress.value = 0;
+        this.elapsedEl.textContent = '0:00';
+        this.totalEl.textContent = '0:00';
         this.currentSong++;
         if (this.currentSong > this.trackList.length - 1) this.currentSong = 0;
         this._updatePlaylistStyle();
@@ -153,17 +171,33 @@ export default class MusicPlayer {
         }
     }
 
-    /** Update the progress bar based on current playback position. */
+    /** Update the progress bar and time displays based on current playback position. */
     _displayProgress() {
         if (this.audio.duration === 0) {
             this.progress.value = 0;
             return;
         }
         const currentTime = this.audio.currentTime;
-        const progressPercent = (currentTime / this.audio.duration) * 100;
+        const duration = this.audio.duration;
+        const progressPercent = (currentTime / duration) * 100;
         this.progress.value = Number.isFinite(progressPercent)
             ? progressPercent.toFixed(2)
             : '0';
+
+        if (this.showRemaining) {
+            this.elapsedEl.textContent = '-' + this._formatTime(duration - currentTime);
+        } else {
+            this.elapsedEl.textContent = this._formatTime(currentTime);
+        }
+        this.totalEl.textContent = this._formatTime(duration);
+    }
+
+    /** Format seconds into M:SS string. */
+    _formatTime(seconds) {
+        if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s.toString().padStart(2, '0')}`;
     }
 
     /** Scrub to clicked position on the progress bar. */
