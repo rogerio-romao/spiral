@@ -4,6 +4,9 @@
 
 ## 2026-02-22
 
+- feat: Add runtime dev mode for algorithm testing — modal with algorithm pair
+  selectors (press E), visual DEV badge, reuses existing interval/manual controls;
+  replaces hardcoded dev mode in renderer.js
 - feat: Add playlist accordion with track-jump to music player — current track name and chevron toggle displayed in player bar; clicking chevron opens/closes animated accordion showing full playlist; clicking a track jumps to it with a 200ms delay (debounced)
 - feat: Add elapsed/remaining and total time display to music player progress bar
 - refactor: Extract HUDController, KeyboardController, and TransitionManager

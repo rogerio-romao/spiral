@@ -13,8 +13,6 @@ export default class TransitionManager {
      * @param {AlgorithmChooser}         deps.algorithmChooser
      * @param {HUDController}            deps.hud
      * @param {Function}                 deps.getDimensions  - Returns { w, h }
-     * @param {boolean}                  deps.devMode
-     * @param {Function|null}            deps.devAlgorithmClass
      */
     constructor({
         canvas,
@@ -23,8 +21,6 @@ export default class TransitionManager {
         algorithmChooser,
         hud,
         getDimensions,
-        devMode,
-        devAlgorithmClass,
     }) {
         this._canvas = canvas;
         this._ctx = ctx;
@@ -32,8 +28,6 @@ export default class TransitionManager {
         this._algorithmChooser = algorithmChooser;
         this._hud = hud;
         this._getDimensions = getDimensions;
-        this._devMode = devMode;
-        this._devAlgorithmClass = devAlgorithmClass;
 
         this._currentAlgorithm = null;
         this._regen = null;
@@ -41,6 +35,11 @@ export default class TransitionManager {
         this._manual = false;
         this._isTransitioning = false;
         this._algoRetries = 0;
+
+        this._devModeActive = false;
+        this._devModeAlgoA = null;
+        this._devModeAlgoB = null;
+        this._devModeAlternator = 0;
     }
 
     /** The currently running algorithm instance (read-only). */
@@ -81,7 +80,7 @@ export default class TransitionManager {
         clearInterval(this._regen);
         this._regen = null;
 
-        if (!this._manual && !this._devMode) {
+        if (!this._manual) {
             this._regen = setInterval(() => {
                 this.changeAlgorithm();
             }, this._autoChange * 1000);
@@ -90,7 +89,6 @@ export default class TransitionManager {
 
     /** Trigger a full algorithm transition. */
     changeAlgorithm() {
-        if (this._devMode) return;
         if (this._isTransitioning) return;
         this._isTransitioning = true;
 
@@ -192,18 +190,15 @@ export default class TransitionManager {
     /** Pick a random algorithm, instantiate it, handle errors with retry. */
     _chooseAlgos() {
         const { w, h } = this._getDimensions();
-        let AlgorithmClass = this._algorithmChooser.getRandomAlgorithm();
+        let AlgorithmClass;
 
-        if (this._devMode) {
-            if (
-                !this._devAlgorithmClass ||
-                typeof this._devAlgorithmClass !== 'function'
-            ) {
-                throw new Error(
-                    'Dev mode enabled but no devAlgorithmClass provided.',
-                );
-            }
-            AlgorithmClass = this._devAlgorithmClass;
+        if (this._devModeActive) {
+            const isSlotA = this._devModeAlternator === 0;
+            this._devModeAlternator = 1 - this._devModeAlternator;
+            const algoChoice = isSlotA ? this._devModeAlgoA : this._devModeAlgoB;
+            AlgorithmClass = algoChoice || this._algorithmChooser.getRandomAlgorithm();
+        } else {
+            AlgorithmClass = this._algorithmChooser.getRandomAlgorithm();
         }
 
         try {
@@ -217,8 +212,6 @@ export default class TransitionManager {
             );
             this._algoRetries++;
             if (this._algoRetries < 3) {
-                // Retry directly (not via changeAlgorithm which has
-                // the _isTransitioning guard active during this call)
                 this._chooseAlgos();
             } else {
                 console.error(
@@ -227,5 +220,17 @@ export default class TransitionManager {
                 this._algoRetries = 0;
             }
         }
+    }
+
+    /** Enable or disable dev mode. */
+    setDevModeActive(active) {
+        this._devModeActive = active;
+        this._devModeAlternator = 0;
+    }
+
+    /** Set the algorithms for dev mode (null = random). */
+    setDevModeAlgos(algoA, algoB) {
+        this._devModeAlgoA = algoA;
+        this._devModeAlgoB = algoB;
     }
 }

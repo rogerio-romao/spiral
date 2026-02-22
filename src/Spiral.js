@@ -1,5 +1,6 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
+import DevModeController from './DevModeController.js';
 import HUDController from './HUDController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
@@ -7,31 +8,22 @@ import TransitionManager from './TransitionManager.js';
 import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 
 export default class Spiral {
-    constructor(options = {}) {
-        // Setup canvas
+    constructor() {
         this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
         this.w = window.innerWidth;
         this.h = window.innerHeight;
         this._applyDpr();
 
-        this.devMode = options.devMode === true;
-        this.devAlgorithmClass = options.devAlgorithmClass || null;
-
-        // Algorithm loader instance
         this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
-
-        // Algorithm chooser instance
         this.algorithmChooser = new AlgorithmChooser();
 
-        // HUD controller
         this.hud = new HUDController({
             messageElement: document.querySelector('#msg'),
             algosDisplayElement: document.querySelector('#algos'),
             helpElement: document.querySelector('#help'),
         });
 
-        // Transition manager
         this.transitionManager = new TransitionManager({
             canvas: this.canvas,
             ctx: this.ctx,
@@ -39,23 +31,19 @@ export default class Spiral {
             algorithmChooser: this.algorithmChooser,
             hud: this.hud,
             getDimensions: () => ({ w: this.w, h: this.h }),
-            devMode: this.devMode,
-            devAlgorithmClass: this.devAlgorithmClass,
         });
 
-        // Music player and frequency analyser — deferred to init()
+        this.devModeController = new DevModeController({
+            transitionManager: this.transitionManager,
+            hud: this.hud,
+        });
+
         this.musicPlayer = null;
         this.frequencyAnalyser = null;
-
-        // Keyboard controller — deferred to init() (needs musicPlayer)
         this.keyboardController = null;
-
-        // Cursor hide timeout ID for debouncing
         this.cursorHideTimeout = null;
-        // Resize debounce timeout ID
         this.resizeTimeout = null;
 
-        // Initialize the application
         this.init();
     }
 
@@ -102,7 +90,7 @@ export default class Spiral {
             hud: this.hud,
             transition: this.transitionManager,
             musicPlayer: this.musicPlayer,
-            spiral: this,
+            devModeController: this.devModeController,
         });
         this.keyboardController.bind();
     }
@@ -173,8 +161,8 @@ export default class Spiral {
         this._welcomeTimers.forEach(clearTimeout);
         this.hud.destroy();
         this.musicPlayer.destroy();
+        this.devModeController.destroy();
 
-        // clear pending timeouts created by Spiral (cursor hide + resize debounce)
         if (this.cursorHideTimeout) {
             clearTimeout(this.cursorHideTimeout);
         }
