@@ -10,7 +10,6 @@ import AngelHair from '../algos/AngelHair.js';
 import Aperture from '../algos/Aperture.js';
 import Atom from '../algos/Atom.js';
 import Autumn from '../algos/Autumn.js';
-import BeziersStraight from '../algos/BeziersStraight.js';
 import BigBangs from '../algos/BigBangs.js';
 import BlacknWhite from '../algos/BlacknWhite.js';
 import Blends from '../algos/Blends.js';
@@ -153,7 +152,6 @@ export const algorithms = [
     Aperture,
     Atom,
     Autumn,
-    BeziersStraight,
     BigBangs,
     BlacknWhite,
     Blends,

@@ -25,7 +25,7 @@ export default class ChalkGalaxy extends AL {
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(150, 255, 0.25, 0.25);
-        this.ctx.font = `${AL.random(100, 500)}px bold`;
+        this.ctx.font = `${AL.random(100, 700)}px bold`;
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
         this.ctx.fillRect(0, 0, this.w, this.h);
     }
@@ -51,7 +51,7 @@ export default class ChalkGalaxy extends AL {
 
         if (this.t % (this.speed * 1000) === 0) {
             this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+                AL.pickRandomElement(this.letters),
             );
         }
 

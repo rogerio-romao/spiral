@@ -142,7 +142,7 @@ export default class TransitionManager {
         ctx.globalCompositeOperation = 'source-over';
 
         // Fill canvas with background using physical pixel dimensions
-        ctx.fillStyle = '#191919';
+        ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Reapply DPR scale so the next algorithm draws in CSS pixels
@@ -195,8 +195,11 @@ export default class TransitionManager {
         if (this._devModeActive) {
             const isSlotA = this._devModeAlternator === 0;
             this._devModeAlternator = 1 - this._devModeAlternator;
-            const algoChoice = isSlotA ? this._devModeAlgoA : this._devModeAlgoB;
-            AlgorithmClass = algoChoice || this._algorithmChooser.getRandomAlgorithm();
+            const algoChoice = isSlotA
+                ? this._devModeAlgoA
+                : this._devModeAlgoB;
+            AlgorithmClass =
+                algoChoice || this._algorithmChooser.getRandomAlgorithm();
         } else {
             AlgorithmClass = this._algorithmChooser.getRandomAlgorithm();
         }
