@@ -16,6 +16,8 @@ export default class KeyboardController {
         this._musicPlayer = musicPlayer;
         this._devModeController = devModeController;
 
+        // Only enable dev mode shortcut if allowed
+        this._isDev = window.env?.isDev;
         this._handler = (e) => this._handleKeyup(e);
     }
 
@@ -84,7 +86,9 @@ export default class KeyboardController {
                 break;
 
             case 'KeyE':
-                this._devModeController.toggle();
+                if (this._isDev) {
+                    this._devModeController.toggle();
+                }
                 break;
 
             default:

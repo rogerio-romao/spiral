@@ -4,11 +4,19 @@
 
 ## 2026-02-22
 
+- fix: Restrict Dev Mode (algorithm test modal, badge, and shortcut) to
+  development only — all Dev Mode UI and logic are now inaccessible in
+  production builds; enforced via environment flag and renderer checks
+
 - feat: Add runtime dev mode for algorithm testing — modal with algorithm pair
-  selectors (press E), visual DEV badge, reuses existing interval/manual controls;
-  replaces hardcoded dev mode in renderer.js
-- feat: Add playlist accordion with track-jump to music player — current track name and chevron toggle displayed in player bar; clicking chevron opens/closes animated accordion showing full playlist; clicking a track jumps to it with a 200ms delay (debounced)
-- feat: Add elapsed/remaining and total time display to music player progress bar
+  selectors (press E), visual DEV badge, reuses existing interval/manual
+  controls; replaces hardcoded dev mode in renderer.js
+- feat: Add playlist accordion with track-jump to music player — current track
+  name and chevron toggle displayed in player bar; clicking chevron opens/closes
+  animated accordion showing full playlist; clicking a track jumps to it with a
+  200ms delay (debounced)
+- feat: Add elapsed/remaining and total time display to music player progress
+  bar
 - refactor: Extract HUDController, KeyboardController, and TransitionManager
   from Spiral.js — reduce god object from ~375 to ~200 lines by splitting HUD
   overlay, keyboard shortcuts, and algorithm lifecycle into focused modules
@@ -17,9 +25,9 @@
   miterLimit, imageSmoothingEnabled, direction) to prevent state leakage
 - fix: Add re-entrancy guard to algorithm transitions — prevent overlapping
   transitions from rapid input or timer races
-- refactor: Centralize all keyboard shortcuts in KeyboardController — consolidate
-  handlers from Spiral.js and MusicPlayer.js into single module with destroy()
-  cleanup
+- refactor: Centralize all keyboard shortcuts in KeyboardController —
+  consolidate handlers from Spiral.js and MusicPlayer.js into single module with
+  destroy() cleanup
 
 ## 2026-02-19
 
@@ -34,8 +42,9 @@
   add aria-label and title attributes for screen reader support
 - refactor: Replace canvas.click() with direct method calls — decouple algorithm
   transition logic from DOM events by extracting changeAlgorithm() method
-- refactor: Deduplicate stopCurrentAlgorithm() calls — remove redundant calls from
-  clearMethod() and chooseAlgos(), keeping only the call in changeAlgorithm()
+- refactor: Deduplicate stopCurrentAlgorithm() calls — remove redundant calls
+  from clearMethod() and chooseAlgos(), keeping only the call in
+  changeAlgorithm()
 - refactor: Consolidate duplicate random/randomColor implementations — make
   AlgorithmLoader delegate to randomUtils.js for single source of truth
 

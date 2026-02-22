@@ -5,6 +5,7 @@ export default class DevModeController {
         this._transitionManager = transitionManager;
         this._hud = hud;
 
+        this._isDev = window.env?.isDev;
         this._modal = document.querySelector('#dev-mode');
         this._enableCheckbox = document.querySelector('#dev-enable');
         this._algoASelect = document.querySelector('#dev-algo-a');
@@ -15,17 +16,26 @@ export default class DevModeController {
         this._algoA = null;
         this._algoB = null;
 
-        this._onEnableChangeHandler = (e) => this._onEnableChange(e.target.checked);
-        this._onAlgoAChangeHandler = (e) => this._onAlgoChange('A', e.target.value);
-        this._onAlgoBChangeHandler = (e) => this._onAlgoChange('B', e.target.value);
+        this._onEnableChangeHandler = (e) =>
+            this._onEnableChange(e.target.checked);
+        this._onAlgoAChangeHandler = (e) =>
+            this._onAlgoChange('A', e.target.value);
+        this._onAlgoBChangeHandler = (e) =>
+            this._onAlgoChange('B', e.target.value);
 
-        this._populateSelects();
-        this._bindEvents();
+        if (this._isDev) {
+            this._populateSelects();
+            this._bindEvents();
+        } else {
+            // Hide modal and badge in production
+            if (this._modal) this._modal.style.display = 'none';
+            if (this._badge) this._badge.style.display = 'none';
+        }
     }
 
     _populateSelects() {
         const fragment = document.createDocumentFragment();
-        
+
         algorithms.forEach((AlgoClass, index) => {
             const option = document.createElement('option');
             option.value = index;
@@ -38,9 +48,18 @@ export default class DevModeController {
     }
 
     _bindEvents() {
-        this._enableCheckbox.addEventListener('change', this._onEnableChangeHandler);
-        this._algoASelect.addEventListener('change', this._onAlgoAChangeHandler);
-        this._algoBSelect.addEventListener('change', this._onAlgoBChangeHandler);
+        this._enableCheckbox.addEventListener(
+            'change',
+            this._onEnableChangeHandler,
+        );
+        this._algoASelect.addEventListener(
+            'change',
+            this._onAlgoAChangeHandler,
+        );
+        this._algoBSelect.addEventListener(
+            'change',
+            this._onAlgoBChangeHandler,
+        );
     }
 
     toggle() {
@@ -62,7 +81,7 @@ export default class DevModeController {
     _onEnableChange(enabled) {
         this._active = enabled;
         this._transitionManager.setDevModeActive(enabled);
-        
+
         if (enabled) {
             this._updateAlgos();
             this._badge.style.display = 'block';
@@ -90,8 +109,17 @@ export default class DevModeController {
     }
 
     destroy() {
-        this._enableCheckbox.removeEventListener('change', this._onEnableChangeHandler);
-        this._algoASelect.removeEventListener('change', this._onAlgoAChangeHandler);
-        this._algoBSelect.removeEventListener('change', this._onAlgoBChangeHandler);
+        this._enableCheckbox.removeEventListener(
+            'change',
+            this._onEnableChangeHandler,
+        );
+        this._algoASelect.removeEventListener(
+            'change',
+            this._onAlgoAChangeHandler,
+        );
+        this._algoBSelect.removeEventListener(
+            'change',
+            this._onAlgoBChangeHandler,
+        );
     }
 }
