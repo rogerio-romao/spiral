@@ -19,14 +19,14 @@ export default class DysonSpheres extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowBlur = 11;
+        this.ctx.shadowBlur = 20;
         this.ctx.shadowOffsetX = 1;
         this.ctx.shadowOffsetY = 1;
         this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
             5,
             255,
             0.33,
-            0.33
+            0.33,
         );
     }
 
@@ -39,7 +39,7 @@ export default class DysonSpheres extends AL {
                 this.height,
                 this.rotate,
                 0,
-                0
+                0,
             );
             this.ctx.stroke();
         }
@@ -51,22 +51,22 @@ export default class DysonSpheres extends AL {
 
             const color = Math.random();
             if (color < 0.2) {
-                this.ctx.shadowBlur = 1;
+                this.ctx.shadowBlur = 10;
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
                 this.ctx.shadowColor = this.ctx.strokeStyle = 'black';
             } else if (color < 0.4) {
-                this.ctx.shadowBlur = 1;
+                this.ctx.shadowBlur = 10;
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
                 this.ctx.shadowColor = this.ctx.strokeStyle = 'white';
             } else {
-                this.ctx.shadowBlur = 11;
+                this.ctx.shadowBlur = 20;
                 this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
                     5,
                     255,
                     0.33,
-                    0.33
+                    0.33,
                 );
             }
 

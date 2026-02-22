@@ -22,9 +22,6 @@ export default class Dotted extends AL {
     }
 
     setupDrawingStyles() {
-        // clear the background to enable the overlay effect
-        this.ctx.clearRect(0, 0, this.w, this.h);
-
         this.ctx.strokeStyle = AL.randomColor(5, 255, 0.75, 0.75);
         this.ctx.fillStyle = AL.randomColor(5, 255, 0.015, 0.015);
         this.ctx.globalCompositeOperation = 'overlay';

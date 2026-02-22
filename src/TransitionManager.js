@@ -141,9 +141,8 @@ export default class TransitionManager {
         ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = 'source-over';
 
-        // Fill canvas with background using physical pixel dimensions
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Clear the canvas using physical pixel dimensions
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Reapply DPR scale so the next algorithm draws in CSS pixels
         ctx.scale(dpr, dpr);

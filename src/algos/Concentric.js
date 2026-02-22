@@ -36,11 +36,7 @@ export default class Concentric extends AL {
     }
 
     setupConstantStyles() {
-        // fill the canvas with off-black so that the 'soft-light' composite mode has something to work with
-        this.ctx.fillStyle = '#191919';
-        this.ctx.fillRect(0, 0, this.w, this.h);
         this.ctx.globalCompositeOperation = 'soft-light';
-
         this.ctx.textAlign = 'center';
         this.ctx.shadowBlur = 7;
         this.ctx.lineWidth = 5;

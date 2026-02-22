@@ -29,7 +29,7 @@ export default class Dye extends AL {
 
     initializeProperties() {
         this.text = String.fromCharCode(
-            AL.pickRandomElement(this.letters)
+            AL.pickRandomElement(this.letters),
         ).padStart(30, ' ');
 
         this.line1 = { width: 1 };
@@ -45,6 +45,7 @@ export default class Dye extends AL {
     }
 
     setupConstantStyles() {
+        // this.ctx.clearRect(0, 0, this.w, this.h);
         this.ctx.globalCompositeOperation = 'soft-light';
     }
 
@@ -63,12 +64,12 @@ export default class Dye extends AL {
                 this.ctx.fillText(
                     this.text,
                     i + this.offsetX,
-                    j + this.offsetY
+                    j + this.offsetY,
                 );
                 this.ctx.strokeText(
                     this.text,
                     i + this.offsetX,
-                    j + this.offsetY
+                    j + this.offsetY,
                 );
             }
         }
@@ -107,7 +108,7 @@ export default class Dye extends AL {
                     onUpdate: () =>
                         (this.ctx.font = `${this.font1.size}px bold serif`),
                 },
-                '<'
+                '<',
             )
             .to(
                 this.color1,
@@ -116,7 +117,7 @@ export default class Dye extends AL {
                     color: this.color3.color,
                     onUpdate: () => (this.ctx.strokeStyle = this.color1.color),
                 },
-                '<'
+                '<',
             )
             .to(
                 this.color2,
@@ -125,7 +126,7 @@ export default class Dye extends AL {
                     color: this.color1.color,
                     onUpdate: () => (this.ctx.fillStyle = this.color2.color),
                 },
-                '<'
+                '<',
             )
             .to(
                 this.line1,
@@ -134,7 +135,7 @@ export default class Dye extends AL {
                     width: this.line2.width,
                     onUpdate: () => (this.ctx.lineWidth = this.line1.width),
                 },
-                '<'
+                '<',
             );
     }
 }
