@@ -15,16 +15,16 @@ export default class Encoded extends AL {
     }
 
     initializeBaseProperties() {
-        this.angles = [10, 12, 15, 18, 20, 24, 36, 45, 72];
+        this.angles = [10, 12, 15, 18, 20, 24, 32, 45, 72];
         this.angle = AL.pickRandomElement(this.angles);
         this.letters = ['S', 'P', 'I', 'R', 'A', 'L'];
     }
 
     initializeProperties() {
         this.letter = AL.pickRandomElement(this.letters);
-        this.size = AL.random(100, 400);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.size = AL.random(100, 340);
+        this.x = AL.random(this.size / 2, this.w - this.size / 2);
+        this.y = AL.random(this.size / 2, this.h - this.size / 2);
     }
 
     setupConstantStyles() {
@@ -39,7 +39,7 @@ export default class Encoded extends AL {
             30,
             255,
             0.2,
-            0.6
+            0.6,
         );
     }
 
