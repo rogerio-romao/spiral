@@ -6,7 +6,8 @@
     "scripts": {
         "generate:algos": "node scripts/generate-algorithm-registry.mjs",
         "prestart": "pnpm generate:algos",
-        "start": "electron ."
+        "start": "NODE_ENV=development electron .",
+        "start:prod": "NODE_ENV=production electron ."
     },
     "keywords": [
         "music",

@@ -25,14 +25,14 @@ See [WORKFLOW.md](WORKFLOW.md) for the complete workflow and decision points.
 
 ## Tech Stack
 
-| Layer           | Technology        | Notes                                        |
-| --------------- | ----------------- | -------------------------------------------- |
-| Desktop shell   | Electron v40      | ESM (`"type": "module"`)                     |
-| Rendering       | HTML5 Canvas 2D   | No WebGL                                     |
-| Animation lib   | GSAP              | Loaded from `assets/js/gsap.min.js`, not npm |
-| Fonts           | DM Mono, Oswald   | Custom TTFs in `assets/fonts/`               |
-| Package manager | pnpm              | Required — do not use npm/yarn               |
-| Packaging       | @electron/packager | Dev dependency                              |
+| Layer           | Technology         | Notes                                        |
+| --------------- | ------------------ | -------------------------------------------- |
+| Desktop shell   | Electron v40       | ESM (`"type": "module"`)                     |
+| Rendering       | HTML5 Canvas 2D    | No WebGL                                     |
+| Animation lib   | GSAP               | Loaded from `assets/js/gsap.min.js`, not npm |
+| Fonts           | DM Mono, Oswald    | Custom TTFs in `assets/fonts/`               |
+| Package manager | pnpm               | Required — do not use npm/yarn               |
+| Packaging       | @electron/packager | Dev dependency                               |
 
 No TypeScript. No bundler. No test framework. No linter/formatter config.
 
@@ -80,26 +80,26 @@ assets/
 
 ## File Structure Map
 
-| Path                      | Purpose                                                                                  |
-| ------------------------- | ---------------------------------------------------------------------------------------- |
-| `main.js`                 | Electron main process entry                                                              |
-| `preload.js`              | Context bridge, version injection                                                        |
-| `renderer.js`             | Renderer entry: imports polyfills, instantiates Spiral                                   |
-| `index.html`              | DOM structure: canvas, HUD, player controls, dev mode modal                              |
-| `style.css`               | All styles                                                                               |
-| `src/Spiral.js`              | Orchestrator — canvas, DPR, resize, cursor; wires all modules                         |
-| `src/HUDController.js`      | HUD overlay — messages, algorithm name, silent mode, help toggle                      |
-| `src/KeyboardController.js` | Centralized keyboard shortcuts (Space, F, I, D, M, S, H, P, E)                        |
-| `src/TransitionManager.js`  | Algorithm lifecycle, canvas context reset, auto-change timer, dev mode cycling        |
-| `src/DevModeController.js`  | Dev mode modal — algorithm pair selection for testing transitions                      |
-| `src/MusicPlayer.js`        | Audio playback, playlist, progress bar                                                |
-| `src/AlgorithmChooser.js`   | Algorithm registry and random picker                                                  |
-| `src/AlgorithmLoader.js`    | Base class for algorithms                                                             |
-| `src/algos/*.js`          | Individual algorithm classes (141 files)                                                 |
-| `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill, FrequencyAnalyser) |
-| `src/generated/`          | Auto-generated algorithm registry (algorithmRegistry.js)                                 |
-| `assets/js/`              | GSAP (loaded globally, not via npm)                                                      |
-| `assets/fonts/`           | Custom font files                                                                        |
+| Path                        | Purpose                                                                                                              |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `main.js`                   | Electron main process entry                                                                                          |
+| `preload.js`                | Context bridge, version injection                                                                                    |
+| `renderer.js`               | Renderer entry: imports polyfills, instantiates Spiral                                                               |
+| `index.html`                | DOM structure: canvas, HUD, player controls, dev mode modal                                                          |
+| `style.css`                 | All styles                                                                                                           |
+| `src/Spiral.js`             | Orchestrator — canvas, DPR, resize, cursor; wires all modules                                                        |
+| `src/HUDController.js`      | HUD overlay — messages, algorithm name, silent mode, help toggle                                                     |
+| `src/KeyboardController.js` | Centralized keyboard shortcuts (Space, F, I, D, M, S, H, P, E)                                                       |
+| `src/TransitionManager.js`  | Algorithm lifecycle, canvas context reset, auto-change timer, dev mode cycling                                       |
+| `src/DevModeController.js`  | Dev mode modal — algorithm pair selection for testing transitions (**hidden and inaccessible in production builds**) |
+| `src/MusicPlayer.js`        | Audio playback, playlist, progress bar                                                                               |
+| `src/AlgorithmChooser.js`   | Algorithm registry and random picker                                                                                 |
+| `src/AlgorithmLoader.js`    | Base class for algorithms                                                                                            |
+| `src/algos/*.js`            | Individual algorithm classes (141 files)                                                                             |
+| `src/utils/*.js`            | Shared utilities (Vector, Particle, math, random, roundRect polyfill, FrequencyAnalyser)                             |
+| `src/generated/`            | Auto-generated algorithm registry (algorithmRegistry.js)                                                             |
+| `assets/js/`                | GSAP (loaded globally, not via npm)                                                                                  |
+| `assets/fonts/`             | Custom font files                                                                                                    |
 
 ## Code Conventions
 
@@ -169,7 +169,8 @@ assets/
 - All keyboard shortcuts are centralized in `KeyboardController.js` — modify
   shortcuts there (Space, F, I, D, M, S, H, P, E)
 - Dev mode (press E) allows testing algorithm transitions — it cycles between
-  two selectable algorithms (or random) and reuses the same interval/manual controls
+  two selectable algorithms (or random) and reuses the same interval/manual
+  controls. **Dev mode is hidden and inaccessible in production builds.**
 - GSAP is **global** (`window.gsap`) from the vendored file — `AlgorithmLoader`
   exposes it as a static ref
 - `FrequencyAnalyser` is instantiated once in `Spiral.js` init —
