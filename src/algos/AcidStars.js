@@ -27,10 +27,10 @@ export default class AcidStars extends AL {
     }
 
     initializeProperties() {
-        this.fontSize = AL.random(12, 20);
-        this.change = this.side / 1.618;
-        this.side = AL.random(30, 300);
         this.rotate = AL.random(2, 44);
+        this.side = AL.random(30, 300);
+        this.change = this.side / 1.618;
+        this.fontSize = AL.random(14, 20);
     }
 
     setupConstantStyles() {
@@ -50,7 +50,7 @@ export default class AcidStars extends AL {
                 this.ctx.fillText(
                     this.letter,
                     this.w / 2 + this.side / 2,
-                    this.h / 2
+                    this.h / 2,
                 );
                 this.ctx.stroke();
             }
@@ -59,7 +59,7 @@ export default class AcidStars extends AL {
                 this.ctx.fillText(
                     this.letter,
                     this.w / 2,
-                    this.h / 2 - this.side / 2
+                    this.h / 2 - this.side / 2,
                 );
             }
 
@@ -69,7 +69,7 @@ export default class AcidStars extends AL {
                 this.ctx.fillText(
                     this.letter,
                     this.w / 2 - this.side / 2,
-                    this.h / 2
+                    this.h / 2,
                 );
                 this.ctx.stroke();
                 this.ctx.translate(-this.w / 2, -this.h / 2);
@@ -93,7 +93,7 @@ export default class AcidStars extends AL {
 
         if (this.t % (this.speed * 720) === 0) {
             this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+                AL.pickRandomElement(this.letters),
             );
         }
 
