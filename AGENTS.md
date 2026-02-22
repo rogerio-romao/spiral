@@ -3,7 +3,7 @@
 ## Project Overview
 
 Electron desktop music player with a generative art visualizer. Renders
-procedural animations on an HTML5 Canvas 2D while audio plays. 142
+procedural animations on an HTML5 Canvas 2D while audio plays. Dozens of
 self-contained algorithm classes produce distinct visual patterns that
 auto-cycle or can be manually triggered. No bundler — ES modules run directly in
 Electron.
@@ -54,7 +54,7 @@ src/
   MusicPlayer.js       Audio playback, playlist management, progress bar
   AlgorithmChooser.js  Static imports of all 141 algos, random selection (avoids last 50)
   AlgorithmLoader.js   Base class for all algorithms (draw loop, helpers, stop/start)
-  algos/               141 self-contained algorithm classes (one per file)
+  algos/               self-contained algorithm classes (one per file)
   utils/
     Vector.js          2D vector (add, subtract, multiply, divide, angle, length)
     Particle.js        Physics particle (position, velocity, gravity, springs, friction, bounce)
