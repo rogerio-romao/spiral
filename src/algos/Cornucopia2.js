@@ -29,6 +29,11 @@ export default class Cornucopia2 extends AL {
     }
 
     setupDrawingStyles() {
+        this.ctx.setLineDash([
+            AL.random(2, 20),
+            AL.random(5, 25),
+            AL.random(0, 30),
+        ]);
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
         this.ctx.fillStyle = AL.randomColor();
     }
@@ -58,9 +63,9 @@ export default class Cornucopia2 extends AL {
 
         this.t++;
 
-        this.rotateCanvasRadians(this.rotate);
+        this.rotateCanvasDegrees(this.rotate);
 
-        if (this.t % (this.speed * 450) === 0) {
+        if (this.t % (this.speed * 300) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
         }
