@@ -8,13 +8,13 @@ export default class KeyboardController {
      * @param {HUDController}     deps.hud
      * @param {TransitionManager} deps.transition
      * @param {MusicPlayer}       deps.musicPlayer
-     * @param {Object}            deps.spiral - Spiral instance (for devMode)
+     * @param {DevModeController} deps.devModeController
      */
-    constructor({ hud, transition, musicPlayer, spiral }) {
+    constructor({ hud, transition, musicPlayer, devModeController }) {
         this._hud = hud;
         this._transition = transition;
         this._musicPlayer = musicPlayer;
-        this._spiral = spiral;
+        this._devModeController = devModeController;
 
         this._handler = (e) => this._handleKeyup(e);
     }
@@ -34,9 +34,7 @@ export default class KeyboardController {
         switch (e.code) {
             case 'Space':
                 e.preventDefault();
-                if (!this._spiral.devMode) {
-                    this._transition.changeAlgorithm();
-                }
+                this._transition.changeAlgorithm();
                 break;
 
             case 'KeyF':
@@ -44,7 +42,6 @@ export default class KeyboardController {
                 break;
 
             case 'KeyI':
-                if (this._spiral.devMode) break;
                 this._transition.autoChange = Math.min(
                     this._transition.autoChange + 10,
                     300,
@@ -55,7 +52,6 @@ export default class KeyboardController {
                 break;
 
             case 'KeyD':
-                if (this._spiral.devMode) break;
                 this._transition.autoChange = Math.max(
                     this._transition.autoChange - 10,
                     10,
@@ -66,7 +62,6 @@ export default class KeyboardController {
                 break;
 
             case 'KeyM':
-                if (this._spiral.devMode) break;
                 this._transition.manual = !this._transition.manual;
                 this._hud.displayMessage(
                     this._transition.manual ? 'Manual mode' : 'Auto mode',
@@ -86,6 +81,10 @@ export default class KeyboardController {
 
             case 'KeyP':
                 this._musicPlayer.togglePlayerVisibility();
+                break;
+
+            case 'KeyE':
+                this._devModeController.toggle();
                 break;
 
             default:

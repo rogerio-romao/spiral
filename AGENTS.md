@@ -50,10 +50,11 @@ src/
   KeyboardController.js  Centralized keyboard shortcuts (all keys in one handler)
   TransitionManager.js   Algorithm lifecycle, canvas context reset, auto-change timer,
                            one-algorithm-at-a-time guarantee
+  DevModeController.js   Dev mode modal — algorithm pair selection for testing transitions
   MusicPlayer.js       Audio playback, playlist management, progress bar
-  AlgorithmChooser.js  Static imports of all 142 algos, random selection (avoids last 50)
+  AlgorithmChooser.js  Static imports of all 141 algos, random selection (avoids last 50)
   AlgorithmLoader.js   Base class for all algorithms (draw loop, helpers, stop/start)
-  algos/               142 self-contained algorithm classes (one per file)
+  algos/               141 self-contained algorithm classes (one per file)
   utils/
     Vector.js          2D vector (add, subtract, multiply, divide, angle, length)
     Particle.js        Physics particle (position, velocity, gravity, springs, friction, bounce)
@@ -84,17 +85,19 @@ assets/
 | `main.js`                 | Electron main process entry                                                              |
 | `preload.js`              | Context bridge, version injection                                                        |
 | `renderer.js`             | Renderer entry: imports polyfills, instantiates Spiral                                   |
-| `index.html`              | DOM structure: canvas, HUD, player controls                                              |
+| `index.html`              | DOM structure: canvas, HUD, player controls, dev mode modal                              |
 | `style.css`               | All styles                                                                               |
 | `src/Spiral.js`              | Orchestrator — canvas, DPR, resize, cursor; wires all modules                         |
 | `src/HUDController.js`      | HUD overlay — messages, algorithm name, silent mode, help toggle                      |
-| `src/KeyboardController.js` | Centralized keyboard shortcuts (Space, F, I, D, M, S, H, P)                          |
-| `src/TransitionManager.js`  | Algorithm lifecycle, canvas context reset, auto-change timer                          |
+| `src/KeyboardController.js` | Centralized keyboard shortcuts (Space, F, I, D, M, S, H, P, E)                        |
+| `src/TransitionManager.js`  | Algorithm lifecycle, canvas context reset, auto-change timer, dev mode cycling        |
+| `src/DevModeController.js`  | Dev mode modal — algorithm pair selection for testing transitions                      |
 | `src/MusicPlayer.js`        | Audio playback, playlist, progress bar                                                |
 | `src/AlgorithmChooser.js`   | Algorithm registry and random picker                                                  |
 | `src/AlgorithmLoader.js`    | Base class for algorithms                                                             |
-| `src/algos/*.js`          | Individual algorithm classes (142 files)                                                 |
+| `src/algos/*.js`          | Individual algorithm classes (141 files)                                                 |
 | `src/utils/*.js`          | Shared utilities (Vector, Particle, math, random, roundRect polyfill, FrequencyAnalyser) |
+| `src/generated/`          | Auto-generated algorithm registry (algorithmRegistry.js)                                 |
 | `assets/js/`              | GSAP (loaded globally, not via npm)                                                      |
 | `assets/fonts/`           | Custom font files                                                                        |
 
@@ -164,7 +167,9 @@ assets/
 - `this.draw` in algorithms is **wrapped by `AlgorithmLoader`** to check
   `isRunning` — do not bypass this mechanism
 - All keyboard shortcuts are centralized in `KeyboardController.js` — modify
-  shortcuts there (Space, F, I, D, M, S, H, P)
+  shortcuts there (Space, F, I, D, M, S, H, P, E)
+- Dev mode (press E) allows testing algorithm transitions — it cycles between
+  two selectable algorithms (or random) and reuses the same interval/manual controls
 - GSAP is **global** (`window.gsap`) from the vendored file — `AlgorithmLoader`
   exposes it as a static ref
 - `FrequencyAnalyser` is instantiated once in `Spiral.js` init —

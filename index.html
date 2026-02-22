@@ -16,6 +16,25 @@
             <div id="msg"></div>
             <div id="algos"></div>
         </div>
+        <div id="dev-mode">
+            <h3>DEV MODE</h3>
+            <label class="dev-row">
+                <input type="checkbox" id="dev-enable" />
+                <span>Enable Dev Mode</span>
+            </label>
+            <div class="dev-selects">
+                <label>
+                    <span>Algorithm A:</span>
+                    <select id="dev-algo-a"><option value="">Random</option></select>
+                </label>
+                <label>
+                    <span>Algorithm B:</span>
+                    <select id="dev-algo-b"><option value="">Random</option></select>
+                </label>
+            </div>
+            <p class="dev-hint">I/D = interval, M = manual mode, Space = trigger</p>
+        </div>
+        <div id="dev-badge">DEV</div>
         <div id="help">
             <div>
                 <h1>THE SPIRAL</h1>
@@ -68,6 +87,10 @@
                     <span class="keys"
                         >Press S for silence mode to toggle it on/off.
                     </span>
+                </p>
+                <p>
+                    <span class="keys">Press E for dev mode</span> to test
+                    specific algorithms and transitions.
                 </p>
                 <p>
                     <span class="help">H to open / close the help screen.</span>
