@@ -7,9 +7,15 @@ export default class GasClouds extends AL {
         this.name = 'Gas Clouds';
 
         this.initializeProperties();
+        this.firstRunProperties();
         this.setupDrawingStyles();
 
         this.requestFrame();
+    }
+
+    firstRunProperties() {
+        this.x = this.w / 2;
+        this.y = this.h / 2;
     }
 
     initializeProperties() {
