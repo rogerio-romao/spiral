@@ -23,7 +23,7 @@ export default class FourDee extends AL {
             AL.random(0, this.w),
             AL.random(0, this.h),
             0,
-            0
+            0,
         );
         this.weight.radius = 20;
         this.rotate = AL.random(-90, -1);
@@ -56,7 +56,7 @@ export default class FourDee extends AL {
                 this.weight.y,
                 this.weight.radius,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.fill();
         }
@@ -65,7 +65,7 @@ export default class FourDee extends AL {
 
         this.rotateCanvasRadians(this.rotate);
 
-        if (this.t % (this.speed * 540) === 0) {
+        if (this.t % (this.speed * 600) === 0) {
             this.ctx.fillStyle = 'black';
             this.fillScreen();
 

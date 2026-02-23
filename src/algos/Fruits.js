@@ -15,7 +15,7 @@ export default class Fruits extends AL {
     }
 
     initializeBaseProperties() {
-        this.cellSizes = [50, 100, 150, 200, 250, 300];
+        this.cellSizes = [100, 150, 200, 250, 300];
     }
 
     initializeProperties() {
@@ -40,7 +40,7 @@ export default class Fruits extends AL {
                 this.row * this.cell - this.cell,
                 this.size,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.stroke();
             this.ctx.fill();
