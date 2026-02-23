@@ -35,7 +35,7 @@ export default class EvolvingMandala extends AL {
 
     setupDrawingStyles() {
         this.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
-        this.ctx.font = `bold ${AL.random(70, 260)}px sans-serif`;
+        this.ctx.font = `bold ${AL.random(70, 360)}px sans-serif`;
         this.ctx.textAlign = 'center';
     }
 
@@ -44,7 +44,7 @@ export default class EvolvingMandala extends AL {
             this.ctx.strokeText(
                 this.letter + ' ' + this.letter + '  ' + this.letter,
                 this.w / 2,
-                this.h / 2
+                this.h / 2,
             );
 
             this.rotateCanvasDegrees(this.rotate);

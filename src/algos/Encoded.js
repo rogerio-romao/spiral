@@ -53,7 +53,7 @@ export default class Encoded extends AL {
 
         this.rotateCanvasDegrees(this.angle);
 
-        if (this.t % (this.speed * 72) === 0) {
+        if (this.t % (this.speed * 85) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
         }
