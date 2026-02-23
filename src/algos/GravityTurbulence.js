@@ -7,6 +7,7 @@ export default class GravityTurbulence extends AL {
         this.name = 'Gravity Turbulence';
 
         this.initializeProperties();
+        this.setupDrawingStyles();
 
         this.requestFrame();
     }
@@ -17,14 +18,14 @@ export default class GravityTurbulence extends AL {
             this.w / 2,
             this.h / 2,
             2,
-            Math.random() * Math.PI * 2
+            Math.random() * Math.PI * 2,
         );
 
         this.sun1.radius = 40;
         this.sun2.radius = 30;
         this.sun1.mass = 50000;
         this.sun2.mass = -10000;
-        this.numParticles = 225;
+        this.numParticles = 375;
 
         this.particles = [];
 
@@ -33,7 +34,7 @@ export default class GravityTurbulence extends AL {
                 AL.mathUtils.randomRange(0, this.w),
                 AL.mathUtils.randomRange(0, this.h),
                 AL.mathUtils.randomRange(7, 8),
-                Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1)
+                Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1),
             );
             p.addGravitation(this.sun1);
             p.addGravitation(this.sun2);
@@ -42,8 +43,13 @@ export default class GravityTurbulence extends AL {
         }
     }
 
+    setupDrawingStyles() {
+        this.shadowColor = 'white';
+        this.shadowBlur = 2;
+    }
+
     draw() {
-        this.ctx.fillStyle = 'rgba(0,0,0,0.75)';
+        this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
         this.ctx.fillRect(0, 0, this.w, this.h);
 
         this.sun1.update();
@@ -88,7 +94,7 @@ export default class GravityTurbulence extends AL {
                 particle.y = AL.mathUtils.randomRange(0, this.h);
                 particle.setSpeed(AL.mathUtils.randomRange(7, 8));
                 particle.setHeading(
-                    Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1)
+                    Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1),
                 );
             }
         }
