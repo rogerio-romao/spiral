@@ -15,7 +15,7 @@ export default class Loading extends AL {
 
     initializeBaseProperties() {
         this.counter = false;
-        this.color = AL.randomColor(60, 255, 0.75, 1);
+        this.color = AL.randomColor(120, 230, 1, 1);
     }
 
     initializeProperties() {
@@ -45,7 +45,7 @@ export default class Loading extends AL {
                 this.radius,
                 0,
                 Math.PI,
-                this.counter
+                this.counter,
             );
             this.ctx.stroke();
         }
