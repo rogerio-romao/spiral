@@ -29,7 +29,8 @@ export default class DevModeController {
         // Combine both for dev mode
         if (this._isDev) {
             // Concatenate and sort by class name so Template* appears with other T algos
-            this._allAlgorithms = algorithms.concat(templateAlgorithms)
+            this._allAlgorithms = algorithms
+                .concat(templateAlgorithms)
                 .slice() // shallow copy
                 .sort((a, b) => {
                     if (!a?.name || !b?.name) return 0;
