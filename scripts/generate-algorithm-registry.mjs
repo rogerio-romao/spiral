@@ -26,25 +26,13 @@ const buildFileContents = (files) => {
         const identifier = toIdentifier(file);
         return `import ${identifier} from '../algos/${file}';`;
     });
-
     const arrayLines = files.map((file) => `    ${toIdentifier(file)},`);
-
-    return [
-        '// AUTO-GENERATED FILE. DO NOT EDIT DIRECTLY.',
-        '// Run "pnpm generate:algos" to refresh this list.',
-        '',
-        ...importLines,
-        '',
-        'export const algorithms = [',
-        ...arrayLines,
-        '];',
-        '',
-    ].join('\n');
+    return { importLines, arrayLines };
 };
 
 const run = async () => {
     const entries = await fs.readdir(algosDir, { withFileTypes: true });
-    const files = entries
+    const algoFiles = entries
         .filter(
             (entry) =>
                 entry.isFile() &&
@@ -53,20 +41,49 @@ const run = async () => {
         )
         .map((entry) => entry.name)
         .sort((a, b) => a.localeCompare(b));
+    const templateFiles = entries
+        .filter(
+            (entry) =>
+                entry.isFile() &&
+                entry.name.endsWith('.js') &&
+                entry.name.startsWith('Template'),
+        )
+        .map((entry) => entry.name)
+        .sort((a, b) => a.localeCompare(b));
 
-    if (files.length === 0) {
+    if (algoFiles.length === 0 && templateFiles.length === 0) {
         throw new Error(
             `No .js files found in ${path.relative(projectRoot, algosDir)}.`,
         );
     }
 
-    const contents = buildFileContents(files);
+    const { importLines: algoImports, arrayLines: algoArray } =
+        buildFileContents(algoFiles);
+    const { importLines: templateImports, arrayLines: templateArray } =
+        buildFileContents(templateFiles);
+
+    const contents = [
+        '// AUTO-GENERATED FILE. DO NOT EDIT DIRECTLY.',
+        '// Run "pnpm generate:algos" to refresh this list.',
+        '',
+        ...algoImports,
+        ...templateImports,
+        '',
+        'export const algorithms = [',
+        ...algoArray,
+        '];',
+        '',
+        'export const templateAlgorithms = [',
+        ...templateArray,
+        '];',
+        '',
+    ].join('\n');
 
     await fs.mkdir(outputDir, { recursive: true });
     await fs.writeFile(outputFile, `${contents}\n`, 'utf8');
 
     console.log(
-        `Generated ${files.length} algorithms into ${path.relative(projectRoot, outputFile)}`,
+        `Generated ${algoFiles.length} algorithms and ${templateFiles.length} templates into ${path.relative(projectRoot, outputFile)}`,
     );
 };
 

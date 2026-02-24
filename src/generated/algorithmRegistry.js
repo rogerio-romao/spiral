@@ -141,6 +141,8 @@ import Wallpapering from '../algos/Wallpapering.js';
 import Warp2001 from '../algos/Warp2001.js';
 import Wormhole from '../algos/Wormhole.js';
 import Wormholes from '../algos/Wormholes.js';
+import TemplateBase from '../algos/TemplateBase.js';
+import TemplateFrequency from '../algos/TemplateFrequency.js';
 
 export const algorithms = [
     Abstractions,
@@ -283,5 +285,10 @@ export const algorithms = [
     Warp2001,
     Wormhole,
     Wormholes,
+];
+
+export const templateAlgorithms = [
+    TemplateBase,
+    TemplateFrequency,
 ];
 

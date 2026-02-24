@@ -1,4 +1,7 @@
-import { algorithms } from './generated/algorithmRegistry.js';
+import {
+    algorithms,
+    templateAlgorithms,
+} from './generated/algorithmRegistry.js';
 
 export default class DevModeController {
     constructor({ transitionManager, hud }) {
@@ -23,6 +26,19 @@ export default class DevModeController {
         this._onAlgoBChangeHandler = (e) =>
             this._onAlgoChange('B', e.target.value);
 
+        // Combine both for dev mode
+        if (this._isDev) {
+            // Concatenate and sort by class name so Template* appears with other T algos
+            this._allAlgorithms = algorithms.concat(templateAlgorithms)
+                .slice() // shallow copy
+                .sort((a, b) => {
+                    if (!a?.name || !b?.name) return 0;
+                    return a.name.localeCompare(b.name);
+                });
+        } else {
+            this._allAlgorithms = algorithms;
+        }
+
         if (this._isDev) {
             this._populateSelects();
             this._bindEvents();
@@ -36,7 +52,7 @@ export default class DevModeController {
     _populateSelects() {
         const fragment = document.createDocumentFragment();
 
-        algorithms.forEach((AlgoClass, index) => {
+        this._allAlgorithms.forEach((AlgoClass, index) => {
             const option = document.createElement('option');
             option.value = index;
             option.textContent = AlgoClass.name;
@@ -94,9 +110,11 @@ export default class DevModeController {
 
     _onAlgoChange(slot, value) {
         if (slot === 'A') {
-            this._algoA = value === '' ? null : algorithms[parseInt(value, 10)];
+            this._algoA =
+                value === '' ? null : this._allAlgorithms[parseInt(value, 10)];
         } else {
-            this._algoB = value === '' ? null : algorithms[parseInt(value, 10)];
+            this._algoB =
+                value === '' ? null : this._allAlgorithms[parseInt(value, 10)];
         }
 
         if (this._active) {
