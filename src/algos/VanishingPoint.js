@@ -25,7 +25,7 @@ export default class VanishingPoint extends AL {
         this.color2 = AL.randomColor(0, 255, 1, 1);
         this.color3 = AL.randomColor(0, 255, 1, 1);
         this.color4 = AL.randomColor(0, 255, 1, 1);
-        this.colors = [this.color1, this.color2, this.color3, this.color4];
+        this.colors = AL.generateRGBAPalette(4, 0, 255, 1, 1);
     }
 
     setupDrawingStyles() {

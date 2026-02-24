@@ -1,7 +1,12 @@
 import Particle from './utils/Particle.js';
 import Vector from './utils/Vector.js';
 import mathUtils from './utils/math.js';
-import { random, randomColor } from './utils/randomUtils.js';
+import {
+    generateHSLAPalette,
+    generateRGBAPalette,
+    random,
+    randomColor,
+} from './utils/randomUtils.js';
 
 export default class AlgorithmLoader {
     static random(min, max) {
@@ -10,6 +15,20 @@ export default class AlgorithmLoader {
 
     static randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
         return randomColor(minC, maxC, minA, maxA);
+    }
+
+    static generateRGBAPalette(
+        count,
+        minC = 0,
+        maxC = 255,
+        minA = 0.5,
+        maxA = 1,
+    ) {
+        return generateRGBAPalette(count, minC, maxC, minA, maxA);
+    }
+
+    static generateHSLAPalette(count, mode = 'hue') {
+        return generateHSLAPalette(count, mode);
     }
 
     static mathUtils = mathUtils;
@@ -110,7 +129,9 @@ export default class AlgorithmLoader {
      *   }
      */
     draw() {
-        throw new Error('[AlgorithmLoader] draw() must be implemented by subclass. Do NOT call super.draw() in your algorithm.');
+        throw new Error(
+            '[AlgorithmLoader] draw() must be implemented by subclass. Do NOT call super.draw() in your algorithm.',
+        );
     }
 
     stop() {

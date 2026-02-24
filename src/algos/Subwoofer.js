@@ -14,21 +14,10 @@ export default class Subwoofer extends AL {
     }
 
     initializeProperties() {
+        this.colors = AL.generateRGBAPalette(5);
         this.factor = AL.random(10, this.size);
         this.divisor = AL.random(1, 25);
         this.size = AL.random(15, 200);
-        this.color1 = AL.randomColor();
-        this.color2 = AL.randomColor();
-        this.color3 = AL.randomColor();
-        this.color4 = AL.randomColor();
-        this.color5 = AL.randomColor();
-        this.colors = [
-            this.color1,
-            this.color2,
-            this.color3,
-            this.color4,
-            this.color5,
-        ];
     }
 
     setupConstantStyles() {
@@ -42,14 +31,14 @@ export default class Subwoofer extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i < 30; i++) {
-                this.ctx.strokeStyle = this.colors[i % 5];
+                this.ctx.strokeStyle = this.colors[i % this.colors.length];
                 this.ctx.beginPath();
                 this.ctx.arc(
                     this.w / 2,
                     this.h / 2,
                     this.size + i * this.ctx.lineWidth,
                     0,
-                    2 * Math.PI
+                    2 * Math.PI,
                 );
                 this.ctx.stroke();
             }
@@ -59,7 +48,7 @@ export default class Subwoofer extends AL {
 
         this.size = Math.max(
             this.size + Math.sin(this.t / this.divisor) * this.factor,
-            1
+            1,
         );
 
         if (this.t % (this.speed * 110) === 0) {

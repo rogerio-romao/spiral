@@ -23,10 +23,7 @@ export default class PsychoRainbow extends AL {
         this.rotate = AL.random(1, 50);
         this.height = this.h / this.rows;
 
-        this.colors = [];
-        for (let i = 0; i <= this.rows; i++) {
-            this.colors.push(AL.randomColor(0, 255, 0.1, 0.5));
-        }
+        this.colors = AL.generateRGBAPalette(this.rows, 0, 255, 0.1, 0.5);
     }
 
     setupDrawingStyles() {
@@ -41,7 +38,7 @@ export default class PsychoRainbow extends AL {
                     -this.w,
                     i * this.height,
                     3 * this.w,
-                    this.height
+                    this.height,
                 );
             }
         }
