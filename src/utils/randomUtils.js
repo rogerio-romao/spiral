@@ -38,10 +38,11 @@ export function generateRGBAPalette(
 /**
  * Generate an array of HSLA color strings, varying one property equally across the range with wrap-around.
  * @param {number} count - Number of colors to generate.
- * @param {string} [mode='hue'] - Which property to vary: 'hue', 'saturation', 'luminosity', 'alpha'.
+ * @param {string} [mode='hue'] - Which property to vary: 'hue', 'saturation', 'luminosity', 'alpha', 'random' (defaults to 'hue').
+ * @param {number} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
  * @returns {string[]} Array of HSLA color strings.
  */
-export function generateHSLAPalette(count, mode = 'hue') {
+export function generateHSLAPalette(count, mode = 'hue', degrees) {
     // Random base values
     const baseHue = Math.floor(Math.random() * 360);
     const baseSat = Math.floor(Math.random() * 101);
@@ -56,7 +57,8 @@ export function generateHSLAPalette(count, mode = 'hue') {
         let alpha = baseAlpha;
 
         if (mode === 'hue') {
-            hue = (baseHue + i * (360 / count)) % 360;
+            const step = degrees !== undefined ? degrees : 360 / count;
+            hue = (baseHue + i * step) % 360;
         } else if (mode === 'saturation') {
             sat = (baseSat + i * (100 / count)) % 101;
         } else if (mode === 'luminosity') {
@@ -66,6 +68,11 @@ export function generateHSLAPalette(count, mode = 'hue') {
             let step = 0.9 / count;
             alpha = baseAlpha + i * step;
             if (alpha > 1) alpha = 0.1 + (alpha - 1);
+        } else if (mode === 'random') {
+            hue = Math.floor(Math.random() * 360);
+            sat = Math.floor(Math.random() * 101);
+            lum = Math.floor(Math.random() * 101);
+            alpha = Math.random() * 0.9 + 0.1;
         }
 
         palette.push(
