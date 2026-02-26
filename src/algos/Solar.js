@@ -23,10 +23,13 @@ export default class Solar extends AL {
 
     setupConstantStyles() {
         this.ctx.globalCompositeOperation = 'hard-light';
+        this.colors = AL.generateHSLAPalette(7, 'random');
+        this.colorIndex = 0;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
+        this.ctx.strokeStyle = this.colors[this.colorIndex];
+        this.ctx.lineWidth = AL.random(1, 4);
     }
 
     draw() {
@@ -38,7 +41,7 @@ export default class Solar extends AL {
                 this.x2,
                 this.y2,
                 this.w,
-                this.h
+                this.h,
             );
             this.ctx.stroke();
         }
@@ -48,6 +51,7 @@ export default class Solar extends AL {
         this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 120) === 0) {
+            this.colorIndex = (this.colorIndex + 1) % this.colors.length;
             this.initializeProperties();
             this.setupDrawingStyles();
             this.ctx.beginPath();

@@ -57,7 +57,7 @@ export default class SoapyBubbles extends AL {
 
         this.t++;
 
-        if (this.t % (this.speed * 320) === 0) {
+        if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
         }
