@@ -29,8 +29,8 @@ export default class RadioWaves extends AL {
 
     setupConstantStyles() {
         this.ctx.globalCompositeOperation = 'copy';
-        this.ctx.shadowBlur = 2;
-        this.ctx.lineWidth = 0.5;
+        this.ctx.shadowBlur = 7;
+        this.ctx.lineWidth = 1;
     }
 
     setupDrawingStyles() {
@@ -38,7 +38,7 @@ export default class RadioWaves extends AL {
             30,
             255,
             1,
-            1
+            1,
         );
     }
 
@@ -61,7 +61,7 @@ export default class RadioWaves extends AL {
                 this.h / this.posY,
                 radius,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.stroke();
         }
