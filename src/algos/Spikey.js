@@ -27,7 +27,7 @@ export default class Spikey extends AL {
 
     setupConstantStyles() {
         this.ctx.beginPath();
-        this.ctx.lineWidth = 0.1;
+        this.ctx.lineWidth = 0.25;
         this.ctx.moveTo(this.w / 2, this.h / 2);
     }
 
@@ -87,12 +87,13 @@ export default class Spikey extends AL {
         if (this.t % (this.speed * 400) === 0) {
             this.initializeProperties();
 
-            this.ctx.canvas.width = this.ctx.canvas.height = 0;
-            this.ctx.canvas.width = this.w;
-            this.ctx.canvas.height = this.h;
+            this.ctx.save();
+            this.ctx.resetTransform();
+            this.clearScreen();
+            this.ctx.restore();
 
             this.ctx.beginPath();
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.15, 0.6);
+            this.setupDrawingStyles();
         }
 
         this.requestFrame();
