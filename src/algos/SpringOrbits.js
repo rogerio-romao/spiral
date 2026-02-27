@@ -15,7 +15,7 @@ export default class SpringOrbits extends AL {
     }
 
     initializeBaseProperties() {
-        this.k = 0.04;
+        this.k = 0.02;
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
     }
 
@@ -24,9 +24,9 @@ export default class SpringOrbits extends AL {
             AL.random(0, this.w),
             AL.random(0, this.h),
             AL.random(15, 120),
-            Math.random() * Math.PI * 2
+            Math.random() * Math.PI * 2,
         );
-        this.weight.friction = 0.975;
+        this.weight.friction = 0.99;
     }
 
     setupConstantStyles() {
@@ -57,7 +57,7 @@ export default class SpringOrbits extends AL {
                 this.springPoint.y,
                 8,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.fill();
             this.ctx.beginPath();

@@ -22,10 +22,10 @@ export default class SpiralLines extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.beginPath();
-        this.ctx.lineWidth = AL.random(1, 8);
-        this.ctx.moveTo(this.w / 2, this.h / 2);
         this.ctx.strokeStyle = AL.randomColor(5, 255, 0.5, 0.5);
+        this.ctx.moveTo(this.w / 2, this.h / 2);
+        this.ctx.lineWidth = AL.random(1, 8);
+        this.ctx.beginPath();
     }
 
     draw() {
@@ -35,11 +35,11 @@ export default class SpiralLines extends AL {
             if (this.stagger === 0) {
                 this.ctx.moveTo(
                     this.w / 2 - this.radius - this.length / 2,
-                    this.h / 2 + this.length / 2
+                    this.h / 2 + this.length / 2,
                 );
                 this.ctx.lineTo(
                     this.w / 2 - this.radius - this.length / 2,
-                    this.h / 2 - this.length / 2
+                    this.h / 2 - this.length / 2,
                 );
                 this.ctx.stroke();
             }
@@ -47,7 +47,7 @@ export default class SpiralLines extends AL {
             if (this.stagger === 1) {
                 this.ctx.lineTo(
                     this.w / 2 - this.radius - this.length,
-                    this.h / 2
+                    this.h / 2,
                 );
                 this.ctx.stroke();
             }
@@ -55,7 +55,7 @@ export default class SpiralLines extends AL {
             if (this.stagger === 2) {
                 this.ctx.lineTo(
                     this.w / 2 - this.radius - this.length / 2,
-                    this.h / 2 + this.length / 2
+                    this.h / 2 + this.length / 2,
                 );
                 this.ctx.stroke();
             }
