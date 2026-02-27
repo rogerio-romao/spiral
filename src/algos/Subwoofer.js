@@ -14,10 +14,10 @@ export default class Subwoofer extends AL {
     }
 
     initializeProperties() {
-        this.colors = AL.generateRGBAPalette(5);
-        this.factor = AL.random(10, this.size);
-        this.divisor = AL.random(1, 25);
         this.size = AL.random(15, 200);
+        this.divisor = AL.random(1, 25);
+        this.factor = AL.random(10, this.size);
+        this.colors = AL.generateRGBAPalette(5);
     }
 
     setupConstantStyles() {
