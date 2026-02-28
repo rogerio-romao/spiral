@@ -3,6 +3,7 @@
  * and progress bar.
  */
 import { htmlEscape } from './utils/htmlEscape.js';
+import AlgorithmLoader from './AlgorithmLoader.js';
 
 export default class MusicPlayer {
     constructor() {
@@ -24,6 +25,8 @@ export default class MusicPlayer {
         this.trackNameEl = document.getElementById('track-name');
         this.playlistToggle = document.getElementById('playlist-toggle');
         this.accordionEl = document.getElementById('playlist-accordion');
+        this.eqCanvas = document.getElementById('eq-display');
+        this.eqCtx = this.eqCanvas?.getContext('2d');
 
         // State
         this.playerShow = false;
@@ -37,6 +40,8 @@ export default class MusicPlayer {
         this.currentSong = 0;
         this.isPlaying = false;
         this.playlistEls = null;
+        this._eqAnimationId = null;
+        this._lastBandValues = [0, 0, 0, 0, 0];
 
         this._bindEvents();
     }
@@ -145,12 +150,14 @@ export default class MusicPlayer {
             this.isPlaying = true;
             this._setPlayIcon(true);
             this._updatePlaylistStyle();
+            this._startEq();
             this.audio.play();
         } else if (this.playlistEls) {
             this.isPlaying = false;
             this.playlistEls[this.currentSong].style.color =
                 'rgba(255, 165, 0, 0.5)';
             this._setPlayIcon(false);
+            this._stopEq();
             this.audio.pause();
         }
     }
@@ -162,6 +169,7 @@ export default class MusicPlayer {
             this.audio.currentTime = 0;
             this.isPlaying = false;
             this._setPlayIcon(false);
+            this._stopEq();
             [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
             this.playlistEls[this.currentSong].style.color =
                 'rgba(255, 165, 0, 0.5)';
@@ -183,6 +191,7 @@ export default class MusicPlayer {
         this._updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         if (this.isPlaying) {
+            this._startEq();
             this.audio.play();
         } else {
             this.playlistEls[this.currentSong].style.color =
@@ -203,6 +212,7 @@ export default class MusicPlayer {
         this._updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         if (this.isPlaying) {
+            this._startEq();
             this.audio.play();
         } else {
             this.playlistEls[this.currentSong].style.color =
@@ -290,6 +300,7 @@ export default class MusicPlayer {
         this.audio.src = this.trackList[this.currentSong];
         this.isPlaying = true;
         this._setPlayIcon(true);
+        this._startEq();
         clearTimeout(this._jumpTimeout);
         this._jumpTimeout = setTimeout(() => this.audio.play(), 200);
     }
@@ -428,6 +439,8 @@ export default class MusicPlayer {
             this.playlistToggle.classList.remove('visible');
             this.elapsedEl.textContent = '';
             this.totalEl.textContent = '';
+            this._stopEq();
+            this.eqCanvas.style.display = 'none';
             return;
         }
 
@@ -446,6 +459,76 @@ export default class MusicPlayer {
         this._renderPlaylist();
         this._updatePlaylistIndices();
         this._updatePlaylistStyle();
+    }
+
+    /** Start the EQ animation loop. */
+    _startEq() {
+        if (!this.eqCanvas || !this.eqCtx) return;
+        this._lastBandValues = [0, 0, 0, 0, 0];
+        this._drawEq();
+    }
+
+    /** Stop the EQ animation loop and show flat bars. */
+    _stopEq() {
+        if (this._eqAnimationId) {
+            cancelAnimationFrame(this._eqAnimationId);
+            this._eqAnimationId = null;
+        }
+        this._drawFlatEq();
+    }
+
+    /** Draw the EQ with current frequency data. */
+    _drawEq() {
+        if (!this.eqCtx) return;
+
+        const ctx = this.eqCtx;
+        const w = this.eqCanvas.width;
+        const h = this.eqCanvas.height;
+        const bandCount = 5;
+        const bandWidth = w / bandCount;
+        const smoothing = 0.7;
+
+        let newBands;
+        if (AlgorithmLoader.frequencyAnalyser && this.isPlaying) {
+            newBands = AlgorithmLoader.frequencyAnalyser.getBands();
+        } else {
+            newBands = [0, 0, 0, 0, 0];
+        }
+
+        this._lastBandValues = this._lastBandValues.map((prev, i) =>
+            prev * smoothing + newBands[i] * (1 - smoothing),
+        );
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#32cd32';
+
+        for (let i = 0; i < bandCount; i++) {
+            const bandHeight = Math.max(1, this._lastBandValues[i] * h);
+            const x = i * bandWidth;
+            const y = h - bandHeight;
+            ctx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
+        }
+
+        this._eqAnimationId = requestAnimationFrame(() => this._drawEq());
+    }
+
+    /** Draw flat (zero) EQ bars. */
+    _drawFlatEq() {
+        if (!this.eqCtx) return;
+
+        const ctx = this.eqCtx;
+        const w = this.eqCanvas.width;
+        const h = this.eqCanvas.height;
+        const bandCount = 5;
+        const bandWidth = w / bandCount;
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#32cd32';
+
+        for (let i = 0; i < bandCount; i++) {
+            const x = i * bandWidth;
+            ctx.fillRect(x + 1, h - 1, bandWidth - 2, 1);
+        }
     }
 
     /** Clean up resources (blob URLs, etc.) on app close. */
