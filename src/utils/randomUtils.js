@@ -4,11 +4,72 @@ export function random(min, max) {
 }
 
 export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
-    const r = random(minC, maxC);
-    const g = random(minC, maxC);
-    const b = random(minC, maxC);
+    const r = random(minC, maxC) / 255;
+    const g = random(minC, maxC) / 255;
+    const b = random(minC, maxC) / 255;
     const a = +(Math.random() * (maxA - minA) + minA).toFixed(3);
+
+    // detect if the browser support p3 color space and use it if available, otherwise fallback to rgba
+    if (window.CSS && CSS.supports('color', 'color(display-p3 1 0 0 / 1)')) {
+        return `color(display-p3 ${r} ${g} ${b} / ${a})`;
+    }
+
     return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+/**
+ * Convert RGBA to OKLCH
+ * @param {number} r - Red (0–255)
+ * @param {number} g - Green (0–255)
+ * @param {number} b - Blue (0–255)
+ * @param {number} a - Alpha (0–1)
+ * @returns {{ l: number, c: number, h: number, a: number }}
+ */
+function rgbaToOklch(r, g, b, a = 1) {
+    // Step 1: Normalize RGB to [0, 1]
+    let rLin = r / 255;
+    let gLin = g / 255;
+    let bLin = b / 255;
+
+    // Step 2: Convert sRGB to linear RGB (remove gamma)
+    rLin =
+        rLin <= 0.04045 ? rLin / 12.92 : Math.pow((rLin + 0.055) / 1.055, 2.4);
+    gLin =
+        gLin <= 0.04045 ? gLin / 12.92 : Math.pow((gLin + 0.055) / 1.055, 2.4);
+    bLin =
+        bLin <= 0.04045 ? bLin / 12.92 : Math.pow((bLin + 0.055) / 1.055, 2.4);
+
+    // Step 3: Linear RGB → OKLab (via XYZ intermediate, using Björn Ottosson's matrices)
+    const l = 0.4122214708 * rLin + 0.5363325363 * gLin + 0.0514459929 * bLin;
+    const m = 0.2119034982 * rLin + 0.6806995451 * gLin + 0.1073969566 * bLin;
+    const s = 0.0883024619 * rLin + 0.2817188376 * gLin + 0.6299787005 * bLin;
+
+    const lCbrt = Math.cbrt(l);
+    const mCbrt = Math.cbrt(m);
+    const sCbrt = Math.cbrt(s);
+
+    const L = 0.2104542553 * lCbrt + 0.793617785 * mCbrt - 0.0040720468 * sCbrt;
+    const A = 1.9779984951 * lCbrt - 2.428592205 * mCbrt + 0.4505937099 * sCbrt;
+    const B = 0.0259040371 * lCbrt + 0.7827717662 * mCbrt - 0.808675766 * sCbrt;
+
+    // Step 4: OKLab → OKLCH
+    const C = Math.sqrt(A * A + B * B);
+    let H = Math.atan2(B, A) * (180 / Math.PI);
+    if (H < 0) H += 360;
+
+    return {
+        l: L, // Lightness  [0, 1]
+        c: C, // Chroma     [0, ~0.4]
+        h: H, // Hue        [0, 360)
+        a: a, // Alpha      [0, 1]
+    };
+}
+
+function toOklchString(r, g, b, a = 1) {
+    const { l, c, h } = rgbaToOklch(r, g, b, a);
+    return a < 1
+        ? `oklch(${(l * 100).toFixed(2)}% ${c.toFixed(4)} ${h.toFixed(2)} / ${a})`
+        : `oklch(${(l * 100).toFixed(2)}% ${c.toFixed(4)} ${h.toFixed(2)})`;
 }
 
 /**
