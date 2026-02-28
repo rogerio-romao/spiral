@@ -35,17 +35,21 @@ export default class Typobrush extends AL {
     setupConstantStyles() {
         this.ctx.textAlign = 'center';
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        this.strokeColors = AL.generateRGBAPalette(8);
+        this.fillColors = AL.generateRGBAPalette(8);
     }
 
     setupDrawingStyles() {
         this.ctx.font = `${this.size}px serif`;
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33, 0.33);
+        this.ctx.strokeStyle = AL.pickRandomElement(this.strokeColors);
+        this.ctx.fillStyle = AL.pickRandomElement(this.fillColors);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(this.letter, this.x, this.y);
             this.ctx.font = `${this.size}px serif`;
+            this.ctx.fillText(this.letter, this.x + 2, this.y - 2);
             this.size += this.sizeIncrease;
         }
 
@@ -58,9 +62,9 @@ export default class Typobrush extends AL {
             this.setupDrawingStyles();
         }
 
-        if (this.t % (this.speed * 1500) === 0) {
+        if (this.t % (this.speed * 750) === 0) {
             this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+                AL.pickRandomElement(this.letters),
             );
 
             this.fillScreen();
