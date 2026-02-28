@@ -2,6 +2,11 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-02-28
+
+- feat: Add hotkey summary to help modal — quick boxed hotkey overview between
+  the heading and help text (index.html, style.css)
+
 ## 2026-02-22
 
 - fix: Restrict Dev Mode (algorithm test modal, badge, and shortcut) to

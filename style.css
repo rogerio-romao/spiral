@@ -61,6 +61,49 @@ canvas {
     display: none;
 }
 
+/* Hotkey summary (compact boxed keycaps shown between heading and help text) */
+.hotkey-summary {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+}
+.hotkey {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #ddd;
+    font-size: 0.95em;
+    text-transform: uppercase;
+}
+.hotkey .key {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.18rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 700;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+.hotkey .label {
+    color: orange;
+    font-size: 0.9em;
+}
+
+@media (max-width: 480px) {
+    .hotkey-summary {
+        gap: 0.45rem;
+    }
+    .hotkey {
+        font-size: 0.9em;
+    }
+    .hotkey .label {
+        display: none;
+    }
+}
+
 h1 {
     margin-bottom: 0;
     color: orangered;
@@ -171,7 +214,9 @@ input[type='file'] {
     padding: 0 0.1em;
     line-height: 0;
     flex-shrink: 0;
-    transition: color 0.2s, transform 0.35s ease;
+    transition:
+        color 0.2s,
+        transform 0.35s ease;
     outline: none;
     display: none;
 }
@@ -199,7 +244,9 @@ input[type='file'] {
     overflow: hidden;
     max-height: 0;
     opacity: 0;
-    transition: max-height 0.35s ease, opacity 0.3s ease;
+    transition:
+        max-height 0.35s ease,
+        opacity 0.3s ease;
 }
 
 #playlist-accordion.open {
