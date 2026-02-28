@@ -7,22 +7,6 @@ mesmerizing generative art in real-time. Watch as dozens of different procedural
 algorithms paint ever-changing patterns, spirals, and abstract visuals
 synchronized to your music.
 
-## What Makes It Cool
-
-- **Dozens of unique visual algorithms** — Each one creates a completely different
-  animation style, from psychedelic spirals to geometric mandalas to organic
-  flowing patterns
-- **Auto-cycling mode** — Sit back and watch as visuals automatically transition
-  every few seconds, creating an endless stream of eye candy
-- **Manual control** — Hit spacebar to instantly switch to a new visualization,
-  or use keyboard shortcuts to control the experience
-- **HTML5 Canvas magic** — All visuals are rendered in real-time using pure
-  Canvas 2D (no WebGL trickery needed)
-- **GSAP-powered animations** — Smooth, buttery transitions between different
-  visual states
-- **Audio visualization** — Real-time frequency analysis and waveform display
-  synchronized to your music
-
 ## Getting Started
 
 ### Installation
