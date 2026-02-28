@@ -22,17 +22,6 @@
 - PascalCase for class files/names, camelCase for utilities/methods/variables
 - Plain JavaScript — no TypeScript
 
-## Key Gotchas
-
-- `AlgorithmChooser.js` manually imports all 142 algorithms — update it when
-  adding/removing algos.
-- Keyboard shortcuts split between `Spiral.js` and `MusicPlayer.js` — check
-  both.
-- Canvas state is reset between algorithms by `Spiral.js` — don't rely on prior
-  state.
-- `ctx.save()`/`ctx.restore()` required when modifying transforms or composite
-  operations.
-
 ## Task Workflow
 
 When executing tasks, follow the workflow in `WORKFLOW.md`:
