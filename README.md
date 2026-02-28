@@ -3,13 +3,13 @@
 **A music player that turns your screen into a living canvas.**
 
 Spiral is a desktop app that plays your favorite tunes while creating
-mesmerizing generative art in real-time. Watch as 142 different procedural
+mesmerizing generative art in real-time. Watch as dozens of different procedural
 algorithms paint ever-changing patterns, spirals, and abstract visuals
 synchronized to your music.
 
 ## What Makes It Cool
 
-- **142 unique visual algorithms** — Each one creates a completely different
+- **Dozens of unique visual algorithms** — Each one creates a completely different
   animation style, from psychedelic spirals to geometric mandalas to organic
   flowing patterns
 - **Auto-cycling mode** — Sit back and watch as visuals automatically transition
@@ -20,6 +20,8 @@ synchronized to your music.
   Canvas 2D (no WebGL trickery needed)
 - **GSAP-powered animations** — Smooth, buttery transitions between different
   visual states
+- **Audio visualization** — Real-time frequency analysis and waveform display
+  synchronized to your music
 
 ## Getting Started
 
@@ -51,9 +53,11 @@ the visuals.
 - **P** — Toggle the music player open/closed
 - **H** — Show the help menu with all keyboard shortcuts
 - **F** — Toggle fullscreen mode
-- **I** — Show the current algorithm info
-- **M** — Mute/unmute audio
-- **S** — Take a screenshot
+- **I** — Increase auto-change interval (+10s)
+- **D** — Decrease auto-change interval (-10s)
+- **M** — Toggle manual/auto mode
+- **S** — Toggle silent mode (hides algorithm name)
+- **W** — Toggle waveform display
 
 Load up your favorite tracks, hit play, and let the algorithms do their thing.
 Each visualization is unique and will never look exactly the same twice.
