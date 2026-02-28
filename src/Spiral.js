@@ -6,6 +6,7 @@ import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
 import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
+import WaveformController from './WaveformController.js';
 
 export default class Spiral {
     constructor() {
@@ -82,6 +83,13 @@ export default class Spiral {
         this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
         AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
 
+        // Waveform controller — uses frequency analyser to render waveform
+        this.waveformController = new WaveformController({
+            canvasElement: document.querySelector('#waveform'),
+            frequencyAnalyser: this.frequencyAnalyser,
+        });
+        AlgorithmLoader.waveformController = this.waveformController;
+
         // Resume AudioContext on any play event (covers play, next, prev)
         this.musicPlayer.audio.addEventListener('play', () => {
             this.frequencyAnalyser.resume();
@@ -93,6 +101,7 @@ export default class Spiral {
             transition: this.transitionManager,
             musicPlayer: this.musicPlayer,
             devModeController: this.devModeController,
+            spiral: this,
         });
         this.keyboardController.bind();
     }
@@ -112,6 +121,9 @@ export default class Spiral {
             this.w = rect.width;
             this.h = rect.height;
             this._applyDpr();
+
+            // Also resize waveform canvas
+            this.waveformController?.resize();
 
             // Debounce algorithm restart
             this._debounceAlgorithmRestart();
@@ -158,12 +170,18 @@ export default class Spiral {
         this.ctx.scale(dpr, dpr);
     }
 
+    toggleWaveform() {
+        const isOn = this.waveformController.toggle();
+        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF');
+    }
+
     /** Clean up resources before the app closes. */
     destroy() {
         this._welcomeTimers.forEach(clearTimeout);
         this.hud.destroy();
         this.musicPlayer.destroy();
         this.devModeController.destroy();
+        this.waveformController?.destroy();
 
         if (this.cursorHideTimeout) {
             clearTimeout(this.cursorHideTimeout);

@@ -32,6 +32,16 @@ canvas {
     cursor: pointer;
 }
 
+#waveform {
+    z-index: 0.5;
+    pointer-events: none;
+    left: 40px;
+    right: 40px;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+}
+
 /* HUD */
 #hud {
     background: transparent;

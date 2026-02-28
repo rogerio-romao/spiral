@@ -49,6 +49,8 @@ export default class TemplateFrequency extends AL {
                 this.ctx.fillRect(x, y, bandWidth, rectHeight);
             }
 
+            this.drawWaveform();
+
             this.ctx.restore();
 
             if (this.t % (this.speed * 120) === 0) {
@@ -58,5 +60,38 @@ export default class TemplateFrequency extends AL {
 
         this.t++;
         this.requestFrame();
+    }
+
+    drawWaveform() {
+        const waveform = AL.waveformController?.getWaveformData();
+        if (!waveform) return;
+
+        const w = this.w;
+        const h = Math.min(400, this.h);
+        const yOffset = this.h - h - 20;
+
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = 'white';
+        this.ctx.lineWidth = 2;
+        this.ctx.shadowColor = 'white';
+        this.ctx.shadowBlur = 10;
+
+        const sliceWidth = w / waveform.length;
+        let x = 0;
+
+        for (let i = 0; i < waveform.length; i++) {
+            const v = waveform[i];
+            const y = yOffset + v * h;
+
+            if (i === 0) {
+                this.ctx.moveTo(x, y);
+            } else {
+                this.ctx.lineTo(x, y);
+            }
+
+            x += sliceWidth;
+        }
+
+        this.ctx.stroke();
     }
 }

@@ -37,6 +37,9 @@ export default class FrequencyAnalyser {
 
         // Reusable buffer for frequency data
         this._dataArray = new Uint8Array(this._analyser.frequencyBinCount);
+
+        // Reusable buffer for time-domain (waveform) data
+        this._timeDomainData = new Uint8Array(this._analyser.fftSize);
     }
 
     /** Number of bands currently configured. */
@@ -116,6 +119,18 @@ export default class FrequencyAnalyser {
     getRawData() {
         this._analyser.getByteFrequencyData(this._dataArray);
         return this._dataArray;
+    }
+
+    /**
+     * Get the current time-domain data (waveform) as normalized values.
+     * Each value is 0–1, where 0.5 represents the center line (silence).
+     *
+     * @returns {number[]} Array of normalized 0–1 values representing the waveform.
+     *   Returns all 0.5s when nothing is playing.
+     */
+    getWaveform() {
+        this._analyser.getByteTimeDomainData(this._timeDomainData);
+        return Array.from(this._timeDomainData).map((v) => v / 255);
     }
 
     /** The underlying AnalyserNode, for advanced configuration. */

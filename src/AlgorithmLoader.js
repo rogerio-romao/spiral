@@ -43,6 +43,8 @@ export default class AlgorithmLoader {
 
     static frequencyAnalyser = null;
 
+    static waveformController = null;
+
     static createVector(x, y) {
         return new Vector(x, y);
     }

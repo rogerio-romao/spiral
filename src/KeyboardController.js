@@ -9,12 +9,14 @@ export default class KeyboardController {
      * @param {TransitionManager} deps.transition
      * @param {MusicPlayer}       deps.musicPlayer
      * @param {DevModeController} deps.devModeController
+     * @param {Spiral}            deps.spiral
      */
-    constructor({ hud, transition, musicPlayer, devModeController }) {
+    constructor({ hud, transition, musicPlayer, devModeController, spiral }) {
         this._hud = hud;
         this._transition = transition;
         this._musicPlayer = musicPlayer;
         this._devModeController = devModeController;
+        this._spiral = spiral;
 
         // Only enable dev mode shortcut if allowed
         this._isDev = window.env?.isDev;
@@ -88,6 +90,12 @@ export default class KeyboardController {
             case 'KeyE':
                 if (this._isDev) {
                     this._devModeController.toggle();
+                }
+                break;
+
+            case 'KeyW':
+                if (this._spiral) {
+                    this._spiral.toggleWaveform();
                 }
                 break;
 
