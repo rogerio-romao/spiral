@@ -32,6 +32,7 @@ export default class MusicPlayer {
         this._jumpTimeout = null;
         this.player.style.display = 'none';
         this.trackList = [];
+        this.trackNames = [];
         this.blobUrls = [];
         this.currentSong = 0;
         this.isPlaying = false;
@@ -64,51 +65,78 @@ export default class MusicPlayer {
         this.playlistToggle.addEventListener('click', () =>
             this._togglePlaylist(),
         );
+        this.playList.addEventListener('click', (e) => {
+            const listItem = e.target.closest('.list-item');
+            if (listItem && !e.target.closest('.remove-track')) {
+                const index = parseInt(listItem.getAttribute('data-index'), 10);
+                this.jumpToTrack(index);
+            }
+        });
     }
 
     /** Process file input and build the playlist. */
     _handleFiles() {
+        const wasPlaying = this.isPlaying;
         this.audio.pause();
-        this.isPlaying = false;
-        this._setPlayIcon(false);
-        this.playList.innerHTML = '';
-        this.currentSong = 0;
-
-        // Revoke any existing blob URLs before creating new ones
-        this._revokeBlobUrls();
-        this.trackList = [];
-
         this.elapsedEl.textContent = '';
         this.totalEl.textContent = '';
 
         const files = this.input.files;
         if (!files?.length) return;
+
+        const isFirstLoad = this.trackList.length === 0;
+
         for (let i = 0; i < files.length; i++) {
-            const listItem = document.createElement('li');
-            listItem.classList.add('list-item');
-            // Sanitize filename for display
             const baseName =
                 files[i].name.indexOf('.') > -1
                     ? files[i].name.slice(0, files[i].name.indexOf('.'))
                     : files[i].name;
-            listItem.textContent = baseName;
-            // Optionally, if you ever use innerHTML or attributes, escape:
-            // listItem.innerHTML = htmlEscape(baseName);
-            // listItem.setAttribute('data-filename', htmlEscape(files[i].name));
-            listItem.addEventListener('click', () => this.jumpToTrack(i));
+
+            if (this.trackNames.includes(baseName)) {
+                continue;
+            }
+
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-item');
+            listItem.setAttribute('draggable', 'true');
+            listItem.setAttribute('data-index', this.trackList.length);
+            this.trackNames.push(baseName);
+            listItem.innerHTML = `
+                <span class="track-name">${htmlEscape(baseName)}</span>
+                <button class="remove-track" title="Remove track">remove</button>
+            `;
+            listItem.querySelector('.remove-track').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(listItem.getAttribute('data-index'), 10);
+                this.removeTrack(index);
+            });
             this.playList.appendChild(listItem);
             const blobUrl = window.URL.createObjectURL(files[i]);
             this.trackList.push(blobUrl);
             this.blobUrls.push(blobUrl);
         }
 
-        this.audio.src = this.trackList[this.currentSong];
+        this._bindDragEvents();
+
+        if (isFirstLoad) {
+            this.currentSong = 0;
+            this.audio.src = this.trackList[this.currentSong];
+            this.isPlaying = false;
+            this._setPlayIcon(false);
+        } else {
+            if (wasPlaying) {
+                this.isPlaying = true;
+                this._setPlayIcon(true);
+                this.audio.play();
+            }
+        }
+
         this.playlistEls = document.getElementsByClassName('list-item');
-        this.playlistEls[this.currentSong].scrollIntoView({ block: 'nearest' });
-        this.playlistEls[this.currentSong].style.color =
-            'rgba(255, 165, 0, 0.5)';
+        this._updatePlaylistIndices();
+        this._updatePlaylistStyle();
         this.playlistToggle.classList.add('visible');
         this._updateTrackName();
+        this.input.value = '';
     }
 
     /** Play or pause the current track. */
@@ -245,9 +273,8 @@ export default class MusicPlayer {
 
     /** Update the now-playing track name display. */
     _updateTrackName() {
-        if (!this.playlistEls) return;
-        this.trackNameEl.textContent =
-            this.playlistEls[this.currentSong]?.textContent ?? '';
+        if (!this.trackNames.length) return;
+        this.trackNameEl.textContent = this.trackNames[this.currentSong] ?? '';
     }
 
     /** Jump directly to a track and start playback. */
@@ -273,6 +300,152 @@ export default class MusicPlayer {
             window.URL.revokeObjectURL(url);
         }
         this.blobUrls = [];
+        this.trackNames = [];
+    }
+
+    /** Render the entire playlist from trackList. */
+    _renderPlaylist() {
+        this.playList.innerHTML = '';
+        for (let i = 0; i < this.trackList.length; i++) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-item');
+            listItem.setAttribute('draggable', 'true');
+            listItem.setAttribute('data-index', i);
+            const fileName = this.trackNames[i];
+            listItem.innerHTML = `
+                <span class="track-name">${htmlEscape(fileName)}</span>
+                <button class="remove-track" title="Remove track">remove</button>
+            `;
+            listItem.querySelector('.remove-track').addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.removeTrack(i);
+            });
+            this.playList.appendChild(listItem);
+        }
+        this._bindDragEvents();
+        this.playlistEls = document.getElementsByClassName('list-item');
+        this._updatePlaylistStyle();
+    }
+
+    /** Update data-index attributes for all list items. */
+    _updatePlaylistIndices() {
+        const items = this.playList.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            item.setAttribute('data-index', i);
+        });
+    }
+
+    /** Bind drag-and-drop events to playlist items. */
+    _bindDragEvents() {
+        const items = this.playList.querySelectorAll('.list-item');
+        items.forEach((item) => {
+            item.addEventListener('dragstart', (e) => this._handleDragStart(e));
+            item.addEventListener('dragover', (e) => this._handleDragOver(e));
+            item.addEventListener('drop', (e) => this._handleDrop(e));
+            item.addEventListener('dragenter', (e) => this._handleDragEnter(e));
+            item.addEventListener('dragleave', (e) => this._handleDragLeave(e));
+            item.addEventListener('dragend', (e) => this._handleDragEnd(e));
+        });
+    }
+
+    /** Drag start - store the index of dragged item. */
+    _handleDragStart(e) {
+        this.draggedIndex = parseInt(e.target.getAttribute('data-index'), 10);
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    }
+
+    /** Drag over - allow dropping. */
+    _handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    }
+
+    /** Drag enter - visual feedback. */
+    _handleDragEnter(e) {
+        e.target.classList.add('drag-over');
+    }
+
+    /** Drag leave - remove visual feedback. */
+    _handleDragLeave(e) {
+        e.target.classList.remove('drag-over');
+    }
+
+    /** Drag end - clean up visual feedback. */
+    _handleDragEnd(e) {
+        e.target.classList.remove('dragging');
+        this.draggedIndex = null;
+    }
+
+    /** Drop - reorder tracks. */
+    _handleDrop(e) {
+        e.preventDefault();
+        const targetItem = e.target.closest('.list-item');
+        if (!targetItem) return;
+        const dropIndex = parseInt(targetItem.getAttribute('data-index'), 10);
+        if (this.draggedIndex === null || this.draggedIndex === dropIndex) return;
+
+        const [removed] = this.trackList.splice(this.draggedIndex, 1);
+        this.trackList.splice(dropIndex, 0, removed);
+
+        const [removedBlob] = this.blobUrls.splice(this.draggedIndex, 1);
+        this.blobUrls.splice(dropIndex, 0, removedBlob);
+
+        const [removedName] = this.trackNames.splice(this.draggedIndex, 1);
+        this.trackNames.splice(dropIndex, 0, removedName);
+
+        if (this.currentSong === this.draggedIndex) {
+            this.currentSong = dropIndex;
+        } else if (this.draggedIndex < this.currentSong && dropIndex >= this.currentSong) {
+            this.currentSong--;
+        } else if (this.draggedIndex > this.currentSong && dropIndex <= this.currentSong) {
+            this.currentSong++;
+        }
+
+        this._renderPlaylist();
+        this._updatePlaylistIndices();
+        this._updatePlaylistStyle();
+    }
+
+    /** Remove a track from the playlist. */
+    removeTrack(index) {
+        if (index < 0 || index >= this.trackList.length) return;
+
+        window.URL.revokeObjectURL(this.trackList[index]);
+
+        this.trackList.splice(index, 1);
+        this.blobUrls.splice(index, 1);
+        this.trackNames.splice(index, 1);
+
+        if (this.trackList.length === 0) {
+            this.audio.src = '';
+            this.currentSong = 0;
+            this.playlistEls = null;
+            this.playList.innerHTML = '';
+            this.isPlaying = false;
+            this._setPlayIcon(false);
+            this.trackNameEl.textContent = '';
+            this.playlistToggle.classList.remove('visible');
+            this.elapsedEl.textContent = '';
+            this.totalEl.textContent = '';
+            return;
+        }
+
+        if (index < this.currentSong) {
+            this.currentSong--;
+        } else if (index === this.currentSong) {
+            if (this.currentSong >= this.trackList.length) {
+                this.currentSong = 0;
+            }
+            this.audio.src = this.trackList[this.currentSong];
+            if (this.isPlaying) {
+                this.audio.play();
+            }
+        }
+
+        this._renderPlaylist();
+        this._updatePlaylistIndices();
+        this._updatePlaylistStyle();
     }
 
     /** Clean up resources (blob URLs, etc.) on app close. */

@@ -273,15 +273,53 @@ input[type='file'] {
     list-style: none;
 }
 
-#playlist li {
-    margin-top: 4px;
-    border-bottom: 1px dotted rgba(85, 85, 85, 0.4);
-}
-
 .list-item {
     margin-left: 4px;
     cursor: pointer;
     transition: color 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px 6px 4px;
+    border-bottom: 1px dotted rgba(85, 85, 85, 0.4);
+}
+
+.list-item .track-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list-item .remove-track {
+    background: rgba(85, 85, 85, 0.3);
+    border: none;
+    color: #999;
+    font-size: 0.85em;
+    cursor: pointer;
+    padding: 4px 8px;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s, background 0.15s;
+    line-height: 1;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.list-item:hover .remove-track {
+    opacity: 1;
+}
+
+.list-item .remove-track:hover {
+    background: orangered;
+    color: white;
+}
+
+.list-item.dragging {
+    opacity: 0.5;
+}
+
+.list-item.drag-over {
+    border-top: 2px solid orange;
 }
 
 #controls {

@@ -4,6 +4,12 @@
 
 ## 2026-02-28
 
+- feat: Enhance playlist functionality — add tracks to existing playlist without
+  replacing, remove individual tracks, drag-and-drop reordering, and duplicate
+  track detection (MusicPlayer.js, style.css)
+
+## 2026-02-28
+
 - feat: Add hotkey summary to help modal — quick boxed hotkey overview between
   the heading and help text (index.html, style.css)
 
