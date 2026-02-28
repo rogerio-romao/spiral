@@ -282,6 +282,11 @@ input[type='file'] {
     align-items: center;
     padding: 6px 8px 6px 4px;
     border-bottom: 1px dotted rgba(85, 85, 85, 0.4);
+    transition: background 0.15s;
+}
+
+.list-item:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .list-item .track-name {
