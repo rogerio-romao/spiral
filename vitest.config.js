@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
     test: {
         coverage: {
-            exclude: ['src/algos/**', 'src/generated/**'],
+            exclude: ['src/algos/**', 'src/generated/**', 'coverage/**'],
             include: ['src/**/*.js', 'scripts/**/*.mjs'],
             provider: 'v8',
         },
