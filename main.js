@@ -1,18 +1,16 @@
-// Modules to control application life and create native browser window
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Get the directory name equivalent to __dirname in CommonJS
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 function createWindow() {
-    // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 1600,
         height: 1000,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(
+                path.dirname(fileURLToPath(import.meta.url)),
+                'preload.js',
+            ),
             contextIsolation: true,
             nodeIntegration: false,
         },
