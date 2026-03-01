@@ -12,4 +12,5 @@ export default {
         'no-unknown-custom-properties': true,
         'function-url-no-scheme-relative': true,
     },
+    ignoreFiles: ['**/node_modules/**', '**/dist/**', '**/coverage/**'],
 };

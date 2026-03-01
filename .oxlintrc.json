@@ -114,5 +114,5 @@
         "CustomEvent": "readonly",
         "CanvasRenderingContext2D": "readonly"
     },
-    "ignorePatterns": []
+    "ignorePatterns": ["__tests__/**", "scripts/__tests__/**"]
 }
