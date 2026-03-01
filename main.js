@@ -2,7 +2,22 @@ import { app, BrowserWindow, Menu, screen } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-Menu.setApplicationMenu(null);
+if (process.env.NODE_ENV === 'development') {
+    const menuTemplate = [
+        {
+            label: app.name, // "Electron" in dev, "Your Name" in prod
+            submenu: [{ role: 'quit' }],
+        },
+        {
+            label: 'View',
+            submenu: [{ role: 'toggleDevTools' }],
+        },
+    ];
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(menu);
+} else {
+    Menu.setApplicationMenu(null);
+}
 
 function createWindow(width, height) {
     const mainWindow = new BrowserWindow({

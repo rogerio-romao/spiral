@@ -6,7 +6,6 @@ contextBridge.exposeInMainWorld('versions', {
     electron: process.versions.electron,
 });
 
-// Expose isDev flag to renderer
 contextBridge.exposeInMainWorld('env', {
     isDev: process.env.NODE_ENV === 'development',
 });
