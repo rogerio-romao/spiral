@@ -65,9 +65,7 @@ export function generateRGBAPalette(
 /**
  * Generate an array of HSLA color strings, varying one property equally across the range with wrap-around.
  * @param {number} count - Number of colors to generate.
- * @typedef {'hue'|'saturation'|'luminosity'|'alpha'|'random'} HSLAMode
- *
- * @param {HSLAMode} [mode='hue'] - Which property to vary (defaults to 'hue').
+ * @param {'hue'|'saturation'|'luminosity'|'alpha'|'random'} [mode='hue'] - Which property to vary (defaults to 'hue').
  * @param {number} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
  * @returns {string[]} Array of HSLA color strings.
  */
