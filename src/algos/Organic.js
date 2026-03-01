@@ -43,10 +43,10 @@ export default class Organic extends AL {
                 this.side1,
                 this.side2,
                 {
-                    upperLeft: this.rounded1,
-                    upperRight: this.rounded2,
                     lowerLeft: this.rounded3,
                     lowerRight: this.rounded4,
+                    upperLeft: this.rounded1,
+                    upperRight: this.rounded2,
                 },
                 true,
                 true,
@@ -55,9 +55,12 @@ export default class Organic extends AL {
 
             this.side1 *= this.decrease;
             this.side2 *= this.decrease;
-            if (this.side1 < 10 || this.side2 < 10) this.decrease = 1.01;
-            if (this.side1 > this.w || this.side2 > this.h)
+            if (this.side1 < 10 || this.side2 < 10) {
+                this.decrease = 1.01;
+            }
+            if (this.side1 > this.w || this.side2 > this.h) {
                 this.decrease = 0.99;
+            }
         }
 
         this.t++;

@@ -28,7 +28,7 @@ export default class Offsets extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 2;
+            this.stagger %= 2;
 
             if (this.stagger === 0) {
                 this.ctx.lineTo(this.w / 2 - this.length, this.h / 2);

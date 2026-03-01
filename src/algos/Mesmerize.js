@@ -38,28 +38,28 @@ export default class Mesmerize extends AL {
         this.fill1 = AL.randomColor(0, 255, 0.01, 0.04);
 
         this.obj1 = {
-            width: this.w1,
-            height: this.h1,
-            x: this.x1,
-            y: this.y1,
-            upperLeft: this.ul1,
-            upperRight: this.ur1,
-            lowerLeft: this.ll1,
-            lowerRight: this.lr1,
             color: this.color1,
             fill: this.fill1,
+            height: this.h1,
+            lowerLeft: this.ll1,
+            lowerRight: this.lr1,
+            upperLeft: this.ul1,
+            upperRight: this.ur1,
+            width: this.w1,
+            x: this.x1,
+            y: this.y1,
         };
         this.obj2 = {
-            width: this.w2,
-            height: this.h2,
-            x: this.x2,
-            y: this.y2,
-            upperLeft: this.ul2,
-            upperRight: this.ur2,
-            lowerLeft: this.ll2,
-            lowerRight: this.lr2,
             color: this.color2,
             fill: this.fill2,
+            height: this.h2,
+            lowerLeft: this.ll2,
+            lowerRight: this.lr2,
+            upperLeft: this.ul2,
+            upperRight: this.ur2,
+            width: this.w2,
+            x: this.x2,
+            y: this.y2,
         };
     }
 
@@ -76,10 +76,10 @@ export default class Mesmerize extends AL {
                 this.obj1.x,
                 this.obj1.y,
                 {
-                    upperLeft: this.obj1.upperLeft,
-                    upperRight: this.obj1.upperRight,
                     lowerLeft: this.obj1.lowerLeft,
                     lowerRight: this.obj1.lowerRight,
+                    upperLeft: this.obj1.upperLeft,
+                    upperRight: this.obj1.upperRight,
                 },
                 true,
                 true,
@@ -111,7 +111,7 @@ export default class Mesmerize extends AL {
 
     getTweens() {
         this.tl = AL.gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'power1' },
+            defaults: { ease: 'power1', repeat: -1, yoyo: true },
         });
         this.tl
             .to(this.obj1, {
@@ -177,8 +177,8 @@ export default class Mesmerize extends AL {
             .to(
                 this.obj1,
                 {
-                    duration: AL.random(2, 20),
                     color: this.obj2.color,
+                    duration: AL.random(2, 20),
                     onUpdate: () => (this.ctx.strokeStyle = this.obj1.color),
                 },
                 '<',

@@ -39,10 +39,10 @@ export default class Irradiate extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.ll,
                     lowerRight: this.lr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
             );
         }

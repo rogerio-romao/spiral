@@ -93,25 +93,25 @@ export default class Projecting extends AL {
                 duration: AL.random(3, 8),
                 rot: this.rotate2.rot,
             },
-            '<'
+            '<',
         );
         this.tl.to(
             this.color1,
             {
-                duration: AL.random(3, 10),
                 color: this.color2.color,
+                duration: AL.random(3, 10),
                 onUpdate: () => (this.ctx.fillStyle = this.color1.color),
             },
-            '<'
+            '<',
         );
         this.tl.to(
             this.color3,
             {
-                duration: AL.random(3, 10),
                 color: this.color4.color,
+                duration: AL.random(3, 10),
                 onUpdate: () => (this.ctx.shadowColor = this.color3.color),
             },
-            '<'
+            '<',
         );
     }
 }
