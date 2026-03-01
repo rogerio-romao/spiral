@@ -6,6 +6,10 @@
     "scripts": {
         "generate:algos": "node scripts/generateAlgorithmRegistry.mjs",
         "prestart": "pnpm generate:algos",
+        "pretest": "pnpm generate:algos",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",
         "lint:css": "stylelint '**/*.css'",
@@ -24,10 +28,13 @@
     "productName": "Spiral Player",
     "devDependencies": {
         "@electron/packager": "^19.0.5",
+        "@vitest/coverage-v8": "^4.0.18",
         "electron": "^40.4.1",
+        "jsdom": "^28.1.0",
         "oxlint": "^1.50.0",
         "stylelint": "^17.4.0",
-        "stylelint-config-standard": "^40.0.0"
+        "stylelint-config-standard": "^40.0.0",
+        "vitest": "^4.0.18"
     },
     "type": "module"
 }
