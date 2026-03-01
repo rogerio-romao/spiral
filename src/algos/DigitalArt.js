@@ -35,12 +35,12 @@ export default class DigitalArt extends AL {
                 this.ctx.font = `${this.size * 2}px serif`;
                 this.ctx.textAlign = 'left';
                 this.ctx.textBaseline = 'top';
-                this.ctx.fillText(letter + '-', this.w / 2, this.h / 2);
+                this.ctx.fillText(`${letter}-`, this.w / 2, this.h / 2);
             } else {
                 this.ctx.font = `${this.size * 2}px serif`;
                 this.ctx.textAlign = 'right';
                 this.ctx.textBaseline = 'bottom';
-                this.ctx.fillText(letter + '_', this.w / 2, this.h / 2);
+                this.ctx.fillText(`${letter}_`, this.w / 2, this.h / 2);
             }
 
             this.ctx.font = `${this.size}px serif`;

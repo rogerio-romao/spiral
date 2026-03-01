@@ -43,7 +43,7 @@ export default class Universe extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.ctx.roundRectExtra(
@@ -52,10 +52,10 @@ export default class Universe extends AL {
                     this.side1++,
                     this.side2++,
                     {
-                        upperLeft: this.rounded1++,
-                        upperRight: this.rounded1++,
                         lowerLeft: this.rounded1++,
                         lowerRight: this.rounded1++,
+                        upperLeft: this.rounded1++,
+                        upperRight: this.rounded1++,
                     },
                     false,
                     true,
@@ -69,10 +69,10 @@ export default class Universe extends AL {
                     this.side3--,
                     this.side4--,
                     {
-                        upperLeft: this.rounded2++,
-                        upperRight: this.rounded2++,
                         lowerLeft: this.rounded2++,
                         lowerRight: this.rounded2++,
+                        upperLeft: this.rounded2++,
+                        upperRight: this.rounded2++,
                     },
                     false,
                     true,
@@ -86,10 +86,10 @@ export default class Universe extends AL {
                     this.side5++,
                     this.side6++,
                     {
-                        upperLeft: this.rounded3--,
-                        upperRight: this.rounded3--,
                         lowerLeft: this.rounded3--,
                         lowerRight: this.rounded3--,
+                        upperLeft: this.rounded3--,
+                        upperRight: this.rounded3--,
                     },
                     false,
                     true,
@@ -103,10 +103,10 @@ export default class Universe extends AL {
                     this.side7,
                     this.side8,
                     {
-                        upperLeft: this.rounded4++,
-                        upperRight: this.rounded4++,
                         lowerLeft: this.rounded4--,
                         lowerRight: this.rounded4--,
+                        upperLeft: this.rounded4++,
+                        upperRight: this.rounded4++,
                     },
                     false,
                     true,
