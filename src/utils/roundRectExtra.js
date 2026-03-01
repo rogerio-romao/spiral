@@ -3,7 +3,8 @@
  * Import this module for its side effect — it patches the prototype
  * so roundRectExtra is available on every canvas context.
  */
-CanvasRenderingContext2D.prototype.roundRectExtra = function (
+// oxlint-disable-next-line max-params
+CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(
     x,
     y,
     width,
@@ -13,16 +14,20 @@ CanvasRenderingContext2D.prototype.roundRectExtra = function (
     stroke,
 ) {
     const cornerRadius = {
-        upperLeft: 0,
-        upperRight: 0,
         lowerLeft: 0,
         lowerRight: 0,
+        upperLeft: 0,
+        upperRight: 0,
     };
     if (stroke === undefined) {
         stroke = true;
     }
     if (typeof radius === 'object') {
-        for (const side in radius) cornerRadius[side] = radius[side];
+        for (const side in radius) {
+            if (Object.hasOwn(radius, side)) {
+                cornerRadius[side] = radius[side];
+            }
+        }
     }
 
     this.beginPath();

@@ -37,10 +37,10 @@ export default class Wormhole extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.ll,
                     lowerRight: this.lr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 true,
                 true,

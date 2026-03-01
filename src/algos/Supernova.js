@@ -15,7 +15,7 @@ export default class Supernova extends AL {
     initializeProperties() {
         this.rotate = AL.random(1, 20);
         this.approach = AL.random(5, 31);
-        this.fib = [0, +Math.random().toFixed(3)];
+        this.fib = [0, Number(Math.random().toFixed(3))];
         this.length = this.fib.at(-2) + this.fib.at(-1) + 3;
     }
 
@@ -42,7 +42,7 @@ export default class Supernova extends AL {
         if (this.length > Math.max(this.w, this.h)) {
             this.length = 0;
             this.approach = AL.random(5, 31);
-            this.fib = [0, +Math.random().toFixed(3)];
+            this.fib = [0, Number(Math.random().toFixed(3))];
             this.length = this.fib.at(-2) + this.fib.at(-1) + 3;
             this.rotate = AL.random(1, 20);
             this.setupDrawingStyles();

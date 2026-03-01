@@ -27,14 +27,14 @@ export default class SpaceGears extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.font = AL.random(100, 700) + 'px serif';
+        this.ctx.font = `${AL.random(100, 700)}px serif`;
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 0.6);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.textAlign = 'left';
-            this.ctx.strokeText(' ' + this.letter.repeat(3), 0, 0);
+            this.ctx.strokeText(` ${this.letter.repeat(3)}`, 0, 0);
             this.ctx.translate(this.w / 2, this.h / 2);
             this.ctx.rotate(this.rotate);
             this.ctx.textAlign = 'center';

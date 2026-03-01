@@ -47,7 +47,7 @@ export default class Punctuation extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.rotateCanvasDegrees(this.rotate);
@@ -69,7 +69,7 @@ export default class Punctuation extends AL {
                 this.ctx.fillText(
                     `      ${this.letter}`,
                     this.w / 2,
-                    this.h / 2
+                    this.h / 2,
                 );
             }
 

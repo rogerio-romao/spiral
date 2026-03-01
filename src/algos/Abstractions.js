@@ -47,13 +47,13 @@ export default class Abstractions extends AL {
             0,
             255,
             0.25,
-            0.45
+            0.45,
         );
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.ctx.beginPath();
@@ -62,7 +62,7 @@ export default class Abstractions extends AL {
                     this.pointCpAx,
                     this.pointCpAy,
                     this.pointAx,
-                    this.pointAy
+                    this.pointAy,
                 );
                 this.ctx.stroke();
             }
@@ -74,7 +74,7 @@ export default class Abstractions extends AL {
                     this.pointCpBx,
                     this.pointCpBy,
                     this.pointBx,
-                    this.pointBy
+                    this.pointBy,
                 );
                 this.ctx.stroke();
             }
@@ -86,7 +86,7 @@ export default class Abstractions extends AL {
                     this.pointCpCx,
                     this.pointCpCy,
                     this.pointCx,
-                    this.pointCy
+                    this.pointCy,
                 );
                 this.ctx.stroke();
             }

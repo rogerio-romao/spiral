@@ -16,15 +16,15 @@ export default class Particle {
         this.vx += ax;
         this.vy += ay;
     }
-    addGravitation(p) {
+    addGravitation(particle) {
         // in case it already exists
-        this.removeGravitation(p);
-        this.gravitations.push(p);
+        this.removeGravitation(particle);
+        this.gravitations.push(particle);
     }
     addSpring(point, k, length = 0) {
         // in case it already exists
         this.removeSpring(point);
-        this.springs.push({ point, k, length });
+        this.springs.push({ k, length, point });
     }
     angleTo(p2) {
         return Math.atan2(p2.y - this.y, p2.x - this.x);
@@ -45,7 +45,9 @@ export default class Particle {
         const dy = p2.y - this.y;
         const dSq = dx * dx + dy * dy;
         const dist = Math.sqrt(dSq);
-        if (dist === 0) return;
+        if (dist === 0) {
+            return;
+        }
         const force = p2.mass / dSq;
         const ax = (dx / dist) * force;
         const ay = (dy / dist) * force;
@@ -63,13 +65,19 @@ export default class Particle {
             this.springTo(spring.point, spring.k, spring.length),
         );
     }
-    removeGravitation(p) {
-        const gravIndex = this.gravitations.findIndex((g) => g === p);
-        if (gravIndex !== -1) this.gravitations.splice(gravIndex, 1);
+    removeGravitation(particle) {
+        const gravIndex = this.gravitations.indexOf(particle);
+        if (gravIndex !== -1) {
+            this.gravitations.splice(gravIndex, 1);
+        }
     }
     removeSpring(point) {
-        const springIndex = this.springs.findIndex((s) => s.point === point);
-        if (springIndex !== -1) this.springs.splice(springIndex, 1);
+        const springIndex = this.springs.findIndex(
+            (spring) => spring.point === point,
+        );
+        if (springIndex !== -1) {
+            this.springs.splice(springIndex, 1);
+        }
     }
     setHeading(heading) {
         const speed = this.getSpeed();
@@ -85,7 +93,9 @@ export default class Particle {
         const dx = point.x - this.x;
         const dy = point.y - this.y;
         const distance = Math.hypot(dx, dy);
-        if (distance === 0) return;
+        if (distance === 0) {
+            return;
+        }
         const springForce = (distance - length) * k;
         this.vx += (dx / distance) * springForce;
         this.vy += (dy / distance) * springForce;

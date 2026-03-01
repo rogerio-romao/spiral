@@ -26,16 +26,16 @@ export default class Coils extends AL {
         this.rot = AL.random(1, 100);
 
         this.obj1 = {
+            color: AL.randomColor(60, 255, 0.6, 1),
+            radius: AL.random(10, 35),
             x: 0,
             y: 0,
-            radius: AL.random(10, 35),
-            color: AL.randomColor(60, 255, 0.6, 1),
         };
         this.obj2 = {
+            color: AL.randomColor(60, 255, 0.6, 1),
+            radius: AL.random(30, 130),
             x: this.w / 2,
             y: this.h / 2,
-            radius: AL.random(30, 130),
-            color: AL.randomColor(60, 255, 0.6, 1),
         };
     }
 
@@ -52,7 +52,7 @@ export default class Coils extends AL {
                 this.obj1.y,
                 this.obj1.radius,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.fill();
             this.ctx.stroke();
@@ -84,38 +84,39 @@ export default class Coils extends AL {
         this.tl
             .to(this.obj1, {
                 duration: this.dur1,
-                x: this.obj2.x,
                 ease: 'elastic',
+                x: this.obj2.x,
             })
             .to(
                 this.obj1,
                 {
                     duration: this.dur2,
-                    y: this.obj2.y,
                     ease: 'bounce',
+                    y: this.obj2.y,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
                 {
                     duration: this.dur3,
-                    radius: this.obj2.radius,
                     ease: 'back.out(3)',
+                    radius: this.obj2.radius,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.obj1,
                 {
-                    duration: this.dur4,
                     color: this.obj2.color,
+                    duration: this.dur4,
                     ease: 'power1',
-                    onUpdate: () =>
-                        (this.ctx.strokeStyle = this.ctx.shadowColor =
-                            this.obj1.color),
+                    onUpdate: () => {
+                        this.ctx.strokeStyle = this.ctx.shadowColor =
+                            this.obj1.color;
+                    },
                 },
-                '<'
+                '<',
             );
     }
 }

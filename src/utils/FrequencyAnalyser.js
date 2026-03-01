@@ -25,7 +25,9 @@ export default class FrequencyAnalyser {
         this._bandCount = bandCount;
 
         // Create the audio context and graph
-        this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+        this._ctx = new (
+            globalThis.AudioContext || globalThis.webkitAudioContext
+        )();
         this._analyser = this._ctx.createAnalyser();
         this._analyser.fftSize = fftSize;
         this._analyser.smoothingTimeConstant = smoothing;
@@ -130,7 +132,7 @@ export default class FrequencyAnalyser {
      */
     getWaveform() {
         this._analyser.getByteTimeDomainData(this._timeDomainData);
-        return Array.from(this._timeDomainData).map((v) => v / 255);
+        return [...this._timeDomainData].map((value) => value / 255);
     }
 
     /** The underlying AnalyserNode, for advanced configuration. */

@@ -30,7 +30,7 @@ export default class SpiralLines extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.moveTo(

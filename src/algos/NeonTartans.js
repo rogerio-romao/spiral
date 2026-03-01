@@ -21,7 +21,7 @@ export default class NeonTartans extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.beginPath();
@@ -51,7 +51,7 @@ export default class NeonTartans extends AL {
                     this.length,
                     this.length,
                     this.w,
-                    this.h
+                    this.h,
                 );
                 this.ctx.stroke();
                 this.ctx.lineWidth = 1;
