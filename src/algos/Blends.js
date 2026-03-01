@@ -37,11 +37,11 @@ export default class Blends extends AL {
         if (this.t % this.speed === 0) {
             if (this.currentShape === 0) {
                 this.ctx.fillStyle = this.color2;
-                this.ctx.fillRect(this.x++, this.y, this.length++, this.length);
+                this.ctx.fillRect(this.x, this.y, this.length, this.length);
             } else if (this.currentShape === 1) {
                 this.ctx.fillStyle = this.color1;
                 this.ctx.beginPath();
-                this.ctx.arc(this.x2, this.y2++, this.length, 0, 2 * Math.PI);
+                this.ctx.arc(this.x2, this.y2, this.length, 0, 2 * Math.PI);
                 this.ctx.fill();
             } else {
                 this.ctx.strokeStyle = this.color2;
@@ -50,6 +50,12 @@ export default class Blends extends AL {
                 this.ctx.lineTo(this.x2, this.y2);
                 this.ctx.stroke();
             }
+
+            this.x += 1;
+            this.y += 1;
+            this.x2 -= 1;
+            this.y2 -= 1;
+            this.length += 1;
 
             this.currentShape = AL.random(0, 3);
 

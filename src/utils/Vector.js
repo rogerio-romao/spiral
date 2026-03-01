@@ -29,7 +29,7 @@ export default class Vector {
         this._y = Math.sin(this.angle) * length;
     }
     get length() {
-        return Math.sqrt(this._x * this._x + this._y * this._y);
+        return Math.hypot(this._x, this._y);
     }
     add(v2) {
         return new Vector(this._x + v2.x, this._y + v2.y);

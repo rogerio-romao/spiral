@@ -209,18 +209,11 @@ export default class TransitionManager {
             this._currentAlgorithm = new AlgorithmClass(this._ctx, w, h);
             this._hud.displayAlgorithmName(this._currentAlgorithm.name);
             this._algoRetries = 0;
-        } catch (error) {
-            console.error(
-                '[TransitionManager] Algorithm constructor threw:',
-                error,
-            );
-            this._algoRetries++;
+        } catch {
+            this._algoRetries += 1;
             if (this._algoRetries < 3) {
                 this._chooseAlgos();
             } else {
-                console.error(
-                    '[TransitionManager] 3 algorithms failed in a row, stopping.',
-                );
                 this._algoRetries = 0;
             }
         }

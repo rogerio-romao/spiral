@@ -54,6 +54,7 @@
         "eslint/func-style": ["error", "declaration"],
         "eslint/sort-imports": "off",
         "oxc/no-optional-chaining": "off",
+        "oxc/no-async-await": "off",
         "unicorn/filename-case": [
             "error",
             {

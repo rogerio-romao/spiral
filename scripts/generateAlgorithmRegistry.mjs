@@ -86,6 +86,7 @@ async function run() {
 try {
     await run();
 } catch (error) {
-    console.error(error);
-    process.exit(1);
+    // oxlint-disable-next-line no-console
+    console.error('Error generating algorithm registry:', error);
+    throw new Error('Algorithm registry generation failed.', { cause: error });
 }

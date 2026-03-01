@@ -37,17 +37,23 @@ export default class Seeds extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
-            this.ctx.arc(this.x1++, this.y1--, 5, 0, 0.5 * Math.PI);
+            this.ctx.arc(this.x1, this.y1, 5, 0, 0.5 * Math.PI);
             this.ctx.stroke();
             this.ctx.fill();
             this.ctx.beginPath();
-            this.ctx.arc(this.x2--, this.y2++, 10, 0, 0.5 * Math.PI);
+            this.ctx.arc(this.x2, this.y2, 10, 0, 0.5 * Math.PI);
             this.ctx.stroke();
             this.ctx.fill();
             this.ctx.beginPath();
-            this.ctx.arc(this.x3++, this.y3, 15, 0, 0.5 * Math.PI);
+            this.ctx.arc(this.x3, this.y3, 15, 0, 0.5 * Math.PI);
             this.ctx.stroke();
             this.ctx.fill();
+
+            this.x1 += 1;
+            this.y1 -= 1;
+            this.x2 -= 1;
+            this.y2 += 1;
+            this.x3 += 1;
         }
 
         this.t += 1;

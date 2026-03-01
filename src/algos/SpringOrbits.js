@@ -43,7 +43,7 @@ export default class SpringOrbits extends AL {
         if (this.t % this.speed === 0) {
             const dx = this.springPoint.x - this.weight.x;
             const dy = this.springPoint.y - this.weight.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distance = Math.hypot(dx, dy);
             const springForce = distance * this.k;
             const ax = (dx / distance) * springForce;
             const ay = (dy / distance) * springForce;

@@ -1,7 +1,7 @@
 // oxlint-disable sort-keys
 import { app, BrowserWindow, Menu, screen } from 'electron';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 if (process.env.NODE_ENV === 'development') {
     const menuTemplate = [
