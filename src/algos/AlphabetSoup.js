@@ -27,10 +27,10 @@ export default class AlphabetSoup extends AL {
     }
 
     initializeProperties() {
-        this.letter1 = String.fromCharCode(AL.pickRandomElement(this.letters));
-        this.letter2 = String.fromCharCode(AL.pickRandomElement(this.letters));
-        this.letter3 = String.fromCharCode(AL.pickRandomElement(this.letters));
-        this.letter4 = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter1 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+        this.letter2 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+        this.letter3 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+        this.letter4 = String.fromCodePoint(AL.pickRandomElement(this.letters));
     }
 
     setupDrawingStyles() {
@@ -46,11 +46,11 @@ export default class AlphabetSoup extends AL {
             this.ctx.fillText(
                 `${this.letter1} ${this.letter2} ${this.letter3} ${this.letter4}`,
                 this.w / 2,
-                this.h / 2
+                this.h / 2,
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 100) === 0) {
             this.setupDrawingStyles();

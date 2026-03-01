@@ -41,7 +41,7 @@ export default class Onion extends AL {
             this.ctx.closePath();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.angle);
 

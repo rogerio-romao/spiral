@@ -36,7 +36,7 @@ export default class Perspective extends AL {
                 Math.round(AL.random(-200, this.w) / this.size) * this.size,
                 Math.round(AL.random(-260, this.h) / this.size) * this.size,
                 this.size,
-                this.size
+                this.size,
             );
             this.ctx.fill();
 
@@ -45,12 +45,12 @@ export default class Perspective extends AL {
                 Math.round(AL.random(-200, this.w) / this.size) * this.size,
                 Math.round(AL.random(-260, this.h) / this.size) * this.size,
                 this.size,
-                this.size
+                this.size,
             );
             this.ctx.fill();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 2000) === 0) {
             this.initializeProperties();

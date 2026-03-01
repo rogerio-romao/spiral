@@ -36,7 +36,7 @@ export default class Hallucinate extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rot);
 

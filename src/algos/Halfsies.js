@@ -39,7 +39,7 @@ export default class Halfsies extends AL {
             this.ctx.closePath();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

@@ -32,7 +32,7 @@ export default class Spinner extends AL {
                 this.w / 2 - this.side / 2,
                 this.h / 2 - this.side / 2,
                 this.side,
-                this.side
+                this.side,
             );
 
             this.ctx.translate(-this.w / 2, -this.h / 2);
@@ -45,11 +45,11 @@ export default class Spinner extends AL {
                 this.w / 2,
                 this.h / 2,
                 this.gap1 * 2,
-                this.gap2 * 2
+                this.gap2 * 2,
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 50) === 0) {
             this.gap1 = AL.random(15, 150);

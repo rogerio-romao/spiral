@@ -23,10 +23,10 @@ export default class Concentric extends AL {
     }
 
     initializeProperties() {
-        this.letter1 = String.fromCharCode(AL.pickRandomElement(this.letters));
-        this.letter2 = String.fromCharCode(AL.pickRandomElement(this.letters));
-        this.letter3 = String.fromCharCode(AL.pickRandomElement(this.letters));
-        this.letter4 = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter1 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+        this.letter2 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+        this.letter3 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+        this.letter4 = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.angle = AL.pickRandomElement(this.angles);
 
@@ -57,7 +57,7 @@ export default class Concentric extends AL {
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.angle);
 

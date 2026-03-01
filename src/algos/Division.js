@@ -45,7 +45,7 @@ export default class Division extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.initializeProperties();

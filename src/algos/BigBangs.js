@@ -47,7 +47,7 @@ export default class BigBangs extends AL {
             this.ctx.beginPath();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.requestFrame();
     }

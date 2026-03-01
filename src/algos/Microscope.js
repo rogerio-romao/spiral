@@ -49,7 +49,7 @@ export default class Microscope extends AL {
             0,
             255,
             0.5,
-            0.5
+            0.5,
         );
     }
 
@@ -57,7 +57,7 @@ export default class Microscope extends AL {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
                 this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                    this.modes
+                    this.modes,
                 );
 
                 this.rotateCanvasRadians(this.rotate);
@@ -71,14 +71,14 @@ export default class Microscope extends AL {
                         this.radiusY,
                         0,
                         2 * Math.PI,
-                        false
+                        false,
                     );
                     this.ctx.stroke();
                 }
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 50) === 0) {
             this.setupDrawingStyles();

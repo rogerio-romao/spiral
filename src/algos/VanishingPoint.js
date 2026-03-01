@@ -51,7 +51,7 @@ export default class VanishingPoint extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

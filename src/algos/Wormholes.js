@@ -19,7 +19,7 @@ export default class Wormholes extends AL {
             2317, 2318, 2319, 2320, 2325, 2328, 2330, 2336, 2349, 2352, 2353,
             2361, 2362, 2365, 2367, 2368, 2383, 2385, 2390, 2391,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.size = 15;
         this.change = 2;
@@ -48,8 +48,8 @@ export default class Wormholes extends AL {
         if (this.ctx.measureText(this.letter).width < 5) {
             this.change *= -1;
             this.rotate = AL.random(1, 22);
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+            this.letter = String.fromCodePoint(
+                AL.pickRandomElement(this.letters),
             );
 
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -58,7 +58,7 @@ export default class Wormholes extends AL {
             this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

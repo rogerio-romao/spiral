@@ -18,20 +18,18 @@ export default class Vector {
         return this._y;
     }
     set angle(angle) {
-        const length = this.length;
-        this._x = Math.cos(angle) * length;
-        this._y = Math.sin(angle) * length;
+        this._x = Math.cos(angle) * this.length;
+        this._y = Math.sin(angle) * this.length;
     }
     get angle() {
         return Math.atan2(this._y, this._x);
     }
     set length(length) {
-        const angle = this.angle;
-        this._x = Math.cos(angle) * length;
-        this._y = Math.sin(angle) * length;
+        this._x = Math.cos(this.angle) * length;
+        this._y = Math.sin(this.angle) * length;
     }
     get length() {
-        return Math.sqrt(this._x * this._x + this._y * this._y);
+        return Math.hypot(this._x, this._y);
     }
     add(v2) {
         return new Vector(this._x + v2.x, this._y + v2.y);

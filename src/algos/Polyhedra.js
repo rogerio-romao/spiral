@@ -38,7 +38,7 @@ export default class Polyhedra extends AL {
             this.rotateCanvasRadians(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 60) === 0) {
             this.initializeProperties();

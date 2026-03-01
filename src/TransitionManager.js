@@ -89,7 +89,9 @@ export default class TransitionManager {
 
     /** Trigger a full algorithm transition. */
     changeAlgorithm() {
-        if (this._isTransitioning) return;
+        if (this._isTransitioning) {
+            return;
+        }
         this._isTransitioning = true;
 
         try {
@@ -132,7 +134,7 @@ export default class TransitionManager {
     _resetCanvasContext() {
         const ctx = this._ctx;
         const canvas = this._canvas;
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = globalThis.devicePixelRatio || 1;
 
         // Reset transform fully (clears accumulated rotation)
         ctx.resetTransform();
@@ -189,7 +191,7 @@ export default class TransitionManager {
     /** Pick a random algorithm, instantiate it, handle errors with retry. */
     _chooseAlgos() {
         const { w, h } = this._getDimensions();
-        let AlgorithmClass;
+        let AlgorithmClass = null;
 
         if (this._devModeActive) {
             const isSlotA = this._devModeAlternator === 0;
@@ -207,18 +209,11 @@ export default class TransitionManager {
             this._currentAlgorithm = new AlgorithmClass(this._ctx, w, h);
             this._hud.displayAlgorithmName(this._currentAlgorithm.name);
             this._algoRetries = 0;
-        } catch (err) {
-            console.error(
-                '[TransitionManager] Algorithm constructor threw:',
-                err,
-            );
-            this._algoRetries++;
+        } catch {
+            this._algoRetries += 1;
             if (this._algoRetries < 3) {
                 this._chooseAlgos();
             } else {
-                console.error(
-                    '[TransitionManager] 3 algorithms failed in a row, stopping.',
-                );
                 this._algoRetries = 0;
             }
         }

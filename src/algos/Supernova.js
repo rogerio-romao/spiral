@@ -15,9 +15,8 @@ export default class Supernova extends AL {
     initializeProperties() {
         this.rotate = AL.random(1, 20);
         this.approach = AL.random(5, 31);
-        this.fib = [0, +Math.random().toFixed(3)];
-        this.length =
-            this.fib[this.fib.length - 2] + this.fib[this.fib.length - 1] + 3;
+        this.fib = [0, Number(Math.random().toFixed(3))];
+        this.length = this.fib.at(-2) + this.fib.at(-1) + 3;
     }
 
     setupDrawingStyles() {
@@ -36,28 +35,20 @@ export default class Supernova extends AL {
         }
 
         if (this.t % (this.speed * this.approach) === 0) {
-            this.fib.push(
-                this.fib[this.fib.length - 2] + this.fib[this.fib.length - 1]
-            );
-            this.length =
-                this.fib[this.fib.length - 2] +
-                this.fib[this.fib.length - 1] +
-                3;
+            this.fib.push(this.fib.at(-2) + this.fib.at(-1));
+            this.length = this.fib.at(-2) + this.fib.at(-1) + 3;
         }
 
         if (this.length > Math.max(this.w, this.h)) {
             this.length = 0;
             this.approach = AL.random(5, 31);
-            this.fib = [0, +Math.random().toFixed(3)];
-            this.length =
-                this.fib[this.fib.length - 2] +
-                this.fib[this.fib.length - 1] +
-                3;
+            this.fib = [0, Number(Math.random().toFixed(3))];
+            this.length = this.fib.at(-2) + this.fib.at(-1) + 3;
             this.rotate = AL.random(1, 20);
             this.setupDrawingStyles();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.requestFrame();
     }

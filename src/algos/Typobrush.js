@@ -21,7 +21,7 @@ export default class Typobrush extends AL {
             2748, 2750, 2751, 2752, 2753, 2760, 2764, 2768, 2784, 2791, 2792,
             2795, 2796, 2797, 2798, 2799, 2800,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
     }
 
     initializeProperties() {
@@ -53,7 +53,7 @@ export default class Typobrush extends AL {
             this.size += this.sizeIncrease;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 
@@ -63,7 +63,7 @@ export default class Typobrush extends AL {
         }
 
         if (this.t % (this.speed * 750) === 0) {
-            this.letter = String.fromCharCode(
+            this.letter = String.fromCodePoint(
                 AL.pickRandomElement(this.letters),
             );
 

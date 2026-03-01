@@ -34,7 +34,7 @@ export default class Clock extends AL {
             756, 757, 758, 759, 760, 761, 762, 764, 766, 769, 771, 772, 776,
             778, 781, 782, 784, 790, 794, 795, 796,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.color = AL.randomColor(0, 255, 0.66, 0.66);
         this.rotate = (18 * Math.PI) / 180;
@@ -42,7 +42,7 @@ export default class Clock extends AL {
 
     setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
-        this.ctx.font = AL.random(60, 600) + 'px sans-serif';
+        this.ctx.font = `${AL.random(60, 600)}px sans-serif`;
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.textAlign = 'center';
         this.ctx.shadowBlur = 8;
@@ -52,16 +52,16 @@ export default class Clock extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.strokeText('  ' + this.letter, 0, 0);
+            this.ctx.strokeText(`  ${this.letter}`, 0, 0);
             this.ctx.rotate(this.rotate);
             this.ctx.translate(-this.w / 2, -this.h / 2);
             this.ctx.beginPath();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
-            this.ctx.font = AL.random(60, 600) + 'px sans-serif';
+            this.ctx.font = `${AL.random(60, 600)}px sans-serif`;
 
             const col = Math.random();
             if (col < 0.15) {
@@ -82,13 +82,13 @@ export default class Clock extends AL {
 
         if (this.t % (this.speed * 120) === 0) {
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes
+                this.modes,
             );
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+            this.letter = String.fromCodePoint(
+                AL.pickRandomElement(this.letters),
             );
         }
 

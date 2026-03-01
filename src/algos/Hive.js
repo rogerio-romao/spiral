@@ -42,12 +42,12 @@ export default class Hive extends AL {
                     AL.random(0, this.w),
                     i * this.height,
                     AL.random(0, this.w),
-                    this.height
+                    this.height,
                 );
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rot);
 

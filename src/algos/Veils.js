@@ -23,7 +23,7 @@ export default class Veils extends AL {
     }
 
     initializeProperties() {
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);
@@ -47,7 +47,7 @@ export default class Veils extends AL {
             this.ctx.font = `${this.size}px serif`;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 
@@ -57,7 +57,7 @@ export default class Veils extends AL {
         }
 
         if (this.t % (this.speed * 1620) === 0) {
-            this.rotate++;
+            this.rotate += 1;
         }
 
         this.requestFrame();

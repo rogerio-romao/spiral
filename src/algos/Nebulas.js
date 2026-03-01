@@ -31,7 +31,7 @@ export default class Nebulas extends AL {
             5,
             255,
             0.02,
-            0.02
+            0.02,
         );
     }
 
@@ -45,17 +45,19 @@ export default class Nebulas extends AL {
             this.length = AL.random(10, Math.max(this.w, this.h));
             this.rotate = AL.random(3, 160);
             this.gap += AL.random(2, 10);
-            if (this.gap > 1000) this.gap = 1;
+            if (this.gap > 1000) {
+                this.gap = 1;
+            }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 10) === 0) {
             this.ctx.fillRect(
                 AL.random(0, this.w),
                 AL.random(0, this.h),
                 this.gap,
-                this.gap
+                this.gap,
             );
         }
 

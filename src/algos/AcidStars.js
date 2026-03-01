@@ -23,7 +23,7 @@ export default class AcidStars extends AL {
             1672, 1673, 1674, 1675, 1677, 1678, 1680, 1682, 1683, 1686, 1690,
             1691, 1693, 1695, 1697,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
     }
 
     initializeProperties() {
@@ -38,13 +38,13 @@ export default class AcidStars extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.font = this.fontSize + 'px serif';
+        this.ctx.font = `${this.fontSize}px serif`;
         this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(0, 255, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.fillText(
@@ -75,7 +75,7 @@ export default class AcidStars extends AL {
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
         this.side += this.change;
@@ -83,7 +83,7 @@ export default class AcidStars extends AL {
             this.change = -this.change;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();
@@ -92,7 +92,7 @@ export default class AcidStars extends AL {
         }
 
         if (this.t % (this.speed * 720) === 0) {
-            this.letter = String.fromCharCode(
+            this.letter = String.fromCodePoint(
                 AL.pickRandomElement(this.letters),
             );
         }

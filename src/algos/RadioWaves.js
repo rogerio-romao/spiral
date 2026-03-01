@@ -49,8 +49,8 @@ export default class RadioWaves extends AL {
             this.seq.shift();
 
             if (radius > Math.max(this.w, this.h)) {
-                this.first++;
-                this.second++;
+                this.first += 1;
+                this.second += 1;
                 this.seq = [this.first, this.second];
 
                 this.rotateCanvasRadians(Math.PI / this.divisor);
@@ -66,7 +66,7 @@ export default class RadioWaves extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();

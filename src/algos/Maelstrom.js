@@ -33,13 +33,16 @@ export default class Maelstrom extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.quadraticCurveTo(this.cp1, this.cp2, this.x1++, this.y1++);
+            this.ctx.quadraticCurveTo(this.cp1, this.cp2, this.x1, this.y1);
             this.ctx.stroke();
+
+            this.x1 += 1;
+            this.y1 += 1;
 
             this.rotateCanvasDegrees(this.angle);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 300) === 0) {
             this.initializeProperties();

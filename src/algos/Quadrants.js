@@ -21,13 +21,13 @@ export default class Quadrants extends AL {
             0,
             255,
             0.3,
-            0.3
+            0.3,
         );
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 5;
+            this.stagger %= 5;
 
             if (this.stagger === 0) {
                 this.ctx.arc(this.w / 4, this.h / 4, this.radius, 0, 360);
@@ -59,10 +59,10 @@ export default class Quadrants extends AL {
                 this.ctx.beginPath();
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 15) === 0) {
             this.radius = AL.random(10, 350);

@@ -46,17 +46,17 @@ export default class Majestic extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.ll,
                     lowerRight: this.lr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 true,
                 true,
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

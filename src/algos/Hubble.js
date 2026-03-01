@@ -31,28 +31,28 @@ export default class Hubble extends AL {
                 this.w / 2,
                 this.h / 2,
                 this.currentVal * 3,
-                this.currentVal * 3
+                this.currentVal * 3,
             );
             this.ctx.fillRect(
                 this.w / 2,
                 this.h / 2,
                 this.currentVal * 3,
-                -this.currentVal * 3
+                -this.currentVal * 3,
             );
             this.ctx.fillRect(
                 this.w / 2,
                 this.h / 2,
                 -this.currentVal * 3,
-                this.currentVal * 3
+                this.currentVal * 3,
             );
             this.ctx.fillRect(
                 this.w / 2,
                 this.h / 2,
                 -this.currentVal * 3,
-                -this.currentVal * 3
+                -this.currentVal * 3,
             );
 
-            this.index++;
+            this.index += 1;
             if (this.index >= this.seq.length - 1) {
                 this.index = 0;
                 this.rotate = AL.random(1, 44);
@@ -61,7 +61,7 @@ export default class Hubble extends AL {
             this.currentVal = this.seq[this.index];
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 
@@ -73,9 +73,7 @@ export default class Hubble extends AL {
         const values = [];
         for (let i = 1; i <= num; i++) {
             for (let j = 1; j <= num; j++) {
-                values.push(
-                    j * i * (start[start.length - 2] + start[start.length - 1])
-                );
+                values.push(j * i * (start.at(-2) + start.at(-1)));
             }
         }
         return values;

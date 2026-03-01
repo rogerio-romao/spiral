@@ -35,7 +35,7 @@ export default class Spikral extends AL {
             this.size *= 1.06;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(-this.rotate);
 

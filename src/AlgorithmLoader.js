@@ -38,8 +38,7 @@ export default class AlgorithmLoader {
      * This expects GSAP to be loaded globally via <script src="./assets/js/gsap.min.js"></script> in index.html.
      * If GSAP is not present, this will be null and a warning will be logged.
      */
-    static gsap =
-        typeof window !== 'undefined' && window.gsap ? window.gsap : null;
+    static gsap = globalThis.gsap || null;
 
     static frequencyAnalyser = null;
 
@@ -62,19 +61,22 @@ export default class AlgorithmLoader {
         this.w = w;
         this.h = h;
 
-        this.t = 0; // Time variable or frame counter
-        this.animationFrameId = null; // To store requestAnimationFrame ID
+        // Time variable or frame counter
+        this.t = 0;
+        this.animationFrameId = null;
         this.speed = AlgorithmLoader.random(2, 6);
-        this.stagger = 0; // Used for staggered animations
+        // Used for staggered animations
+        this.stagger = 0;
         this.isRunning = true;
 
         const originalDraw = this.draw.bind(this);
         this.draw = () => {
-            if (!this.isRunning) return;
+            if (!this.isRunning) {
+                return;
+            }
             try {
                 originalDraw();
-            } catch (err) {
-                console.error('[AlgorithmLoader] draw() threw:', err);
+            } catch {
                 this.stop();
                 this.ctx.canvas.dispatchEvent(
                     new CustomEvent('algorithm-error'),

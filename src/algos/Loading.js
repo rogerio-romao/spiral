@@ -14,7 +14,7 @@ export default class Loading extends AL {
     }
 
     initializeBaseProperties() {
-        this.counter = false;
+        this.counterClockwise = false;
         this.color = AL.randomColor(120, 230, 1, 1);
     }
 
@@ -33,7 +33,7 @@ export default class Loading extends AL {
     draw() {
         this.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
         this.ctx.strokeStyle = this.t % 2 ? 'black' : this.color;
-        this.counter = this.t % 2 ? true : false;
+        this.counterClockwise = this.t % 2 === 1;
         this.ctx.globalCompositeOperation =
             this.t % 2 ? 'source-over' : 'difference';
 
@@ -45,12 +45,12 @@ export default class Loading extends AL {
                 this.radius,
                 0,
                 Math.PI,
-                this.counter,
+                this.counterClockwise,
             );
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

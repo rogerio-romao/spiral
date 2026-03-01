@@ -44,7 +44,7 @@ export default class Subwoofer extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.size = Math.max(
             this.size + Math.sin(this.t / this.divisor) * this.factor,

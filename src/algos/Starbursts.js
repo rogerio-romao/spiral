@@ -29,7 +29,7 @@ export default class Starbursts extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.arc(
@@ -37,14 +37,14 @@ export default class Starbursts extends AL {
                     this.h / 2 - this.length,
                     this.maxGap / 2,
                     this.startAngle,
-                    this.endAngle
+                    this.endAngle,
                 );
             }
 
             if (this.stagger === 1) {
                 this.ctx.lineTo(
                     this.w / 2 + this.length,
-                    this.h / 2 - this.length
+                    this.h / 2 - this.length,
                 );
             }
 
@@ -55,7 +55,7 @@ export default class Starbursts extends AL {
                     this.h / 2 - 2 * this.length,
                     this.maxGap,
                     this.startAngle,
-                    this.endAngle
+                    this.endAngle,
                 );
                 this.ctx.fill();
             }
@@ -71,16 +71,18 @@ export default class Starbursts extends AL {
                 this.maxGap = 2 * this.gap;
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 420) === 0) {
             this.ctx.closePath();
             this.ctx.beginPath();
             this.setupDrawingStyles();
-            if (Math.random() < 0.15) this.ctx.fillStyle = 'rgb(0,0,0)';
+            if (Math.random() < 0.15) {
+                this.ctx.fillStyle = 'rgb(0,0,0)';
+            }
             this.rotateCanvasRadians(Math.random() * Math.PI);
         }
 

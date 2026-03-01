@@ -37,7 +37,7 @@ export default class SnakesLadders extends AL {
             0,
             255,
             0.65,
-            1
+            1,
         );
     }
 
@@ -47,24 +47,24 @@ export default class SnakesLadders extends AL {
                 this.colSize * this.currCol,
                 this.rowSize * this.currRow,
                 this.colSize,
-                this.rowSize
+                this.rowSize,
             );
 
-            this.currCol++;
+            this.currCol += 1;
 
             if (this.currCol > this.div - 1) {
                 this.currCol = 0;
 
                 this.rotateCanvasRadians(this.rotate);
 
-                this.currRow++;
+                this.currRow += 1;
                 if (this.currRow > this.div2 - 1) {
                     this.currRow = 0;
                 }
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 720) === 0) {
             this.initializeProperties();

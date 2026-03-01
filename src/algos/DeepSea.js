@@ -55,7 +55,7 @@ export default class DeepSea extends AL {
                 this.cp2x,
                 this.cp2y,
                 this.endX,
-                this.endY
+                this.endY,
             );
             this.ctx.stroke();
 
@@ -65,7 +65,7 @@ export default class DeepSea extends AL {
             this.cp1y += Math.cos(this.t) * this.factor2;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

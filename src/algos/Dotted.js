@@ -31,7 +31,7 @@ export default class Dotted extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.moveTo(this.w / 2, this.h / 2);
@@ -53,10 +53,10 @@ export default class Dotted extends AL {
                 this.ctx.beginPath();
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 5) === 0) {
             this.ctx.fillRect(0, 0, this.w, this.h);

@@ -45,7 +45,7 @@ export default class Pulsar extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate1);
 

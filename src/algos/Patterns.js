@@ -36,7 +36,7 @@ export default class Patterns extends AL {
                         100 * i - 50,
                         this.radius,
                         0,
-                        2 * Math.PI
+                        2 * Math.PI,
                     );
                     this.ctx.stroke();
                     this.ctx.fill();
@@ -44,7 +44,7 @@ export default class Patterns extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.radius = AL.random(10, 250);
@@ -58,7 +58,7 @@ export default class Patterns extends AL {
                 this.h / 2,
                 this.radius * 3,
                 0,
-                2 * Math.PI
+                2 * Math.PI,
             );
             this.ctx.stroke();
             this.ctx.fill();

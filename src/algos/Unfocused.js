@@ -46,7 +46,7 @@ export default class Unfocused extends AL {
             this.ctx.fill();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

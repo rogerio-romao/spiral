@@ -44,7 +44,7 @@ export default class DysonSpheres extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 170) === 0) {
             this.ctx.beginPath();

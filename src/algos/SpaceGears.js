@@ -19,7 +19,7 @@ export default class SpaceGears extends AL {
             428, 429, 430, 433, 437, 438, 439, 440, 443, 444, 448, 449, 450,
             451, 458, 461, 474, 478, 480, 484, 488, 491, 494,
         ];
-        this.letter = String.fromCharCode(428);
+        this.letter = String.fromCodePoint(428);
     }
 
     initializeProperties() {
@@ -27,14 +27,14 @@ export default class SpaceGears extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.font = AL.random(100, 700) + 'px serif';
+        this.ctx.font = `${AL.random(100, 700)}px serif`;
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 0.6);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.textAlign = 'left';
-            this.ctx.strokeText(' ' + this.letter.repeat(3), 0, 0);
+            this.ctx.strokeText(` ${this.letter.repeat(3)}`, 0, 0);
             this.ctx.translate(this.w / 2, this.h / 2);
             this.ctx.rotate(this.rotate);
             this.ctx.textAlign = 'center';
@@ -42,7 +42,7 @@ export default class SpaceGears extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 120) === 0) {
             this.setupDrawingStyles();
@@ -50,8 +50,8 @@ export default class SpaceGears extends AL {
 
         if (this.t % (this.speed * 1260) === 0) {
             this.initializeProperties();
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+            this.letter = String.fromCodePoint(
+                AL.pickRandomElement(this.letters),
             );
         }
 

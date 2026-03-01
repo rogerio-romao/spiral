@@ -42,19 +42,19 @@ export default class Plaid extends AL {
                         150 * j - 150,
                         150 * i - 150,
                         this.side1,
-                        this.side2
+                        this.side2,
                     );
                     this.ctx.fillRect(
                         150 * j - 150,
                         150 * i - 150,
                         this.side1,
-                        this.side2
+                        this.side2,
                     );
                 }
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 30) === 0) {
             this.initializeProperties();

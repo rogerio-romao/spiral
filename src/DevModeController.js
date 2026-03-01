@@ -8,7 +8,7 @@ export default class DevModeController {
         this._transitionManager = transitionManager;
         this._hud = hud;
 
-        this._isDev = window.env?.isDev;
+        this._isDev = globalThis.env?.isDev;
         this._modal = document.querySelector('#dev-mode');
         this._enableCheckbox = document.querySelector('#dev-enable');
         this._algoASelect = document.querySelector('#dev-algo-a');
@@ -27,41 +27,42 @@ export default class DevModeController {
             this._onAlgoChange('B', e.target.value);
 
         // Combine both for dev mode
-        if (this._isDev) {
-            // Concatenate and sort by class name so Template* appears with other T algos
-            this._allAlgorithms = algorithms
-                .concat(templateAlgorithms)
-                .slice() // shallow copy
-                .sort((a, b) => {
-                    if (!a?.name || !b?.name) return 0;
-                    return a.name.localeCompare(b.name);
-                });
-        } else {
-            this._allAlgorithms = algorithms;
-        }
+        // Concatenate and sort by class name so Template* appears with other T algos
+        this._allAlgorithms = this._isDev
+            ? [...algorithms, ...templateAlgorithms].toSorted((a, b) => {
+                  if (!a?.name || !b?.name) {
+                      return 0;
+                  }
+                  return a.name.localeCompare(b.name);
+              })
+            : algorithms;
 
         if (this._isDev) {
             this._populateSelects();
             this._bindEvents();
         } else {
             // Hide modal and badge in production
-            if (this._modal) this._modal.style.display = 'none';
-            if (this._badge) this._badge.style.display = 'none';
+            if (this._modal) {
+                this._modal.style.display = 'none';
+            }
+            if (this._badge) {
+                this._badge.style.display = 'none';
+            }
         }
     }
 
     _populateSelects() {
         const fragment = document.createDocumentFragment();
 
-        this._allAlgorithms.forEach((AlgoClass, index) => {
+        for (const [index, AlgoClass] of this._allAlgorithms.entries()) {
             const option = document.createElement('option');
             option.value = index;
             option.textContent = AlgoClass.name;
-            fragment.appendChild(option);
-        });
+            fragment.append(option);
+        }
 
-        this._algoASelect.appendChild(fragment.cloneNode(true));
-        this._algoBSelect.appendChild(fragment);
+        this._algoASelect.append(fragment.cloneNode(true));
+        this._algoBSelect.append(fragment);
     }
 
     _bindEvents() {
@@ -112,10 +113,14 @@ export default class DevModeController {
     _onAlgoChange(slot, value) {
         if (slot === 'A') {
             this._algoA =
-                value === '' ? null : this._allAlgorithms[parseInt(value, 10)];
+                value === ''
+                    ? null
+                    : this._allAlgorithms[Number.parseInt(value, 10)];
         } else {
             this._algoB =
-                value === '' ? null : this._allAlgorithms[parseInt(value, 10)];
+                value === ''
+                    ? null
+                    : this._allAlgorithms[Number.parseInt(value, 10)];
         }
 
         if (this._active) {

@@ -5,4 +5,4 @@ import Spiral from './src/Spiral.js';
 
 const spiral = new Spiral();
 
-window.addEventListener('beforeunload', () => spiral.destroy());
+globalThis.addEventListener('beforeunload', () => spiral.destroy());

@@ -32,7 +32,7 @@ export default class Rims extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.ellipse(
@@ -42,7 +42,7 @@ export default class Rims extends AL {
                     this.radius2,
                     this.rotate,
                     this.startAngle,
-                    this.endAngle
+                    this.endAngle,
                 );
             }
 
@@ -54,7 +54,7 @@ export default class Rims extends AL {
                     this.radius,
                     this.rotate,
                     this.startAngle + this.gap,
-                    this.endAngle + this.gap
+                    this.endAngle + this.gap,
                 );
             }
 
@@ -66,7 +66,7 @@ export default class Rims extends AL {
                     this.radius2,
                     -this.rotate,
                     this.w / 2,
-                    this.h / 2
+                    this.h / 2,
                 );
             }
         }
@@ -74,7 +74,7 @@ export default class Rims extends AL {
         this.ctx.fill();
         this.ctx.stroke();
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

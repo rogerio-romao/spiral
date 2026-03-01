@@ -44,9 +44,7 @@
     --transition-slow: 0.35s;
 }
 
-/* ========================
-   GLOBAL
-   ======================== */
+/* GLOBAL */
 body {
     background: black;
     color: var(--color-text);
@@ -60,6 +58,47 @@ body {
     text-shadow:
         1px 1px black,
         -1px -1px black;
+}
+
+h1 {
+    color: var(--color-accent);
+    margin-bottom: 0;
+    font-size: 2.25em;
+}
+
+h4 {
+    color: var(--color-muted);
+    margin-top: 0;
+}
+
+h3 {
+    color: var(--color-success);
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+p {
+    letter-spacing: 0;
+
+    &.warning {
+        color: var(--color-accent);
+        font-size: 1.1em;
+        font-weight: 900;
+        margin-bottom: 0.5em;
+    }
+}
+
+.keys {
+    color: var(--color-primary);
+}
+
+.text {
+    text-align: left;
+}
+
+.help {
+    color: var(--color-success);
+    font-size: 1.2em;
 }
 
 /* CANVAS */
@@ -152,47 +191,6 @@ canvas {
     .hotkey .label {
         display: none;
     }
-}
-
-h1 {
-    color: var(--color-accent);
-    margin-bottom: 0;
-    font-size: 2.25em;
-}
-
-h4 {
-    color: var(--color-muted);
-    margin-top: 0;
-}
-
-h3 {
-    color: var(--color-success);
-    margin-top: 0;
-    font-size: 1.4em;
-}
-
-p {
-    letter-spacing: 0;
-
-    &.warning {
-        color: var(--color-accent);
-        font-size: 1.1em;
-        font-weight: 900;
-        margin-bottom: 0.5em;
-    }
-}
-
-.keys {
-    color: var(--color-primary);
-}
-
-.text {
-    text-align: left;
-}
-
-.help {
-    color: var(--color-success);
-    font-size: 1.2em;
 }
 
 /* PLAYER */

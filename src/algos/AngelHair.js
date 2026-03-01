@@ -36,7 +36,7 @@ export default class AngelHair extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.ctx.moveTo(this.y2, this.x1);
@@ -48,7 +48,7 @@ export default class AngelHair extends AL {
                     this.h,
                     this.x1,
                     this.y1,
-                    this.radius1
+                    this.radius1,
                 );
                 this.ctx.stroke();
             }
@@ -59,7 +59,7 @@ export default class AngelHair extends AL {
                     this.h / 2,
                     this.x2,
                     this.y2,
-                    this.radius2
+                    this.radius2,
                 );
                 this.ctx.stroke();
             }
@@ -69,18 +69,18 @@ export default class AngelHair extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
-        this.stagger++;
+        this.stagger += 1;
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();
 
-            if (Math.random() < 0.075) {
-                this.ctx.strokeStyle = 'white';
-            } else {
-                this.ctx.strokeStyle = AL.randomColor(120, 255, 0.66, 0.95);
-            }
+            this.ctx.strokeStyle =
+                Math.random() < 0.075
+                    ? 'white'
+                    : AL.randomColor(120, 255, 0.66, 0.95);
+
             this.ctx.beginPath();
         }
 

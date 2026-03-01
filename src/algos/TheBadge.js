@@ -46,20 +46,20 @@ export default class TheBadge extends AL {
                 this.w / 2 - this.length * 1.5,
                 this.h / 2 - this.length * 1.5,
                 3 * this.length,
-                3 * this.length
+                3 * this.length,
             );
 
             this.ctx.strokeRect(
                 this.w / 2 - this.length * 1.5,
                 this.h / 2 - this.length * 1.5,
                 3 * this.length,
-                3 * this.length
+                3 * this.length,
             );
 
             this.rotateCanvasDegrees(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 25) === 0) {
             this.length = AL.random(5, Math.min(this.w, this.h) / 3);
@@ -71,7 +71,7 @@ export default class TheBadge extends AL {
         if (this.t % (this.speed * 50) === 0) {
             this.rotate = AL.random(0, 360);
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes
+                this.modes,
             );
         }
 

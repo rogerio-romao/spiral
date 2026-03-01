@@ -17,7 +17,7 @@ export default class ThreeD extends AL {
             3044, 3045, 3046, 3047, 3048, 3052, 3054, 3057, 3059, 3063, 3077,
             3079, 3080, 3086, 3087, 3088, 3090, 3093, 3094, 3097, 3100,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.fontSize = AL.random(24, 80);
         this.rot1 = AL.random(-5, 5);
@@ -34,12 +34,12 @@ export default class ThreeD extends AL {
         this.ctx.shadowOffsetY = 4;
         this.ctx.shadowBlur = 5;
         this.ctx.textAlign = 'center';
-        this.ctx.font = this.fontSize + 'px sans-serif';
+        this.ctx.font = `${this.fontSize}px sans-serif`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 5;
+            this.stagger %= 5;
 
             if (this.stagger === 0) {
                 this.ctx.save();
@@ -88,15 +88,15 @@ export default class ThreeD extends AL {
                 this.ctx.fillText(this.letter, this.w * 0.875, this.h * 0.125);
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 75) === 0) {
             this.fontSize = AL.random(24, 80);
 
-            this.ctx.font = this.fontSize + 'px serif';
+            this.ctx.font = `${this.fontSize}px serif`;
         }
 
         if (this.t % (this.speed * 150) === 0) {
@@ -110,8 +110,8 @@ export default class ThreeD extends AL {
         }
 
         if (this.t % (this.speed * 300) === 0) {
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+            this.letter = String.fromCodePoint(
+                AL.pickRandomElement(this.letters),
             );
         }
 

@@ -49,7 +49,7 @@ export default class Warp2001 extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();

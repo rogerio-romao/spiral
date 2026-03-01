@@ -38,19 +38,23 @@ export default class TheFan extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.ox++, this.oy);
+            this.ctx.moveTo(this.ox, this.oy);
             this.ctx.bezierCurveTo(
                 this.x1,
                 this.y1,
                 this.x2,
                 this.y2,
                 this.dx,
-                this.dy++
+                this.dy,
             );
+
+            this.ox += 1;
+            this.dy += 1;
+
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

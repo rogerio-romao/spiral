@@ -25,10 +25,10 @@ export default class PaletteSquares extends AL {
         this.squares = Array.from(
             { length: this.colors.length },
             (_, index) => ({
+                color: this.colors[index],
+                size: AL.random(10, 300),
                 x: AL.random(0, this.w),
                 y: AL.random(0, this.h),
-                size: AL.random(10, 300),
-                color: this.colors[index],
             }),
         );
     }
@@ -54,7 +54,7 @@ export default class PaletteSquares extends AL {
 
         this.rotateCanvasRadians(this.rotation);
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 200) === 0) {
             this.initializeProperties();

@@ -46,10 +46,10 @@ export default class Cornucopia2 extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.dl,
                     lowerRight: this.dr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 false,
                 true,
@@ -61,7 +61,7 @@ export default class Cornucopia2 extends AL {
             this.dr += this.drc;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

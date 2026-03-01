@@ -30,17 +30,17 @@ export default class Vortrix extends AL {
             0,
             255,
             0.5,
-            1
+            1,
         );
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.drawTriangle(this.x, this.y);
-            this.size--;
+            this.size -= 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

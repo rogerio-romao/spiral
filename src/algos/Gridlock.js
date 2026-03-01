@@ -37,7 +37,7 @@ export default class Gridlock extends AL {
             this.gap += this.increment;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 150) === 0) {
             this.rotateCanvasRadians(AL.random(1, 99));
@@ -46,11 +46,7 @@ export default class Gridlock extends AL {
             this.increment = this.gap;
 
             this.isWhite = !this.isWhite;
-            if (this.isWhite) {
-                this.ctx.strokeStyle = 'white';
-            } else {
-                this.ctx.strokeStyle = 'black';
-            }
+            this.ctx.strokeStyle = this.isWhite ? 'white' : 'black';
 
             this.ctx.lineWidth = AL.random(1, 7);
             this.ctx.beginPath();

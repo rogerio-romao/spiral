@@ -42,10 +42,10 @@ export default class Rounded extends AL {
                 this.side1,
                 this.side2,
                 {
-                    upperLeft: this.rounded1,
-                    upperRight: this.rounded2,
                     lowerLeft: this.rounded3,
                     lowerRight: this.rounded4,
+                    upperLeft: this.rounded1,
+                    upperRight: this.rounded2,
                 },
                 true,
                 true,
@@ -53,7 +53,7 @@ export default class Rounded extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 125) === 0) {
             this.initializeProperties();

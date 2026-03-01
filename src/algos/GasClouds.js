@@ -38,22 +38,25 @@ export default class GasClouds extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.roundRectExtra(
-                this.x++,
-                this.y++,
+                this.x,
+                this.y,
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.dl,
                     lowerRight: this.dr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 true,
                 false,
             );
+
+            this.x += 1;
+            this.y += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();

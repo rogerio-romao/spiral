@@ -23,23 +23,23 @@ export default class GravityTurbulence extends AL {
 
         this.sun1.radius = 40;
         this.sun2.radius = 30;
-        this.sun1.mass = 50000;
-        this.sun2.mass = -10000;
+        this.sun1.mass = 50_000;
+        this.sun2.mass = -10_000;
         this.numParticles = 375;
 
         this.particles = [];
 
         for (let i = 0; i < this.numParticles; i++) {
-            const p = AL.createParticle(
+            const particle = AL.createParticle(
                 AL.mathUtils.randomRange(0, this.w),
                 AL.mathUtils.randomRange(0, this.h),
                 AL.mathUtils.randomRange(7, 8),
                 Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1),
             );
-            p.addGravitation(this.sun1);
-            p.addGravitation(this.sun2);
-            p.radius = 1.25;
-            this.particles.push(p);
+            particle.addGravitation(this.sun1);
+            particle.addGravitation(this.sun2);
+            particle.radius = 1.25;
+            this.particles.push(particle);
         }
     }
 
@@ -99,15 +99,15 @@ export default class GravityTurbulence extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 250) === 0) {
-            this.sun1.mass = AL.mathUtils.randomRange(-100000, 100000);
+            this.sun1.mass = AL.mathUtils.randomRange(-100_000, 100_000);
             this.sun1.radius = AL.mathUtils.randomRange(3, 25);
             this.sun1.direction = Math.random() * Math.PI * 2;
             this.sun1.speed = Math.random() * 5 - 2.5;
 
-            this.sun2.mass = AL.mathUtils.randomRange(-100000, 100000);
+            this.sun2.mass = AL.mathUtils.randomRange(-100_000, 100_000);
             this.sun2.radius = AL.mathUtils.randomRange(5, 40);
             this.sun2.direction = Math.random() * Math.PI * 2;
             this.sun2.speed = Math.random() * 5 - 2.5;
@@ -116,10 +116,10 @@ export default class GravityTurbulence extends AL {
         this.requestFrame();
     }
 
-    drawPart(p, color) {
+    drawPart(particle, color) {
         this.ctx.fillStyle = color;
         this.ctx.beginPath();
-        this.ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+        this.ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
         this.ctx.fill();
     }
 }

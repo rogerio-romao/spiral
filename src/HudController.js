@@ -1,8 +1,8 @@
 /**
- * HUDController — manages HUD overlay text: transient messages,
+ * HudController — manages HUD overlay text: transient messages,
  * algorithm name display, silent mode, and help screen toggle.
  */
-export default class HUDController {
+export default class HudController {
     /**
      * @param {Object} options
      * @param {HTMLElement} options.messageElement     - The #msg element
@@ -38,7 +38,9 @@ export default class HUDController {
 
     /** Show algorithm name for 5000 ms. Respects silent mode. */
     displayAlgorithmName(name) {
-        if (this._silent) return;
+        if (this._silent) {
+            return;
+        }
         clearTimeout(this._algorithmNameTimer);
         this._algosDisplayElement.textContent = `${name.toUpperCase()}`;
         this._algosDisplayElement.style.display = 'block';

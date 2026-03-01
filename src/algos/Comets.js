@@ -32,7 +32,7 @@ export default class Comets extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.ctx.lineTo(this.w / 2 + this.change, this.h / 2);
@@ -48,9 +48,9 @@ export default class Comets extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
-        this.stagger++;
+        this.stagger += 1;
 
         if (this.t % (this.speed * 1024) === 0) {
             this.initializeProperties();

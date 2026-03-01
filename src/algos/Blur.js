@@ -49,7 +49,7 @@ export default class Blur extends AL {
 
         this.rotateCanvasRadians(this.rotate);
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 90) === 0) {
             this.initializeProperties();

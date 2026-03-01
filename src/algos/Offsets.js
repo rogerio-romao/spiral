@@ -28,7 +28,7 @@ export default class Offsets extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 2;
+            this.stagger %= 2;
 
             if (this.stagger === 0) {
                 this.ctx.lineTo(this.w / 2 - this.length, this.h / 2);
@@ -42,10 +42,10 @@ export default class Offsets extends AL {
 
             this.rotateCanvasRadians(this.rotate);
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.fill();

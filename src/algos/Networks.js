@@ -36,7 +36,7 @@ export default class Networks extends AL {
                 this.y,
                 this.size,
                 0,
-                this.drawAmount * Math.PI * 2
+                this.drawAmount * Math.PI * 2,
             );
             this.ctx.stroke();
 
@@ -45,7 +45,7 @@ export default class Networks extends AL {
             this.ctx.beginPath();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

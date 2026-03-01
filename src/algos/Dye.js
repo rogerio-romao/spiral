@@ -28,7 +28,7 @@ export default class Dye extends AL {
     }
 
     initializeProperties() {
-        this.text = String.fromCharCode(
+        this.text = String.fromCodePoint(
             AL.pickRandomElement(this.letters),
         ).padStart(30, ' ');
 
@@ -74,7 +74,7 @@ export default class Dye extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 400) === 0) {
             this.rotate = AL.random(1, 500);
@@ -97,24 +97,24 @@ export default class Dye extends AL {
 
     getTweens() {
         this.tl = AL.gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'circ' },
+            defaults: { ease: 'circ', repeat: -1, yoyo: true },
         });
         this.tl
             .to(
                 this.font1,
                 {
                     duration: AL.random(4, 10),
-                    size: this.font2.size,
                     onUpdate: () =>
                         (this.ctx.font = `${this.font1.size}px bold serif`),
+                    size: this.font2.size,
                 },
                 '<',
             )
             .to(
                 this.color1,
                 {
-                    duration: AL.random(3, 13),
                     color: this.color3.color,
+                    duration: AL.random(3, 13),
                     onUpdate: () => (this.ctx.strokeStyle = this.color1.color),
                 },
                 '<',
@@ -122,8 +122,8 @@ export default class Dye extends AL {
             .to(
                 this.color2,
                 {
-                    duration: AL.random(3, 10),
                     color: this.color1.color,
+                    duration: AL.random(3, 10),
                     onUpdate: () => (this.ctx.fillStyle = this.color2.color),
                 },
                 '<',
@@ -132,8 +132,8 @@ export default class Dye extends AL {
                 this.line1,
                 {
                     duration: AL.random(2, 10),
-                    width: this.line2.width,
                     onUpdate: () => (this.ctx.lineWidth = this.line1.width),
+                    width: this.line2.width,
                 },
                 '<',
             );

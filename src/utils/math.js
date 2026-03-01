@@ -1,7 +1,51 @@
 // Math utils
 const utils = {
-    norm(value, min, max) {
-        return (value - min) / (max - min);
+    circleCollision(c0, c1) {
+        return this.distance(c0, c1) <= c0.radius + c1.radius;
+    },
+
+    circlePointCollision(x, y, circle) {
+        return this.distanceXY(x, y, circle.x, circle.y) < circle.radius;
+    },
+
+    clamp(value, min, max) {
+        return Math.min(
+            Math.max(value, Math.min(min, max)),
+            Math.max(min, max),
+        );
+    },
+
+    // oxlint-disable-next-line max-params
+    cubicBezier(p0, p1, p2, p3, timeFraction, pFinal = {}) {
+        pFinal.x =
+            (1 - timeFraction) ** 3 * p0.x +
+            (1 - timeFraction) ** 2 * 3 * timeFraction * p1.x +
+            (1 - timeFraction) * 3 * timeFraction * timeFraction * p2.x +
+            timeFraction * timeFraction * timeFraction * p3.x;
+        pFinal.y =
+            (1 - timeFraction) ** 3 * p0.y +
+            (1 - timeFraction) ** 2 * 3 * timeFraction * p1.y +
+            (1 - timeFraction) * 3 * timeFraction * timeFraction * p2.y +
+            timeFraction * timeFraction * timeFraction * p3.y;
+        return pFinal;
+    },
+
+    degreesToRads(degrees) {
+        return (degrees / 180) * Math.PI;
+    },
+
+    distance(p0, p1) {
+        return this.distanceXY(p0.x, p0.y, p1.x, p1.y);
+    },
+
+    distanceXY(x0, y0, x1, y1) {
+        const dx = x1 - x0;
+        const dy = y1 - y0;
+        return Math.hypot(dx, dy);
+    },
+
+    inRange(value, min, max) {
+        return value >= Math.min(min, max) && value <= Math.max(min, max);
     },
 
     lerp(norm, min, max) {
@@ -16,29 +60,8 @@ const utils = {
         );
     },
 
-    clamp(value, min, max) {
-        return Math.min(
-            Math.max(value, Math.min(min, max)),
-            Math.max(min, max),
-        );
-    },
-
-    distance(p0, p1) {
-        return this.distanceXY(p0.x, p0.y, p1.x, p1.y);
-    },
-
-    distanceXY(x0, y0, x1, y1) {
-        const dx = x1 - x0;
-        const dy = y1 - y0;
-        return Math.sqrt(dx * dx + dy * dy);
-    },
-
-    circleCollision(c0, c1) {
-        return this.distance(c0, c1) <= c0.radius + c1.radius;
-    },
-
-    circlePointCollision(x, y, circle) {
-        return this.distanceXY(x, y, circle.x, circle.y) < circle.radius;
+    norm(value, min, max) {
+        return (value - min) / (max - min);
     },
 
     pointInRect(x, y, rect) {
@@ -48,8 +71,28 @@ const utils = {
         );
     },
 
-    inRange(value, min, max) {
-        return value >= Math.min(min, max) && value <= Math.max(min, max);
+    quadraticBezier(p0, p1, p2, timeFraction, pFinal = {}) {
+        pFinal.x =
+            (1 - timeFraction) ** 2 * p0.x +
+            (1 - timeFraction) * 2 * timeFraction * p1.x +
+            timeFraction * timeFraction * p2.x;
+        pFinal.y =
+            (1 - timeFraction) ** 2 * p0.y +
+            (1 - timeFraction) * 2 * timeFraction * p1.y +
+            timeFraction * timeFraction * p2.y;
+        return pFinal;
+    },
+
+    radsToDegrees(radians) {
+        return (radians * 180) / Math.PI;
+    },
+
+    randomInt(min, max) {
+        return Math.floor(min + Math.random() * (max - min + 1));
+    },
+
+    randomRange(min, max) {
+        return min + Math.random() * (max - min);
     },
 
     rangeIntersect(min0, max0, min1, max1) {
@@ -66,50 +109,12 @@ const utils = {
         );
     },
 
-    degreesToRads(degrees) {
-        return (degrees / 180) * Math.PI;
-    },
-
-    radsToDegrees(radians) {
-        return (radians * 180) / Math.PI;
-    },
-
-    randomRange(min, max) {
-        return min + Math.random() * (max - min);
-    },
-
-    randomInt(min, max) {
-        return Math.floor(min + Math.random() * (max - min + 1));
-    },
-
-    roundToPlaces(value, places) {
-        return Math.round(value * places) / places;
-    },
-
     roundNearest(value, nearest) {
         return Math.round(value / nearest) * nearest;
     },
 
-    quadraticBezier(p0, p1, p2, t, pFinal = {}) {
-        pFinal.x =
-            Math.pow(1 - t, 2) * p0.x + (1 - t) * 2 * t * p1.x + t * t * p2.x;
-        pFinal.y =
-            Math.pow(1 - t, 2) * p0.y + (1 - t) * 2 * t * p1.y + t * t * p2.y;
-        return pFinal;
-    },
-
-    cubicBezier(p0, p1, p2, p3, t, pFinal = {}) {
-        pFinal.x =
-            Math.pow(1 - t, 3) * p0.x +
-            Math.pow(1 - t, 2) * 3 * t * p1.x +
-            (1 - t) * 3 * t * t * p2.x +
-            t * t * t * p3.x;
-        pFinal.y =
-            Math.pow(1 - t, 3) * p0.y +
-            Math.pow(1 - t, 2) * 3 * t * p1.y +
-            (1 - t) * 3 * t * t * p2.y +
-            t * t * t * p3.y;
-        return pFinal;
+    roundToPlaces(value, places) {
+        return Math.round(value * places) / places;
     },
 };
 

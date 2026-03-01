@@ -37,24 +37,24 @@ export default class Wormhole extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.ll,
                     lowerRight: this.lr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 true,
                 true,
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 
-        this.width++;
-        this.height++;
-        this.ul++;
-        this.ur++;
+        this.width += 1;
+        this.height += 1;
+        this.ul += 1;
+        this.ur += 1;
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();

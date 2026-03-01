@@ -39,15 +39,15 @@ export default class Irradiate extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.ll,
                     lowerRight: this.lr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 
