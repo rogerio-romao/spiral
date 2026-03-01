@@ -49,7 +49,7 @@ export default class Geometer extends AL {
             this.ctx.beginPath();
             this.ctx.lineWidth = AL.random(2, 7);
 
-            let color = Math.random();
+            const color = Math.random();
             if (color < 0.2) {
                 this.ctx.strokeStyle = 'white';
                 this.ctx.shadowColor = 'black';

@@ -43,10 +43,10 @@ export default class Tripping extends AL {
                 this.width++,
                 this.height++,
                 {
-                    upperLeft: this.ul--,
-                    upperRight: this.ur--,
                     lowerLeft: this.ll--,
                     lowerRight: this.lr--,
+                    upperLeft: this.ul--,
+                    upperRight: this.ur--,
                 },
             );
             this.ctx.roundRectExtra(
@@ -55,10 +55,10 @@ export default class Tripping extends AL {
                 this.height,
                 this.width,
                 {
-                    upperLeft: this.lr,
-                    upperRight: this.ll,
                     lowerLeft: this.ur,
                     lowerRight: this.ul,
+                    upperLeft: this.lr,
+                    upperRight: this.ll,
                 },
             );
         }

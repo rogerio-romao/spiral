@@ -25,7 +25,7 @@ export default class BlacknWhite extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.ctx.beginPath();
@@ -34,7 +34,7 @@ export default class BlacknWhite extends AL {
                     this.w / 2 - this.length / 2,
                     this.h / 2 - this.height / 2,
                     this.length,
-                    this.height
+                    this.height,
                 );
 
                 this.length = AL.random(20, Math.max(this.w, this.h));
@@ -51,7 +51,7 @@ export default class BlacknWhite extends AL {
                     this.length,
                     0,
                     this.h / 2,
-                    this.w / 2
+                    this.w / 2,
                 );
                 this.ctx.stroke();
             }
@@ -62,7 +62,7 @@ export default class BlacknWhite extends AL {
                     this.h / 2,
                     AL.random(1, 10),
                     this.height,
-                    this.length
+                    this.length,
                 );
                 this.ctx.stroke();
             }
@@ -74,7 +74,7 @@ export default class BlacknWhite extends AL {
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes
+                this.modes,
             );
         }
 

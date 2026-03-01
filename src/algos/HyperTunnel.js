@@ -28,18 +28,18 @@ export default class HyperTunnel extends AL {
             this.ctx.moveTo(this.w / 2, this.h / 2);
             this.ctx.lineTo(
                 this.w / 2 - this.side / 2,
-                this.h / 2 - this.side / 2
+                this.h / 2 - this.side / 2,
             );
             this.ctx.stroke();
             this.ctx.moveTo(this.w / 2, this.h / 2);
             this.ctx.lineTo(
                 this.w / 2 + this.side / 2,
-                this.h / 2 - this.side / 2
+                this.h / 2 - this.side / 2,
             );
             this.ctx.stroke();
             this.ctx.lineTo(
                 this.w / 2 - this.side / 2,
-                this.h / 2 - this.side / 2
+                this.h / 2 - this.side / 2,
             );
             this.ctx.stroke();
             this.ctx.fill();
@@ -63,10 +63,9 @@ export default class HyperTunnel extends AL {
     }
 
     setFillStyle() {
-        if (this.side > Math.min(this.w, this.h) / 2) {
-            this.ctx.fillStyle = AL.randomColor(5, 255, 0.02, 0.02);
-        } else {
-            this.ctx.fillStyle = AL.randomColor(5, 255, 0.2, 0.2);
-        }
+        this.ctx.fillStyle =
+            this.side > Math.min(this.w, this.h) / 2
+                ? AL.randomColor(5, 255, 0.02, 0.02)
+                : AL.randomColor(5, 255, 0.2, 0.2);
     }
 }

@@ -19,33 +19,35 @@ export default class KeyboardController {
         this._spiral = spiral;
 
         // Only enable dev mode shortcut if allowed
-        this._isDev = window.env?.isDev;
+        this._isDev = globalThis.env?.isDev;
         this._handler = (e) => this._handleKeyup(e);
     }
 
     /** Attach the keyup listener to window. */
     bind() {
-        window.addEventListener('keyup', this._handler);
+        globalThis.addEventListener('keyup', this._handler);
     }
 
     /** Remove the keyup listener from window. */
     destroy() {
-        window.removeEventListener('keyup', this._handler);
+        globalThis.removeEventListener('keyup', this._handler);
     }
 
     /** Route key events to the appropriate module. */
     _handleKeyup(e) {
         switch (e.code) {
-            case 'Space':
+            case 'Space': {
                 e.preventDefault();
                 this._transition.changeAlgorithm();
                 break;
+            }
 
-            case 'KeyF':
+            case 'KeyF': {
                 document.body.requestFullscreen();
                 break;
+            }
 
-            case 'KeyI':
+            case 'KeyI': {
                 this._transition.autoChange = Math.min(
                     this._transition.autoChange + 10,
                     300,
@@ -54,8 +56,9 @@ export default class KeyboardController {
                     `Auto-change: ${this._transition.autoChange}secs`,
                 );
                 break;
+            }
 
-            case 'KeyD':
+            case 'KeyD': {
                 this._transition.autoChange = Math.max(
                     this._transition.autoChange - 10,
                     10,
@@ -64,43 +67,51 @@ export default class KeyboardController {
                     `Auto-change: ${this._transition.autoChange}secs`,
                 );
                 break;
+            }
 
-            case 'KeyM':
+            case 'KeyM': {
                 this._transition.manual = !this._transition.manual;
                 this._hud.displayMessage(
                     this._transition.manual ? 'Manual mode' : 'Auto mode',
                 );
                 break;
+            }
 
-            case 'KeyS':
+            case 'KeyS': {
                 this._hud.toggleSilent();
                 this._hud.displayMessage(
                     this._hud.silent ? 'Silent mode' : 'Display mode',
                 );
                 break;
+            }
 
-            case 'KeyH':
+            case 'KeyH': {
                 this._hud.toggleHelp();
                 break;
+            }
 
-            case 'KeyP':
+            case 'KeyP': {
                 this._musicPlayer.togglePlayerVisibility();
                 break;
+            }
 
-            case 'KeyE':
+            case 'KeyE': {
                 if (this._isDev) {
                     this._devModeController.toggle();
                 }
                 break;
+            }
 
-            case 'KeyW':
+            case 'KeyW': {
                 if (this._spiral) {
                     this._spiral.toggleWaveform();
                 }
                 break;
+            }
 
-            default:
+            default: {
                 break;
+            }
         }
     }
 }
