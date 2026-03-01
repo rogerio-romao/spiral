@@ -37,7 +37,7 @@ export default class Vortrix extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.drawTriangle(this.x, this.y);
-            this.size--;
+            this.size -= 1;
         }
 
         this.t += 1;

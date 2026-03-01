@@ -52,7 +52,7 @@ export default class Hubble extends AL {
                 -this.currentVal * 3,
             );
 
-            this.index++;
+            this.index += 1;
             if (this.index >= this.seq.length - 1) {
                 this.index = 0;
                 this.rotate = AL.random(1, 44);

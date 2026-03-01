@@ -76,8 +76,7 @@ export default class AlgorithmLoader {
             }
             try {
                 originalDraw();
-            } catch (error) {
-                console.error('[AlgorithmLoader] draw() threw:', error);
+            } catch {
                 this.stop();
                 this.ctx.canvas.dispatchEvent(
                     new CustomEvent('algorithm-error'),

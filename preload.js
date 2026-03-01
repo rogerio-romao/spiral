@@ -1,4 +1,6 @@
-import { contextBridge } from 'electron';
+// oxlint-disable unicorn/prefer-module
+// oxlint-disable-next-line typescript/no-require-imports
+const { contextBridge } = require('electron');
 
 contextBridge.exposeInMainWorld('versions', {
     chrome: process.versions.chrome,

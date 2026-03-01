@@ -54,12 +54,12 @@ export default class DevModeController {
     _populateSelects() {
         const fragment = document.createDocumentFragment();
 
-        this._allAlgorithms.forEach((AlgoClass, index) => {
+        for (const [index, AlgoClass] of this._allAlgorithms.entries()) {
             const option = document.createElement('option');
             option.value = index;
             option.textContent = AlgoClass.name;
             fragment.append(option);
-        });
+        }
 
         this._algoASelect.append(fragment.cloneNode(true));
         this._algoBSelect.append(fragment);
@@ -113,10 +113,14 @@ export default class DevModeController {
     _onAlgoChange(slot, value) {
         if (slot === 'A') {
             this._algoA =
-                value === '' ? null : this._allAlgorithms[parseInt(value, 10)];
+                value === ''
+                    ? null
+                    : this._allAlgorithms[Number.parseInt(value, 10)];
         } else {
             this._algoB =
-                value === '' ? null : this._allAlgorithms[parseInt(value, 10)];
+                value === ''
+                    ? null
+                    : this._allAlgorithms[Number.parseInt(value, 10)];
         }
 
         if (this._active) {

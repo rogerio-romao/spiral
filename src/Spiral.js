@@ -178,7 +178,7 @@ export default class Spiral {
 
     /** Clean up resources before the app closes. */
     destroy() {
-        this._welcomeTimers.forEach(clearTimeout);
+        this._welcomeTimers.map(clearTimeout);
         this.hud.destroy();
         this.musicPlayer.destroy();
         this.devModeController.destroy();
