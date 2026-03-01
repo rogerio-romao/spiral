@@ -6,7 +6,7 @@
         "suspicious": "error",
         "pedantic": "warn",
         "perf": "error",
-        "style": "off",
+        "style": "warn",
         "restriction": "off",
         "nursery": "off"
     },
@@ -18,7 +18,29 @@
             }
         ],
         "eslint/max-lines-per-function": ["warn", 450],
-        "eslint/max-lines": ["warn", 600]
+        "eslint/max-statements": ["warn", 40],
+        "eslint/max-lines": ["warn", 600],
+        "eslint/no-magic-numbers": "off",
+        "eslint/no-ternary": "off",
+        "eslint/no-continue": "off",
+        "eslint/id-length": [
+            "warn",
+            {
+                "min": 2,
+                "exceptions": ["e", "h", "i", "j", "k", "x", "y", "w", "z", "_"]
+            }
+        ],
+        "eslint/no-multi-assign": "off",
+        "unicorn/filename-case": [
+            "error",
+            {
+                "cases": {
+                    "camelCase": true,
+                    "pascalCase": true
+                }
+            }
+        ],
+        "unicorn/no-null": "off"
     },
     "settings": {
         "jsx-a11y": {

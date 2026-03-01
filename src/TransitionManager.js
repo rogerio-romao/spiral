@@ -89,7 +89,9 @@ export default class TransitionManager {
 
     /** Trigger a full algorithm transition. */
     changeAlgorithm() {
-        if (this._isTransitioning) return;
+        if (this._isTransitioning) {
+            return;
+        }
         this._isTransitioning = true;
 
         try {
@@ -189,7 +191,7 @@ export default class TransitionManager {
     /** Pick a random algorithm, instantiate it, handle errors with retry. */
     _chooseAlgos() {
         const { w, h } = this._getDimensions();
-        let AlgorithmClass;
+        let AlgorithmClass = null;
 
         if (this._devModeActive) {
             const isSlotA = this._devModeAlternator === 0;
@@ -207,10 +209,10 @@ export default class TransitionManager {
             this._currentAlgorithm = new AlgorithmClass(this._ctx, w, h);
             this._hud.displayAlgorithmName(this._currentAlgorithm.name);
             this._algoRetries = 0;
-        } catch (err) {
+        } catch (error) {
             console.error(
                 '[TransitionManager] Algorithm constructor threw:',
-                err,
+                error,
             );
             this._algoRetries++;
             if (this._algoRetries < 3) {

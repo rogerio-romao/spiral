@@ -87,16 +87,17 @@ export default class MusicPlayer {
         this.elapsedEl.textContent = '';
         this.totalEl.textContent = '';
 
-        const files = this.input.files;
-        if (!files?.length) return;
+        const { files } = this.input;
+        if (!files?.length) {
+            return;
+        }
 
         const isFirstLoad = this.trackList.length === 0;
 
-        for (let i = 0; i < files.length; i++) {
-            const baseName =
-                files[i].name.indexOf('.') > -1
-                    ? files[i].name.slice(0, files[i].name.indexOf('.'))
-                    : files[i].name;
+        for (const file of files) {
+            const baseName = file.name.includes('.')
+                ? file.name.slice(0, file.name.indexOf('.'))
+                : file.name;
 
             if (this.trackNames.includes(baseName)) {
                 continue;
@@ -119,7 +120,7 @@ export default class MusicPlayer {
                     this.removeTrack(index);
                 });
             this.playList.append(listItem);
-            const blobUrl = window.URL.createObjectURL(files[i]);
+            const blobUrl = globalThis.URL.createObjectURL(file);
             this.trackList.push(blobUrl);
             this.blobUrls.push(blobUrl);
         }
@@ -181,14 +182,18 @@ export default class MusicPlayer {
 
     /** Cue and play the previous track. */
     playPrev() {
-        if (!this.playlistEls) return;
+        if (!this.playlistEls) {
+            return;
+        }
         this.audio.pause();
         this.audio.currentTime = 0;
         this.progress.value = 0;
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
         this.currentSong--;
-        if (this.currentSong < 0) this.currentSong = this.trackList.length - 1;
+        if (this.currentSong < 0) {
+            this.currentSong = this.trackList.length - 1;
+        }
         this._updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         if (this.isPlaying) {
@@ -202,14 +207,18 @@ export default class MusicPlayer {
 
     /** Cue and play the next track. */
     playNext() {
-        if (!this.playlistEls) return;
+        if (!this.playlistEls) {
+            return;
+        }
         this.audio.pause();
         this.audio.currentTime = 0;
         this.progress.value = 0;
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
         this.currentSong++;
-        if (this.currentSong > this.trackList.length - 1) this.currentSong = 0;
+        if (this.currentSong > this.trackList.length - 1) {
+            this.currentSong = 0;
+        }
         this._updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         if (this.isPlaying) {
@@ -227,33 +236,35 @@ export default class MusicPlayer {
             this.progress.value = 0;
             return;
         }
-        const currentTime = this.audio.currentTime;
-        const duration = this.audio.duration;
+        const { currentTime } = this.audio;
+        const { duration } = this.audio;
         const progressPercent = (currentTime / duration) * 100;
         this.progress.value = Number.isFinite(progressPercent)
             ? progressPercent.toFixed(2)
             : '0';
 
-        if (this.showRemaining) {
-            this.elapsedEl.textContent =
-                '-' + this._formatTime(duration - currentTime);
-        } else {
-            this.elapsedEl.textContent = this._formatTime(currentTime);
-        }
+        this.elapsedEl.textContent = this.showRemaining
+            ? `-${this._formatTime(duration - currentTime)}`
+            : this._formatTime(currentTime);
+
         this.totalEl.textContent = this._formatTime(duration);
     }
 
     /** Format seconds into M:SS string. */
     _formatTime(seconds) {
-        if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
-        return `${m}:${s.toString().padStart(2, '0')}`;
+        if (!Number.isFinite(seconds) || seconds < 0) {
+            return '0:00';
+        }
+        const minutes = Math.floor(seconds / 60);
+        const secondsRemaining = Math.floor(seconds % 60);
+        return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
     }
 
     /** Scrub to clicked position on the progress bar. */
     _scrub(e) {
-        if (!this.playlistEls) return;
+        if (!this.playlistEls) {
+            return;
+        }
         const scrubTime =
             (e.offsetX / this.progress.offsetWidth) * this.audio.duration;
         this.audio.currentTime = scrubTime;
@@ -285,13 +296,17 @@ export default class MusicPlayer {
 
     /** Update the now-playing track name display. */
     _updateTrackName() {
-        if (this.trackNames.length === 0) return;
+        if (this.trackNames.length === 0) {
+            return;
+        }
         this.trackNameEl.textContent = this.trackNames[this.currentSong] ?? '';
     }
 
     /** Jump directly to a track and start playback. */
     jumpToTrack(index) {
-        if (!this.playlistEls || index === this.currentSong) return;
+        if (!this.playlistEls || index === this.currentSong) {
+            return;
+        }
         this.audio.pause();
         this.audio.currentTime = 0;
         this.progress.value = 0;
@@ -310,7 +325,7 @@ export default class MusicPlayer {
     /** Revoke all stored blob URLs to free memory. */
     _revokeBlobUrls() {
         for (const url of this.blobUrls) {
-            window.URL.revokeObjectURL(url);
+            globalThis.URL.revokeObjectURL(url);
         }
         this.blobUrls = [];
         this.trackNames = [];
@@ -396,10 +411,13 @@ export default class MusicPlayer {
     _handleDrop(e) {
         e.preventDefault();
         const targetItem = e.target.closest('.list-item');
-        if (!targetItem) return;
-        const dropIndex = parseInt(targetItem.dataset.index, 10);
-        if (this.draggedIndex === null || this.draggedIndex === dropIndex)
+        if (!targetItem) {
             return;
+        }
+        const dropIndex = parseInt(targetItem.dataset.index, 10);
+        if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
+            return;
+        }
 
         const [removed] = this.trackList.splice(this.draggedIndex, 1);
         this.trackList.splice(dropIndex, 0, removed);
@@ -431,9 +449,11 @@ export default class MusicPlayer {
 
     /** Remove a track from the playlist. */
     removeTrack(index) {
-        if (index < 0 || index >= this.trackList.length) return;
+        if (index < 0 || index >= this.trackList.length) {
+            return;
+        }
 
-        window.URL.revokeObjectURL(this.trackList[index]);
+        globalThis.URL.revokeObjectURL(this.trackList[index]);
 
         this.trackList.splice(index, 1);
         this.blobUrls.splice(index, 1);
@@ -474,7 +494,9 @@ export default class MusicPlayer {
 
     /** Start the EQ animation loop. */
     _startEq() {
-        if (!this.eqCanvas || !this.eqCtx) return;
+        if (!this.eqCanvas || !this.eqCtx) {
+            return;
+        }
         this._lastBandValues = [0, 0, 0, 0, 0];
         this._drawEq();
     }
@@ -490,34 +512,32 @@ export default class MusicPlayer {
 
     /** Draw the EQ with current frequency data. */
     _drawEq() {
-        if (!this.eqCtx) return;
+        if (!this.eqCtx) {
+            return;
+        }
 
-        const ctx = this.eqCtx;
-        const w = this.eqCanvas.width;
-        const h = this.eqCanvas.height;
+        const { width, height } = this.eqCanvas;
         const bandCount = 5;
-        const bandWidth = w / bandCount;
+        const bandWidth = width / bandCount;
         const smoothing = 0.7;
 
-        let newBands;
-        if (AlgorithmLoader.frequencyAnalyser && this.isPlaying) {
-            newBands = AlgorithmLoader.frequencyAnalyser.getBands();
-        } else {
-            newBands = [0, 0, 0, 0, 0];
-        }
+        const newBands =
+            AlgorithmLoader.frequencyAnalyser && this.isPlaying
+                ? AlgorithmLoader.frequencyAnalyser.getBands()
+                : [0, 0, 0, 0, 0];
 
         this._lastBandValues = this._lastBandValues.map(
             (prev, i) => prev * smoothing + newBands[i] * (1 - smoothing),
         );
 
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = '#32cd32';
+        this.eqCtx.clearRect(0, 0, width, height);
+        this.eqCtx.fillStyle = '#32cd32';
 
         for (let i = 0; i < bandCount; i++) {
-            const bandHeight = Math.max(1, this._lastBandValues[i] * h);
+            const bandHeight = Math.max(1, this._lastBandValues[i] * height);
             const x = i * bandWidth;
-            const y = h - bandHeight;
-            ctx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
+            const y = height - bandHeight;
+            this.eqCtx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
         }
 
         this._eqAnimationId = requestAnimationFrame(() => this._drawEq());
@@ -525,20 +545,20 @@ export default class MusicPlayer {
 
     /** Draw flat (zero) EQ bars. */
     _drawFlatEq() {
-        if (!this.eqCtx) return;
+        if (!this.eqCtx) {
+            return;
+        }
 
-        const ctx = this.eqCtx;
-        const w = this.eqCanvas.width;
-        const h = this.eqCanvas.height;
+        const { width, height } = this.eqCanvas;
         const bandCount = 5;
-        const bandWidth = w / bandCount;
+        const bandWidth = width / bandCount;
 
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = '#32cd32';
+        this.eqCtx.clearRect(0, 0, width, height);
+        this.eqCtx.fillStyle = '#32cd32';
 
         for (let i = 0; i < bandCount; i++) {
             const x = i * bandWidth;
-            ctx.fillRect(x + 1, h - 1, bandWidth - 2, 1);
+            this.eqCtx.fillRect(x + 1, height - 1, bandWidth - 2, 1);
         }
     }
 

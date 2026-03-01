@@ -4,7 +4,7 @@
     "description": "Music Player with generative art visualizer.",
     "main": "main.js",
     "scripts": {
-        "generate:algos": "node scripts/generate-algorithm-registry.mjs",
+        "generate:algos": "node scripts/generateAlgorithmRegistry.mjs",
         "prestart": "pnpm generate:algos",
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",

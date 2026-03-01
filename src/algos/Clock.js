@@ -42,7 +42,7 @@ export default class Clock extends AL {
 
     setupDrawingStyles() {
         this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
-        this.ctx.font = AL.random(60, 600) + 'px sans-serif';
+        this.ctx.font = `${AL.random(60, 600)}px sans-serif`;
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.textAlign = 'center';
         this.ctx.shadowBlur = 8;
@@ -52,7 +52,7 @@ export default class Clock extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.strokeText('  ' + this.letter, 0, 0);
+            this.ctx.strokeText(`  ${this.letter}`, 0, 0);
             this.ctx.rotate(this.rotate);
             this.ctx.translate(-this.w / 2, -this.h / 2);
             this.ctx.beginPath();
@@ -61,7 +61,7 @@ export default class Clock extends AL {
         this.t++;
 
         if (this.t % (this.speed * 40) === 0) {
-            this.ctx.font = AL.random(60, 600) + 'px sans-serif';
+            this.ctx.font = `${AL.random(60, 600)}px sans-serif`;
 
             const col = Math.random();
             if (col < 0.15) {
