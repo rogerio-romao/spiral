@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+    push:
+        branches: [spiral2]
+    pull_request:
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 'lts/*'
+                  cache: 'pnpm'
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: latest
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Run JS lint
+              run: pnpm lint
+
+            - name: Run CSS lint
+              run: pnpm lint:css
