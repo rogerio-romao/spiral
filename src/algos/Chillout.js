@@ -41,7 +41,7 @@ export default class Chillout extends AL {
             this.rotateCanvasRadians(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 80) === 0) {
             this.initializeProperties();

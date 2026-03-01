@@ -54,7 +54,7 @@ export default class PaletteSquares extends AL {
 
         this.rotateCanvasRadians(this.rotation);
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 200) === 0) {
             this.initializeProperties();

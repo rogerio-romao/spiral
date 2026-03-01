@@ -37,12 +37,12 @@ export default class Orbits extends AL {
                 this.radius2,
                 this.rotate,
                 this.startAngle,
-                this.endAngle
+                this.endAngle,
             );
         }
         this.ctx.stroke();
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

@@ -37,7 +37,7 @@ export default class ChalkGalaxy extends AL {
             this.rotateCanvasRadians(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.strokeStyle = AL.randomColor(170, 255, 0.2, 0.2);

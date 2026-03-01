@@ -58,7 +58,7 @@ export default class Wormholes extends AL {
             this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

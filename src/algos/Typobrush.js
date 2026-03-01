@@ -53,7 +53,7 @@ export default class Typobrush extends AL {
             this.size += this.sizeIncrease;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

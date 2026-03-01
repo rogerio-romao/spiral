@@ -74,7 +74,7 @@ export default class Rims extends AL {
         this.ctx.fill();
         this.ctx.stroke();
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

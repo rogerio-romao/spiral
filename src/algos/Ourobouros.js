@@ -45,7 +45,7 @@ export default class Ourobouros extends AL {
             this.ctx.strokeText(this.letter, this.x, this.y);
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

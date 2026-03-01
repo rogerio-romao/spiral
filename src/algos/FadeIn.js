@@ -49,7 +49,7 @@ export default class FadeIn extends AL {
                 this.x2,
                 this.y2,
                 this.dx,
-                this.dy
+                this.dy,
             );
             this.ctx.stroke();
 
@@ -61,7 +61,7 @@ export default class FadeIn extends AL {
             this.dy += this.c8;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

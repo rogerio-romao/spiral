@@ -59,10 +59,10 @@ export default class Quadrants extends AL {
                 this.ctx.beginPath();
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 15) === 0) {
             this.radius = AL.random(10, 350);

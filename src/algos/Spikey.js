@@ -79,10 +79,10 @@ export default class Spikey extends AL {
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 400) === 0) {
             this.initializeProperties();

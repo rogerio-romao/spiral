@@ -75,7 +75,7 @@ export default class AcidStars extends AL {
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
         this.side += this.change;
@@ -83,7 +83,7 @@ export default class AcidStars extends AL {
             this.change = -this.change;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();

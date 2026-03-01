@@ -53,7 +53,7 @@ export default class Rounded extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 125) === 0) {
             this.initializeProperties();

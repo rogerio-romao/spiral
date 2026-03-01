@@ -88,7 +88,7 @@ export function generateHSLAPalette(count, mode = 'hue', degrees = null) {
         let alpha = baseAlpha;
 
         if (mode === 'hue') {
-            const step = degrees === undefined ? 360 / count : degrees;
+            const step = degrees === null ? 360 / count : degrees;
             hue = (baseHue + i * step) % 360;
         } else if (mode === 'saturation') {
             sat = (baseSat + i * (100 / count)) % 101;

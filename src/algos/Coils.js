@@ -61,7 +61,7 @@ export default class Coils extends AL {
 
         this.rotateCanvasRadians(this.rot);
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 720) === 0) {
             this.tl.kill();

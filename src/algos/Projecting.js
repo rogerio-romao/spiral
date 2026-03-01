@@ -64,7 +64,7 @@ export default class Projecting extends AL {
         this.ctx.fillRect(0, 0, this.w, this.width);
         this.ctx.translate(-this.w / 2, -this.h / 2);
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % 480 === 0) {
             this.tl.kill();

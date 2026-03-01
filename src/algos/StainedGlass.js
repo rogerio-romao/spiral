@@ -54,7 +54,7 @@ export default class StainedGlass extends AL {
                     2 * this.length,
                     0,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(2 * this.length, 0, this.length, this.height);
                 this.setupDrawingStyles();
@@ -65,7 +65,7 @@ export default class StainedGlass extends AL {
                     3 * this.length,
                     0,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(3 * this.length, 0, this.length, this.height);
                 this.setupDrawingStyles();
@@ -76,7 +76,7 @@ export default class StainedGlass extends AL {
                     4 * this.length,
                     0,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(4 * this.length, 0, this.length, this.height);
                 this.setupDrawingStyles();
@@ -87,7 +87,7 @@ export default class StainedGlass extends AL {
                     5 * this.length,
                     0,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(5 * this.length, 0, this.length, this.height);
                 this.setupDrawingStyles();
@@ -98,13 +98,13 @@ export default class StainedGlass extends AL {
                     5 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     5 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -114,13 +114,13 @@ export default class StainedGlass extends AL {
                     4 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     4 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -130,13 +130,13 @@ export default class StainedGlass extends AL {
                     3 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     3 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -146,13 +146,13 @@ export default class StainedGlass extends AL {
                     2 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     2 * this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -162,13 +162,13 @@ export default class StainedGlass extends AL {
                     this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     this.length,
                     this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -184,7 +184,7 @@ export default class StainedGlass extends AL {
                     0,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(0, 2 * this.height, this.length, this.height);
                 this.setupDrawingStyles();
@@ -195,13 +195,13 @@ export default class StainedGlass extends AL {
                     this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -211,13 +211,13 @@ export default class StainedGlass extends AL {
                     2 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     2 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -227,13 +227,13 @@ export default class StainedGlass extends AL {
                     3 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     3 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -243,13 +243,13 @@ export default class StainedGlass extends AL {
                     4 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     4 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -259,13 +259,13 @@ export default class StainedGlass extends AL {
                     5 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     5 * this.length,
                     2 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -275,13 +275,13 @@ export default class StainedGlass extends AL {
                     5 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     5 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -291,13 +291,13 @@ export default class StainedGlass extends AL {
                     4 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     4 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -307,13 +307,13 @@ export default class StainedGlass extends AL {
                     3 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     3 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -323,13 +323,13 @@ export default class StainedGlass extends AL {
                     2 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     2 * this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -339,13 +339,13 @@ export default class StainedGlass extends AL {
                     this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     this.length,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -355,7 +355,7 @@ export default class StainedGlass extends AL {
                     0,
                     3 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(0, 3 * this.height, this.length, this.height);
                 this.setupDrawingStyles();
@@ -366,7 +366,7 @@ export default class StainedGlass extends AL {
                     0,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(0, 4 * this.height, this.length, this.height);
                 this.setupDrawingStyles();
@@ -377,13 +377,13 @@ export default class StainedGlass extends AL {
                     this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -393,13 +393,13 @@ export default class StainedGlass extends AL {
                     2 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     2 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -409,13 +409,13 @@ export default class StainedGlass extends AL {
                     3 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     3 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -425,13 +425,13 @@ export default class StainedGlass extends AL {
                     4 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     4 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
@@ -441,19 +441,19 @@ export default class StainedGlass extends AL {
                     5 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.ctx.fillRect(
                     5 * this.length,
                     4 * this.height,
                     this.length,
-                    this.height
+                    this.height,
                 );
                 this.setupDrawingStyles();
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 50) === 0) {
             this.random1 = AL.random(0, 3);
@@ -461,20 +461,20 @@ export default class StainedGlass extends AL {
             this.rotateCanvasDegrees(this.random2);
 
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes
+                this.modes,
             );
 
             this.ctx.fillRect(
                 this.w / 2 - this.random1 * this.length,
                 this.h / 2 - this.height * 1.5,
                 this.random1 * 2 * this.length,
-                3 * this.height
+                3 * this.height,
             );
             this.ctx.strokeRect(
                 this.w / 2 - this.random1 * this.length,
                 this.h / 2 - this.height * 2.5,
                 this.random1 * 2 * this.length,
-                5 * this.height
+                5 * this.height,
             );
         }
 

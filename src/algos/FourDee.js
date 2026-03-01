@@ -61,7 +61,7 @@ export default class FourDee extends AL {
             this.ctx.fill();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

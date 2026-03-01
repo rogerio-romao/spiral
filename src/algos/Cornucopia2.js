@@ -61,7 +61,7 @@ export default class Cornucopia2 extends AL {
             this.dr += this.drc;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

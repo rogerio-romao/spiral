@@ -41,14 +41,14 @@ export default class Nazca extends AL {
                 this.h / 2,
                 this.radius,
                 0,
-                Math.random() * Math.PI
+                Math.random() * Math.PI,
             );
             this.ctx.fill();
             this.ctx.stroke();
             this.radius += this.increment;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(-this.angle);
 
@@ -56,7 +56,7 @@ export default class Nazca extends AL {
             this.cycles++;
             if (this.cycles % 10 === 0) {
                 this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                    this.modes
+                    this.modes,
                 );
             }
 

@@ -36,7 +36,7 @@ export default class AccelerationMandala extends AL {
             this.rotateCanvasDegrees(this.rotate + 1);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 45) === 0) {
             this.rotate++;

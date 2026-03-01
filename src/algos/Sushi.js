@@ -40,7 +40,7 @@ export default class Sushi extends AL {
                         100 * i - 50,
                         this.radius,
                         Math.random(),
-                        Math.random() * 2 * Math.PI
+                        Math.random() * 2 * Math.PI,
                     );
                     this.ctx.stroke();
                     this.ctx.fill();
@@ -48,7 +48,7 @@ export default class Sushi extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 30) === 0) {
             this.radius = AL.random(10, 46);

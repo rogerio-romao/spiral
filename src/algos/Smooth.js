@@ -28,7 +28,7 @@ export default class Smooth extends AL {
             this.ctx.fillRect(this.x, this.y, this.size, this.size);
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

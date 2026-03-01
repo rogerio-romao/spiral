@@ -50,7 +50,7 @@ export default class EvolvingMandala extends AL {
             this.rotateCanvasDegrees(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 45) === 0) {
             const pick = Math.random();

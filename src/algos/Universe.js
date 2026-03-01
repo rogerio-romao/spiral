@@ -116,9 +116,9 @@ export default class Universe extends AL {
             this.rotateCanvasRadians(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
-        this.stagger++;
+        this.stagger += 1;
 
         if (this.t % (this.speed * 250) === 0) {
             this.initializeProperties();

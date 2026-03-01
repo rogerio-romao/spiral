@@ -48,9 +48,9 @@ export default class Comets extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
-        this.stagger++;
+        this.stagger += 1;
 
         if (this.t % (this.speed * 1024) === 0) {
             this.initializeProperties();

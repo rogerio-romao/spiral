@@ -37,7 +37,7 @@ export default class Gridlock extends AL {
             this.gap += this.increment;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 150) === 0) {
             this.rotateCanvasRadians(AL.random(1, 99));

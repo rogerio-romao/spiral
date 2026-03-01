@@ -74,7 +74,7 @@ export default class Dye extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 400) === 0) {
             this.rotate = AL.random(1, 500);

@@ -41,18 +41,18 @@ export default class Boxes extends AL {
                     i * this.width,
                     i * this.height,
                     this.width / 2,
-                    this.height / 2
+                    this.height / 2,
                 );
                 this.ctx.strokeRect(
                     i * this.width,
                     i * this.height,
                     this.width / 2,
-                    this.height / 2
+                    this.height / 2,
                 );
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

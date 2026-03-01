@@ -37,7 +37,7 @@ export default class SnakesLadders extends AL {
             0,
             255,
             0.65,
-            1
+            1,
         );
     }
 
@@ -47,7 +47,7 @@ export default class SnakesLadders extends AL {
                 this.colSize * this.currCol,
                 this.rowSize * this.currRow,
                 this.colSize,
-                this.rowSize
+                this.rowSize,
             );
 
             this.currCol++;
@@ -64,7 +64,7 @@ export default class SnakesLadders extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 720) === 0) {
             this.initializeProperties();

@@ -39,7 +39,7 @@ export default class SpiralText extends AL {
             this.x = AL.random(0, this.w);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 90) === 0) {
             this.y = AL.random(0, this.h);

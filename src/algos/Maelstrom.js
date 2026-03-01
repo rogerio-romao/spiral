@@ -39,7 +39,7 @@ export default class Maelstrom extends AL {
             this.rotateCanvasDegrees(this.angle);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 300) === 0) {
             this.initializeProperties();

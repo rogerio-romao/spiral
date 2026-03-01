@@ -37,17 +37,17 @@ export default class Records extends AL {
                 this.h / 2,
                 this.radius,
                 0,
-                Math.random() * Math.PI
+                Math.random() * Math.PI,
             );
             this.ctx.stroke();
 
             this.angle += this.angleChange;
             this.radius = Math.abs(
-                this.radius + Math.sin(this.angle) * this.offset
+                this.radius + Math.sin(this.angle) * this.offset,
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

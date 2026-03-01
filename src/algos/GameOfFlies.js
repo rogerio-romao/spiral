@@ -55,7 +55,7 @@ export default class GameOfFlies extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 130) === 0) {
             const newParticle = AL.createParticle(

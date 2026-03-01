@@ -124,12 +124,12 @@ export default class Radiance extends AL {
                 );
             }
 
-            this.stagger++;
+            this.stagger += 1;
 
             this.rotateCanvasRadians(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 500) === 0) {
             this.initializeProperties();

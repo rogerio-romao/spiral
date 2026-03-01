@@ -88,10 +88,10 @@ export default class ThreeD extends AL {
                 this.ctx.fillText(this.letter, this.w * 0.875, this.h * 0.125);
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 75) === 0) {
             this.fontSize = AL.random(24, 80);

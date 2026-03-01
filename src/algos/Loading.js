@@ -50,7 +50,7 @@ export default class Loading extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

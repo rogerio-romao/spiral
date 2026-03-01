@@ -45,7 +45,7 @@ export default class Atom extends AL {
             this.rotateCanvasDegrees(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 450) === 0) {
             this.initializeProperties();

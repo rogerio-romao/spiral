@@ -42,10 +42,10 @@ export default class Offsets extends AL {
 
             this.rotateCanvasRadians(this.rotate);
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.fill();

@@ -53,7 +53,7 @@ export default class GasClouds extends AL {
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();

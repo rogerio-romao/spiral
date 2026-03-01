@@ -58,7 +58,7 @@ export default class Starship extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();

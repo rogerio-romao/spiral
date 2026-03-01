@@ -24,7 +24,7 @@ export default class Quadratic extends AL {
         this.nums = this.createQuadraticSequence(
             this.startNum,
             this.firstDiff,
-            this.secondDiff
+            this.secondDiff,
         );
     }
 
@@ -51,12 +51,12 @@ export default class Quadratic extends AL {
                     this.w / 2 - num / 2,
                     this.h / 2 - num / 2,
                     num,
-                    num
+                    num,
                 );
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

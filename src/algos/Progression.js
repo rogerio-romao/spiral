@@ -41,7 +41,7 @@ export default class Progression extends AL {
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

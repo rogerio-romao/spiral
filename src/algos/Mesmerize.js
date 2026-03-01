@@ -86,7 +86,7 @@ export default class Mesmerize extends AL {
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

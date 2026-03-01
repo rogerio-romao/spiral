@@ -58,7 +58,7 @@ export default class PietriDish extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 150) === 0) {
             this.rotate = AL.random(1, 90);

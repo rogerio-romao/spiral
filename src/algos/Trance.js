@@ -43,18 +43,18 @@ export default class Trance extends AL {
                     x - this.size / 4,
                     y - this.size / 4,
                     this.size / 2,
-                    this.size / 2
+                    this.size / 2,
                 );
                 this.ctx.strokeRect(
                     x - this.size / 2,
                     y - this.size / 2,
                     this.size,
-                    this.size
+                    this.size,
                 );
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

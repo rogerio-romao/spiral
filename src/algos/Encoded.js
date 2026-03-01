@@ -49,7 +49,7 @@ export default class Encoded extends AL {
             this.ctx.fillText(this.letter, this.x, this.y);
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.angle);
 

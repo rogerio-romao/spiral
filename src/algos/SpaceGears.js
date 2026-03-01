@@ -42,7 +42,7 @@ export default class SpaceGears extends AL {
             this.ctx.translate(-this.w / 2, -this.h / 2);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 120) === 0) {
             this.setupDrawingStyles();

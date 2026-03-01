@@ -73,10 +73,10 @@ export default class SquareNebulas extends AL {
                 this.gap = AL.random(2, 100);
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 300) === 0) {
             this.ctx.closePath();

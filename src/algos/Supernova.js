@@ -48,7 +48,7 @@ export default class Supernova extends AL {
             this.setupDrawingStyles();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.requestFrame();
     }

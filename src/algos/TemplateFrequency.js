@@ -58,7 +58,7 @@ export default class TemplateFrequency extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
         this.requestFrame();
     }
 

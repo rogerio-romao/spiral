@@ -41,13 +41,13 @@ export default class RotationPatterns extends AL {
                         this.radiusX * j,
                         this.radiusY * i,
                         this.radiusX,
-                        this.radiusY
+                        this.radiusY,
                     );
                 }
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 15) === 0) {
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.1, 0.5);

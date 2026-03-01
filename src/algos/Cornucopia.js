@@ -47,7 +47,7 @@ export default class Cornucopia extends AL {
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 210) === 0) {
             this.initializeProperties();

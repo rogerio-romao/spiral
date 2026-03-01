@@ -47,7 +47,7 @@ export default class VanishingRays extends AL {
             this.rotateCanvasDegrees(this.rotate * this.angle);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * (1440 / this.rotate)) === 0) {
             this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);

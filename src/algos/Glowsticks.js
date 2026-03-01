@@ -48,7 +48,7 @@ export default class Glowsticks extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 900) === 0) {
             this.initializeProperties();

@@ -47,7 +47,7 @@ export default class DigitalArt extends AL {
             this.ctx.fillText(letter, this.x, this.y);
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

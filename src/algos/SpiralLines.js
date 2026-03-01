@@ -77,7 +77,7 @@ export default class SpiralLines extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.cycles % 9 === 0) {
             this.bw < 0.5

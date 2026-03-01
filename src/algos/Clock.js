@@ -58,7 +58,7 @@ export default class Clock extends AL {
             this.ctx.beginPath();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.font = `${AL.random(60, 600)}px sans-serif`;

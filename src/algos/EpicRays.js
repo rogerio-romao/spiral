@@ -62,9 +62,9 @@ export default class EpicRays extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
-        this.stagger++;
+        this.stagger += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

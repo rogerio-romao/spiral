@@ -32,13 +32,13 @@ export default class Particle {
     distanceTo(p2) {
         const dx = p2.x - this.x;
         const dy = p2.y - this.y;
-        return Math.sqrt(dx * dx + dy * dy);
+        return Math.hypot(dx, dy);
     }
     getHeading() {
         return Math.atan2(this.vy, this.vx);
     }
     getSpeed() {
-        return Math.sqrt(this.vx ** 2 + this.vy ** 2);
+        return Math.hypot(this.vx, this.vy);
     }
     gravitateTo(p2) {
         const dx = p2.x - this.x;
@@ -56,12 +56,10 @@ export default class Particle {
         this.vy += ay;
     }
     handleGravitations() {
-        this.gravitations.forEach((gravitation) =>
-            this.gravitateTo(gravitation),
-        );
+        this.gravitations.map((gravitation) => this.gravitateTo(gravitation));
     }
     handleSprings() {
-        this.springs.forEach((spring) =>
+        this.springs.map((spring) =>
             this.springTo(spring.point, spring.k, spring.length),
         );
     }

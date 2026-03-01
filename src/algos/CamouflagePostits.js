@@ -59,7 +59,7 @@ export default class CamouflagePostits extends AL {
             this.rotateCanvasRadians(AL.random(0, 360));
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 25) === 0) {
             this.length = AL.random(5, 125);
@@ -69,13 +69,13 @@ export default class CamouflagePostits extends AL {
                 this.w / 2 - this.length * 1.5,
                 this.h / 2 - this.length * 1.5,
                 3 * this.length,
-                3 * this.length
+                3 * this.length,
             );
             this.ctx.strokeRect(
                 this.w / 2 - this.length * 1.5,
                 this.h / 2 - this.length * 1.5,
                 3 * this.length,
-                3 * this.length
+                3 * this.length,
             );
 
             this.setupDrawingStyles();
@@ -83,7 +83,7 @@ export default class CamouflagePostits extends AL {
 
         if (this.t % (this.speed * 100) === 0) {
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes
+                this.modes,
             );
         }
 

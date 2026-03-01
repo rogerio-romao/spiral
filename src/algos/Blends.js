@@ -56,7 +56,7 @@ export default class Blends extends AL {
             this.rotateCanvasDegrees(this.rotation);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 270) === 0) {
             this.initializeProperties();

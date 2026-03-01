@@ -52,7 +52,7 @@ export default class Aperture extends AL {
             );
         }
 
-        this.t++;
+        this.t += 1;
 
         this.x += this.incX;
         this.height += this.incH;

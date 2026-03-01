@@ -54,7 +54,7 @@ export default class Portals extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 90) === 0) {
             this.initializeProperties();

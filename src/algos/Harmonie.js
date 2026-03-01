@@ -52,7 +52,7 @@ export default class Harmonie extends AL {
             this.ctx.font = `${this.size}px serif`;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

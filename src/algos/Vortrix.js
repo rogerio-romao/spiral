@@ -30,7 +30,7 @@ export default class Vortrix extends AL {
             0,
             255,
             0.5,
-            1
+            1,
         );
     }
 
@@ -40,7 +40,7 @@ export default class Vortrix extends AL {
             this.size--;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

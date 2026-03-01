@@ -45,12 +45,12 @@ export default class TheFan extends AL {
                 this.x2,
                 this.y2,
                 this.dx,
-                this.dy++
+                this.dy++,
             );
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

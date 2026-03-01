@@ -44,7 +44,7 @@ export default class Swirls extends AL {
             this.rotateCanvasRadians(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 240) === 0) {
             this.ctx.closePath();

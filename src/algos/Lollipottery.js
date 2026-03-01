@@ -43,7 +43,7 @@ export default class Lollipottery extends AL {
             this.ctx.beginPath();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();

@@ -104,10 +104,10 @@ export default class AlienFlowers extends AL {
                 this.ctx.stroke();
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 16) === 0) {
             this.rotateCanvasDegrees(AL.random(1, 359));

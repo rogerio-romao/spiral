@@ -58,7 +58,7 @@ export default class Fruits extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         this.requestFrame();
     }

@@ -47,7 +47,7 @@ export default class Veils extends AL {
             this.ctx.font = `${this.size}px serif`;
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

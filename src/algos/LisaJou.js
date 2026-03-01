@@ -42,7 +42,7 @@ export default class LisaJou extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 720) === 0) {
             this.initializeProperties();

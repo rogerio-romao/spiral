@@ -46,7 +46,7 @@ export default class GenesisTypewriter extends AL {
         this.ctx.fillText(this.text, this.pos1.x, this.pos1.y);
         this.ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % 1000 === 0) {
             this.tl.kill();

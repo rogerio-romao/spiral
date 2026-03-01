@@ -73,10 +73,10 @@ export default class Punctuation extends AL {
                 );
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 100) === 0) {
             this.rotate = AL.random(-35, -10);

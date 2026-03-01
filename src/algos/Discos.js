@@ -70,10 +70,10 @@ export default class Discos extends AL {
 
             this.ctx.closePath();
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.rotateCanvasDegrees(30);

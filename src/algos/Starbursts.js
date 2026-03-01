@@ -71,10 +71,10 @@ export default class Starbursts extends AL {
                 this.maxGap = 2 * this.gap;
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 420) === 0) {
             this.ctx.closePath();

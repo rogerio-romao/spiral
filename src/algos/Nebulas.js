@@ -50,7 +50,7 @@ export default class Nebulas extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 10) === 0) {
             this.ctx.fillRect(

@@ -34,7 +34,7 @@ export default class UFOs extends AL {
                 .perc1++}% ${this.repeats++}px)`;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
             this.ctx.beginPath();

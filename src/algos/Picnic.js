@@ -42,14 +42,14 @@ export default class Picnic extends AL {
                         225 * i - 225,
                         this.radius,
                         0,
-                        2 * Math.PI
+                        2 * Math.PI,
                     );
                     this.ctx.stroke();
                 }
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 30) === 0) {
             this.initializeProperties();

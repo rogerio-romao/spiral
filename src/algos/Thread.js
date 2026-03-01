@@ -38,7 +38,7 @@ export default class Thread extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasRadians(this.rotate);
 

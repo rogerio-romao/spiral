@@ -66,7 +66,7 @@ export default class RadioWaves extends AL {
             this.ctx.stroke();
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();

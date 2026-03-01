@@ -99,7 +99,7 @@ export default class GravityTurbulence extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 250) === 0) {
             this.sun1.mass = AL.mathUtils.randomRange(-100_000, 100_000);

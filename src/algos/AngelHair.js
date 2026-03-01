@@ -69,9 +69,9 @@ export default class AngelHair extends AL {
             }
         }
 
-        this.t++;
+        this.t += 1;
 
-        this.stagger++;
+        this.stagger += 1;
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();

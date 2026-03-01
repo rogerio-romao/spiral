@@ -47,7 +47,7 @@ export default class HyperTunnel extends AL {
             this.rotateCanvasDegrees(this.rotate);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * (360 / this.rotate)) === 0) {
             this.side = AL.random(25, Math.min(this.w, this.h));

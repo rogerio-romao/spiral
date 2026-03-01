@@ -61,7 +61,7 @@ export default class Hubble extends AL {
             this.currentVal = this.seq[this.index];
         }
 
-        this.t++;
+        this.t += 1;
 
         this.rotateCanvasDegrees(this.rotate);
 

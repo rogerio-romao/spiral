@@ -57,10 +57,10 @@ export default class NeonTartans extends AL {
                 this.ctx.lineWidth = 1;
             }
 
-            this.stagger++;
+            this.stagger += 1;
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 15) === 0) {
             this.rotateCanvasDegrees(30);

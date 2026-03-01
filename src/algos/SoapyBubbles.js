@@ -55,7 +55,7 @@ export default class SoapyBubbles extends AL {
             this.position.addTo(this.velocity);
         }
 
-        this.t++;
+        this.t += 1;
 
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();
