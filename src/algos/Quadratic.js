@@ -1,3 +1,4 @@
+// oxlint-disable no-param-reassign
 import AL from '../AlgorithmLoader.js';
 
 export default class Quadratic extends AL {

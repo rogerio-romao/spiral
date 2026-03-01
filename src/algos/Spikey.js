@@ -1,3 +1,4 @@
+// oxlint-disable no-plusplus
 import AL from '../AlgorithmLoader.js';
 
 export default class Spikey extends AL {
@@ -76,6 +77,7 @@ export default class Spikey extends AL {
                     false,
                     true,
                 );
+
                 this.ctx.translate(-this.w / 2, -this.h / 2);
             }
 

@@ -30,9 +30,12 @@ export default class Glowsticks extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.x++, this.y++);
+            this.ctx.moveTo(this.x, this.y);
             this.ctx.lineTo(this.x + this.distance, this.y - this.distance);
             this.ctx.stroke();
+
+            this.x += 1;
+            this.y += 1;
 
             if (this.x > this.w) {
                 this.x = 0;

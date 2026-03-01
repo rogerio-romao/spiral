@@ -53,7 +53,7 @@ export default class Nazca extends AL {
         this.rotateCanvasRadians(-this.angle);
 
         if (this.radius > Math.max(this.w, this.h)) {
-            this.cycles++;
+            this.cycles += 1;
             if (this.cycles % 10 === 0) {
                 this.ctx.globalCompositeOperation = AL.pickRandomElement(
                     this.modes,
