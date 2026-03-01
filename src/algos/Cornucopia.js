@@ -34,17 +34,24 @@ export default class Cornucopia extends AL {
             this.ctx.roundRectExtra(
                 this.x,
                 this.y,
-                this.width++,
-                this.height--,
+                this.width,
+                this.height,
                 {
-                    lowerLeft: this.dl++,
-                    lowerRight: this.dr--,
-                    upperLeft: this.ul--,
-                    upperRight: this.ur++,
+                    lowerLeft: this.dl,
+                    lowerRight: this.dr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 true,
                 false,
             );
+
+            this.width += 1;
+            this.height -= 1;
+            this.dl += 1;
+            this.dr -= 1;
+            this.ul -= 1;
+            this.ur += 1;
         }
 
         this.t += 1;

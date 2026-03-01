@@ -64,7 +64,7 @@ export default class SpiralLines extends AL {
 
             this.length += this.gap;
             if (this.length > Math.max(this.w, this.h)) {
-                this.cycles++;
+                this.cycles += 1;
                 this.length = this.gap;
 
                 this.ctx.beginPath();

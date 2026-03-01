@@ -46,10 +46,10 @@ export default class Fruits extends AL {
             this.ctx.fill();
             this.ctx.beginPath();
 
-            this.col++;
+            this.col += 1;
             if (this.col * this.cell - this.cell * 2 > this.w) {
                 this.col = 0;
-                this.row++;
+                this.row += 1;
             }
             if (this.row * this.cell - this.cell * 2 > this.h) {
                 this.initializeProperties();

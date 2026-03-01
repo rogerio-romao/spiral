@@ -11,7 +11,7 @@ CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(
     height,
     radius,
     fill,
-    stroke,
+    stroke = true,
 ) {
     const cornerRadius = {
         lowerLeft: 0,
@@ -19,9 +19,7 @@ CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(
         upperLeft: 0,
         upperRight: 0,
     };
-    if (stroke === undefined) {
-        stroke = true;
-    }
+
     if (typeof radius === 'object') {
         for (const side in radius) {
             if (Object.hasOwn(radius, side)) {

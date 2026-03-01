@@ -30,8 +30,13 @@ export default class UFOs extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
                 this.color1
-            }, ${this.color2} ${this.perc2--}%, ${this.color3} ${this
-                .perc1++}% ${this.repeats++}px)`;
+            }, ${this.color2} ${this.perc2}%, ${this.color3} ${
+                this.perc1
+            }% ${this.repeats}px)`;
+
+            this.perc1 += 1;
+            this.perc2 -= 1;
+            this.repeats += 1;
         }
 
         this.t += 1;
@@ -41,8 +46,12 @@ export default class UFOs extends AL {
             this.initializeProperties();
             this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
                 this.color1
-            }, ${this.color2} ${this.perc2++}%, ${this.color3} ${this
-                .perc1--}% ${this.repeats}px)`;
+            }, ${this.color2} ${this.perc2}%, ${this.color3} ${
+                this.perc1
+            }% ${this.repeats}px)`;
+
+            this.perc1 -= 1;
+            this.perc2 += 1;
         }
 
         this.requestFrame();

@@ -39,7 +39,7 @@ export default class AccelerationMandala extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 45) === 0) {
-            this.rotate++;
+            this.rotate += 1;
         }
 
         if (this.t % (this.speed * 90) === 0) {

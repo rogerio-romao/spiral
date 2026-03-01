@@ -57,7 +57,7 @@ export default class Veils extends AL {
         }
 
         if (this.t % (this.speed * 1620) === 0) {
-            this.rotate++;
+            this.rotate += 1;
         }
 
         this.requestFrame();

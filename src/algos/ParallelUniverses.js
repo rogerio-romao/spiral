@@ -1,3 +1,4 @@
+// oxlint-disable no-plusplus
 import AL from '../AlgorithmLoader.js';
 
 export default class ParallelUniverses extends AL {

@@ -34,7 +34,7 @@ export default class GameOfFlies extends AL {
             for (const particle of this.particles) {
                 const dx = this.springPoint.x - particle.x;
                 const dy = this.springPoint.y - particle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                const distance = Math.hypot(dx, dy);
                 const springForce = distance * this.k;
                 const ax = (dx / distance) * springForce;
                 const ay = (dy / distance) * springForce;
