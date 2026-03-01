@@ -7,7 +7,7 @@
         "pedantic": "warn",
         "perf": "error",
         "style": "warn",
-        "restriction": "off",
+        "restriction": "warn",
         "nursery": "off"
     },
     "rules": {
@@ -48,9 +48,12 @@
             }
         ],
         "eslint/no-multi-assign": "off",
+        "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+        "eslint/class-methods-use-this": "off",
         "eslint/capitalized-comments": "off",
         "eslint/func-style": ["error", "declaration"],
         "eslint/sort-imports": "off",
+        "oxc/no-optional-chaining": "off",
         "unicorn/filename-case": [
             "error",
             {

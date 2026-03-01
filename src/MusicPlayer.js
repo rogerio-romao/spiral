@@ -44,44 +44,42 @@ export default class MusicPlayer {
         this._eqAnimationId = null;
         this._lastBandValues = [0, 0, 0, 0, 0];
 
-        this._bindEvents();
+        this.bindEvents();
     }
 
     /** Attach all event listeners. */
-    _bindEvents() {
-        this.input.addEventListener('change', () => this._handleFiles(), false);
+    bindEvents() {
+        this.input.addEventListener('change', () => this.handleFiles(), false);
         this.playBtn.addEventListener('click', () => this.playTrack());
         this.stopBtn.addEventListener('click', () => this.stopPlayback());
         this.nextBtn.addEventListener('click', () => this.playNext());
         this.prevBtn.addEventListener('click', () => this.playPrev());
         this.audio.addEventListener('loadedmetadata', () => {
-            this.totalEl.textContent = this._formatTime(this.audio.duration);
+            this.totalEl.textContent = this.formatTime(this.audio.duration);
             this.elapsedEl.textContent = '0:00';
         });
-        this.audio.addEventListener('timeupdate', () =>
-            this._displayProgress(),
-        );
+        this.audio.addEventListener('timeupdate', () => this.displayProgress());
         this.audio.addEventListener('ended', () => this.playNext());
         this.progress.addEventListener('mousedown', () => this.audio.pause());
-        this.progress.addEventListener('mouseup', (e) => this._scrub(e));
+        this.progress.addEventListener('mouseup', (e) => this.scrub(e));
         this.elapsedEl.addEventListener('click', () => {
             this.showRemaining = !this.showRemaining;
-            this._displayProgress();
+            this.displayProgress();
         });
         this.playlistToggle.addEventListener('click', () =>
-            this._togglePlaylist(),
+            this.togglePlaylist(),
         );
         this.playList.addEventListener('click', (e) => {
             const listItem = e.target.closest('.list-item');
             if (listItem && !e.target.closest('.remove-track')) {
-                const index = parseInt(listItem.dataset.index, 10);
+                const index = Number.parseInt(listItem.dataset.index, 10);
                 this.jumpToTrack(index);
             }
         });
     }
 
     /** Process file input and build the playlist. */
-    _handleFiles() {
+    handleFiles() {
         const wasPlaying = this.isPlaying;
         this.audio.pause();
         this.elapsedEl.textContent = '';
@@ -116,7 +114,7 @@ export default class MusicPlayer {
                 .querySelector('.remove-track')
                 .addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const index = parseInt(listItem.dataset.index, 10);
+                    const index = Number.parseInt(listItem.dataset.index, 10);
                     this.removeTrack(index);
                 });
             this.playList.append(listItem);
@@ -125,24 +123,24 @@ export default class MusicPlayer {
             this.blobUrls.push(blobUrl);
         }
 
-        this._bindDragEvents();
+        this.bindDragEvents();
 
         if (isFirstLoad) {
             this.currentSong = 0;
             this.audio.src = this.trackList[this.currentSong];
             this.isPlaying = false;
-            this._setPlayIcon(false);
+            this.setPlayIcon(false);
         } else if (wasPlaying) {
             this.isPlaying = true;
-            this._setPlayIcon(true);
+            this.setPlayIcon(true);
             this.audio.play();
         }
 
         this.playlistEls = document.querySelectorAll('.list-item');
-        this._updatePlaylistIndices();
-        this._updatePlaylistStyle();
+        this.updatePlaylistIndices();
+        this.updatePlaylistStyle();
         this.playlistToggle.classList.add('visible');
-        this._updateTrackName();
+        this.updateTrackName();
         this.input.value = '';
     }
 
@@ -150,16 +148,16 @@ export default class MusicPlayer {
     playTrack() {
         if (!this.isPlaying && this.playlistEls) {
             this.isPlaying = true;
-            this._setPlayIcon(true);
-            this._updatePlaylistStyle();
-            this._startEq();
+            this.setPlayIcon(true);
+            this.updatePlaylistStyle();
+            this.startEq();
             this.audio.play();
         } else if (this.playlistEls) {
             this.isPlaying = false;
             this.playlistEls[this.currentSong].style.color =
                 'rgba(255, 165, 0, 0.5)';
-            this._setPlayIcon(false);
-            this._stopEq();
+            this.setPlayIcon(false);
+            this.stopEq();
             this.audio.pause();
         }
     }
@@ -170,9 +168,9 @@ export default class MusicPlayer {
             this.audio.pause();
             this.audio.currentTime = 0;
             this.isPlaying = false;
-            this._setPlayIcon(false);
-            this._stopEq();
-            [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
+            this.setPlayIcon(false);
+            this.stopEq();
+            [...this.playlistEls].map((el) => (el.style.color = '#555'));
             this.playlistEls[this.currentSong].style.color =
                 'rgba(255, 165, 0, 0.5)';
         } else if (this.playlistEls) {
@@ -190,14 +188,14 @@ export default class MusicPlayer {
         this.progress.value = 0;
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
-        this.currentSong--;
+        this.currentSong -= 1;
         if (this.currentSong < 0) {
             this.currentSong = this.trackList.length - 1;
         }
-        this._updatePlaylistStyle();
+        this.updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         if (this.isPlaying) {
-            this._startEq();
+            this.startEq();
             this.audio.play();
         } else {
             this.playlistEls[this.currentSong].style.color =
@@ -215,14 +213,14 @@ export default class MusicPlayer {
         this.progress.value = 0;
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
-        this.currentSong++;
+        this.currentSong += 1;
         if (this.currentSong > this.trackList.length - 1) {
             this.currentSong = 0;
         }
-        this._updatePlaylistStyle();
+        this.updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         if (this.isPlaying) {
-            this._startEq();
+            this.startEq();
             this.audio.play();
         } else {
             this.playlistEls[this.currentSong].style.color =
@@ -231,7 +229,7 @@ export default class MusicPlayer {
     }
 
     /** Update the progress bar and time displays based on current playback position. */
-    _displayProgress() {
+    displayProgress() {
         if (this.audio.duration === 0) {
             this.progress.value = 0;
             return;
@@ -244,14 +242,14 @@ export default class MusicPlayer {
             : '0';
 
         this.elapsedEl.textContent = this.showRemaining
-            ? `-${this._formatTime(duration - currentTime)}`
-            : this._formatTime(currentTime);
+            ? `-${this.formatTime(duration - currentTime)}`
+            : this.formatTime(currentTime);
 
-        this.totalEl.textContent = this._formatTime(duration);
+        this.totalEl.textContent = this.formatTime(duration);
     }
 
     /** Format seconds into M:SS string. */
-    _formatTime(seconds) {
+    formatTime(seconds) {
         if (!Number.isFinite(seconds) || seconds < 0) {
             return '0:00';
         }
@@ -261,7 +259,7 @@ export default class MusicPlayer {
     }
 
     /** Scrub to clicked position on the progress bar. */
-    _scrub(e) {
+    scrub(e) {
         if (!this.playlistEls) {
             return;
         }
@@ -274,28 +272,28 @@ export default class MusicPlayer {
     }
 
     /** Style the playlist to highlight the current track. */
-    _updatePlaylistStyle() {
-        [...this.playlistEls].forEach((el) => (el.style.color = '#555'));
+    updatePlaylistStyle() {
+        [...this.playlistEls].map((el) => (el.style.color = '#555'));
         this.playlistEls[this.currentSong].style.color = 'orange';
         this.playlistEls[this.currentSong].scrollIntoView({ block: 'nearest' });
-        this._updateTrackName();
+        this.updateTrackName();
     }
 
     /** Toggle the play/pause icon SVGs. */
-    _setPlayIcon(playing) {
+    setPlayIcon(playing) {
         this.iconPlay.style.display = playing ? 'none' : 'inline';
         this.iconPause.style.display = playing ? 'inline' : 'none';
     }
 
     /** Toggle the playlist accordion open/closed. */
-    _togglePlaylist() {
+    togglePlaylist() {
         this.playlistOpen = !this.playlistOpen;
         this.accordionEl.classList.toggle('open', this.playlistOpen);
         this.playlistToggle.classList.toggle('open', this.playlistOpen);
     }
 
     /** Update the now-playing track name display. */
-    _updateTrackName() {
+    updateTrackName() {
         if (this.trackNames.length === 0) {
             return;
         }
@@ -313,17 +311,17 @@ export default class MusicPlayer {
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
         this.currentSong = index;
-        this._updatePlaylistStyle();
+        this.updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSong];
         this.isPlaying = true;
-        this._setPlayIcon(true);
-        this._startEq();
+        this.setPlayIcon(true);
+        this.startEq();
         clearTimeout(this._jumpTimeout);
         this._jumpTimeout = setTimeout(() => this.audio.play(), 200);
     }
 
     /** Revoke all stored blob URLs to free memory. */
-    _revokeBlobUrls() {
+    revokeBlobUrls() {
         for (const url of this.blobUrls) {
             globalThis.URL.revokeObjectURL(url);
         }
@@ -332,7 +330,7 @@ export default class MusicPlayer {
     }
 
     /** Render the entire playlist from trackList. */
-    _renderPlaylist() {
+    renderPlaylist() {
         this.playList.innerHTML = '';
         for (let i = 0; i < this.trackList.length; i++) {
             const listItem = document.createElement('li');
@@ -352,69 +350,69 @@ export default class MusicPlayer {
                 });
             this.playList.append(listItem);
         }
-        this._bindDragEvents();
+        this.bindDragEvents();
         this.playlistEls = document.querySelectorAll('.list-item');
-        this._updatePlaylistStyle();
+        this.updatePlaylistStyle();
     }
 
     /** Update data-index attributes for all list items. */
-    _updatePlaylistIndices() {
+    updatePlaylistIndices() {
         const items = this.playList.querySelectorAll('.list-item');
-        items.forEach((item, i) => {
-            item.dataset.index = i;
-        });
+        for (let i = 0; i < items.length; i++) {
+            items[i].dataset.index = i;
+        }
     }
 
     /** Bind drag-and-drop events to playlist items. */
-    _bindDragEvents() {
+    bindDragEvents() {
         const items = this.playList.querySelectorAll('.list-item');
-        items.forEach((item) => {
-            item.addEventListener('dragstart', (e) => this._handleDragStart(e));
-            item.addEventListener('dragover', (e) => this._handleDragOver(e));
-            item.addEventListener('drop', (e) => this._handleDrop(e));
-            item.addEventListener('dragenter', (e) => this._handleDragEnter(e));
-            item.addEventListener('dragleave', (e) => this._handleDragLeave(e));
-            item.addEventListener('dragend', (e) => this._handleDragEnd(e));
-        });
+        for (const item of items) {
+            item.addEventListener('dragstart', (e) => this.handleDragStart(e));
+            item.addEventListener('dragover', (e) => this.handleDragOver(e));
+            item.addEventListener('drop', (e) => this.handleDrop(e));
+            item.addEventListener('dragenter', (e) => this.handleDragEnter(e));
+            item.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+            item.addEventListener('dragend', (e) => this.handleDragEnd(e));
+        }
     }
 
     /** Drag start - store the index of dragged item. */
-    _handleDragStart(e) {
-        this.draggedIndex = parseInt(e.target.dataset.index, 10);
+    handleDragStart(e) {
+        this.draggedIndex = Number.parseInt(e.target.dataset.index, 10);
         e.target.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
     }
 
     /** Drag over - allow dropping. */
-    _handleDragOver(e) {
+    handleDragOver(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
     }
 
     /** Drag enter - visual feedback. */
-    _handleDragEnter(e) {
+    handleDragEnter(e) {
         e.target.classList.add('drag-over');
     }
 
     /** Drag leave - remove visual feedback. */
-    _handleDragLeave(e) {
+    handleDragLeave(e) {
         e.target.classList.remove('drag-over');
     }
 
     /** Drag end - clean up visual feedback. */
-    _handleDragEnd(e) {
+    handleDragEnd(e) {
         e.target.classList.remove('dragging');
         this.draggedIndex = null;
     }
 
     /** Drop - reorder tracks. */
-    _handleDrop(e) {
+    handleDrop(e) {
         e.preventDefault();
         const targetItem = e.target.closest('.list-item');
         if (!targetItem) {
             return;
         }
-        const dropIndex = parseInt(targetItem.dataset.index, 10);
+        const dropIndex = Number.parseInt(targetItem.dataset.index, 10);
         if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
             return;
         }
@@ -434,17 +432,17 @@ export default class MusicPlayer {
             this.draggedIndex < this.currentSong &&
             dropIndex >= this.currentSong
         ) {
-            this.currentSong--;
+            this.currentSong -= 1;
         } else if (
             this.draggedIndex > this.currentSong &&
             dropIndex <= this.currentSong
         ) {
-            this.currentSong++;
+            this.currentSong += 1;
         }
 
-        this._renderPlaylist();
-        this._updatePlaylistIndices();
-        this._updatePlaylistStyle();
+        this.renderPlaylist();
+        this.updatePlaylistIndices();
+        this.updatePlaylistStyle();
     }
 
     /** Remove a track from the playlist. */
@@ -465,18 +463,18 @@ export default class MusicPlayer {
             this.playlistEls = null;
             this.playList.innerHTML = '';
             this.isPlaying = false;
-            this._setPlayIcon(false);
+            this.setPlayIcon(false);
             this.trackNameEl.textContent = '';
             this.playlistToggle.classList.remove('visible');
             this.elapsedEl.textContent = '';
             this.totalEl.textContent = '';
-            this._stopEq();
+            this.stopEq();
             this.eqCanvas.style.display = 'none';
             return;
         }
 
         if (index < this.currentSong) {
-            this.currentSong--;
+            this.currentSong -= 1;
         } else if (index === this.currentSong) {
             if (this.currentSong >= this.trackList.length) {
                 this.currentSong = 0;
@@ -487,31 +485,31 @@ export default class MusicPlayer {
             }
         }
 
-        this._renderPlaylist();
-        this._updatePlaylistIndices();
-        this._updatePlaylistStyle();
+        this.renderPlaylist();
+        this.updatePlaylistIndices();
+        this.updatePlaylistStyle();
     }
 
     /** Start the EQ animation loop. */
-    _startEq() {
+    startEq() {
         if (!this.eqCanvas || !this.eqCtx) {
             return;
         }
         this._lastBandValues = [0, 0, 0, 0, 0];
-        this._drawEq();
+        this.drawEq();
     }
 
     /** Stop the EQ animation loop and show flat bars. */
-    _stopEq() {
+    stopEq() {
         if (this._eqAnimationId) {
             cancelAnimationFrame(this._eqAnimationId);
             this._eqAnimationId = null;
         }
-        this._drawFlatEq();
+        this.drawFlatEq();
     }
 
     /** Draw the EQ with current frequency data. */
-    _drawEq() {
+    drawEq() {
         if (!this.eqCtx) {
             return;
         }
@@ -540,11 +538,11 @@ export default class MusicPlayer {
             this.eqCtx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
         }
 
-        this._eqAnimationId = requestAnimationFrame(() => this._drawEq());
+        this._eqAnimationId = requestAnimationFrame(() => this.drawEq());
     }
 
     /** Draw flat (zero) EQ bars. */
-    _drawFlatEq() {
+    drawFlatEq() {
         if (!this.eqCtx) {
             return;
         }
@@ -564,7 +562,7 @@ export default class MusicPlayer {
 
     /** Clean up resources (blob URLs, etc.) on app close. */
     destroy() {
-        this._revokeBlobUrls();
+        this.revokeBlobUrls();
     }
 
     /** Toggle player panel visibility. Called by KeyboardController. */
