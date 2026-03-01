@@ -19,9 +19,9 @@ export default class WaveformController {
             return;
         }
 
-        const dpr = window.devicePixelRatio || 1;
-        const w = window.innerWidth - 80;
-        const h = Math.min(400, window.innerHeight);
+        const dpr = globalThis.devicePixelRatio || 1;
+        const w = globalThis.innerWidth - 80;
+        const h = Math.min(400, globalThis.innerHeight);
         this.canvas.width = w * dpr;
         this.canvas.height = h * dpr;
         this.canvas.style.width = `${w}px`;
@@ -68,8 +68,8 @@ export default class WaveformController {
             this._animationId = null;
         }
         if (this.ctx && this.canvas) {
-            const w = this.canvas.width / (window.devicePixelRatio || 1);
-            const h = this.canvas.height / (window.devicePixelRatio || 1);
+            const w = this.canvas.width / (globalThis.devicePixelRatio || 1);
+            const h = this.canvas.height / (globalThis.devicePixelRatio || 1);
             this.ctx.clearRect(0, 0, w, h);
         }
     }
@@ -80,8 +80,8 @@ export default class WaveformController {
         }
 
         const { ctx } = this;
-        const w = this.canvas.width / (window.devicePixelRatio || 1);
-        const h = this.canvas.height / (window.devicePixelRatio || 1);
+        const w = this.canvas.width / (globalThis.devicePixelRatio || 1);
+        const h = this.canvas.height / (globalThis.devicePixelRatio || 1);
 
         const newData = this.frequencyAnalyser.getWaveform();
 

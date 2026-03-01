@@ -134,7 +134,7 @@ export default class TransitionManager {
     _resetCanvasContext() {
         const ctx = this._ctx;
         const canvas = this._canvas;
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = globalThis.devicePixelRatio || 1;
 
         // Reset transform fully (clears accumulated rotation)
         ctx.resetTransform();

@@ -12,8 +12,8 @@ export default class Spiral {
     constructor() {
         this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
-        this.w = window.innerWidth;
-        this.h = window.innerHeight;
+        this.w = globalThis.innerWidth;
+        this.h = globalThis.innerHeight;
         this._applyDpr();
 
         // forces GPU layer promotion
@@ -114,7 +114,7 @@ export default class Spiral {
         });
 
         // change canvas size on window resize
-        window.addEventListener('resize', () => {
+        globalThis.addEventListener('resize', () => {
             // Ensure the running algorithm is stopped immediately
             this.transitionManager.stopCurrentAlgorithm();
 
@@ -161,7 +161,7 @@ export default class Spiral {
      * scaled up so rendering is sharp on HiDPI / Retina displays.
      */
     _applyDpr() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = globalThis.devicePixelRatio || 1;
         this.canvas.width = this.w * dpr;
         this.canvas.height = this.h * dpr;
         this.canvas.style.width = `${this.w}px`;
