@@ -42,10 +42,10 @@ export default class Rounded extends AL {
                 this.side1,
                 this.side2,
                 {
-                    upperLeft: this.rounded1,
-                    upperRight: this.rounded2,
                     lowerLeft: this.rounded3,
                     lowerRight: this.rounded4,
+                    upperLeft: this.rounded1,
+                    upperRight: this.rounded2,
                 },
                 true,
                 true,

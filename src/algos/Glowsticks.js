@@ -34,10 +34,18 @@ export default class Glowsticks extends AL {
             this.ctx.lineTo(this.x + this.distance, this.y - this.distance);
             this.ctx.stroke();
 
-            if (this.x > this.w) this.x = 0;
-            if (this.x < 0) this.x = this.w - this.distance;
-            if (this.y > this.h) this.y = this.distance;
-            if (this.y < 0) this.x = this.h;
+            if (this.x > this.w) {
+                this.x = 0;
+            }
+            if (this.x < 0) {
+                this.x = this.w - this.distance;
+            }
+            if (this.y > this.h) {
+                this.y = this.distance;
+            }
+            if (this.y < 0) {
+                this.x = this.h;
+            }
         }
 
         this.t++;

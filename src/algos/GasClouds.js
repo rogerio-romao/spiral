@@ -43,10 +43,10 @@ export default class GasClouds extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.ul,
-                    upperRight: this.ur,
                     lowerLeft: this.dl,
                     lowerRight: this.dr,
+                    upperLeft: this.ul,
+                    upperRight: this.ur,
                 },
                 true,
                 false,

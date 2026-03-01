@@ -1,7 +1,7 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
 import DevModeController from './DevModeController.js';
-import HUDController from './HUDController.js';
+import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
@@ -22,24 +22,24 @@ export default class Spiral {
         this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
         this.algorithmChooser = new AlgorithmChooser();
 
-        this.hud = new HUDController({
-            messageElement: document.querySelector('#msg'),
+        this.hud = new HudController({
             algosDisplayElement: document.querySelector('#algos'),
             helpElement: document.querySelector('#help'),
+            messageElement: document.querySelector('#msg'),
         });
 
         this.transitionManager = new TransitionManager({
+            algorithmChooser: this.algorithmChooser,
+            algorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
             ctx: this.ctx,
-            algorithmLoader: this.algorithmLoader,
-            algorithmChooser: this.algorithmChooser,
+            getDimensions: () => ({ h: this.h, w: this.w }),
             hud: this.hud,
-            getDimensions: () => ({ w: this.w, h: this.h }),
         });
 
         this.devModeController = new DevModeController({
-            transitionManager: this.transitionManager,
             hud: this.hud,
+            transitionManager: this.transitionManager,
         });
 
         this.musicPlayer = null;
@@ -61,10 +61,10 @@ export default class Spiral {
         this._welcomeTimers = [
             setTimeout(() => {
                 this.hud.displayMessage('PRESS H FOR HELP');
-            }, 10000),
+            }, 10_000),
             setTimeout(() => {
                 this.hud.displayMessage('TIP: F FOR FULLSCREEN');
-            }, 20000),
+            }, 20_000),
         ];
 
         // make algorithms auto-change if not in manual mode
@@ -98,11 +98,11 @@ export default class Spiral {
 
         // Keyboard controller (created after musicPlayer exists)
         this.keyboardController = new KeyboardController({
-            hud: this.hud,
-            transition: this.transitionManager,
-            musicPlayer: this.musicPlayer,
             devModeController: this.devModeController,
+            hud: this.hud,
+            musicPlayer: this.musicPlayer,
             spiral: this,
+            transition: this.transitionManager,
         });
         this.keyboardController.bind();
     }
@@ -164,8 +164,8 @@ export default class Spiral {
         const dpr = window.devicePixelRatio || 1;
         this.canvas.width = this.w * dpr;
         this.canvas.height = this.h * dpr;
-        this.canvas.style.width = this.w + 'px';
-        this.canvas.style.height = this.h + 'px';
+        this.canvas.style.width = `${this.w}px`;
+        this.canvas.style.height = `${this.h}px`;
         // Prevent compounding scale transforms
         this.ctx.resetTransform();
         this.ctx.scale(dpr, dpr);
@@ -211,8 +211,8 @@ export default class Spiral {
      * Re-registers on each change since the media query targets a specific DPR.
      */
     _watchDprChange() {
-        const mql = window.matchMedia(
-            `(resolution: ${window.devicePixelRatio}dppx)`,
+        const mql = globalThis.matchMedia(
+            `(resolution: ${globalThis.devicePixelRatio}dppx)`,
         );
         mql.addEventListener(
             'change',

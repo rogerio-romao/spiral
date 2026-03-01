@@ -41,11 +41,7 @@ export default class CrayonFunnel extends AL {
             this.initializeProperties();
 
             if (Math.random() < 0.5) {
-                if (Math.random() < 0.5) {
-                    this.ctx.strokeStyle = 'white';
-                } else {
-                    this.ctx.strokeStyle = 'black';
-                }
+                this.strokeStyle = Math.random() < 0.5 ? 'white' : 'black';
             } else {
                 this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
             }

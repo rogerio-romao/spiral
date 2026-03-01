@@ -43,10 +43,10 @@ export default class Aperture extends AL {
                 this.width,
                 this.height,
                 {
-                    upperLeft: this.round,
-                    upperRight: this.round,
                     lowerLeft: this.round,
                     lowerRight: this.round,
+                    upperLeft: this.round,
+                    upperRight: this.round,
                 },
                 true,
             );
