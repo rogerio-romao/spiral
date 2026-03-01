@@ -1,4 +1,4 @@
-# Spiral
+# Spiral test
 
 **A music player that turns your screen into a living canvas.**
 
