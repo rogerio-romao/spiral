@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url';
 if (process.env.NODE_ENV === 'development') {
     const menuTemplate = [
         {
-            label: app.name, // "Electron" in dev, "Your Name" in prod
+            // "Electron" in dev, "Your Name" in prod
+            label: app.name,
             submenu: [{ role: 'quit' }],
         },
         {
@@ -40,6 +41,7 @@ function createWindow(width, height) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+// oxlint-disable-next-line unicorn/prefer-top-level-await
 app.whenReady().then(() => {
     // get screen size
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;

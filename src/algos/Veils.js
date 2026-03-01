@@ -23,7 +23,7 @@ export default class Veils extends AL {
     }
 
     initializeProperties() {
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.x = AL.random(0, this.w);
         this.y = AL.random(0, this.h);

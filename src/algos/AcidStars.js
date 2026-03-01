@@ -23,7 +23,7 @@ export default class AcidStars extends AL {
             1672, 1673, 1674, 1675, 1677, 1678, 1680, 1682, 1683, 1686, 1690,
             1691, 1693, 1695, 1697,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
     }
 
     initializeProperties() {
@@ -92,7 +92,7 @@ export default class AcidStars extends AL {
         }
 
         if (this.t % (this.speed * 720) === 0) {
-            this.letter = String.fromCharCode(
+            this.letter = String.fromCodePoint(
                 AL.pickRandomElement(this.letters),
             );
         }

@@ -62,10 +62,12 @@ export default class AlgorithmLoader {
         this.w = w;
         this.h = h;
 
-        this.t = 0; // Time variable or frame counter
-        this.animationFrameId = null; // To store requestAnimationFrame ID
+        // Time variable or frame counter
+        this.t = 0;
+        this.animationFrameId = null;
         this.speed = AlgorithmLoader.random(2, 6);
-        this.stagger = 0; // Used for staggered animations
+        // Used for staggered animations
+        this.stagger = 0;
         this.isRunning = true;
 
         const originalDraw = this.draw.bind(this);

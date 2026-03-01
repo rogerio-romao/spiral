@@ -13,9 +13,12 @@ classes.
 
 ## Linting
 
+- `pnpm lint` - runs oxlint on JS files
+- `pnpm lint:fix` - runs oxlint with --fix
 - `pnpm lint:css` - runs stylelint on CSS files
 
-ALWAYS run lint:css after editing CSS, and fix any errors before committing.
+ALWAYS run lint before committing, and fix any errors. ALWAYS run lint:css after
+editing CSS, and fix any errors before committing.
 
 ## Key Files
 
@@ -53,3 +56,8 @@ Space, F, I, D, M, S, H, P, E
 - GSAP: vendored in `assets/js/`, use `window.gsap`
 - pnpm only - no npm/yarn
 - No new runtime deps without approval
+
+## Code Style
+
+- NO inline comments - if comment is needed, write it in its own line above the
+  code

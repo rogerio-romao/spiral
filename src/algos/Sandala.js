@@ -44,9 +44,11 @@ export default class Sandala extends AL {
 
                 for (let col = 0; col <= this.cols; col++) {
                     this.ctx.strokeText(
-                        String.fromCharCode(AL.pickRandomElement(this.letters)),
+                        String.fromCodePoint(
+                            AL.pickRandomElement(this.letters),
+                        ),
                         row * (this.w / this.cols),
-                        col * (this.h / this.rows)
+                        col * (this.h / this.rows),
                     );
                 }
             }

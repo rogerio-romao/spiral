@@ -18,7 +18,7 @@ CanvasRenderingContext2D.prototype.roundRectExtra = function (
         lowerLeft: 0,
         lowerRight: 0,
     };
-    if (typeof stroke == 'undefined') {
+    if (stroke === undefined) {
         stroke = true;
     }
     if (typeof radius === 'object') {

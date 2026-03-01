@@ -17,11 +17,13 @@ export default class Particle {
         this.vy += ay;
     }
     addGravitation(p) {
-        this.removeGravitation(p); // case it already exists
+        // in case it already exists
+        this.removeGravitation(p);
         this.gravitations.push(p);
     }
     addSpring(point, k, length = 0) {
-        this.removeSpring(point); // case it already exists
+        // in case it already exists
+        this.removeSpring(point);
         this.springs.push({ point, k, length });
     }
     angleTo(p2) {

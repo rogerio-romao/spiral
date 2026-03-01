@@ -74,7 +74,8 @@ export function generateHSLAPalette(count, mode = 'hue', degrees) {
     const baseHue = Math.floor(Math.random() * 360);
     const baseSat = Math.floor(Math.random() * 101);
     const baseLum = Math.floor(Math.random() * 101);
-    const baseAlpha = Math.random() * 0.9 + 0.1; // 0.1–1
+    // 0.1–1 alpha range to avoid fully transparent colors that can be invisible in some contexts
+    const baseAlpha = Math.random() * 0.9 + 0.1;
 
     const palette = [];
     for (let i = 0; i < count; i++) {
@@ -84,7 +85,7 @@ export function generateHSLAPalette(count, mode = 'hue', degrees) {
         let alpha = baseAlpha;
 
         if (mode === 'hue') {
-            const step = degrees !== undefined ? degrees : 360 / count;
+            const step = degrees === undefined ? 360 / count : degrees;
             hue = (baseHue + i * step) % 360;
         } else if (mode === 'saturation') {
             sat = (baseSat + i * (100 / count)) % 101;

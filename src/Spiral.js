@@ -16,7 +16,8 @@ export default class Spiral {
         this.h = window.innerHeight;
         this._applyDpr();
 
-        this.canvas.style.transform = 'translateZ(0)'; // forces GPU layer promotion
+        // forces GPU layer promotion
+        this.canvas.style.transform = 'translateZ(0)';
 
         this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
         this.algorithmChooser = new AlgorithmChooser();

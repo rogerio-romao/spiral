@@ -18,7 +18,7 @@ export default class AccelerationMandala extends AL {
             1916, 1920, 1921, 1935, 1944, 1959, 1963, 1964, 1968, 1988, 1991,
             1993, 1997, 12398,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.rotate = 1;
     }
@@ -51,8 +51,8 @@ export default class AccelerationMandala extends AL {
         }
 
         if (this.t % (this.speed * 360) === 0) {
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+            this.letter = String.fromCodePoint(
+                AL.pickRandomElement(this.letters),
             );
         }
 

@@ -29,7 +29,7 @@ export default class EvolvingMandala extends AL {
     }
 
     initializeProperties() {
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         this.rotate = AL.random(4, 356);
     }
 

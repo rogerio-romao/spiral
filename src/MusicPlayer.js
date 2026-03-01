@@ -2,30 +2,31 @@
  * MusicPlayer — handles audio playback, playlist management,
  * and progress bar.
  */
-import { htmlEscape } from './utils/htmlEscape.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
+import { htmlEscape } from './utils/htmlEscape.js';
 
 export default class MusicPlayer {
     constructor() {
         // DOM references
-        this.player = document.getElementById('player');
-        this.input = document.getElementById('input');
-        this.label = document.getElementById('click-label');
-        this.playList = document.getElementById('playlist');
-        this.playBtn = document.getElementById('play');
-        this.iconPlay = document.getElementById('icon-play');
-        this.iconPause = document.getElementById('icon-pause');
-        this.stopBtn = document.getElementById('stop');
-        this.prevBtn = document.getElementById('prev');
-        this.nextBtn = document.getElementById('next');
-        this.audio = document.getElementById('audio');
-        this.progress = document.getElementById('progress-percent');
-        this.elapsedEl = document.getElementById('time-elapsed');
-        this.totalEl = document.getElementById('time-total');
-        this.trackNameEl = document.getElementById('track-name');
-        this.playlistToggle = document.getElementById('playlist-toggle');
-        this.accordionEl = document.getElementById('playlist-accordion');
-        this.eqCanvas = document.getElementById('eq-display');
+        this.player = document.querySelector('#player');
+        this.input = document.querySelector('#input');
+        this.label = document.querySelector('#click-label');
+        this.playList = document.querySelector('#playlist');
+        this.playBtn = document.querySelector('#play');
+        this.iconPlay = document.querySelector('#icon-play');
+        this.iconPause = document.querySelector('#icon-pause');
+        this.stopBtn = document.querySelector('#stop');
+        this.prevBtn = document.querySelector('#prev');
+        this.nextBtn = document.querySelector('#next');
+        this.audio = document.querySelector('#audio');
+        this.progress = document.querySelector('#progress-percent');
+        this.elapsedEl = document.querySelector('#time-elapsed');
+        this.totalEl = document.querySelector('#time-total');
+        this.trackNameEl = document.querySelector('#track-name');
+        this.playlistToggle = document.querySelector('#playlist-toggle');
+        this.accordionEl = document.querySelector('#playlist-accordion');
+        this.eqCanvas = document.querySelector('#eq-display');
+
         this.eqCtx = this.eqCanvas?.getContext('2d');
 
         // State
@@ -73,7 +74,7 @@ export default class MusicPlayer {
         this.playList.addEventListener('click', (e) => {
             const listItem = e.target.closest('.list-item');
             if (listItem && !e.target.closest('.remove-track')) {
-                const index = parseInt(listItem.getAttribute('data-index'), 10);
+                const index = parseInt(listItem.dataset.index, 10);
                 this.jumpToTrack(index);
             }
         });
@@ -104,18 +105,20 @@ export default class MusicPlayer {
             const listItem = document.createElement('li');
             listItem.classList.add('list-item');
             listItem.setAttribute('draggable', 'true');
-            listItem.setAttribute('data-index', this.trackList.length);
+            listItem.dataset.index = this.trackList.length;
             this.trackNames.push(baseName);
             listItem.innerHTML = `
                 <span class="track-name">${htmlEscape(baseName)}</span>
                 <button class="remove-track" title="Remove track">remove</button>
             `;
-            listItem.querySelector('.remove-track').addEventListener('click', (e) => {
-                e.stopPropagation();
-                const index = parseInt(listItem.getAttribute('data-index'), 10);
-                this.removeTrack(index);
-            });
-            this.playList.appendChild(listItem);
+            listItem
+                .querySelector('.remove-track')
+                .addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const index = parseInt(listItem.dataset.index, 10);
+                    this.removeTrack(index);
+                });
+            this.playList.append(listItem);
             const blobUrl = window.URL.createObjectURL(files[i]);
             this.trackList.push(blobUrl);
             this.blobUrls.push(blobUrl);
@@ -128,15 +131,13 @@ export default class MusicPlayer {
             this.audio.src = this.trackList[this.currentSong];
             this.isPlaying = false;
             this._setPlayIcon(false);
-        } else {
-            if (wasPlaying) {
-                this.isPlaying = true;
-                this._setPlayIcon(true);
-                this.audio.play();
-            }
+        } else if (wasPlaying) {
+            this.isPlaying = true;
+            this._setPlayIcon(true);
+            this.audio.play();
         }
 
-        this.playlistEls = document.getElementsByClassName('list-item');
+        this.playlistEls = document.querySelectorAll('.list-item');
         this._updatePlaylistIndices();
         this._updatePlaylistStyle();
         this.playlistToggle.classList.add('visible');
@@ -234,7 +235,8 @@ export default class MusicPlayer {
             : '0';
 
         if (this.showRemaining) {
-            this.elapsedEl.textContent = '-' + this._formatTime(duration - currentTime);
+            this.elapsedEl.textContent =
+                '-' + this._formatTime(duration - currentTime);
         } else {
             this.elapsedEl.textContent = this._formatTime(currentTime);
         }
@@ -283,7 +285,7 @@ export default class MusicPlayer {
 
     /** Update the now-playing track name display. */
     _updateTrackName() {
-        if (!this.trackNames.length) return;
+        if (this.trackNames.length === 0) return;
         this.trackNameEl.textContent = this.trackNames[this.currentSong] ?? '';
     }
 
@@ -321,20 +323,22 @@ export default class MusicPlayer {
             const listItem = document.createElement('li');
             listItem.classList.add('list-item');
             listItem.setAttribute('draggable', 'true');
-            listItem.setAttribute('data-index', i);
+            listItem.dataset.index = i;
             const fileName = this.trackNames[i];
             listItem.innerHTML = `
                 <span class="track-name">${htmlEscape(fileName)}</span>
                 <button class="remove-track" title="Remove track">remove</button>
             `;
-            listItem.querySelector('.remove-track').addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.removeTrack(i);
-            });
-            this.playList.appendChild(listItem);
+            listItem
+                .querySelector('.remove-track')
+                .addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.removeTrack(i);
+                });
+            this.playList.append(listItem);
         }
         this._bindDragEvents();
-        this.playlistEls = document.getElementsByClassName('list-item');
+        this.playlistEls = document.querySelectorAll('.list-item');
         this._updatePlaylistStyle();
     }
 
@@ -342,7 +346,7 @@ export default class MusicPlayer {
     _updatePlaylistIndices() {
         const items = this.playList.querySelectorAll('.list-item');
         items.forEach((item, i) => {
-            item.setAttribute('data-index', i);
+            item.dataset.index = i;
         });
     }
 
@@ -361,7 +365,7 @@ export default class MusicPlayer {
 
     /** Drag start - store the index of dragged item. */
     _handleDragStart(e) {
-        this.draggedIndex = parseInt(e.target.getAttribute('data-index'), 10);
+        this.draggedIndex = parseInt(e.target.dataset.index, 10);
         e.target.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
     }
@@ -393,8 +397,9 @@ export default class MusicPlayer {
         e.preventDefault();
         const targetItem = e.target.closest('.list-item');
         if (!targetItem) return;
-        const dropIndex = parseInt(targetItem.getAttribute('data-index'), 10);
-        if (this.draggedIndex === null || this.draggedIndex === dropIndex) return;
+        const dropIndex = parseInt(targetItem.dataset.index, 10);
+        if (this.draggedIndex === null || this.draggedIndex === dropIndex)
+            return;
 
         const [removed] = this.trackList.splice(this.draggedIndex, 1);
         this.trackList.splice(dropIndex, 0, removed);
@@ -407,9 +412,15 @@ export default class MusicPlayer {
 
         if (this.currentSong === this.draggedIndex) {
             this.currentSong = dropIndex;
-        } else if (this.draggedIndex < this.currentSong && dropIndex >= this.currentSong) {
+        } else if (
+            this.draggedIndex < this.currentSong &&
+            dropIndex >= this.currentSong
+        ) {
             this.currentSong--;
-        } else if (this.draggedIndex > this.currentSong && dropIndex <= this.currentSong) {
+        } else if (
+            this.draggedIndex > this.currentSong &&
+            dropIndex <= this.currentSong
+        ) {
             this.currentSong++;
         }
 
@@ -495,8 +506,8 @@ export default class MusicPlayer {
             newBands = [0, 0, 0, 0, 0];
         }
 
-        this._lastBandValues = this._lastBandValues.map((prev, i) =>
-            prev * smoothing + newBands[i] * (1 - smoothing),
+        this._lastBandValues = this._lastBandValues.map(
+            (prev, i) => prev * smoothing + newBands[i] * (1 - smoothing),
         );
 
         ctx.clearRect(0, 0, w, h);

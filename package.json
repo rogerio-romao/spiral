@@ -6,6 +6,8 @@
     "scripts": {
         "generate:algos": "node scripts/generate-algorithm-registry.mjs",
         "prestart": "pnpm generate:algos",
+        "lint": "oxlint",
+        "lint:fix": "oxlint --fix",
         "lint:css": "stylelint '**/*.css'",
         "start": "NODE_ENV=development electron .",
         "start:prod": "NODE_ENV=production electron ."
@@ -23,6 +25,7 @@
     "devDependencies": {
         "@electron/packager": "^19.0.5",
         "electron": "^40.4.1",
+        "oxlint": "^1.50.0",
         "stylelint": "^17.4.0",
         "stylelint-config-standard": "^40.0.0"
     },

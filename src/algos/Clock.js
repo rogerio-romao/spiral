@@ -34,7 +34,7 @@ export default class Clock extends AL {
             756, 757, 758, 759, 760, 761, 762, 764, 766, 769, 771, 772, 776,
             778, 781, 782, 784, 790, 794, 795, 796,
         ];
-        this.letter = String.fromCharCode(AL.pickRandomElement(this.letters));
+        this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
         this.color = AL.randomColor(0, 255, 0.66, 0.66);
         this.rotate = (18 * Math.PI) / 180;
@@ -82,13 +82,13 @@ export default class Clock extends AL {
 
         if (this.t % (this.speed * 120) === 0) {
             this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes
+                this.modes,
             );
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.letter = String.fromCharCode(
-                AL.pickRandomElement(this.letters)
+            this.letter = String.fromCodePoint(
+                AL.pickRandomElement(this.letters),
             );
         }
 

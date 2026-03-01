@@ -28,7 +28,7 @@ export default class Dye extends AL {
     }
 
     initializeProperties() {
-        this.text = String.fromCharCode(
+        this.text = String.fromCodePoint(
             AL.pickRandomElement(this.letters),
         ).padStart(30, ' ');
 

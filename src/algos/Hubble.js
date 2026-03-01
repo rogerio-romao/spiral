@@ -31,25 +31,25 @@ export default class Hubble extends AL {
                 this.w / 2,
                 this.h / 2,
                 this.currentVal * 3,
-                this.currentVal * 3
+                this.currentVal * 3,
             );
             this.ctx.fillRect(
                 this.w / 2,
                 this.h / 2,
                 this.currentVal * 3,
-                -this.currentVal * 3
+                -this.currentVal * 3,
             );
             this.ctx.fillRect(
                 this.w / 2,
                 this.h / 2,
                 -this.currentVal * 3,
-                this.currentVal * 3
+                this.currentVal * 3,
             );
             this.ctx.fillRect(
                 this.w / 2,
                 this.h / 2,
                 -this.currentVal * 3,
-                -this.currentVal * 3
+                -this.currentVal * 3,
             );
 
             this.index++;
@@ -73,9 +73,7 @@ export default class Hubble extends AL {
         const values = [];
         for (let i = 1; i <= num; i++) {
             for (let j = 1; j <= num; j++) {
-                values.push(
-                    j * i * (start[start.length - 2] + start[start.length - 1])
-                );
+                values.push(j * i * (start.at(-2) + start.at(-1)));
             }
         }
         return values;

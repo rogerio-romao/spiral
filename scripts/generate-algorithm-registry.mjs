@@ -40,7 +40,7 @@ const run = async () => {
                 !entry.name.startsWith('Template'),
         )
         .map((entry) => entry.name)
-        .sort((a, b) => a.localeCompare(b));
+        .toSorted((a, b) => a.localeCompare(b));
     const templateFiles = entries
         .filter(
             (entry) =>
@@ -49,7 +49,7 @@ const run = async () => {
                 entry.name.startsWith('Template'),
         )
         .map((entry) => entry.name)
-        .sort((a, b) => a.localeCompare(b));
+        .toSorted((a, b) => a.localeCompare(b));
 
     if (algoFiles.length === 0 && templateFiles.length === 0) {
         throw new Error(
@@ -81,13 +81,11 @@ const run = async () => {
 
     await fs.mkdir(outputDir, { recursive: true });
     await fs.writeFile(outputFile, `${contents}\n`, 'utf8');
-
-    console.log(
-        `Generated ${algoFiles.length} algorithms and ${templateFiles.length} templates into ${path.relative(projectRoot, outputFile)}`,
-    );
 };
 
-run().catch((error) => {
+try {
+    await run();
+} catch (error) {
     console.error(error);
     process.exit(1);
-});
+}

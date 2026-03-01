@@ -31,8 +31,7 @@ export default class DevModeController {
             // Concatenate and sort by class name so Template* appears with other T algos
             this._allAlgorithms = algorithms
                 .concat(templateAlgorithms)
-                .slice() // shallow copy
-                .sort((a, b) => {
+                .toSorted((a, b) => {
                     if (!a?.name || !b?.name) return 0;
                     return a.name.localeCompare(b.name);
                 });
@@ -57,11 +56,11 @@ export default class DevModeController {
             const option = document.createElement('option');
             option.value = index;
             option.textContent = AlgoClass.name;
-            fragment.appendChild(option);
+            fragment.append(option);
         });
 
-        this._algoASelect.appendChild(fragment.cloneNode(true));
-        this._algoBSelect.appendChild(fragment);
+        this._algoASelect.append(fragment.cloneNode(true));
+        this._algoBSelect.append(fragment);
     }
 
     _bindEvents() {

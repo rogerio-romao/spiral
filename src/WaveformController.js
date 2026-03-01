@@ -1,5 +1,3 @@
-import AlgorithmLoader from './AlgorithmLoader.js';
-
 export default class WaveformController {
     constructor({ canvasElement, frequencyAnalyser }) {
         this.canvas = canvasElement;
@@ -82,8 +80,9 @@ export default class WaveformController {
             this._waveformData = newData;
         }
 
-        this._waveformData = this._waveformData.map((prev, i) =>
-            prev * this.smoothing + newData[i] * (1 - this.smoothing)
+        this._waveformData = this._waveformData.map(
+            (prev, i) =>
+                prev * this.smoothing + newData[i] * (1 - this.smoothing),
         );
 
         ctx.clearRect(0, 0, w, h);
