@@ -1,3 +1,4 @@
+// oxlint-disable sort-keys
 import { app, BrowserWindow, Menu, screen } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -47,14 +48,15 @@ app.whenReady().then(() => {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
     createWindow(width, height);
 
-    app.on('activate', function () {
+    app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open. In this case, we check if there are no windows and create a new one, since we only want one window open at a time.
-        if (BrowserWindow.getAllWindows().length === 0)
+        if (BrowserWindow.getAllWindows().length === 0) {
             createWindow(width, height);
+        }
     });
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
     app.quit();
 });

@@ -18,8 +18,9 @@
             }
         ],
         "eslint/max-lines-per-function": ["warn", 450],
-        "eslint/max-statements": ["warn", 40],
+        "eslint/max-statements": ["warn", 55],
         "eslint/max-lines": ["warn", 600],
+        "eslint/max-params": ["warn", 5],
         "eslint/no-magic-numbers": "off",
         "eslint/no-ternary": "off",
         "eslint/no-continue": "off",
@@ -27,10 +28,28 @@
             "warn",
             {
                 "min": 2,
-                "exceptions": ["e", "h", "i", "j", "k", "x", "y", "w", "z", "_"]
+                "exceptions": [
+                    "a",
+                    "b",
+                    "e",
+                    "g",
+                    "h",
+                    "i",
+                    "j",
+                    "k",
+                    "r",
+                    "x",
+                    "y",
+                    "w",
+                    "z",
+                    "_"
+                ]
             }
         ],
         "eslint/no-multi-assign": "off",
+        "eslint/capitalized-comments": "off",
+        "eslint/func-style": ["error", "declaration"],
+        "eslint/sort-imports": "off",
         "unicorn/filename-case": [
             "error",
             {

@@ -9,7 +9,7 @@ const algosDir = path.join(projectRoot, 'src', 'algos');
 const outputDir = path.join(projectRoot, 'src', 'generated');
 const outputFile = path.join(outputDir, 'algorithmRegistry.js');
 
-const toIdentifier = (filename) => {
+function toIdentifier(filename) {
     const baseName = filename.replace(/\.js$/u, '');
 
     if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(baseName)) {
@@ -19,18 +19,18 @@ const toIdentifier = (filename) => {
     }
 
     return baseName;
-};
+}
 
-const buildFileContents = (files) => {
+function buildFileContents(files) {
     const importLines = files.map((file) => {
         const identifier = toIdentifier(file);
         return `import ${identifier} from '../algos/${file}';`;
     });
     const arrayLines = files.map((file) => `    ${toIdentifier(file)},`);
-    return { importLines, arrayLines };
-};
+    return { arrayLines, importLines };
+}
 
-const run = async () => {
+async function run() {
     const entries = await fs.readdir(algosDir, { withFileTypes: true });
     const algoFiles = entries
         .filter(
@@ -81,7 +81,7 @@ const run = async () => {
 
     await fs.mkdir(outputDir, { recursive: true });
     await fs.writeFile(outputFile, `${contents}\n`, 'utf8');
-};
+}
 
 try {
     await run();

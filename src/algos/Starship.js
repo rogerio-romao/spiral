@@ -36,13 +36,13 @@ export default class Starship extends AL {
             0,
             255,
             0.6,
-            1
+            1,
         );
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            let radius = this.seq[0] + this.seq[1];
+            const radius = this.seq[0] + this.seq[1];
             this.seq.push(radius);
             this.seq.shift();
 

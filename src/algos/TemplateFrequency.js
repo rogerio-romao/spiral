@@ -28,7 +28,7 @@ export default class TemplateFrequency extends AL {
             const bandWidth = this.w / this.numberOfBands;
             const centerY = this.h / 2;
 
-            const noMovement = bands.every((b) => b === 0);
+            const noMovement = bands.every((band) => band === 0);
 
             if (noMovement) {
                 this.rotateCanvasRadians(this.rotate * this.t * 0.0005);
@@ -63,27 +63,27 @@ export default class TemplateFrequency extends AL {
     }
 
     drawWaveform() {
-        const waveform = AL.waveformController?.getWaveformData();
-        if (!waveform) return;
+        const waveformData = AL.waveformController?.getWaveformData();
+        if (!waveformData) {
+            return;
+        }
 
-        const w = this.w;
-        const h = Math.min(400, this.h);
-        const yOffset = this.h - h - 20;
+        const height = Math.min(400, this.h);
+        const yOffset = this.h - height - 20;
 
         this.ctx.beginPath();
         this.ctx.strokeStyle = 'white';
-        this.ctx.lineWidth = 2;
         this.ctx.shadowColor = 'white';
+        this.ctx.lineWidth = 2;
         this.ctx.shadowBlur = 10;
 
-        const sliceWidth = w / waveform.length;
+        const sliceWidth = this.w / waveformData.length;
         let x = 0;
 
-        for (let i = 0; i < waveform.length; i++) {
-            const v = waveform[i];
-            const y = yOffset + v * h;
+        for (const value of waveformData) {
+            const y = yOffset + value * height;
 
-            if (i === 0) {
+            if (x === 0) {
                 this.ctx.moveTo(x, y);
             } else {
                 this.ctx.lineTo(x, y);

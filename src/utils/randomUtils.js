@@ -28,10 +28,13 @@ export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
     const r = random(minC, maxC) / 255;
     const g = random(minC, maxC) / 255;
     const b = random(minC, maxC) / 255;
-    const a = +(Math.random() * (maxA - minA) + minA).toFixed(3);
+    const a = Number((Math.random() * (maxA - minA) + minA).toFixed(3));
 
     // detect if the browser support p3 color space and use it if available, otherwise fallback to rgba
-    if (window.CSS && CSS.supports('color', 'color(display-p3 1 0 0 / 1)')) {
+    if (
+        globalThis.CSS &&
+        CSS.supports('color', 'color(display-p3 1 0 0 / 1)')
+    ) {
         return `color(display-p3 ${r} ${g} ${b} / ${a})`;
     }
 
@@ -66,10 +69,10 @@ export function generateRGBAPalette(
  * Generate an array of HSLA color strings, varying one property equally across the range with wrap-around.
  * @param {number} count - Number of colors to generate.
  * @param {'hue'|'saturation'|'luminosity'|'alpha'|'random'} [mode='hue'] - Which property to vary (defaults to 'hue').
- * @param {number} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
+ * @param {number|null} [degrees=null] - Optional step in degrees for hue mode (overrides automatic calculation).
  * @returns {string[]} Array of HSLA color strings.
  */
-export function generateHSLAPalette(count, mode = 'hue', degrees) {
+export function generateHSLAPalette(count, mode = 'hue', degrees = null) {
     // Random base values
     const baseHue = Math.floor(Math.random() * 360);
     const baseSat = Math.floor(Math.random() * 101);
@@ -93,9 +96,11 @@ export function generateHSLAPalette(count, mode = 'hue', degrees) {
             lum = (baseLum + i * (100 / count)) % 101;
         } else if (mode === 'alpha') {
             // Wrap alpha between 0.1 and 1
-            let step = 0.9 / count;
+            const step = 0.9 / count;
             alpha = baseAlpha + i * step;
-            if (alpha > 1) alpha = 0.1 + (alpha - 1);
+            if (alpha > 1) {
+                alpha = 0.1 + (alpha - 1);
+            }
         } else if (mode === 'random') {
             hue = Math.floor(Math.random() * 360);
             sat = Math.floor(Math.random() * 101);

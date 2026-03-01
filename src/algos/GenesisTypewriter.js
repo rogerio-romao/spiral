@@ -72,18 +72,18 @@ export default class GenesisTypewriter extends AL {
 
     getTweens() {
         this.tl = AL.gsap.timeline({
-            defaults: { repeat: -1, yoyo: true, ease: 'back.out(1.7)' },
+            defaults: { ease: 'back.out(1.7)', repeat: -1, yoyo: true },
         });
         this.tl
             .to(
                 this.font1,
                 {
                     duration: AL.random(12, 40),
-                    size: this.font2.size,
                     onUpdate: () =>
                         (this.ctx.font = `${this.font1.size}px bold serif`),
+                    size: this.font2.size,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.pos1,
@@ -91,7 +91,7 @@ export default class GenesisTypewriter extends AL {
                     duration: AL.random(15, 50),
                     x: this.pos2.x,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.pos1,
@@ -99,16 +99,16 @@ export default class GenesisTypewriter extends AL {
                     duration: AL.random(15, 50),
                     y: this.pos2.y,
                 },
-                '<'
+                '<',
             )
             .to(
                 this.line1,
                 {
                     duration: AL.random(6, 14),
-                    width: this.line2.width,
                     onUpdate: () => (this.ctx.lineWidth = this.line1.width),
+                    width: this.line2.width,
                 },
-                '<'
+                '<',
             );
     }
 }

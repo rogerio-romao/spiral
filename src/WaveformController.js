@@ -15,14 +15,17 @@ export default class WaveformController {
     }
 
     _resizeCanvas() {
-        if (!this.canvas) return;
+        if (!this.canvas) {
+            return;
+        }
+
         const dpr = window.devicePixelRatio || 1;
         const w = window.innerWidth - 80;
         const h = Math.min(400, window.innerHeight);
         this.canvas.width = w * dpr;
         this.canvas.height = h * dpr;
-        this.canvas.style.width = w + 'px';
-        this.canvas.style.height = h + 'px';
+        this.canvas.style.width = `${w}px`;
+        this.canvas.style.height = `${h}px`;
         if (this.ctx) {
             this.ctx.resetTransform();
             this.ctx.scale(dpr, dpr);
@@ -45,10 +48,14 @@ export default class WaveformController {
     }
 
     _start() {
-        if (this._animationId) return;
+        if (this._animationId) {
+            return;
+        }
         this._waveformData = null;
         const draw = () => {
-            if (!this.show) return;
+            if (!this.show) {
+                return;
+            }
             this._draw();
             this._animationId = requestAnimationFrame(draw);
         };
@@ -68,13 +75,15 @@ export default class WaveformController {
     }
 
     _draw() {
-        if (!this.ctx || !this.frequencyAnalyser) return;
+        if (!this.ctx || !this.frequencyAnalyser) {
+            return;
+        }
 
-        const ctx = this.ctx;
+        const { ctx } = this;
         const w = this.canvas.width / (window.devicePixelRatio || 1);
         const h = this.canvas.height / (window.devicePixelRatio || 1);
 
-        let newData = this.frequencyAnalyser.getWaveform();
+        const newData = this.frequencyAnalyser.getWaveform();
 
         if (!this._waveformData) {
             this._waveformData = newData;
@@ -96,11 +105,10 @@ export default class WaveformController {
         const sliceWidth = w / this._waveformData.length;
         let x = 0;
 
-        for (let i = 0; i < this._waveformData.length; i++) {
-            const v = this._waveformData[i];
-            const y = v * h;
+        for (const value of this._waveformData) {
+            const y = value * h;
 
-            if (i === 0) {
+            if (x === 0) {
                 ctx.moveTo(x, y);
             } else {
                 ctx.lineTo(x, y);

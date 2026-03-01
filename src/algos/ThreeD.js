@@ -34,12 +34,12 @@ export default class ThreeD extends AL {
         this.ctx.shadowOffsetY = 4;
         this.ctx.shadowBlur = 5;
         this.ctx.textAlign = 'center';
-        this.ctx.font = this.fontSize + 'px sans-serif';
+        this.ctx.font = `${this.fontSize}px sans-serif`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 5;
+            this.stagger %= 5;
 
             if (this.stagger === 0) {
                 this.ctx.save();
@@ -96,7 +96,7 @@ export default class ThreeD extends AL {
         if (this.t % (this.speed * 75) === 0) {
             this.fontSize = AL.random(24, 80);
 
-            this.ctx.font = this.fontSize + 'px serif';
+            this.ctx.font = `${this.fontSize}px serif`;
         }
 
         if (this.t % (this.speed * 150) === 0) {
