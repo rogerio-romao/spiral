@@ -1,3 +1,6 @@
 node_modules
-# Ignore auto-generated algorithm registry and related files
 /src/generated/
+WORKFLOW.md
+CHANGELOG.md
+AGENTS.md
+.vscode/
