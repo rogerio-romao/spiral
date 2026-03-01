@@ -25,7 +25,7 @@ export default class SquareNebulas extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.beginPath();
@@ -34,7 +34,7 @@ export default class SquareNebulas extends AL {
                     AL.random(0, this.w),
                     AL.random(0, this.h),
                     this.length,
-                    this.length
+                    this.length,
                 );
                 this.ctx.stroke();
                 this.ctx.closePath();
@@ -45,7 +45,7 @@ export default class SquareNebulas extends AL {
                     this.w / 2,
                     this.h / 2,
                     this.length / 2,
-                    this.length / 2
+                    this.length / 2,
                 );
                 this.ctx.stroke();
                 this.ctx.closePath();
@@ -56,7 +56,7 @@ export default class SquareNebulas extends AL {
                     AL.random(this.w / 2, this.w / 2 + this.length),
                     AL.random(this.h / 2, this.h / 2 + this.length),
                     this.length / 8,
-                    this.length / 8
+                    this.length / 8,
                 );
                 this.ctx.fill();
                 this.ctx.closePath();

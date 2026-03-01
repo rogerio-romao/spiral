@@ -38,13 +38,13 @@ export default class AcidStars extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.font = this.fontSize + 'px serif';
+        this.ctx.font = `${this.fontSize}px serif`;
         this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(0, 255, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 3;
+            this.stagger %= 3;
 
             if (this.stagger === 0) {
                 this.ctx.fillText(

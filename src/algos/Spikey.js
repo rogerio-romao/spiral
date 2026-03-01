@@ -37,7 +37,7 @@ export default class Spikey extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 2;
+            this.stagger %= 2;
 
             if (this.stagger === 0) {
                 this.ctx.translate(this.w / 2, this.h / 2);
@@ -48,10 +48,10 @@ export default class Spikey extends AL {
                     this.side1--,
                     this.side2--,
                     {
-                        upperLeft: this.rounded1++,
-                        upperRight: this.rounded2++,
                         lowerLeft: this.rounded3++,
                         lowerRight: this.rounded4++,
+                        upperLeft: this.rounded1++,
+                        upperRight: this.rounded2++,
                     },
                     false,
                     true,
@@ -68,10 +68,10 @@ export default class Spikey extends AL {
                     this.side3++,
                     this.side4++,
                     {
-                        upperLeft: this.rounded3--,
-                        upperRight: this.rounded4--,
                         lowerLeft: this.rounded2--,
                         lowerRight: this.rounded1--,
+                        upperLeft: this.rounded3--,
+                        upperRight: this.rounded4--,
                     },
                     false,
                     true,

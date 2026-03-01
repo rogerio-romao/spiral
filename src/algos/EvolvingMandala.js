@@ -22,7 +22,7 @@ export default class EvolvingMandala extends AL {
             1200, 1202, 1204, 1205, 1208, 1209, 1210, 1216, 1218, 1219, 1229,
             1231, 1233, 1234, 1237, 1238, 1240, 1242, 1244, 1246, 1249, 1251,
             1254, 1255, 1261, 1262, 1265, 1266, 1267, 1269, 1270, 1271, 1273,
-            1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10400,
+            1274, 1275, 1276, 1278, 1280, 1284, 1286, 1294, 10_400,
         ];
 
         this.speed *= 2;
@@ -42,7 +42,7 @@ export default class EvolvingMandala extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.strokeText(
-                this.letter + ' ' + this.letter + '  ' + this.letter,
+                `${this.letter} ${this.letter}  ${this.letter}`,
                 this.w / 2,
                 this.h / 2,
             );

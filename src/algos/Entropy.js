@@ -30,16 +30,16 @@ export default class Entropy extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.roundRectExtra(0, 0, this.width++, this.height++, {
-                upperLeft: this.ul--,
-                upperRight: this.ur--,
                 lowerLeft: this.ll--,
                 lowerRight: this.lr--,
+                upperLeft: this.ul--,
+                upperRight: this.ur--,
             });
             this.ctx.roundRectExtra(this.w, this.h, this.height, this.width, {
-                upperLeft: this.lr,
-                upperRight: this.ll,
                 lowerLeft: this.ur,
                 lowerRight: this.ul,
+                upperLeft: this.lr,
+                upperRight: this.ll,
             });
         }
 
@@ -51,12 +51,13 @@ export default class Entropy extends AL {
             this.initializeProperties();
 
             const colorRoll = Math.random();
-            this.ctx.strokeStyle =
-                colorRoll < 0.1
-                    ? 'black'
-                    : colorRoll < 0.2
-                      ? 'white'
-                      : AL.randomColor(0, 255, 1);
+            if (colorRoll < 0.1) {
+                this.ctx.strokeStyle = 'black';
+            } else if (colorRoll < 0.2) {
+                this.ctx.strokeStyle = 'white';
+            } else {
+                this.ctx.strokeStyle = AL.randomColor(0, 255, 1);
+            }
 
             this.ctx.beginPath();
         }

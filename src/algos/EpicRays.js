@@ -38,7 +38,7 @@ export default class EpicRays extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 4;
+            this.stagger %= 4;
 
             if (this.stagger === 0) {
                 this.ctx.beginPath();

@@ -21,13 +21,13 @@ export default class Quadrants extends AL {
             0,
             255,
             0.3,
-            0.3
+            0.3,
         );
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.stagger = this.stagger % 5;
+            this.stagger %= 5;
 
             if (this.stagger === 0) {
                 this.ctx.arc(this.w / 4, this.h / 4, this.radius, 0, 360);
