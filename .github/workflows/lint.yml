@@ -18,6 +18,9 @@ jobs:
                   node-version: 'lts/*'
                   cache: 'pnpm'
 
+            - name: Enable corepack (for pnpm)
+              run: corepack enable
+
             - name: Install pnpm
               uses: pnpm/action-setup@v3
               with:
