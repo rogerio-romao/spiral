@@ -11,6 +11,12 @@ classes.
 - `pnpm start:prod` - production
 - `pnpm generate:algos` - regenerate algorithm registry
 
+## Linting
+
+- `pnpm lint:css` - runs stylelint on CSS files
+
+ALWAYS run lint:css after editing CSS, and fix any errors before committing.
+
 ## Key Files
 
 | File                                 | Purpose                           |
