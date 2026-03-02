@@ -1,4 +1,5 @@
 {
+    "$schema": "https://json.schemastore.org/package.json",
     "name": "spiral-player",
     "version": "1.0.0",
     "description": "Music Player with generative art visualizer.",
