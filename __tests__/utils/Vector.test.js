@@ -1,6 +1,6 @@
 import Vector from '../../src/utils/Vector.js';
 
-describe('Vector', () => {
+describe('vector', () => {
     describe('constructor', () => {
         it('stores x and y', () => {
             const vector = new Vector(3, 4);
@@ -85,11 +85,11 @@ describe('Vector', () => {
 
     describe('length', () => {
         it('computes magnitude', () => {
-            expect(new Vector(3, 4).length).toBe(5);
+            expect(new Vector(3, 4)).toHaveLength(5);
         });
 
         it('returns 0 for zero vector', () => {
-            expect(new Vector(0, 0).length).toBe(0);
+            expect(new Vector(0, 0)).toHaveLength(0);
         });
 
         it('setting length scales components while preserving direction', () => {

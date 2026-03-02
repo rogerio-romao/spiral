@@ -1,6 +1,15 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "plugins": ["eslint", "oxc", "unicorn", "import", "jsdoc"],
+    "plugins": [
+        "eslint",
+        "oxc",
+        "unicorn",
+        "import",
+        "jsdoc",
+        "node",
+        "promise",
+        "vitest"
+    ],
     "categories": {
         "correctness": "error",
         "suspicious": "error",
@@ -54,7 +63,10 @@
         "eslint/capitalized-comments": "off",
         "eslint/complexity": ["warn", 33],
         "eslint/func-style": ["error", "declaration"],
-        "eslint/sort-imports": "off",
+        "eslint/sort-imports": [
+            "warn",
+            { "allowSeparatedGroups": true, "ignoreCase": true }
+        ],
         "oxc/no-optional-chaining": "off",
         "oxc/no-async-await": "off",
         "oxc/no-rest-spread-properties": "off",
@@ -74,7 +86,12 @@
         "import/no-commonjs": "off",
         "import/no-relative-parent-imports": "off",
         "import/no-named-export": "off",
-        "import/group-exports": "off"
+        "import/group-exports": "off",
+        "node/no-process-env": ["warn", { "allowedVariables": ["NODE_ENV"] }],
+        "vitest/require-hook": "off",
+        "vitest/prefer-called-times": "off",
+        "vitest/no-hooks": "off",
+        "vitest/max-expects": ["warn", { "max": 6 }]
     },
     "settings": {
         "jsx-a11y": {
@@ -125,6 +142,7 @@
         "describe": "readonly",
         "it": "readonly",
         "expect": "readonly",
+        "expectTypeOf": "readonly",
         "vi": "readonly",
         "beforeEach": "readonly",
         "afterEach": "readonly"

@@ -3,7 +3,7 @@ import MusicPlayer from '../src/MusicPlayer.js';
 // Access formatTime directly from the prototype to avoid constructor DOM side effects.
 const { formatTime } = MusicPlayer.prototype;
 
-describe('MusicPlayer.formatTime', () => {
+describe('musicPlayer.formatTime', () => {
     it('formats 0 seconds as 0:00', () => {
         expect(formatTime(0)).toBe('0:00');
     });

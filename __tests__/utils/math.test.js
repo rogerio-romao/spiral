@@ -119,31 +119,31 @@ describe('math utils', () => {
         it('returns true when circles overlap', () => {
             const c0 = { radius: 5, x: 0, y: 0 };
             const c1 = { radius: 2, x: 3, y: 4 };
-            expect(utils.circleCollision(c0, c1)).toBe(true);
+            expect(utils.circleCollision(c0, c1)).toBeTruthy();
         });
 
         it('returns true when circles touch', () => {
             const c0 = { radius: 3, x: 0, y: 0 };
             const c1 = { radius: 2, x: 5, y: 0 };
-            expect(utils.circleCollision(c0, c1)).toBe(true);
+            expect(utils.circleCollision(c0, c1)).toBeTruthy();
         });
 
         it('returns false when circles do not overlap', () => {
             const c0 = { radius: 1, x: 0, y: 0 };
             const c1 = { radius: 1, x: 10, y: 0 };
-            expect(utils.circleCollision(c0, c1)).toBe(false);
+            expect(utils.circleCollision(c0, c1)).toBeFalsy();
         });
     });
 
     describe('circlePointCollision', () => {
         it('returns true when point is inside circle', () => {
             const circle = { radius: 10, x: 0, y: 0 };
-            expect(utils.circlePointCollision(3, 4, circle)).toBe(true);
+            expect(utils.circlePointCollision(3, 4, circle)).toBeTruthy();
         });
 
         it('returns false when point is outside circle', () => {
             const circle = { radius: 4, x: 0, y: 0 };
-            expect(utils.circlePointCollision(3, 4, circle)).toBe(false);
+            expect(utils.circlePointCollision(3, 4, circle)).toBeFalsy();
         });
     });
 
@@ -151,51 +151,51 @@ describe('math utils', () => {
         const rect = { height: 10, width: 10, x: 0, y: 0 };
 
         it('returns true for point inside rect', () => {
-            expect(utils.pointInRect(5, 5, rect)).toBe(true);
+            expect(utils.pointInRect(5, 5, rect)).toBeTruthy();
         });
 
         it('returns true for point on rect edge', () => {
-            expect(utils.pointInRect(0, 0, rect)).toBe(true);
-            expect(utils.pointInRect(10, 10, rect)).toBe(true);
+            expect(utils.pointInRect(0, 0, rect)).toBeTruthy();
+            expect(utils.pointInRect(10, 10, rect)).toBeTruthy();
         });
 
         it('returns false for point outside rect', () => {
-            expect(utils.pointInRect(11, 5, rect)).toBe(false);
-            expect(utils.pointInRect(5, 11, rect)).toBe(false);
+            expect(utils.pointInRect(11, 5, rect)).toBeFalsy();
+            expect(utils.pointInRect(5, 11, rect)).toBeFalsy();
         });
     });
 
     describe('inRange', () => {
         it('returns true when value is in range', () => {
-            expect(utils.inRange(5, 0, 10)).toBe(true);
+            expect(utils.inRange(5, 0, 10)).toBeTruthy();
         });
 
         it('returns true at boundaries', () => {
-            expect(utils.inRange(0, 0, 10)).toBe(true);
-            expect(utils.inRange(10, 0, 10)).toBe(true);
+            expect(utils.inRange(0, 0, 10)).toBeTruthy();
+            expect(utils.inRange(10, 0, 10)).toBeTruthy();
         });
 
         it('returns false outside range', () => {
-            expect(utils.inRange(-1, 0, 10)).toBe(false);
-            expect(utils.inRange(11, 0, 10)).toBe(false);
+            expect(utils.inRange(-1, 0, 10)).toBeFalsy();
+            expect(utils.inRange(11, 0, 10)).toBeFalsy();
         });
 
         it('handles inverted min/max', () => {
-            expect(utils.inRange(5, 10, 0)).toBe(true);
+            expect(utils.inRange(5, 10, 0)).toBeTruthy();
         });
     });
 
     describe('rangeIntersect', () => {
         it('returns true when ranges overlap', () => {
-            expect(utils.rangeIntersect(0, 10, 5, 15)).toBe(true);
+            expect(utils.rangeIntersect(0, 10, 5, 15)).toBeTruthy();
         });
 
         it('returns true when ranges touch at boundary', () => {
-            expect(utils.rangeIntersect(0, 5, 5, 10)).toBe(true);
+            expect(utils.rangeIntersect(0, 5, 5, 10)).toBeTruthy();
         });
 
         it('returns false when ranges do not overlap', () => {
-            expect(utils.rangeIntersect(0, 4, 6, 10)).toBe(false);
+            expect(utils.rangeIntersect(0, 4, 6, 10)).toBeFalsy();
         });
     });
 
@@ -203,13 +203,13 @@ describe('math utils', () => {
         it('returns true when rects overlap', () => {
             const r0 = { height: 10, width: 10, x: 0, y: 0 };
             const r1 = { height: 10, width: 10, x: 5, y: 5 };
-            expect(utils.rectIntersect(r0, r1)).toBe(true);
+            expect(utils.rectIntersect(r0, r1)).toBeTruthy();
         });
 
         it('returns false when rects do not overlap', () => {
             const r0 = { height: 5, width: 5, x: 0, y: 0 };
             const r1 = { height: 5, width: 5, x: 10, y: 10 };
-            expect(utils.rectIntersect(r0, r1)).toBe(false);
+            expect(utils.rectIntersect(r0, r1)).toBeFalsy();
         });
     });
 
@@ -291,7 +291,7 @@ describe('math utils', () => {
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(3);
                 expect(r).toBeLessThanOrEqual(7);
-                expect(Number.isInteger(r)).toBe(true);
+                expect(Number.isInteger(r)).toBeTruthy();
             }
         });
     });

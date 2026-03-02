@@ -34,6 +34,7 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
     };
 
     // eslint-disable-next-line func-style
+    // oxlint-disable-next-line jest/prefer-spy-on
     globalThis.AudioContext = vi.fn(function audioContext() {
         return mockCtx;
     });
@@ -41,7 +42,7 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
     return { dataArray, mockAnalyser, mockCtx, timeDomainData };
 }
 
-describe('FrequencyAnalyser', () => {
+describe('frequencyAnalyser', () => {
     let analyser = null;
     let dataArray = null;
     let timeDomainData = null;
@@ -142,7 +143,7 @@ describe('FrequencyAnalyser', () => {
         it('calls AudioContext.resume when state is suspended', () => {
             analyser.audioContext.state = 'suspended';
             analyser.resume();
-            expect(analyser.audioContext.resume).toHaveBeenCalledTimes(1);
+            expect(analyser.audioContext.resume).toHaveBeenCalledOnce();
         });
 
         it('does not call AudioContext.resume when state is running', () => {

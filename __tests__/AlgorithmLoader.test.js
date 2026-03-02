@@ -30,7 +30,7 @@ class BrokenAlgo extends AlgorithmLoader {
     }
 }
 
-describe('AlgorithmLoader', () => {
+describe('algorithmLoader', () => {
     describe('constructor', () => {
         it('initialises state correctly', () => {
             const { ctx } = createMockCtx();
@@ -39,7 +39,7 @@ describe('AlgorithmLoader', () => {
             expect(algo.w).toBe(100);
             expect(algo.h).toBe(200);
             expect(algo.t).toBe(0);
-            expect(algo.isRunning).toBe(true);
+            expect(algo.isRunning).toBeTruthy();
             expect(algo.animationFrameId).toBeNull();
         });
     });
@@ -49,7 +49,7 @@ describe('AlgorithmLoader', () => {
             const { ctx } = createMockCtx();
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.stop();
-            expect(algo.isRunning).toBe(false);
+            expect(algo.isRunning).toBeFalsy();
         });
 
         it('clears animationFrameId', () => {
@@ -71,14 +71,14 @@ describe('AlgorithmLoader', () => {
 
             algo.draw();
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalledOnce();
         });
 
         it('stops the algorithm after a draw error', () => {
             const { ctx } = createMockCtx();
             const algo = new BrokenAlgo(ctx, 100, 100);
             algo.draw();
-            expect(algo.isRunning).toBe(false);
+            expect(algo.isRunning).toBeFalsy();
         });
 
         it('skips draw when isRunning is false', () => {
@@ -132,7 +132,7 @@ describe('AlgorithmLoader', () => {
 
             algo.draw();
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalledOnce();
         });
     });
 });

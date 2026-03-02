@@ -1,6 +1,6 @@
 import AlgorithmChooser from '../src/AlgorithmChooser.js';
 
-vi.mock('../src/generated/algorithmRegistry.js', () => ({
+vi.mock(import('../src/generated/algorithmRegistry.js'), () => ({
     algorithms: [
         class AlgoA {},
         class AlgoB {},
@@ -10,7 +10,7 @@ vi.mock('../src/generated/algorithmRegistry.js', () => ({
     ],
 }));
 
-describe('AlgorithmChooser', () => {
+describe('algorithmChooser', () => {
     let chooser = null;
 
     beforeEach(() => {
@@ -50,12 +50,13 @@ describe('AlgorithmChooser', () => {
 
         // Manually simulate adding a 4th to trigger eviction
         chooser.lastAlgos.add(chooser.algorithms[3]);
+        // oxlint-disable-next-line jest/no-conditional-in-test
         if (chooser.lastAlgos.size > chooser.lastAlgosCapacity) {
             chooser.lastAlgos.delete(chooser.lastAlgos.values().next().value);
         }
 
         // The oldest entry (firstPick) should have been evicted
-        expect(chooser.lastAlgos.has(firstPick)).toBe(false);
+        expect(chooser.lastAlgos.has(firstPick)).toBeFalsy();
         expect(chooser.lastAlgos.size).toBe(3);
     });
 

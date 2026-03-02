@@ -1,19 +1,23 @@
-import { generateHSLAPalette, generateRGBAPalette, random, randomColor } from '../../src/utils/randomUtils.js';
+import {
+    generateHSLAPalette,
+    generateRGBAPalette,
+    random,
+    randomColor,
+} from '../../src/utils/randomUtils.js';
 
 describe('randomUtils', () => {
-    describe('random', () => {
+    describe('random function', () => {
         it('returns integers within [min, max)', () => {
             const results = Array.from({ length: 500 }, () => random(5, 15));
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(5);
                 expect(r).toBeLessThan(15);
-                expect(Number.isInteger(r)).toBe(true);
+                expect(Number.isInteger(r)).toBeTruthy();
             }
         });
-
     });
 
-    describe('randomColor', () => {
+    describe('randomColor function', () => {
         afterEach(() => {
             delete globalThis.CSS;
         });
@@ -41,7 +45,7 @@ describe('randomUtils', () => {
         });
     });
 
-    describe('generateRGBAPalette', () => {
+    describe('generateRGBAPalette function', () => {
         it('returns an array of the requested length', () => {
             expect(generateRGBAPalette(5)).toHaveLength(5);
         });
@@ -49,7 +53,7 @@ describe('randomUtils', () => {
         it('each entry is a color string', () => {
             const palette = generateRGBAPalette(3);
             for (const color of palette) {
-                expect(typeof color).toBe('string');
+                expectTypeOf(color).toBeString();
                 expect(color.length).toBeGreaterThan(0);
             }
         });
@@ -59,7 +63,7 @@ describe('randomUtils', () => {
         });
     });
 
-    describe('generateHSLAPalette', () => {
+    describe('generateHSLAPalette function', () => {
         it('returns an array of the requested length', () => {
             expect(generateHSLAPalette(6)).toHaveLength(6);
         });

@@ -1,6 +1,6 @@
 import Particle from '../../src/utils/Particle.js';
 
-describe('Particle', () => {
+describe('particle', () => {
     describe('constructor', () => {
         it('sets position', () => {
             const particle = new Particle(10, 20, 0, 0);
@@ -20,8 +20,8 @@ describe('Particle', () => {
             expect(particle.bounce).toBe(-1);
             expect(particle.friction).toBe(1);
             expect(particle.mass).toBe(1);
-            expect(particle.springs).toEqual([]);
-            expect(particle.gravitations).toEqual([]);
+            expect(particle.springs).toStrictEqual([]);
+            expect(particle.gravitations).toStrictEqual([]);
         });
 
         it('accepts optional gravity', () => {

@@ -1,6 +1,6 @@
 import htmlEscape from '../../src/utils/htmlEscape.js';
 
-describe('htmlEscape', () => {
+describe('htmlEscape function', () => {
     it('escapes ampersands', () => {
         expect(htmlEscape('a&b')).toBe('a&amp;b');
     });
