@@ -38,18 +38,8 @@ export default class Plaid extends AL {
 
                 for (let j = 0; j <= this.cols; j++) {
                     this.ctx.beginPath();
-                    this.ctx.strokeRect(
-                        150 * j - 150,
-                        150 * i - 150,
-                        this.side1,
-                        this.side2,
-                    );
-                    this.ctx.fillRect(
-                        150 * j - 150,
-                        150 * i - 150,
-                        this.side1,
-                        this.side2,
-                    );
+                    this.ctx.strokeRect(150 * j - 150, 150 * i - 150, this.side1, this.side2);
+                    this.ctx.fillRect(150 * j - 150, 150 * i - 150, this.side1, this.side2);
                 }
             }
         }

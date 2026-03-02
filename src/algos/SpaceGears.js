@@ -15,9 +15,9 @@ export default class SpaceGears extends AL {
 
     initializeBaseProperties() {
         this.letters = [
-            402, 406, 407, 409, 410, 412, 414, 415, 418, 420, 423, 424, 425,
-            428, 429, 430, 433, 437, 438, 439, 440, 443, 444, 448, 449, 450,
-            451, 458, 461, 474, 478, 480, 484, 488, 491, 494,
+            402, 406, 407, 409, 410, 412, 414, 415, 418, 420, 423, 424, 425, 428, 429, 430, 433,
+            437, 438, 439, 440, 443, 444, 448, 449, 450, 451, 458, 461, 474, 478, 480, 484, 488,
+            491, 494,
         ];
         this.letter = String.fromCodePoint(428);
     }
@@ -50,9 +50,7 @@ export default class SpaceGears extends AL {
 
         if (this.t % (this.speed * 1260) === 0) {
             this.initializeProperties();
-            this.letter = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
+            this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         }
 
         this.requestFrame();

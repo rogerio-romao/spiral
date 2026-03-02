@@ -1,7 +1,4 @@
-import {
-    buildFileContents,
-    toIdentifier,
-} from '../generateAlgorithmRegistry.mjs';
+import { buildFileContents, toIdentifier } from '../generateAlgorithmRegistry.mjs';
 
 describe('generateAlgorithmRegistry helpers', () => {
     describe('toIdentifier function', () => {

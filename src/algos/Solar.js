@@ -35,14 +35,7 @@ export default class Solar extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.moveTo(0, 0);
-            this.ctx.bezierCurveTo(
-                this.x1,
-                this.y1,
-                this.x2,
-                this.y2,
-                this.w,
-                this.h,
-            );
+            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.w, this.h);
             this.ctx.stroke();
         }
 

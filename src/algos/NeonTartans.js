@@ -45,14 +45,7 @@ export default class NeonTartans extends AL {
                 this.ctx.shadowBlur = 30;
                 this.ctx.beginPath();
                 this.ctx.lineWidth = 2;
-                this.ctx.arc(
-                    this.w / 2,
-                    this.h / 2,
-                    this.length,
-                    this.length,
-                    this.w,
-                    this.h,
-                );
+                this.ctx.arc(this.w / 2, this.h / 2, this.length, this.length, this.w, this.h);
                 this.ctx.stroke();
                 this.ctx.lineWidth = 1;
             }

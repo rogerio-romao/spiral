@@ -45,20 +45,13 @@ export default class Microscope extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-            0,
-            255,
-            0.5,
-            0.5,
-        );
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                    this.modes,
-                );
+                this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
 
                 this.rotateCanvasRadians(this.rotate);
 

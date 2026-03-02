@@ -4,7 +4,7 @@
  */
 export default class KeyboardController {
     /**
-    * @param {Object} deps Dependencies for keyboard shortcut handling.
+     * @param {Object} deps Dependencies for keyboard shortcut handling.
      * @param {HUDController}     deps.hud - The HUD controller for displaying messages and managing UI visibility.
      * @param {TransitionManager} deps.transition - The transition manager for handling algorithm changes and auto-change settings.
      * @param {MusicPlayer}       deps.musicPlayer - The music player for controlling audio playback visibility.
@@ -51,40 +51,26 @@ export default class KeyboardController {
             }
 
             case 'KeyI': {
-                this._transition.autoChange = Math.min(
-                    this._transition.autoChange + 10,
-                    300,
-                );
-                this._hud.displayMessage(
-                    `Auto-change: ${this._transition.autoChange}secs`,
-                );
+                this._transition.autoChange = Math.min(this._transition.autoChange + 10, 300);
+                this._hud.displayMessage(`Auto-change: ${this._transition.autoChange}secs`);
                 break;
             }
 
             case 'KeyD': {
-                this._transition.autoChange = Math.max(
-                    this._transition.autoChange - 10,
-                    10,
-                );
-                this._hud.displayMessage(
-                    `Auto-change: ${this._transition.autoChange}secs`,
-                );
+                this._transition.autoChange = Math.max(this._transition.autoChange - 10, 10);
+                this._hud.displayMessage(`Auto-change: ${this._transition.autoChange}secs`);
                 break;
             }
 
             case 'KeyM': {
                 this._transition.manual = !this._transition.manual;
-                this._hud.displayMessage(
-                    this._transition.manual ? 'Manual mode' : 'Auto mode',
-                );
+                this._hud.displayMessage(this._transition.manual ? 'Manual mode' : 'Auto mode');
                 break;
             }
 
             case 'KeyS': {
                 this._hud.toggleSilent();
-                this._hud.displayMessage(
-                    this._hud.silent ? 'Silent mode' : 'Display mode',
-                );
+                this._hud.displayMessage(this._hud.silent ? 'Silent mode' : 'Display mode');
                 break;
             }
 

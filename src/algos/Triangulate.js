@@ -15,9 +15,7 @@ export default class Triangulate extends AL {
 
     initializeBaseProperties() {
         this.divisions = [2, 3, 4, 5, 6, 8, 9, 10, 12];
-        this.rotations = [
-            10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120,
-        ];
+        this.rotations = [10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 80, 90, 120];
     }
 
     initializeProperties() {

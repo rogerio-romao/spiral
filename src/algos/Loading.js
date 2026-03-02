@@ -34,19 +34,11 @@ export default class Loading extends AL {
         this.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
         this.ctx.strokeStyle = this.t % 2 ? 'black' : this.color;
         this.counterClockwise = this.t % 2 === 1;
-        this.ctx.globalCompositeOperation =
-            this.t % 2 ? 'source-over' : 'difference';
+        this.ctx.globalCompositeOperation = this.t % 2 ? 'source-over' : 'difference';
 
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.w / 2,
-                this.h / 2,
-                this.radius,
-                0,
-                Math.PI,
-                this.counterClockwise,
-            );
+            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, Math.PI, this.counterClockwise);
             this.ctx.stroke();
         }
 

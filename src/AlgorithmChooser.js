@@ -8,9 +8,7 @@ export default class AlgorithmChooser {
     }
 
     getRandomAlgorithm() {
-        const picks = this.algorithms.filter(
-            (algo) => !this.lastAlgos.has(algo),
-        );
+        const picks = this.algorithms.filter((algo) => !this.lastAlgos.has(algo));
 
         const randomIndex = Math.floor(Math.random() * picks.length);
         const AlgorithmClass = picks[randomIndex];

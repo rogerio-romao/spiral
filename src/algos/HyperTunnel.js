@@ -26,21 +26,12 @@ export default class HyperTunnel extends AL {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
             this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.lineTo(
-                this.w / 2 - this.side / 2,
-                this.h / 2 - this.side / 2,
-            );
+            this.ctx.lineTo(this.w / 2 - this.side / 2, this.h / 2 - this.side / 2);
             this.ctx.stroke();
             this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.lineTo(
-                this.w / 2 + this.side / 2,
-                this.h / 2 - this.side / 2,
-            );
+            this.ctx.lineTo(this.w / 2 + this.side / 2, this.h / 2 - this.side / 2);
             this.ctx.stroke();
-            this.ctx.lineTo(
-                this.w / 2 - this.side / 2,
-                this.h / 2 - this.side / 2,
-            );
+            this.ctx.lineTo(this.w / 2 - this.side / 2, this.h / 2 - this.side / 2);
             this.ctx.stroke();
             this.ctx.fill();
 

@@ -22,11 +22,7 @@ export default class Quadratic extends AL {
         this.startNum = AL.random(5, 50);
         this.firstDiff = AL.random(10, 50);
         this.secondDiff = AL.random(3, 45);
-        this.nums = this.createQuadraticSequence(
-            this.startNum,
-            this.firstDiff,
-            this.secondDiff,
-        );
+        this.nums = this.createQuadraticSequence(this.startNum, this.firstDiff, this.secondDiff);
     }
 
     setupDrawingStyles() {
@@ -48,12 +44,7 @@ export default class Quadratic extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             for (const num of this.nums) {
-                this.ctx.strokeRect(
-                    this.w / 2 - num / 2,
-                    this.h / 2 - num / 2,
-                    num,
-                    num,
-                );
+                this.ctx.strokeRect(this.w / 2 - num / 2, this.h / 2 - num / 2, num, num);
             }
         }
 

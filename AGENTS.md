@@ -16,9 +16,20 @@ classes.
 - `pnpm lint` - runs oxlint on JS files
 - `pnpm lint:fix` - runs oxlint with --fix
 - `pnpm lint:css` - runs stylelint on CSS files
+- `pnpm format` - runs oxfmt and formats files
+- `pnpm format:check` - runs oxfmt with --check (no formatting, just checks for issues)
 
 ALWAYS run lint before committing, and fix any errors. ALWAYS run lint:css after
-editing CSS, and fix any errors before committing.
+editing CSS, and fix any errors before committing. ALWAYS run format before committing, and fix any formatting issues.
+
+## Tests
+
+- Tests use Vitest, located in `__tests__/` folder at project root
+- Run with `pnpm test`
+
+ALWAYS write tests for new features and bug fixes. Tests should cover expected behavior and edge cases. Run tests before committing, and ensure all tests pass.
+ALWAYS update tests when changing existing functionality, and ensure all tests pass after changes.
+ALWAYS run tests after modifying code, even if you think the changes are minor. This helps catch any unintended side effects and ensures code quality.
 
 ## Key Files
 

@@ -1,11 +1,11 @@
+import mathUtils from './utils/math.js';
+import Particle from './utils/Particle.js';
 import {
     generateHSLAPalette,
     generateRGBAPalette,
     random,
     randomColor,
 } from './utils/randomUtils.js';
-import mathUtils from './utils/math.js';
-import Particle from './utils/Particle.js';
 import Vector from './utils/Vector.js';
 
 export default class AlgorithmLoader {
@@ -17,13 +17,7 @@ export default class AlgorithmLoader {
         return randomColor(minC, maxC, minA, maxA);
     }
 
-    static generateRGBAPalette(
-        count,
-        minC = 0,
-        maxC = 255,
-        minA = 0.5,
-        maxA = 1,
-    ) {
+    static generateRGBAPalette(count, minC = 0, maxC = 255, minA = 0.5, maxA = 1) {
         return generateRGBAPalette(count, minC, maxC, minA, maxA);
     }
 
@@ -78,9 +72,7 @@ export default class AlgorithmLoader {
                 originalDraw();
             } catch {
                 this.stop();
-                this.ctx.canvas.dispatchEvent(
-                    new CustomEvent('algorithm-error'),
-                );
+                this.ctx.canvas.dispatchEvent(new CustomEvent('algorithm-error'));
             }
         };
     }

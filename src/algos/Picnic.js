@@ -37,13 +37,7 @@ export default class Picnic extends AL {
             for (let i = 0; i <= this.rows; i++) {
                 for (let j = 0; j <= this.cols; j++) {
                     this.ctx.beginPath();
-                    this.ctx.arc(
-                        225 * j - 225,
-                        225 * i - 225,
-                        this.radius,
-                        0,
-                        2 * Math.PI,
-                    );
+                    this.ctx.arc(225 * j - 225, 225 * i - 225, this.radius, 0, 2 * Math.PI);
                     this.ctx.stroke();
                 }
             }

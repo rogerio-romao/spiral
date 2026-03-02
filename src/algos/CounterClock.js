@@ -14,9 +14,8 @@ export default class CounterClock extends AL {
 
     initializeProperties() {
         this.letters = [
-            607, 611, 615, 616, 617, 618, 619, 622, 625, 629, 632, 639, 643,
-            650, 656, 662, 664, 676, 683, 684, 685, 688, 690, 691, 694, 697,
-            698, 699,
+            607, 611, 615, 616, 617, 618, 619, 622, 625, 629, 632, 639, 643, 650, 656, 662, 664,
+            676, 683, 684, 685, 688, 690, 691, 694, 697, 698, 699,
         ];
         this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         this.color = AL.randomColor(0, 255, 1, 1);
@@ -62,9 +61,7 @@ export default class CounterClock extends AL {
         }
 
         if (this.t % (this.speed * 450) === 0) {
-            this.letter = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
+            this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         }
 
         this.requestFrame();

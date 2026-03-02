@@ -41,12 +41,7 @@ export default class SquareNebulas extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.strokeRect(
-                    this.w / 2,
-                    this.h / 2,
-                    this.length / 2,
-                    this.length / 2,
-                );
+                this.ctx.strokeRect(this.w / 2, this.h / 2, this.length / 2, this.length / 2);
                 this.ctx.stroke();
                 this.ctx.closePath();
             }

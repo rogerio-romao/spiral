@@ -18,8 +18,8 @@ export default class Dye extends AL {
 
     initializeBaseProperties() {
         this.letters = [
-            3405, 3423, 3424, 3437, 3442, 3443, 3444, 3458, 3459, 3461, 3465,
-            3466, 3468, 3471, 3482, 3484, 3491, 3492, 3493,
+            3405, 3423, 3424, 3437, 3442, 3443, 3444, 3458, 3459, 3461, 3465, 3466, 3468, 3471,
+            3482, 3484, 3491, 3492, 3493,
         ];
 
         this.tl = null;
@@ -28,9 +28,7 @@ export default class Dye extends AL {
     }
 
     initializeProperties() {
-        this.text = String.fromCodePoint(
-            AL.pickRandomElement(this.letters),
-        ).padStart(30, ' ');
+        this.text = String.fromCodePoint(AL.pickRandomElement(this.letters)).padStart(30, ' ');
 
         this.line1 = { width: 1 };
         this.font1 = { size: AL.random(14, 40) };
@@ -61,16 +59,8 @@ export default class Dye extends AL {
             for (let j = -100; j <= this.h + 100; j += this.h / 5) {
                 this.rotateCanvasRadians(this.rotate);
 
-                this.ctx.fillText(
-                    this.text,
-                    i + this.offsetX,
-                    j + this.offsetY,
-                );
-                this.ctx.strokeText(
-                    this.text,
-                    i + this.offsetX,
-                    j + this.offsetY,
-                );
+                this.ctx.fillText(this.text, i + this.offsetX, j + this.offsetY);
+                this.ctx.strokeText(this.text, i + this.offsetX, j + this.offsetY);
             }
         }
 
@@ -104,8 +94,7 @@ export default class Dye extends AL {
                 this.font1,
                 {
                     duration: AL.random(4, 10),
-                    onUpdate: () =>
-                        (this.ctx.font = `${this.font1.size}px bold serif`),
+                    onUpdate: () => (this.ctx.font = `${this.font1.size}px bold serif`),
                     size: this.font2.size,
                 },
                 '<',

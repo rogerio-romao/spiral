@@ -18,16 +18,11 @@ export default class FrequencyAnalyser {
      * @param {number}  [options.fftSize] — FFT window size (power of 2).
      * @param {number}  [options.smoothing] — smoothingTimeConstant (0–1).
      */
-    constructor(
-        audioElement,
-        { bandCount = 5, fftSize = 2048, smoothing = 0.8 } = {},
-    ) {
+    constructor(audioElement, { bandCount = 5, fftSize = 2048, smoothing = 0.8 } = {}) {
         this._bandCount = bandCount;
 
         // Create the audio context and graph
-        this._ctx = new (
-            globalThis.AudioContext || globalThis.webkitAudioContext
-        )();
+        this._ctx = new (globalThis.AudioContext || globalThis.webkitAudioContext)();
         this._analyser = this._ctx.createAnalyser();
         this._analyser.fftSize = fftSize;
         this._analyser.smoothingTimeConstant = smoothing;
@@ -95,10 +90,8 @@ export default class FrequencyAnalyser {
         const logMax = Math.log(binCount + 1);
 
         for (let b = 0; b < activeBandCount; b++) {
-            let start =
-                Math.floor(Math.exp((b / activeBandCount) * logMax)) - 1;
-            let end =
-                Math.floor(Math.exp(((b + 1) / activeBandCount) * logMax)) - 1;
+            let start = Math.floor(Math.exp((b / activeBandCount) * logMax)) - 1;
+            let end = Math.floor(Math.exp(((b + 1) / activeBandCount) * logMax)) - 1;
 
             start = Math.max(0, Math.min(start, binCount - 1));
             end = Math.max(start + 1, Math.min(end, binCount));

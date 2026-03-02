@@ -26,12 +26,7 @@ export default class Vortrix extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-            0,
-            255,
-            0.5,
-            1,
-        );
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(0, 255, 0.5, 1);
     }
 
     draw() {

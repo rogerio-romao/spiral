@@ -45,10 +45,7 @@ export default class SpiralLines extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.lineTo(
-                    this.w / 2 - this.radius - this.length,
-                    this.h / 2,
-                );
+                this.ctx.lineTo(this.w / 2 - this.radius - this.length, this.h / 2);
                 this.ctx.stroke();
             }
 

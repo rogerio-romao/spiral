@@ -70,9 +70,7 @@ export default class TheBadge extends AL {
 
         if (this.t % (this.speed * 50) === 0) {
             this.rotate = AL.random(0, 360);
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes,
-            );
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         this.requestFrame();

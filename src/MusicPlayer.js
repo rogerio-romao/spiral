@@ -66,9 +66,7 @@ export default class MusicPlayer {
             this.showRemaining = !this.showRemaining;
             this.displayProgress();
         });
-        this.playlistToggle.addEventListener('click', () =>
-            this.togglePlaylist(),
-        );
+        this.playlistToggle.addEventListener('click', () => this.togglePlaylist());
         this.playList.addEventListener('click', (e) => {
             const listItem = e.target.closest('.list-item');
             if (listItem && !e.target.closest('.remove-track')) {
@@ -110,13 +108,11 @@ export default class MusicPlayer {
                 <span class="track-name">${htmlEscape(baseName)}</span>
                 <button class="remove-track" title="Remove track">remove</button>
             `;
-            listItem
-                .querySelector('.remove-track')
-                .addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const index = Number.parseInt(listItem.dataset.index, 10);
-                    this.removeTrack(index);
-                });
+            listItem.querySelector('.remove-track').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = Number.parseInt(listItem.dataset.index, 10);
+                this.removeTrack(index);
+            });
             this.playList.append(listItem);
             const blobUrl = globalThis.URL.createObjectURL(file);
             this.trackList.push(blobUrl);
@@ -154,8 +150,7 @@ export default class MusicPlayer {
             this.audio.play();
         } else if (this.playlistEls) {
             this.isPlaying = false;
-            this.playlistEls[this.currentSong].style.color =
-                'rgba(255, 165, 0, 0.5)';
+            this.playlistEls[this.currentSong].style.color = 'rgba(255, 165, 0, 0.5)';
             this.setPlayIcon(false);
             this.stopEq();
             this.audio.pause();
@@ -171,8 +166,7 @@ export default class MusicPlayer {
             this.setPlayIcon(false);
             this.stopEq();
             [...this.playlistEls].map((el) => (el.style.color = '#555'));
-            this.playlistEls[this.currentSong].style.color =
-                'rgba(255, 165, 0, 0.5)';
+            this.playlistEls[this.currentSong].style.color = 'rgba(255, 165, 0, 0.5)';
         } else if (this.playlistEls) {
             this.audio.currentTime = 0;
         }
@@ -198,8 +192,7 @@ export default class MusicPlayer {
             this.startEq();
             this.audio.play();
         } else {
-            this.playlistEls[this.currentSong].style.color =
-                'rgba(255, 165, 0, 0.5)';
+            this.playlistEls[this.currentSong].style.color = 'rgba(255, 165, 0, 0.5)';
         }
     }
 
@@ -223,8 +216,7 @@ export default class MusicPlayer {
             this.startEq();
             this.audio.play();
         } else {
-            this.playlistEls[this.currentSong].style.color =
-                'rgba(255, 165, 0, 0.5)';
+            this.playlistEls[this.currentSong].style.color = 'rgba(255, 165, 0, 0.5)';
         }
     }
 
@@ -237,9 +229,7 @@ export default class MusicPlayer {
         const { currentTime } = this.audio;
         const { duration } = this.audio;
         const progressPercent = (currentTime / duration) * 100;
-        this.progress.value = Number.isFinite(progressPercent)
-            ? progressPercent.toFixed(2)
-            : '0';
+        this.progress.value = Number.isFinite(progressPercent) ? progressPercent.toFixed(2) : '0';
 
         this.elapsedEl.textContent = this.showRemaining
             ? `-${this.formatTime(duration - currentTime)}`
@@ -270,8 +260,7 @@ export default class MusicPlayer {
         if (!this.playlistEls) {
             return;
         }
-        const scrubTime =
-            (e.offsetX / this.progress.offsetWidth) * this.audio.duration;
+        const scrubTime = (e.offsetX / this.progress.offsetWidth) * this.audio.duration;
         this.audio.currentTime = scrubTime;
         if (this.isPlaying) {
             this.audio.play();
@@ -355,12 +344,10 @@ export default class MusicPlayer {
                 <span class="track-name">${htmlEscape(fileName)}</span>
                 <button class="remove-track" title="Remove track">remove</button>
             `;
-            listItem
-                .querySelector('.remove-track')
-                .addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.removeTrack(i);
-                });
+            listItem.querySelector('.remove-track').addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.removeTrack(i);
+            });
             this.playList.append(listItem);
         }
         this.bindDragEvents();
@@ -459,15 +446,9 @@ export default class MusicPlayer {
 
         if (this.currentSong === this.draggedIndex) {
             this.currentSong = dropIndex;
-        } else if (
-            this.draggedIndex < this.currentSong &&
-            dropIndex >= this.currentSong
-        ) {
+        } else if (this.draggedIndex < this.currentSong && dropIndex >= this.currentSong) {
             this.currentSong -= 1;
-        } else if (
-            this.draggedIndex > this.currentSong &&
-            dropIndex <= this.currentSong
-        ) {
+        } else if (this.draggedIndex > this.currentSong && dropIndex <= this.currentSong) {
             this.currentSong += 1;
         }
 

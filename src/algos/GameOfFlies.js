@@ -43,13 +43,7 @@ export default class GameOfFlies extends AL {
                 particle.update();
 
                 this.ctx.beginPath();
-                this.ctx.arc(
-                    particle.x,
-                    particle.y,
-                    particle.radius,
-                    0,
-                    2 * Math.PI,
-                );
+                this.ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
                 this.ctx.fillStyle = particle.color;
                 this.ctx.fill();
             }

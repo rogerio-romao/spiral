@@ -54,8 +54,7 @@ export default class GenesisTypewriter extends AL {
             this.initializeProperties();
 
             this.setupDrawingStyles();
-            this.ctx.strokeStyle =
-                Math.random() < 0.25 ? 'white' : AL.randomColor();
+            this.ctx.strokeStyle = Math.random() < 0.25 ? 'white' : AL.randomColor();
 
             this.getTweens();
         }
@@ -79,8 +78,7 @@ export default class GenesisTypewriter extends AL {
                 this.font1,
                 {
                     duration: AL.random(12, 40),
-                    onUpdate: () =>
-                        (this.ctx.font = `${this.font1.size}px bold serif`),
+                    onUpdate: () => (this.ctx.font = `${this.font1.size}px bold serif`),
                     size: this.font2.size,
                 },
                 '<',

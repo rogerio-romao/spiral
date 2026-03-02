@@ -15,8 +15,8 @@ export default class EpicRays extends AL {
 
     initializeBaseProperties() {
         this.rotations = [
-            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29,
-            31, 32, 33, 34, 37, 38, 39, 41, 43,
+            1, 2, 3, 4, 7, 8, 11, 13, 14, 16, 17, 19, 21, 22, 23, 26, 28, 29, 31, 32, 33, 34, 37,
+            38, 39, 41, 43,
         ];
         this.rotate = AL.pickRandomElement(this.rotations);
 

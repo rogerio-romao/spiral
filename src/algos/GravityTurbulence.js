@@ -14,12 +14,7 @@ export default class GravityTurbulence extends AL {
 
     initializeProperties() {
         this.sun1 = AL.createParticle(150, 200, 1, Math.random() * Math.PI * 2);
-        this.sun2 = AL.createParticle(
-            this.w / 2,
-            this.h / 2,
-            2,
-            Math.random() * Math.PI * 2,
-        );
+        this.sun2 = AL.createParticle(this.w / 2, this.h / 2, 2, Math.random() * Math.PI * 2);
 
         this.sun1.radius = 40;
         this.sun2.radius = 30;
@@ -84,18 +79,11 @@ export default class GravityTurbulence extends AL {
             particle.update();
             this.drawPart(particle, 'white');
 
-            if (
-                particle.x > this.w ||
-                particle.x < 0 ||
-                particle.y > this.h ||
-                particle.y < 0
-            ) {
+            if (particle.x > this.w || particle.x < 0 || particle.y > this.h || particle.y < 0) {
                 particle.x = AL.mathUtils.randomRange(0, this.w);
                 particle.y = AL.mathUtils.randomRange(0, this.h);
                 particle.setSpeed(AL.mathUtils.randomRange(7, 8));
-                particle.setHeading(
-                    Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1),
-                );
+                particle.setHeading(Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1));
             }
         }
 

@@ -16,10 +16,9 @@ export default class Sandala extends AL {
 
     initializeBaseProperties() {
         this.letters = [
-            3201, 3202, 3203, 3204, 3206, 3207, 3208, 3209, 3212, 3214, 3215,
-            3218, 3219, 3221, 3222, 3223, 3226, 3227, 3228, 3231, 3232, 3234,
-            3236, 3238, 3244, 3248, 3249, 3250, 3254, 3255, 3260, 3261, 3263,
-            3270, 3294, 3298,
+            3201, 3202, 3203, 3204, 3206, 3207, 3208, 3209, 3212, 3214, 3215, 3218, 3219, 3221,
+            3222, 3223, 3226, 3227, 3228, 3231, 3232, 3234, 3236, 3238, 3244, 3248, 3249, 3250,
+            3254, 3255, 3260, 3261, 3263, 3270, 3294, 3298,
         ];
     }
 
@@ -44,9 +43,7 @@ export default class Sandala extends AL {
 
                 for (let col = 0; col <= this.cols; col++) {
                     this.ctx.strokeText(
-                        String.fromCodePoint(
-                            AL.pickRandomElement(this.letters),
-                        ),
+                        String.fromCodePoint(AL.pickRandomElement(this.letters)),
                         row * (this.w / this.cols),
                         col * (this.h / this.rows),
                     );

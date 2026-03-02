@@ -1,15 +1,6 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "plugins": [
-        "eslint",
-        "oxc",
-        "unicorn",
-        "import",
-        "jsdoc",
-        "node",
-        "promise",
-        "vitest"
-    ],
+    "plugins": ["eslint", "oxc", "unicorn", "import", "jsdoc", "node", "promise", "vitest"],
     "categories": {
         "correctness": "error",
         "suspicious": "error",
@@ -63,10 +54,7 @@
         "eslint/capitalized-comments": "off",
         "eslint/complexity": ["warn", 33],
         "eslint/func-style": ["error", "declaration"],
-        "eslint/sort-imports": [
-            "warn",
-            { "allowSeparatedGroups": true, "ignoreCase": true }
-        ],
+        "eslint/sort-imports": "off",
         "oxc/no-optional-chaining": "off",
         "oxc/no-async-await": "off",
         "oxc/no-rest-spread-properties": "off",

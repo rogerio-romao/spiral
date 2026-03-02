@@ -63,8 +63,7 @@ export default class PietriDish extends AL {
         if (this.t % (this.speed * 150) === 0) {
             this.rotate = AL.random(1, 90);
 
-            this.ctx.fillStyle =
-                Math.random() < 0.2 ? 'black' : AL.randomColor();
+            this.ctx.fillStyle = Math.random() < 0.2 ? 'black' : AL.randomColor();
 
             this.ctx.lineWidth = AL.random(2, 18);
             this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);

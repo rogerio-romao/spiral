@@ -52,13 +52,7 @@ export default class SpringOrbits extends AL {
             this.weight.update();
 
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.springPoint.x,
-                this.springPoint.y,
-                8,
-                0,
-                2 * Math.PI,
-            );
+            this.ctx.arc(this.springPoint.x, this.springPoint.y, 8, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.beginPath();
             this.ctx.moveTo(this.weight.x, this.weight.y);

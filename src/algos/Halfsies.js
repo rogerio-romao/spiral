@@ -29,8 +29,7 @@ export default class Halfsies extends AL {
         this.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
         this.ctx.strokeStyle = this.t % 2 ? 'black' : 'white';
         this.counter = !this.counter;
-        this.ctx.globalCompositeOperation =
-            this.t % 2 ? 'source-over' : 'difference';
+        this.ctx.globalCompositeOperation = this.t % 2 ? 'source-over' : 'difference';
 
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();

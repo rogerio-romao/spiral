@@ -46,24 +46,12 @@ export default class BlacknWhite extends AL {
             }
 
             if (this.stagger === 2) {
-                this.ctx.arcTo(
-                    this.height,
-                    this.length,
-                    0,
-                    this.h / 2,
-                    this.w / 2,
-                );
+                this.ctx.arcTo(this.height, this.length, 0, this.h / 2, this.w / 2);
                 this.ctx.stroke();
             }
 
             if (this.stagger === 3) {
-                this.ctx.arcTo(
-                    this.w / 2,
-                    this.h / 2,
-                    AL.random(1, 10),
-                    this.height,
-                    this.length,
-                );
+                this.ctx.arcTo(this.w / 2, this.h / 2, AL.random(1, 10), this.height, this.length);
                 this.ctx.stroke();
             }
 
@@ -73,9 +61,7 @@ export default class BlacknWhite extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes,
-            );
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         this.requestFrame();

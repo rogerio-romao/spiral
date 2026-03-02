@@ -15,9 +15,9 @@ export default class VanishingRays extends AL {
 
     initializeBaseProperties() {
         this.letters = [
-            1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829,
-            1830, 1831, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872,
-            1873, 1877, 1879, 1883, 1884, 1888, 1890, 1894, 1899,
+            1801, 1802, 1803, 1807, 1814, 1816, 1821, 1826, 1827, 1828, 1829, 1830, 1831, 1833,
+            1834, 1835, 1836, 1837, 1838, 1839, 1869, 1872, 1873, 1877, 1879, 1883, 1884, 1888,
+            1890, 1894, 1899,
         ];
         this.rotations = [20, 24, 30, 36, 40, 45, 60, 72, 80];
     }
@@ -67,9 +67,7 @@ export default class VanishingRays extends AL {
         }
 
         if (this.t % (this.speed * 720) === 0) {
-            this.letter = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
+            this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         }
 
         this.requestFrame();

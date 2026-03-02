@@ -36,13 +36,7 @@ export default class Nazca extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(
-                this.w / 2,
-                this.h / 2,
-                this.radius,
-                0,
-                Math.random() * Math.PI,
-            );
+            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, Math.random() * Math.PI);
             this.ctx.fill();
             this.ctx.stroke();
             this.radius += this.increment;
@@ -55,9 +49,7 @@ export default class Nazca extends AL {
         if (this.radius > Math.max(this.w, this.h)) {
             this.cycles += 1;
             if (this.cycles % 10 === 0) {
-                this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                    this.modes,
-                );
+                this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
             }
 
             this.initializeProperties();

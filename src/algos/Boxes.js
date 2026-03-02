@@ -37,12 +37,7 @@ export default class Boxes extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.fillRect(
-                    i * this.width,
-                    i * this.height,
-                    this.width / 2,
-                    this.height / 2,
-                );
+                this.ctx.fillRect(i * this.width, i * this.height, this.width / 2, this.height / 2);
                 this.ctx.strokeRect(
                     i * this.width,
                     i * this.height,

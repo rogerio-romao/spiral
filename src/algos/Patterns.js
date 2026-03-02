@@ -31,13 +31,7 @@ export default class Patterns extends AL {
             for (let i = 0; i <= this.rows; i++) {
                 for (let j = 0; j <= this.cols; j++) {
                     this.ctx.beginPath();
-                    this.ctx.arc(
-                        100 * j - 50,
-                        100 * i - 50,
-                        this.radius,
-                        0,
-                        2 * Math.PI,
-                    );
+                    this.ctx.arc(100 * j - 50, 100 * i - 50, this.radius, 0, 2 * Math.PI);
                     this.ctx.stroke();
                     this.ctx.fill();
                 }
@@ -53,13 +47,7 @@ export default class Patterns extends AL {
             this.ctx.strokeStyle = 'black';
             this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.6);
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.w / 2,
-                this.h / 2,
-                this.radius * 3,
-                0,
-                2 * Math.PI,
-            );
+            this.ctx.arc(this.w / 2, this.h / 2, this.radius * 3, 0, 2 * Math.PI);
             this.ctx.stroke();
             this.ctx.fill();
             this.ctx.globalCompositeOperation = 'overlay';

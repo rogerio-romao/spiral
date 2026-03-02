@@ -17,12 +17,7 @@ export default class Quadrants extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor(
-            0,
-            255,
-            0.3,
-            0.3,
-        );
+        this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor(0, 255, 0.3, 0.3);
     }
 
     draw() {

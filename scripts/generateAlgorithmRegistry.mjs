@@ -1,6 +1,6 @@
-import { fileURLToPath } from 'node:url';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,30 +35,23 @@ async function run() {
     const algoFiles = entries
         .filter(
             (entry) =>
-                entry.isFile() &&
-                entry.name.endsWith('.js') &&
-                !entry.name.startsWith('Template'),
+                entry.isFile() && entry.name.endsWith('.js') && !entry.name.startsWith('Template'),
         )
         .map((entry) => entry.name)
         .toSorted((a, b) => a.localeCompare(b));
     const templateFiles = entries
         .filter(
             (entry) =>
-                entry.isFile() &&
-                entry.name.endsWith('.js') &&
-                entry.name.startsWith('Template'),
+                entry.isFile() && entry.name.endsWith('.js') && entry.name.startsWith('Template'),
         )
         .map((entry) => entry.name)
         .toSorted((a, b) => a.localeCompare(b));
 
     if (algoFiles.length === 0 && templateFiles.length === 0) {
-        throw new Error(
-            `No .js files found in ${path.relative(projectRoot, algosDir)}.`,
-        );
+        throw new Error(`No .js files found in ${path.relative(projectRoot, algosDir)}.`);
     }
 
-    const { importLines: algoImports, arrayLines: algoArray } =
-        buildFileContents(algoFiles);
+    const { importLines: algoImports, arrayLines: algoArray } = buildFileContents(algoFiles);
     const { importLines: templateImports, arrayLines: templateArray } =
         buildFileContents(templateFiles);
 

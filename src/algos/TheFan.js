@@ -39,14 +39,7 @@ export default class TheFan extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.moveTo(this.ox, this.oy);
-            this.ctx.bezierCurveTo(
-                this.x1,
-                this.y1,
-                this.x2,
-                this.y2,
-                this.dx,
-                this.dy,
-            );
+            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
 
             this.ox += 1;
             this.dy += 1;

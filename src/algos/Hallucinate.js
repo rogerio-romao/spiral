@@ -27,12 +27,7 @@ export default class Hallucinate extends AL {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
                 this.ctx.fillStyle = this.colors[i];
-                this.ctx.fillRect(
-                    -this.w,
-                    i * this.height,
-                    3 * this.w,
-                    this.height,
-                );
+                this.ctx.fillRect(-this.w, i * this.height, 3 * this.w, this.height);
             }
         }
 
