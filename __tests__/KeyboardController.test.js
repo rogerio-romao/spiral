@@ -22,7 +22,13 @@ function makeController({ isDev = false } = {}) {
     const devModeController = { toggle: vi.fn() };
     const spiral = { toggleWaveform: vi.fn() };
 
-    controller = new KeyboardController({ devModeController, hud, musicPlayer, spiral, transition });
+    controller = new KeyboardController({
+        devModeController,
+        hud,
+        musicPlayer,
+        spiral,
+        transition,
+    });
     controller.bind();
 
     return { controller, devModeController, hud, musicPlayer, spiral, transition };
