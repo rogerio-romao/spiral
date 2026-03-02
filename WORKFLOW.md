@@ -258,6 +258,70 @@ For this project, the most common types are `feat`, `fix`, and `docs`.
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## Dependabot Updates
+
+Dependabot runs daily and opens PRs for `devDependencies` version bumps.
+These follow a separate, lightweight review process — not the full 7-phase
+workflow. No issue, branch, or CHANGELOG entry is needed.
+
+### Tier 1: Patch and Minor Updates
+
+1. **CI check** — Confirm the Dependabot PR shows all CI checks passing on
+   GitHub.
+2. **Diff review** — Skim the PR diff and confirm it only changes
+   `package.json` and `pnpm-lock.yaml`. If any source file was modified, treat
+   it as Tier 2.
+3. **Install locally** — Pull the updated lockfile and install:
+    ```bash
+    git fetch origin
+    git checkout spiral2 && git pull
+    pnpm install
+    ```
+4. **Run tests** — CI runs on `ubuntu-latest`; local macOS run can catch
+   OS-specific differences:
+    ```bash
+    pnpm test
+    ```
+5. **Smoke test** — Launch the app and verify canvas and audio work:
+    ```bash
+    pnpm start
+    ```
+    Load a music file, confirm a visualization renders and audio plays.
+6. **Merge** — If all checks pass, merge via the GitHub UI. No branch, no
+   changelog entry needed.
+7. **If something breaks** — Open a standard task issue and follow the full
+   7-phase workflow to fix it before merging the Dependabot PR.
+
+### Tier 2: Major Updates
+
+Do everything in Tier 1, plus:
+
+1. **Read the release notes** — Check the package's CHANGELOG or GitHub
+   releases for breaking changes before installing.
+2. **`electron` major bumps** — Skim the Electron release notes for any
+   removed or changed renderer/main process APIs. Grep the codebase for
+   affected APIs before running `pnpm install`:
+    ```bash
+    grep -r "<affected-api>" src/ main.js preload.js renderer.js
+    ```
+3. **`vitest` major bumps** — Check if the config shape changed
+   (`vitest.config.js`) and whether any test globals or mocking APIs were
+   altered.
+4. **Breaking changes found** — Follow the full 7-phase workflow (issue →
+   branch → fix → PR) before or alongside merging the Dependabot PR.
+5. **No breaking changes** — Proceed with the same Tier 1 checklist and merge
+   via the GitHub UI.
+
+### Batch Merging
+
+When multiple Dependabot PRs are open, merge them **one at a time**:
+
+- Merge one PR, then re-run `pnpm install` and `pnpm test` locally
+- Confirm clean before merging the next
+- This isolates which update caused a breakage if one occurs
+
+---
+
 ## Usage
 
 When you request a new task, say something like:
