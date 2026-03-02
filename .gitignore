@@ -5,3 +5,4 @@ CHANGELOG.md
 AGENTS.md
 .vscode/
 coverage/
+__tests__/browser/__screenshots__/
