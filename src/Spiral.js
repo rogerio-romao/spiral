@@ -195,6 +195,7 @@ export default class Spiral {
     /**
      * Debounce algorithm restart after resize or DPR change.
      * Ensures only one restart is pending at a time.
+     * @param {number} delay - The debounce delay in milliseconds.
      */
     _debounceAlgorithmRestart(delay = 250) {
         if (this._debounceTimer) {

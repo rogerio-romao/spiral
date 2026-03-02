@@ -13,10 +13,10 @@
 export default class FrequencyAnalyser {
     /**
      * @param {HTMLAudioElement} audioElement — the <audio> element to analyse.
-     * @param {object}  [options]
-     * @param {number}  [options.bandCount=5]  — number of frequency bands.
-     * @param {number}  [options.fftSize=2048] — FFT window size (power of 2).
-     * @param {number}  [options.smoothing=0.8] — smoothingTimeConstant (0–1).
+     * @param {object}  [options] — configuration options for the analyser.
+     * @param {number}  [options.bandCount]  — number of frequency bands.
+     * @param {number}  [options.fftSize] — FFT window size (power of 2).
+     * @param {number}  [options.smoothing] — smoothingTimeConstant (0–1).
      */
     constructor(
         audioElement,
@@ -44,7 +44,10 @@ export default class FrequencyAnalyser {
         this._timeDomainData = new Uint8Array(this._analyser.fftSize);
     }
 
-    /** Number of bands currently configured. */
+    /**
+     * Number of bands currently configured.
+     * @returns {number} The current band count.
+     */
     get bandCount() {
         return this._bandCount;
     }
@@ -135,12 +138,18 @@ export default class FrequencyAnalyser {
         return [...this._timeDomainData].map((value) => value / 255);
     }
 
-    /** The underlying AnalyserNode, for advanced configuration. */
+    /**
+     * The underlying AnalyserNode, for advanced configuration.
+     * @returns {AnalyserNode} The AnalyserNode instance.
+     */
     get analyserNode() {
         return this._analyser;
     }
 
-    /** The underlying AudioContext, for advanced use. */
+    /**
+     * The underlying AudioContext, for advanced use.
+     * @returns {AudioContext} The AudioContext instance.
+     */
     get audioContext() {
         return this._ctx;
     }

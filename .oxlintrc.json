@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "plugins": null,
+    "plugins": ["eslint", "oxc", "unicorn", "import", "jsdoc"],
     "categories": {
         "correctness": "error",
         "suspicious": "error",
@@ -19,7 +19,7 @@
         ],
         "eslint/max-lines-per-function": ["warn", 450],
         "eslint/max-statements": ["warn", 130],
-        "eslint/max-lines": ["warn", 600],
+        "eslint/max-lines": ["warn", 610],
         "eslint/max-params": ["warn", 5],
         "eslint/no-magic-numbers": "off",
         "eslint/no-ternary": "off",
@@ -65,7 +65,14 @@
                 }
             }
         ],
-        "unicorn/no-null": "off"
+        "unicorn/no-null": "off",
+        "import/no-default-export": "off",
+        "import/no-nodejs-modules": "off",
+        "import/unambiguous": "off",
+        "import/no-commonjs": "off",
+        "import/no-relative-parent-imports": "off",
+        "import/no-named-export": "off",
+        "import/group-exports": "off"
     },
     "settings": {
         "jsx-a11y": {

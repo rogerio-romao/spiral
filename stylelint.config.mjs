@@ -1,5 +1,6 @@
 // oxlint-disable sort-keys
 /** @type {import("stylelint").Config} */
+// oxlint-disable-next-line import/no-anonymous-default-export
 export default {
     extends: ['stylelint-config-standard'],
     reportDescriptionlessDisables: true,

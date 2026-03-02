@@ -4,7 +4,7 @@
  */
 export default class HudController {
     /**
-     * @param {Object} options
+     * @param {Object} options - Configuration object for HUD elements
      * @param {HTMLElement} options.messageElement     - The #msg element
      * @param {HTMLElement} options.algosDisplayElement - The #algos element
      * @param {HTMLElement} options.helpElement         - The #help element
@@ -20,12 +20,18 @@ export default class HudController {
         this._silent = false;
     }
 
-    /** Whether silent mode is active (read-only). */
+    /**
+     * Whether silent mode is active (read-only).
+     * @returns {boolean} The current silent mode state.
+     */
     get silent() {
         return this._silent;
     }
 
-    /** Show a temporary message for 7500 ms. Clears any prior message. */
+    /**
+     * Show a temporary message for 7500 ms. Clears any prior message.
+     * @param {string} message - The message to display.
+     */
     displayMessage(message) {
         clearTimeout(this._messageTimer);
         this._messageElement.textContent = message.toUpperCase();
@@ -36,7 +42,10 @@ export default class HudController {
         }, 7500);
     }
 
-    /** Show algorithm name for 5000 ms. Respects silent mode. */
+    /**
+     * Show algorithm name for 5000 ms. Respects silent mode.
+     * @param {string} name - The algorithm name to display.
+     */
     displayAlgorithmName(name) {
         if (this._silent) {
             return;

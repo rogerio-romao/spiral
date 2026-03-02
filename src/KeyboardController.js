@@ -4,12 +4,12 @@
  */
 export default class KeyboardController {
     /**
-     * @param {Object} deps
-     * @param {HUDController}     deps.hud
-     * @param {TransitionManager} deps.transition
-     * @param {MusicPlayer}       deps.musicPlayer
-     * @param {DevModeController} deps.devModeController
-     * @param {Spiral}            deps.spiral
+    * @param {Object} deps Dependencies for keyboard shortcut handling.
+     * @param {HUDController}     deps.hud - The HUD controller for displaying messages and managing UI visibility.
+     * @param {TransitionManager} deps.transition - The transition manager for handling algorithm changes and auto-change settings.
+     * @param {MusicPlayer}       deps.musicPlayer - The music player for controlling audio playback visibility.
+     * @param {DevModeController} deps.devModeController - The dev mode controller for enabling developer features.
+     * @param {Spiral}            deps.spiral - The spiral instance for controlling waveform display.
      */
     constructor({ hud, transition, musicPlayer, devModeController, spiral }) {
         this._hud = hud;
@@ -33,7 +33,10 @@ export default class KeyboardController {
         globalThis.removeEventListener('keyup', this._handler);
     }
 
-    /** Route key events to the appropriate module. */
+    /**
+     * Route key events to the appropriate module.
+     * @param {KeyboardEvent} e - The keyboard event.
+     */
     _handleKeyup(e) {
         switch (e.code) {
             case 'Space': {

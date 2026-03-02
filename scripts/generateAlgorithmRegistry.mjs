@@ -83,14 +83,16 @@ async function run() {
     await fs.writeFile(outputFile, `${contents}\n`, 'utf8');
 }
 
-export { buildFileContents, toIdentifier };
-
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     try {
         await run();
     } catch (error) {
         // oxlint-disable-next-line no-console
         console.error('Error generating algorithm registry:', error);
-        throw new Error('Algorithm registry generation failed.', { cause: error });
+        throw new Error('Algorithm registry generation failed.', {
+            cause: error,
+        });
     }
 }
+
+export { buildFileContents, toIdentifier };

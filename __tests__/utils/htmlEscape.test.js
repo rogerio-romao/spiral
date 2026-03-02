@@ -1,4 +1,4 @@
-import { htmlEscape } from '../../src/utils/htmlEscape.js';
+import htmlEscape from '../../src/utils/htmlEscape.js';
 
 describe('htmlEscape', () => {
     it('escapes ampersands', () => {
@@ -17,7 +17,7 @@ describe('htmlEscape', () => {
         expect(htmlEscape('"hello"')).toBe('&quot;hello&quot;');
     });
 
-    it("escapes single quotes", () => {
+    it('escapes single quotes', () => {
         expect(htmlEscape("it's")).toBe('it&#39;s');
     });
 
