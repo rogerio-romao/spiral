@@ -6,12 +6,12 @@ import { random, randomColor } from './utils/randomUtils.js';
 
 export default class TransitionManager {
     /**
-     * @param {Object} deps
-     * @param {HTMLCanvasElement}        deps.canvas
-     * @param {CanvasRenderingContext2D} deps.ctx
-     * @param {AlgorithmLoader}          deps.algorithmLoader
-     * @param {AlgorithmChooser}         deps.algorithmChooser
-     * @param {HUDController}            deps.hud
+     * @param {Object} deps - Dependencies object containing required components
+     * @param {HTMLCanvasElement}        deps.canvas - The HTML canvas element
+     * @param {CanvasRenderingContext2D} deps.ctx - The 2D rendering context
+     * @param {AlgorithmLoader}          deps.algorithmLoader - Algorithm loader instance
+     * @param {AlgorithmChooser}         deps.algorithmChooser - Algorithm chooser instance
+     * @param {HUDController}            deps.hud - HUD controller instance
      * @param {Function}                 deps.getDimensions  - Returns { w, h }
      */
     constructor({
@@ -42,12 +42,18 @@ export default class TransitionManager {
         this._devModeAlternator = 0;
     }
 
-    /** The currently running algorithm instance (read-only). */
+    /**
+     * The currently running algorithm instance (read-only).
+     * @returns {Object|null} The current algorithm instance or null if none is running.
+     */
     get currentAlgorithm() {
         return this._currentAlgorithm;
     }
 
-    /** Auto-change interval in seconds. */
+    /**
+     * Auto-change interval in seconds.
+     * @returns {number} The auto-change interval in seconds.
+     */
     get autoChange() {
         return this._autoChange;
     }
@@ -56,7 +62,10 @@ export default class TransitionManager {
         this._autoChange = value;
     }
 
-    /** Manual mode flag. */
+    /**
+     * Manual mode flag.
+     * @returns {boolean} Whether manual mode is enabled.
+     */
     get manual() {
         return this._manual;
     }
@@ -65,7 +74,10 @@ export default class TransitionManager {
         this._manual = value;
     }
 
-    /** Whether a transition is currently in progress. */
+    /**
+     * Whether a transition is currently in progress.
+     * @returns {boolean} True if a transition is in progress, false otherwise.
+     */
     get isTransitioning() {
         return this._isTransitioning;
     }
@@ -219,13 +231,20 @@ export default class TransitionManager {
         }
     }
 
-    /** Enable or disable dev mode. */
+    /**
+     * Enable or disable dev mode.
+     * @param {boolean} active - Whether to enable dev mode.
+     */
     setDevModeActive(active) {
         this._devModeActive = active;
         this._devModeAlternator = 0;
     }
 
-    /** Set the algorithms for dev mode (null = random). */
+    /**
+     * Set the algorithms for dev mode (null = random).
+     * @param {Function|null} algoA - The first algorithm class or null for random.
+     * @param {Function|null} algoB - The second algorithm class or null for random.
+     */
     setDevModeAlgos(algoA, algoB) {
         this._devModeAlgoA = algoA;
         this._devModeAlgoB = algoB;

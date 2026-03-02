@@ -18,10 +18,10 @@ export function random(min, max) {
 
 /**
  * Generate a random RGBA or P3 color string.
- * @param {number} [minC=0] - Minimum color value (0-255).
- * @param {number} [maxC=255] - Maximum color value (0-255).
- * @param {number} [minA=0.1] - Minimum alpha value (0-1).
- * @param {number} [maxA=1] - Maximum alpha value (0-1).
+ * @param {number} [minC] - Minimum color value (0-255).
+ * @param {number} [maxC] - Maximum color value (0-255).
+ * @param {number} [minA] - Minimum alpha value (0-1).
+ * @param {number} [maxA] - Maximum alpha value (0-1).
  * @returns {string} RGBA or P3 color string.
  */
 export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
@@ -45,10 +45,10 @@ export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
  * Generate an array of random RGBA colors.
  * Delegates to randomColor, accepts same parameters.
  * @param {number} count - Number of colors to generate.
- * @param {number} [minC=0] - Minimum color value (0-255).
- * @param {number} [maxC=255] - Maximum color value (0-255).
- * @param {number} [minA=0.5] - Minimum alpha value (0-1).
- * @param {number} [maxA=1] - Maximum alpha value (0-1).
+ * @param {number} [minC] - Minimum color value (0-255).
+ * @param {number} [maxC] - Maximum color value (0-255).
+ * @param {number} [minA] - Minimum alpha value (0-1).
+ * @param {number} [maxA] - Maximum alpha value (0-1).
  * @returns {string[]} Array of RGBA color strings.
  */
 export function generateRGBAPalette(
@@ -68,8 +68,8 @@ export function generateRGBAPalette(
 /**
  * Generate an array of HSLA color strings, varying one property equally across the range with wrap-around.
  * @param {number} count - Number of colors to generate.
- * @param {'hue'|'saturation'|'luminosity'|'alpha'|'random'} [mode='hue'] - Which property to vary (defaults to 'hue').
- * @param {number|null} [degrees=null] - Optional step in degrees for hue mode (overrides automatic calculation).
+ * @param {'hue'|'saturation'|'luminosity'|'alpha'|'random'} [mode] - Which property to vary (defaults to 'hue').
+ * @param {number|null} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
  * @returns {string[]} Array of HSLA color strings.
  */
 export function generateHSLAPalette(count, mode = 'hue', degrees = null) {

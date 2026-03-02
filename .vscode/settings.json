@@ -2,5 +2,10 @@
     "editor.fontSize": 15,
     "editor.formatOnSaveMode": "file",
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.fontFamily": "'JetBrainsMono', Menlo, Monaco, 'Courier New', monospace",
+    "typescript.preferences.organizeImports": {},
+    "editor.codeActionsOnSave": {
+        "source.sortImports": "never"
+    }
 }

@@ -1,6 +1,6 @@
-import { htmlEscape } from '../../src/utils/htmlEscape.js';
+import htmlEscape from '../../src/utils/htmlEscape.js';
 
-describe('htmlEscape', () => {
+describe('htmlEscape function', () => {
     it('escapes ampersands', () => {
         expect(htmlEscape('a&b')).toBe('a&amp;b');
     });
@@ -17,7 +17,7 @@ describe('htmlEscape', () => {
         expect(htmlEscape('"hello"')).toBe('&quot;hello&quot;');
     });
 
-    it("escapes single quotes", () => {
+    it('escapes single quotes', () => {
         expect(htmlEscape("it's")).toBe('it&#39;s');
     });
 

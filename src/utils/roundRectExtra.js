@@ -2,6 +2,13 @@
  * roundRectExtra polyfill for CanvasRenderingContext2D.
  * Import this module for its side effect — it patches the prototype
  * so roundRectExtra is available on every canvas context.
+ * @param {number} x - The x-coordinate of the rectangle.
+ * @param {number} y - The y-coordinate of the rectangle.
+ * @param {number} width - The width of the rectangle.
+ * @param {number} height - The height of the rectangle.
+ * @param {number|object} radius - The radius or corner radii object.
+ * @param {boolean} fill - Whether to fill the rectangle.
+ * @param {boolean} [stroke] - Whether to stroke the rectangle.
  */
 // oxlint-disable-next-line max-params
 CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(

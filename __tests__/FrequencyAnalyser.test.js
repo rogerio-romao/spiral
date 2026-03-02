@@ -7,9 +7,9 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
     const timeDomainData = new Uint8Array(fftSize);
 
     const mockAnalyser = {
+        connect: vi.fn(),
         fftSize,
         frequencyBinCount: binCount,
-        smoothingTimeConstant: 0.8,
         getByteFrequencyData: vi.fn((arr) => {
             for (let i = 0; i < arr.length; i++) {
                 arr[i] = dataArray[i];
@@ -20,7 +20,7 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
                 arr[i] = timeDomainData[i];
             }
         }),
-        connect: vi.fn(),
+        smoothingTimeConstant: 0.8,
     };
 
     const mockSource = { connect: vi.fn() };
@@ -29,25 +29,28 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
         createAnalyser: () => mockAnalyser,
         createMediaElementSource: () => mockSource,
         destination: {},
-        state: 'running',
         resume: vi.fn(),
+        state: 'running',
     };
 
     // eslint-disable-next-line func-style
-    globalThis.AudioContext = vi.fn(function () { return mockCtx; });
+    // oxlint-disable-next-line jest/prefer-spy-on
+    globalThis.AudioContext = vi.fn(function audioContext() {
+        return mockCtx;
+    });
 
-    return { mockAnalyser, mockCtx, dataArray, timeDomainData };
+    return { dataArray, mockAnalyser, mockCtx, timeDomainData };
 }
 
-describe('FrequencyAnalyser', () => {
-    let analyser;
-    let dataArray;
-    let timeDomainData;
+describe('frequencyAnalyser', () => {
+    let analyser = null;
+    let dataArray = null;
+    let timeDomainData = null;
 
     beforeEach(() => {
         const mocks = createMockAudioContext();
-        dataArray = mocks.dataArray;
-        timeDomainData = mocks.timeDomainData;
+        ({ dataArray } = mocks);
+        ({ timeDomainData } = mocks);
         analyser = new FrequencyAnalyser({}, { bandCount: 5 });
     });
 
@@ -99,9 +102,9 @@ describe('FrequencyAnalyser', () => {
         it('returns normalized values between 0 and 1', () => {
             timeDomainData.fill(128);
             const waveform = analyser.getWaveform();
-            for (const v of waveform) {
-                expect(v).toBeGreaterThanOrEqual(0);
-                expect(v).toBeLessThanOrEqual(1);
+            for (const value of waveform) {
+                expect(value).toBeGreaterThanOrEqual(0);
+                expect(value).toBeLessThanOrEqual(1);
             }
         });
 
@@ -140,7 +143,7 @@ describe('FrequencyAnalyser', () => {
         it('calls AudioContext.resume when state is suspended', () => {
             analyser.audioContext.state = 'suspended';
             analyser.resume();
-            expect(analyser.audioContext.resume).toHaveBeenCalledTimes(1);
+            expect(analyser.audioContext.resume).toHaveBeenCalledOnce();
         });
 
         it('does not call AudioContext.resume when state is running', () => {

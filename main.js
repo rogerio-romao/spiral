@@ -1,7 +1,11 @@
+// oxlint-disable promise/always-return
+// oxlint-disable promise/prefer-await-to-then
+// oxlint-disable promise/catch-or-return
+// oxlint-disable unicorn/prefer-top-level-await
 // oxlint-disable sort-keys
 import { app, BrowserWindow, Menu, screen } from 'electron';
-import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 if (process.env.NODE_ENV === 'development') {
     const menuTemplate = [
@@ -42,7 +46,7 @@ function createWindow(width, height) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-// oxlint-disable-next-line unicorn/prefer-top-level-await
+//
 app.whenReady().then(() => {
     // get screen size
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;

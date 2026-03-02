@@ -1,4 +1,6 @@
-vi.mock('../src/generated/algorithmRegistry.js', () => ({
+import AlgorithmChooser from '../src/AlgorithmChooser.js';
+
+vi.mock(import('../src/generated/algorithmRegistry.js'), () => ({
     algorithms: [
         class AlgoA {},
         class AlgoB {},
@@ -8,10 +10,8 @@ vi.mock('../src/generated/algorithmRegistry.js', () => ({
     ],
 }));
 
-import AlgorithmChooser from '../src/AlgorithmChooser.js';
-
-describe('AlgorithmChooser', () => {
-    let chooser;
+describe('algorithmChooser', () => {
+    let chooser = null;
 
     beforeEach(() => {
         chooser = new AlgorithmChooser();
@@ -39,7 +39,7 @@ describe('AlgorithmChooser', () => {
 
     it('evicts oldest history entry when capacity is exceeded', () => {
         chooser.lastAlgosCapacity = 3;
-        const firstPick = chooser.algorithms[0];
+        const [firstPick] = chooser.algorithms;
 
         // Fill the history to capacity with known picks by controlling randomness
         chooser.lastAlgos = new Set([
@@ -50,12 +50,13 @@ describe('AlgorithmChooser', () => {
 
         // Manually simulate adding a 4th to trigger eviction
         chooser.lastAlgos.add(chooser.algorithms[3]);
+        // oxlint-disable-next-line jest/no-conditional-in-test
         if (chooser.lastAlgos.size > chooser.lastAlgosCapacity) {
             chooser.lastAlgos.delete(chooser.lastAlgos.values().next().value);
         }
 
         // The oldest entry (firstPick) should have been evicted
-        expect(chooser.lastAlgos.has(firstPick)).toBe(false);
+        expect(chooser.lastAlgos.has(firstPick)).toBeFalsy();
         expect(chooser.lastAlgos.size).toBe(3);
     });
 

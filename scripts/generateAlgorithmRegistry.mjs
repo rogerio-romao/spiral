@@ -1,6 +1,6 @@
+import { fileURLToPath } from 'node:url';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -83,14 +83,16 @@ async function run() {
     await fs.writeFile(outputFile, `${contents}\n`, 'utf8');
 }
 
-export { buildFileContents, toIdentifier };
-
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     try {
         await run();
     } catch (error) {
         // oxlint-disable-next-line no-console
         console.error('Error generating algorithm registry:', error);
-        throw new Error('Algorithm registry generation failed.', { cause: error });
+        throw new Error('Algorithm registry generation failed.', {
+            cause: error,
+        });
     }
 }
+
+export { buildFileContents, toIdentifier };

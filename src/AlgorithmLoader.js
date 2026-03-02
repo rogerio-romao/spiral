@@ -1,12 +1,12 @@
-import Particle from './utils/Particle.js';
-import Vector from './utils/Vector.js';
-import mathUtils from './utils/math.js';
 import {
     generateHSLAPalette,
     generateRGBAPalette,
     random,
     randomColor,
 } from './utils/randomUtils.js';
+import mathUtils from './utils/math.js';
+import Particle from './utils/Particle.js';
+import Vector from './utils/Vector.js';
 
 export default class AlgorithmLoader {
     static random(min, max) {

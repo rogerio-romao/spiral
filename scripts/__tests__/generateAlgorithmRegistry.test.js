@@ -1,7 +1,10 @@
-import { buildFileContents, toIdentifier } from '../generateAlgorithmRegistry.mjs';
+import {
+    buildFileContents,
+    toIdentifier,
+} from '../generateAlgorithmRegistry.mjs';
 
 describe('generateAlgorithmRegistry helpers', () => {
-    describe('toIdentifier', () => {
+    describe('toIdentifier function', () => {
         it('strips the .js extension', () => {
             expect(toIdentifier('MyAlgorithm.js')).toBe('MyAlgorithm');
         });
@@ -19,22 +22,28 @@ describe('generateAlgorithmRegistry helpers', () => {
         });
 
         it('throws for names with hyphens', () => {
-            expect(() => toIdentifier('bad-name.js')).toThrow();
+            expect(() => toIdentifier('bad-name.js')).toThrow(
+                'Algorithm file "bad-name.js" does not map to a valid JavaScript identifier',
+            );
         });
 
         it('throws for names starting with a digit', () => {
-            expect(() => toIdentifier('1Algorithm.js')).toThrow();
+            expect(() => toIdentifier('1Algorithm.js')).toThrow(
+                'Algorithm file "1Algorithm.js" does not map to a valid JavaScript identifier',
+            );
         });
 
         it('throws for names with spaces', () => {
-            expect(() => toIdentifier('My Algo.js')).toThrow();
+            expect(() => toIdentifier('My Algo.js')).toThrow(
+                'Algorithm file "My Algo.js" does not map to a valid JavaScript identifier',
+            );
         });
     });
 
-    describe('buildFileContents', () => {
+    describe('buildFileContents function', () => {
         it('generates import lines for each file', () => {
             const { importLines } = buildFileContents(['Algo1.js', 'Algo2.js']);
-            expect(importLines).toEqual([
+            expect(importLines).toStrictEqual([
                 "import Algo1 from '../algos/Algo1.js';",
                 "import Algo2 from '../algos/Algo2.js';",
             ]);
@@ -42,17 +51,19 @@ describe('generateAlgorithmRegistry helpers', () => {
 
         it('generates array lines for each file', () => {
             const { arrayLines } = buildFileContents(['Algo1.js', 'Algo2.js']);
-            expect(arrayLines).toEqual(['    Algo1,', '    Algo2,']);
+            expect(arrayLines).toStrictEqual(['    Algo1,', '    Algo2,']);
         });
 
         it('returns empty arrays for empty input', () => {
             const { arrayLines, importLines } = buildFileContents([]);
-            expect(importLines).toEqual([]);
-            expect(arrayLines).toEqual([]);
+            expect(importLines).toStrictEqual([]);
+            expect(arrayLines).toStrictEqual([]);
         });
 
         it('throws when a filename is not a valid identifier', () => {
-            expect(() => buildFileContents(['bad-name.js'])).toThrow();
+            expect(() => buildFileContents(['bad-name.js'])).toThrow(
+                'Algorithm file "bad-name.js" does not map to a valid JavaScript identifier',
+            );
         });
     });
 });

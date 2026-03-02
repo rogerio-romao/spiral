@@ -5,40 +5,32 @@ import AlgorithmLoader from '../src/AlgorithmLoader.js';
 function createMockCtx() {
     const canvas = document.createElement('canvas');
     const ctx = {
+        beginPath: vi.fn(),
         canvas,
-        save: vi.fn(),
-        restore: vi.fn(),
-        resetTransform: vi.fn(),
         clearRect: vi.fn(),
         fillRect: vi.fn(),
-        beginPath: vi.fn(),
-        translate: vi.fn(),
+        resetTransform: vi.fn(),
+        restore: vi.fn(),
         rotate: vi.fn(),
+        save: vi.fn(),
+        translate: vi.fn(),
     };
     return { canvas, ctx };
 }
 
 class WorkingAlgo extends AlgorithmLoader {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
-    }
-
     draw() {
         // no-op
     }
 }
 
 class BrokenAlgo extends AlgorithmLoader {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
-    }
-
     draw() {
         throw new Error('intentional draw error');
     }
 }
 
-describe('AlgorithmLoader', () => {
+describe('algorithmLoader', () => {
     describe('constructor', () => {
         it('initialises state correctly', () => {
             const { ctx } = createMockCtx();
@@ -47,7 +39,7 @@ describe('AlgorithmLoader', () => {
             expect(algo.w).toBe(100);
             expect(algo.h).toBe(200);
             expect(algo.t).toBe(0);
-            expect(algo.isRunning).toBe(true);
+            expect(algo.isRunning).toBeTruthy();
             expect(algo.animationFrameId).toBeNull();
         });
     });
@@ -57,7 +49,7 @@ describe('AlgorithmLoader', () => {
             const { ctx } = createMockCtx();
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.stop();
-            expect(algo.isRunning).toBe(false);
+            expect(algo.isRunning).toBeFalsy();
         });
 
         it('clears animationFrameId', () => {
@@ -79,14 +71,14 @@ describe('AlgorithmLoader', () => {
 
             algo.draw();
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalledOnce();
         });
 
         it('stops the algorithm after a draw error', () => {
             const { ctx } = createMockCtx();
             const algo = new BrokenAlgo(ctx, 100, 100);
             algo.draw();
-            expect(algo.isRunning).toBe(false);
+            expect(algo.isRunning).toBeFalsy();
         });
 
         it('skips draw when isRunning is false', () => {
@@ -106,21 +98,21 @@ describe('AlgorithmLoader', () => {
 
     describe('static factory methods', () => {
         it('createVector returns an object with x and y', () => {
-            const v = AlgorithmLoader.createVector(3, 4);
-            expect(v.x).toBe(3);
-            expect(v.y).toBe(4);
+            const vector = AlgorithmLoader.createVector(3, 4);
+            expect(vector.x).toBe(3);
+            expect(vector.y).toBe(4);
         });
 
         it('createParticle returns an object with position and velocity', () => {
-            const p = AlgorithmLoader.createParticle(10, 20, 5, 0);
-            expect(p.x).toBe(10);
-            expect(p.y).toBe(20);
+            const particle = AlgorithmLoader.createParticle(10, 20, 5, 0);
+            expect(particle.x).toBe(10);
+            expect(particle.y).toBe(20);
         });
 
         it('random returns a number within range', () => {
-            const n = AlgorithmLoader.random(1, 10);
-            expect(n).toBeGreaterThanOrEqual(1);
-            expect(n).toBeLessThan(10);
+            const num = AlgorithmLoader.random(1, 10);
+            expect(num).toBeGreaterThanOrEqual(1);
+            expect(num).toBeLessThan(10);
         });
 
         it('pickRandomElement returns an element from the array', () => {
@@ -140,7 +132,7 @@ describe('AlgorithmLoader', () => {
 
             algo.draw();
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalledOnce();
         });
     });
 });

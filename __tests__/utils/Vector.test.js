@@ -1,11 +1,11 @@
 import Vector from '../../src/utils/Vector.js';
 
-describe('Vector', () => {
+describe('vector', () => {
     describe('constructor', () => {
         it('stores x and y', () => {
-            const v = new Vector(3, 4);
-            expect(v.x).toBe(3);
-            expect(v.y).toBe(4);
+            const vector = new Vector(3, 4);
+            expect(vector.x).toBe(3);
+            expect(vector.y).toBe(4);
         });
     });
 
@@ -37,19 +37,19 @@ describe('Vector', () => {
         });
 
         it('multiply returns a new Vector scaled by value', () => {
-            const v = new Vector(3, 4);
-            const result = v.multiply(2);
+            const vector = new Vector(3, 4);
+            const result = vector.multiply(2);
             expect(result.x).toBe(6);
             expect(result.y).toBe(8);
-            expect(result).not.toBe(v);
+            expect(result).not.toBe(vector);
         });
 
         it('divide returns a new Vector divided by value', () => {
-            const v = new Vector(6, 8);
-            const result = v.divide(2);
+            const vector = new Vector(6, 8);
+            const result = vector.divide(2);
             expect(result.x).toBe(3);
             expect(result.y).toBe(4);
-            expect(result).not.toBe(v);
+            expect(result).not.toBe(vector);
         });
     });
 
@@ -69,35 +69,35 @@ describe('Vector', () => {
         });
 
         it('multiplyBy scales the vector in place', () => {
-            const v = new Vector(3, 4);
-            v.multiplyBy(2);
-            expect(v.x).toBe(6);
-            expect(v.y).toBe(8);
+            const vector = new Vector(3, 4);
+            vector.multiplyBy(2);
+            expect(vector.x).toBe(6);
+            expect(vector.y).toBe(8);
         });
 
         it('divideBy scales the vector in place', () => {
-            const v = new Vector(6, 8);
-            v.divideBy(2);
-            expect(v.x).toBe(3);
-            expect(v.y).toBe(4);
+            const vector = new Vector(6, 8);
+            vector.divideBy(2);
+            expect(vector.x).toBe(3);
+            expect(vector.y).toBe(4);
         });
     });
 
     describe('length', () => {
         it('computes magnitude', () => {
-            expect(new Vector(3, 4).length).toBe(5);
+            expect(new Vector(3, 4)).toHaveLength(5);
         });
 
         it('returns 0 for zero vector', () => {
-            expect(new Vector(0, 0).length).toBe(0);
+            expect(new Vector(0, 0)).toHaveLength(0);
         });
 
         it('setting length scales components while preserving direction', () => {
-            const v = new Vector(3, 4);
-            const angleBefore = v.angle;
-            v.length = 10;
-            expect(v.length).toBeCloseTo(10);
-            expect(v.angle).toBeCloseTo(angleBefore);
+            const vector = new Vector(3, 4);
+            const angleBefore = vector.angle;
+            vector.length = 10;
+            expect(vector.length).toBeCloseTo(10);
+            expect(vector.angle).toBeCloseTo(angleBefore);
         });
     });
 
@@ -111,11 +111,11 @@ describe('Vector', () => {
         });
 
         it('setting angle changes direction while preserving length', () => {
-            const v = new Vector(3, 4);
-            const lengthBefore = v.length;
-            v.angle = Math.PI / 2;
-            expect(v.length).toBeCloseTo(lengthBefore);
-            expect(v.angle).toBeCloseTo(Math.PI / 2);
+            const vector = new Vector(3, 4);
+            const lengthBefore = vector.length;
+            vector.angle = Math.PI / 2;
+            expect(vector.length).toBeCloseTo(lengthBefore);
+            expect(vector.angle).toBeCloseTo(Math.PI / 2);
         });
     });
 });

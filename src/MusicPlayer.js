@@ -3,7 +3,7 @@
  * and progress bar.
  */
 import AlgorithmLoader from './AlgorithmLoader.js';
-import { htmlEscape } from './utils/htmlEscape.js';
+import htmlEscape from './utils/htmlEscape.js';
 
 export default class MusicPlayer {
     constructor() {
@@ -248,7 +248,11 @@ export default class MusicPlayer {
         this.totalEl.textContent = this.formatTime(duration);
     }
 
-    /** Format seconds into M:SS string. */
+    /**
+     * Format seconds into M:SS string.
+     * @param {number} seconds - The time in seconds to format.
+     * @returns {string} The formatted time string in M:SS format.
+     */
     formatTime(seconds) {
         if (!Number.isFinite(seconds) || seconds < 0) {
             return '0:00';
@@ -258,7 +262,10 @@ export default class MusicPlayer {
         return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
     }
 
-    /** Scrub to clicked position on the progress bar. */
+    /**
+     * Scrub to clicked position on the progress bar.
+     * @param {MouseEvent} e - The mouse event from the progress bar click.
+     */
     scrub(e) {
         if (!this.playlistEls) {
             return;
@@ -279,7 +286,10 @@ export default class MusicPlayer {
         this.updateTrackName();
     }
 
-    /** Toggle the play/pause icon SVGs. */
+    /**
+     * Toggle the play/pause icon SVGs.
+     * @param {boolean} playing - Whether the player is currently playing.
+     */
     setPlayIcon(playing) {
         this.iconPlay.style.display = playing ? 'none' : 'inline';
         this.iconPause.style.display = playing ? 'inline' : 'none';
@@ -300,7 +310,10 @@ export default class MusicPlayer {
         this.trackNameEl.textContent = this.trackNames[this.currentSong] ?? '';
     }
 
-    /** Jump directly to a track and start playback. */
+    /**
+     * Jump directly to a track and start playback.
+     * @param {number} index - The index of the track to jump to.
+     */
     jumpToTrack(index) {
         if (!this.playlistEls || index === this.currentSong) {
             return;
@@ -376,36 +389,54 @@ export default class MusicPlayer {
         }
     }
 
-    /** Drag start - store the index of dragged item. */
+    /**
+     * Drag start - store the index of dragged item.
+     * @param {DragEvent} e - The drag event.
+     */
     handleDragStart(e) {
         this.draggedIndex = Number.parseInt(e.target.dataset.index, 10);
         e.target.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
     }
 
-    /** Drag over - allow dropping. */
+    /**
+     * Drag over - allow dropping.
+     * @param {DragEvent} e - The drag event.
+     */
     handleDragOver(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
     }
 
-    /** Drag enter - visual feedback. */
+    /**
+     * Drag enter - visual feedback.
+     * @param {DragEvent} e - The drag event.
+     */
     handleDragEnter(e) {
         e.target.classList.add('drag-over');
     }
 
-    /** Drag leave - remove visual feedback. */
+    /**
+     * Drag leave - remove visual feedback.
+     * @param {DragEvent} e - The drag event.
+     */
     handleDragLeave(e) {
         e.target.classList.remove('drag-over');
     }
 
-    /** Drag end - clean up visual feedback. */
+    /**
+     * Drag end - clean up visual feedback.
+     * @param {DragEvent} e - The drag event.
+     */
     handleDragEnd(e) {
         e.target.classList.remove('dragging');
         this.draggedIndex = null;
     }
 
-    /** Drop - reorder tracks. */
+    /**
+     * Drop - reorder tracks.
+     * @param {DragEvent} e - The drag event.
+     */
     handleDrop(e) {
         e.preventDefault();
         const targetItem = e.target.closest('.list-item');
@@ -445,7 +476,10 @@ export default class MusicPlayer {
         this.updatePlaylistStyle();
     }
 
-    /** Remove a track from the playlist. */
+    /**
+     * Remove a track from the playlist.
+     * @param {number} index - The index of the track to remove.
+     */
     removeTrack(index) {
         if (index < 0 || index >= this.trackList.length) {
             return;
