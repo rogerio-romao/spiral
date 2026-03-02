@@ -1,4 +1,23 @@
-import { buildFileContents, toIdentifier } from '../generateAlgorithmRegistry.mjs';
+import { buildFileContents, run, toIdentifier } from '../generateAlgorithmRegistry.mjs';
+
+const { mockReaddir, mockWriteFile, mockMkdir } = vi.hoisted(() => ({
+    mockMkdir: vi.fn(),
+    mockReaddir: vi.fn(),
+    mockWriteFile: vi.fn(),
+}));
+
+// oxlint-disable-next-line vitest/prefer-import-in-mock
+vi.mock('node:fs', () => ({
+    promises: {
+        mkdir: mockMkdir,
+        readdir: mockReaddir,
+        writeFile: mockWriteFile,
+    },
+}));
+
+function makeEntry(name, isFile = true) {
+    return { isFile: () => isFile, name };
+}
 
 describe('generateAlgorithmRegistry helpers', () => {
     describe('toIdentifier function', () => {
@@ -62,5 +81,57 @@ describe('generateAlgorithmRegistry helpers', () => {
                 'Algorithm file "bad-name.js" does not map to a valid JavaScript identifier',
             );
         });
+    });
+});
+
+describe('run function', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mockMkdir.mockResolvedValue(null);
+        mockWriteFile.mockResolvedValue(null);
+    });
+
+    it('writes the registry file with correct import lines on happy path', async () => {
+        mockReaddir.mockResolvedValue([
+            makeEntry('AlgoA.js'),
+            makeEntry('AlgoB.js'),
+            makeEntry('TemplateBasic.js'),
+            makeEntry('README.md'),
+            makeEntry('subdir', false),
+        ]);
+
+        await run();
+
+        expect(mockWriteFile).toHaveBeenCalledOnce();
+        const [[, content]] = mockWriteFile.mock.calls;
+        expect(content).toContain("import AlgoA from '../algos/AlgoA.js';");
+        expect(content).toContain("import AlgoB from '../algos/AlgoB.js';");
+        expect(content).toContain("import TemplateBasic from '../algos/TemplateBasic.js';");
+    });
+
+    it('creates the output directory with recursive option', async () => {
+        mockReaddir.mockResolvedValue([makeEntry('AlgoA.js')]);
+
+        await run();
+
+        expect(mockMkdir).toHaveBeenCalledWith(expect.any(String), { recursive: true });
+    });
+
+    it('separates algo files from template files', async () => {
+        mockReaddir.mockResolvedValue([makeEntry('Orbit.js'), makeEntry('TemplateFoo.js')]);
+
+        await run();
+
+        const [[, content]] = mockWriteFile.mock.calls;
+        expect(content).toContain('export const algorithms = [');
+        expect(content).toContain('    Orbit,');
+        expect(content).toContain('export const templateAlgorithms = [');
+        expect(content).toContain('    TemplateFoo,');
+    });
+
+    it('throws when no .js files are found', async () => {
+        mockReaddir.mockResolvedValue([makeEntry('README.md'), makeEntry('subdir', false)]);
+
+        await expect(run()).rejects.toThrow('No .js files found');
     });
 });
