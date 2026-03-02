@@ -88,4 +88,4 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     }
 }
 
-export { buildFileContents, toIdentifier };
+export { buildFileContents, run, toIdentifier };

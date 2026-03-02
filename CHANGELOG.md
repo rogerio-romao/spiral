@@ -4,6 +4,12 @@
 
 ## 2026-03-02
 
+- chore: Add unit tests for WaveformController (0%→100%) — 17 tests covering constructor, _resizeCanvas, toggle, _start, _stop, destroy, _draw (including exponential-smoothing assertion), and getWaveformData; total test count 260→277
+
+- chore: Improve test coverage — add unit tests for KeyboardController (0%→~100%), extend AlgorithmLoader with color/palette/canvas method tests, add MusicPlayer prototype method tests, export and test generateAlgorithmRegistry run() with mocked fs; total test count 222→260
+
+## 2026-03-02
+
 - chore: Add Vitest browser mode tests for HudController, DevModeController, and
   MusicPlayer — installs @vitest/browser-playwright, configures multi-project
   vitest.config.js (unit/node + browser/chromium), adds HudController jsdom tests,

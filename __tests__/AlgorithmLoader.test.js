@@ -135,4 +135,74 @@ describe('algorithmLoader', () => {
             expect(handler).toHaveBeenCalledOnce();
         });
     });
+
+    describe('static color and palette methods', () => {
+        it('randomColor returns an rgba string', () => {
+            const color = AlgorithmLoader.randomColor();
+            expect(color).toMatch(/^rgba\(/u);
+        });
+
+        it('generateRGBAPalette returns an array of the requested length', () => {
+            const palette = AlgorithmLoader.generateRGBAPalette(3);
+            expect(palette).toHaveLength(3);
+            for (const color of palette) {
+                expect(color).toMatch(/^rgba\(/u);
+            }
+        });
+
+        it('generateHSLAPalette returns an array of the requested length', () => {
+            const palette = AlgorithmLoader.generateHSLAPalette(3, 'hue');
+            expect(palette).toHaveLength(3);
+        });
+    });
+
+    describe('canvas instance methods', () => {
+        it('requestFrame schedules draw via requestAnimationFrame', () => {
+            const { ctx } = createMockCtx();
+            const algo = new WorkingAlgo(ctx, 100, 100);
+            const spy = vi.spyOn(globalThis, 'requestAnimationFrame');
+            algo.requestFrame();
+            expect(spy).toHaveBeenCalledWith(algo.draw);
+        });
+
+        it('clearScreen saves, resets transform, clears the full canvas, then restores', () => {
+            const { canvas, ctx } = createMockCtx();
+            canvas.width = 100;
+            canvas.height = 100;
+            const algo = new WorkingAlgo(ctx, 100, 100);
+            algo.clearScreen();
+            expect(ctx.save).toHaveBeenCalledOnce();
+            expect(ctx.resetTransform).toHaveBeenCalledOnce();
+            expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 100);
+            expect(ctx.restore).toHaveBeenCalledOnce();
+        });
+
+        it('fillScreen saves, resets transform, fills the full canvas, then restores', () => {
+            const { canvas, ctx } = createMockCtx();
+            canvas.width = 100;
+            canvas.height = 100;
+            const algo = new WorkingAlgo(ctx, 100, 100);
+            algo.fillScreen();
+            expect(ctx.save).toHaveBeenCalledOnce();
+            expect(ctx.resetTransform).toHaveBeenCalledOnce();
+            expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, 100, 100);
+            expect(ctx.restore).toHaveBeenCalledOnce();
+        });
+
+        it('rotateCanvasRadians translates to center, rotates, then translates back', () => {
+            const { ctx } = createMockCtx();
+            const algo = new WorkingAlgo(ctx, 100, 100);
+            algo.rotateCanvasRadians(Math.PI);
+            expect(ctx.translate).toHaveBeenNthCalledWith(1, 50, 50);
+            expect(ctx.rotate).toHaveBeenCalledWith(Math.PI);
+            expect(ctx.translate).toHaveBeenNthCalledWith(2, -50, -50);
+        });
+
+        it('rotateCanvasDegrees converts degrees to radians before rotating', () => {
+            const { ctx } = createMockCtx();
+            const algo = new WorkingAlgo(ctx, 100, 100);
+            algo.rotateCanvasDegrees(90);
+            expect(ctx.rotate).toHaveBeenCalledWith(Math.PI / 2);
+        });
+    });
 });
