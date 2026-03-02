@@ -133,7 +133,10 @@
         "expectTypeOf": "readonly",
         "vi": "readonly",
         "beforeEach": "readonly",
-        "afterEach": "readonly"
+        "afterEach": "readonly",
+        "URL": "readonly",
+        "Event": "readonly",
+        "HTMLMediaElement": "readonly"
     }
     // "ignorePatterns": ["__tests__/**", "scripts/__tests__/**"]
 }

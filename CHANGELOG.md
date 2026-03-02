@@ -2,6 +2,13 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-03-02
+
+- chore: Add Vitest browser mode tests for HudController, DevModeController, and
+  MusicPlayer — installs @vitest/browser-playwright, configures multi-project
+  vitest.config.js (unit/node + browser/chromium), adds HudController jsdom tests,
+  and browser tests covering DOM manipulation, module mocking, and real Canvas 2D
+
 ## 2026-02-28
 
 - feat: Enhance playlist functionality — add tracks to existing playlist without

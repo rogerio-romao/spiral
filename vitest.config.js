@@ -1,3 +1,4 @@
+import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -7,9 +8,30 @@ export default defineConfig({
             include: ['src/**/*.js', 'scripts/**/*.mjs'],
             provider: 'v8',
         },
-        environment: 'node',
-        globals: true,
-        include: ['__tests__/**/*.test.js', 'scripts/__tests__/**/*.test.js'],
-        setupFiles: ['__tests__/setup.js'],
+        projects: [
+            {
+                test: {
+                    environment: 'node',
+                    exclude: ['__tests__/browser/**'],
+                    globals: true,
+                    include: ['__tests__/**/*.test.js', 'scripts/__tests__/**/*.test.js'],
+                    name: 'unit',
+                    setupFiles: ['__tests__/setup.js'],
+                },
+            },
+            {
+                test: {
+                    browser: {
+                        enabled: true,
+                        headless: true,
+                        instances: [{ browser: 'chromium' }],
+                        provider: playwright(),
+                    },
+                    globals: true,
+                    include: ['__tests__/browser/**/*.test.js'],
+                    name: 'browser',
+                },
+            },
+        ],
     },
 });
