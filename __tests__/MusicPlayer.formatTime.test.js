@@ -29,7 +29,7 @@ describe('MusicPlayer.formatTime', () => {
     });
 
     it('returns 0:00 for NaN', () => {
-        expect(formatTime(NaN)).toBe('0:00');
+        expect(formatTime(Number.NaN)).toBe('0:00');
     });
 
     it('returns 0:00 for Infinity', () => {

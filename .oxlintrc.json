@@ -21,6 +21,7 @@
         "eslint/max-statements": ["warn", 130],
         "eslint/max-lines": ["warn", 610],
         "eslint/max-params": ["warn", 5],
+        "eslint/max-classes-per-file": ["warn", 6],
         "eslint/no-magic-numbers": "off",
         "eslint/no-ternary": "off",
         "eslint/no-continue": "off",
@@ -56,6 +57,7 @@
         "eslint/sort-imports": "off",
         "oxc/no-optional-chaining": "off",
         "oxc/no-async-await": "off",
+        "oxc/no-rest-spread-properties": "off",
         "unicorn/filename-case": [
             "error",
             {
@@ -119,7 +121,13 @@
         "CSS": "readonly",
         "require": "readonly",
         "CustomEvent": "readonly",
-        "CanvasRenderingContext2D": "readonly"
-    },
-    "ignorePatterns": ["__tests__/**", "scripts/__tests__/**"]
+        "CanvasRenderingContext2D": "readonly",
+        "describe": "readonly",
+        "it": "readonly",
+        "expect": "readonly",
+        "vi": "readonly",
+        "beforeEach": "readonly",
+        "afterEach": "readonly"
+    }
+    // "ignorePatterns": ["__tests__/**", "scripts/__tests__/**"]
 }

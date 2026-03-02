@@ -1,3 +1,5 @@
+import AlgorithmChooser from '../src/AlgorithmChooser.js';
+
 vi.mock('../src/generated/algorithmRegistry.js', () => ({
     algorithms: [
         class AlgoA {},
@@ -8,10 +10,8 @@ vi.mock('../src/generated/algorithmRegistry.js', () => ({
     ],
 }));
 
-import AlgorithmChooser from '../src/AlgorithmChooser.js';
-
 describe('AlgorithmChooser', () => {
-    let chooser;
+    let chooser = null;
 
     beforeEach(() => {
         chooser = new AlgorithmChooser();
@@ -39,7 +39,7 @@ describe('AlgorithmChooser', () => {
 
     it('evicts oldest history entry when capacity is exceeded', () => {
         chooser.lastAlgosCapacity = 3;
-        const firstPick = chooser.algorithms[0];
+        const [firstPick] = chooser.algorithms;
 
         // Fill the history to capacity with known picks by controlling randomness
         chooser.lastAlgos = new Set([
