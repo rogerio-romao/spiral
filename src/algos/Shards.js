@@ -70,10 +70,7 @@ export default class Shards extends AL {
 
     drawTriangle() {
         this.ctx.beginPath();
-        this.ctx.moveTo(
-            this.w / 2 + Math.sin(this.t) * 100,
-            this.h / 2 + Math.cos(this.t) * 100,
-        );
+        this.ctx.moveTo(this.w / 2 + Math.sin(this.t) * 100, this.h / 2 + Math.cos(this.t) * 100);
         this.ctx.lineTo(this.c1x1, this.c1y1);
         this.ctx.lineTo(this.c1x2, this.c1y2);
         this.ctx.lineTo(

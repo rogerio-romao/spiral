@@ -9,10 +9,7 @@ const utils = {
     },
 
     clamp(value, min, max) {
-        return Math.min(
-            Math.max(value, Math.min(min, max)),
-            Math.max(min, max),
-        );
+        return Math.min(Math.max(value, Math.min(min, max)), Math.max(min, max));
     },
 
     // oxlint-disable-next-line max-params
@@ -53,11 +50,7 @@ const utils = {
     },
 
     map(value, sourceMin, sourceMax, destMin, destMax) {
-        return this.lerp(
-            this.norm(value, sourceMin, sourceMax),
-            destMin,
-            destMax,
-        );
+        return this.lerp(this.norm(value, sourceMin, sourceMax), destMin, destMax);
     },
 
     norm(value, min, max) {

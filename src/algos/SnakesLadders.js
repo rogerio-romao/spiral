@@ -33,12 +33,7 @@ export default class SnakesLadders extends AL {
 
     setupDrawingStyles() {
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.12, 0.37);
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-            0,
-            255,
-            0.65,
-            1,
-        );
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(0, 255, 0.65, 1);
     }
 
     draw() {

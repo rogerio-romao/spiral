@@ -14,13 +14,7 @@ export default class AlienFlowers extends AL {
     }
 
     setupConstantStyles() {
-        this.modes = [
-            'hard-light',
-            'color-dodge',
-            'multiply',
-            'overlay',
-            'color-burn',
-        ];
+        this.modes = ['hard-light', 'color-dodge', 'multiply', 'overlay', 'color-burn'];
 
         this.ctx.lineJoin = 'bevel';
         this.ctx.lineCap = 'round';
@@ -35,17 +29,9 @@ export default class AlienFlowers extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-            5,
-            255,
-            0.1,
-            0.1,
-        );
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(5, 255, 0.1, 0.1);
 
-        this.ctx.shadowOffsetX =
-            this.ctx.shadowOffsetY =
-            this.ctx.lineWidth =
-                AL.random(3, 36);
+        this.ctx.shadowOffsetX = this.ctx.shadowOffsetY = this.ctx.lineWidth = AL.random(3, 36);
     }
 
     draw() {
@@ -114,9 +100,7 @@ export default class AlienFlowers extends AL {
         }
 
         if (this.t % (this.speed * 32) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes,
-            );
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
 
             this.ctx.beginPath();
         }

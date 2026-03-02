@@ -16,8 +16,8 @@ export default class Germinate extends AL {
 
     initializeBaseProperties() {
         this.angles = [
-            5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 32, 35, 36, 42, 44, 45, 48,
-            50, 55, 64, 65, 66, 70, 72, 75, 95, 100,
+            5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 32, 35, 36, 42, 44, 45, 48, 50, 55, 64, 65, 66,
+            70, 72, 75, 95, 100,
         ];
     }
 
@@ -40,12 +40,7 @@ export default class Germinate extends AL {
 
     setupDrawingStyles() {
         this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-            0,
-            255,
-            1,
-            1,
-        );
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(0, 255, 1, 1);
     }
 
     draw() {

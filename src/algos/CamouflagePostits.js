@@ -82,9 +82,7 @@ export default class CamouflagePostits extends AL {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes,
-            );
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         this.requestFrame();

@@ -4,8 +4,8 @@
 // oxlint-disable unicorn/prefer-top-level-await
 // oxlint-disable sort-keys
 import { app, BrowserWindow, Menu, screen } from 'electron';
-import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 if (process.env.NODE_ENV === 'development') {
     const menuTemplate = [
@@ -31,10 +31,7 @@ function createWindow(width, height) {
         height,
         useContentSize: true,
         webPreferences: {
-            preload: path.join(
-                path.dirname(fileURLToPath(import.meta.url)),
-                'preload.js',
-            ),
+            preload: path.join(path.dirname(fileURLToPath(import.meta.url)), 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
         },

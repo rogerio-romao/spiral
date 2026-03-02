@@ -28,11 +28,10 @@ export default class Clock extends AL {
         ];
 
         this.letters = [
-            701, 702, 703, 706, 707, 708, 710, 711, 712, 713, 714, 715, 716,
-            717, 718, 719, 720, 721, 722, 724, 726, 727, 729, 730, 731, 732,
-            733, 734, 735, 737, 740, 741, 744, 745, 746, 747, 749, 753, 754,
-            756, 757, 758, 759, 760, 761, 762, 764, 766, 769, 771, 772, 776,
-            778, 781, 782, 784, 790, 794, 795, 796,
+            701, 702, 703, 706, 707, 708, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719, 720,
+            721, 722, 724, 726, 727, 729, 730, 731, 732, 733, 734, 735, 737, 740, 741, 744, 745,
+            746, 747, 749, 753, 754, 756, 757, 758, 759, 760, 761, 762, 764, 766, 769, 771, 772,
+            776, 778, 781, 782, 784, 790, 794, 795, 796,
         ];
         this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
@@ -81,15 +80,11 @@ export default class Clock extends AL {
         }
 
         if (this.t % (this.speed * 120) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes,
-            );
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         if (this.t % (this.speed * 200) === 0) {
-            this.letter = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
+            this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         }
 
         this.requestFrame();

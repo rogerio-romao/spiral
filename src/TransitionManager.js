@@ -14,14 +14,7 @@ export default class TransitionManager {
      * @param {HUDController}            deps.hud - HUD controller instance
      * @param {Function}                 deps.getDimensions  - Returns { w, h }
      */
-    constructor({
-        canvas,
-        ctx,
-        algorithmLoader,
-        algorithmChooser,
-        hud,
-        getDimensions,
-    }) {
+    constructor({ canvas, ctx, algorithmLoader, algorithmChooser, hud, getDimensions }) {
         this._canvas = canvas;
         this._ctx = ctx;
         this._algorithmLoader = algorithmLoader;
@@ -208,11 +201,8 @@ export default class TransitionManager {
         if (this._devModeActive) {
             const isSlotA = this._devModeAlternator === 0;
             this._devModeAlternator = 1 - this._devModeAlternator;
-            const algoChoice = isSlotA
-                ? this._devModeAlgoA
-                : this._devModeAlgoB;
-            AlgorithmClass =
-                algoChoice || this._algorithmChooser.getRandomAlgorithm();
+            const algoChoice = isSlotA ? this._devModeAlgoA : this._devModeAlgoB;
+            AlgorithmClass = algoChoice || this._algorithmChooser.getRandomAlgorithm();
         } else {
             AlgorithmClass = this._algorithmChooser.getRandomAlgorithm();
         }

@@ -2,6 +2,16 @@
     "name": "spiral-player",
     "version": "1.0.0",
     "description": "Music Player with generative art visualizer.",
+    "keywords": [
+        "art",
+        "generative",
+        "music",
+        "player",
+        "visualizer"
+    ],
+    "license": "CC0-1.0",
+    "author": "Rogerio Romao",
+    "type": "module",
     "main": "main.js",
     "scripts": {
         "generate:algos": "node scripts/generateAlgorithmRegistry.mjs",
@@ -9,6 +19,8 @@
         "pretest": "pnpm generate:algos",
         "test": "vitest run",
         "test:watch": "vitest",
+        "format": "oxfmt",
+        "format:check": "oxfmt --check",
         "test:coverage": "vitest run --coverage",
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",
@@ -16,25 +28,16 @@
         "start": "NODE_ENV=development electron .",
         "start:prod": "NODE_ENV=production electron ."
     },
-    "keywords": [
-        "music",
-        "player",
-        "generative",
-        "art",
-        "visualizer"
-    ],
-    "author": "Rogerio Romao",
-    "license": "CC0-1.0",
-    "productName": "Spiral Player",
     "devDependencies": {
         "@electron/packager": "^19.0.5",
         "@vitest/coverage-v8": "^4.0.18",
         "electron": "^40.4.1",
         "jsdom": "^28.1.0",
+        "oxfmt": "^0.36.0",
         "oxlint": "^1.50.0",
         "stylelint": "^17.4.0",
         "stylelint-config-standard": "^40.0.0",
         "vitest": "^4.0.18"
     },
-    "type": "module"
+    "productName": "Spiral Player"
 }

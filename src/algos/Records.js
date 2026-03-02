@@ -32,19 +32,11 @@ export default class Records extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.w / 2,
-                this.h / 2,
-                this.radius,
-                0,
-                Math.random() * Math.PI,
-            );
+            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, Math.random() * Math.PI);
             this.ctx.stroke();
 
             this.angle += this.angleChange;
-            this.radius = Math.abs(
-                this.radius + Math.sin(this.angle) * this.offset,
-            );
+            this.radius = Math.abs(this.radius + Math.sin(this.angle) * this.offset);
         }
 
         this.t += 1;

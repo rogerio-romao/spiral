@@ -87,9 +87,7 @@ describe('math utils', () => {
         });
 
         it('round-trips with degreesToRads', () => {
-            expect(utils.radsToDegrees(utils.degreesToRads(45))).toBeCloseTo(
-                45,
-            );
+            expect(utils.radsToDegrees(utils.degreesToRads(45))).toBeCloseTo(45);
         });
     });
 
@@ -285,9 +283,7 @@ describe('math utils', () => {
 
     describe('randomInt', () => {
         it('returns integers within [min, max] inclusive', () => {
-            const results = Array.from({ length: 500 }, () =>
-                utils.randomInt(3, 7),
-            );
+            const results = Array.from({ length: 500 }, () => utils.randomInt(3, 7));
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(3);
                 expect(r).toBeLessThanOrEqual(7);
@@ -298,9 +294,7 @@ describe('math utils', () => {
 
     describe('randomRange', () => {
         it('returns floats within [min, max)', () => {
-            const results = Array.from({ length: 500 }, () =>
-                utils.randomRange(1, 5),
-            );
+            const results = Array.from({ length: 500 }, () => utils.randomRange(1, 5));
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(1);
                 expect(r).toBeLessThan(5);

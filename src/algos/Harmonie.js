@@ -17,10 +17,9 @@ export default class Harmonie extends AL {
     initializeBaseProperties() {
         this.rotate = 23;
         this.letters = [
-            2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924,
-            2925, 2926, 2927, 2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947,
-            2949, 2952, 2953, 2960, 2962, 2970, 2972, 2975, 2980, 2984, 2986,
-            2990, 2991, 2992, 2994, 2997, 2998,
+            2902, 2908, 2909, 2911, 2913, 2915, 2918, 2919, 2921, 2922, 2924, 2925, 2926, 2927,
+            2928, 2929, 2930, 2931, 2932, 2934, 2938, 2947, 2949, 2952, 2953, 2960, 2962, 2970,
+            2972, 2975, 2980, 2984, 2986, 2990, 2991, 2992, 2994, 2997, 2998,
         ];
         this.letter1 = String.fromCodePoint(AL.pickRandomElement(this.letters));
         this.letter2 = String.fromCodePoint(AL.pickRandomElement(this.letters));
@@ -63,12 +62,8 @@ export default class Harmonie extends AL {
         }
 
         if (this.t % (this.speed * 900) === 0) {
-            this.letter1 = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
-            this.letter2 = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
+            this.letter1 = String.fromCodePoint(AL.pickRandomElement(this.letters));
+            this.letter2 = String.fromCodePoint(AL.pickRandomElement(this.letters));
         }
 
         this.requestFrame();

@@ -31,24 +31,13 @@ export default class SoapyBubbles extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(
-            50,
-            255,
-            0.5,
-            1,
-        );
+        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(50, 255, 0.5, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.position.x,
-                this.position.y,
-                this.size,
-                0,
-                2 * Math.PI,
-            );
+            this.ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
             this.ctx.stroke();
             this.ctx.fill();
 

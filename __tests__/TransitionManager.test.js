@@ -1,6 +1,6 @@
+import TransitionManager from '../src/TransitionManager.js';
 // oxlint-disable no-empty-function
 import createMockCanvas from './helpers/mockCanvas.js';
-import TransitionManager from '../src/TransitionManager.js';
 
 function createDeps(overrides = {}) {
     const { canvas, ctx } = createMockCanvas();
@@ -74,9 +74,7 @@ describe('transitionManager', () => {
             const deps = createDeps();
             const tm = new TransitionManager(deps);
             tm.changeAlgorithm();
-            expect(deps.hud.displayAlgorithmName).toHaveBeenCalledWith(
-                'FakeAlgo',
-            );
+            expect(deps.hud.displayAlgorithmName).toHaveBeenCalledWith('FakeAlgo');
         });
 
         it('does nothing when already transitioning', () => {
@@ -84,9 +82,7 @@ describe('transitionManager', () => {
             const tm = new TransitionManager(deps);
             tm._isTransitioning = true;
             tm.changeAlgorithm();
-            expect(
-                deps.algorithmChooser.getRandomAlgorithm,
-            ).not.toHaveBeenCalled();
+            expect(deps.algorithmChooser.getRandomAlgorithm).not.toHaveBeenCalled();
         });
 
         it('resets isTransitioning to false after completion', () => {
@@ -110,9 +106,7 @@ describe('transitionManager', () => {
                 }),
             };
 
-            const tm = new TransitionManager(
-                createDeps({ algorithmChooser: chooser }),
-            );
+            const tm = new TransitionManager(createDeps({ algorithmChooser: chooser }));
             tm._chooseAlgos();
 
             // Should try 3 times (1 initial + 2 retries) then stop

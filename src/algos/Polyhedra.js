@@ -15,8 +15,7 @@ export default class Polyhedra extends AL {
 
     initializeBaseProperties() {
         this.rotations = [
-            1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 19, 20, 21, 23, 27,
-            28, 29,
+            1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 19, 20, 21, 23, 27, 28, 29,
         ];
     }
 

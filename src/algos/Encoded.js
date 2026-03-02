@@ -35,12 +35,7 @@ export default class Encoded extends AL {
 
     setupDrawingStyles() {
         this.ctx.font = `bold ${this.size}px serif`;
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-            30,
-            255,
-            0.2,
-            0.6,
-        );
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(30, 255, 0.2, 0.6);
     }
 
     draw() {

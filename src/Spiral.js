@@ -1,11 +1,11 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
 import DevModeController from './DevModeController.js';
-import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
+import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import WaveformController from './WaveformController.js';
 
 export default class Spiral {
@@ -212,9 +212,7 @@ export default class Spiral {
      * Re-registers on each change since the media query targets a specific DPR.
      */
     _watchDprChange() {
-        const mql = globalThis.matchMedia(
-            `(resolution: ${globalThis.devicePixelRatio}dppx)`,
-        );
+        const mql = globalThis.matchMedia(`(resolution: ${globalThis.devicePixelRatio}dppx)`);
         mql.addEventListener(
             'change',
             () => {

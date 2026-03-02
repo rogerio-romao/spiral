@@ -29,11 +29,7 @@ export default class Cornucopia2 extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.setLineDash([
-            AL.random(2, 20),
-            AL.random(5, 25),
-            AL.random(0, 30),
-        ]);
+        this.ctx.setLineDash([AL.random(2, 20), AL.random(5, 25), AL.random(0, 30)]);
         this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
         this.ctx.fillStyle = AL.randomColor();
     }

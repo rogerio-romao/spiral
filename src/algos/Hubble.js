@@ -27,30 +27,10 @@ export default class Hubble extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillRect(
-                this.w / 2,
-                this.h / 2,
-                this.currentVal * 3,
-                this.currentVal * 3,
-            );
-            this.ctx.fillRect(
-                this.w / 2,
-                this.h / 2,
-                this.currentVal * 3,
-                -this.currentVal * 3,
-            );
-            this.ctx.fillRect(
-                this.w / 2,
-                this.h / 2,
-                -this.currentVal * 3,
-                this.currentVal * 3,
-            );
-            this.ctx.fillRect(
-                this.w / 2,
-                this.h / 2,
-                -this.currentVal * 3,
-                -this.currentVal * 3,
-            );
+            this.ctx.fillRect(this.w / 2, this.h / 2, this.currentVal * 3, this.currentVal * 3);
+            this.ctx.fillRect(this.w / 2, this.h / 2, this.currentVal * 3, -this.currentVal * 3);
+            this.ctx.fillRect(this.w / 2, this.h / 2, -this.currentVal * 3, this.currentVal * 3);
+            this.ctx.fillRect(this.w / 2, this.h / 2, -this.currentVal * 3, -this.currentVal * 3);
 
             this.index += 1;
             if (this.index >= this.seq.length - 1) {

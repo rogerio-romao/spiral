@@ -45,12 +45,7 @@ export default class Trance extends AL {
                     this.size / 2,
                     this.size / 2,
                 );
-                this.ctx.strokeRect(
-                    x - this.size / 2,
-                    y - this.size / 2,
-                    this.size,
-                    this.size,
-                );
+                this.ctx.strokeRect(x - this.size / 2, y - this.size / 2, this.size, this.size);
             }
         }
 

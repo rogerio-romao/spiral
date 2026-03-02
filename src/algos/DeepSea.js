@@ -15,9 +15,7 @@ export default class DeepSea extends AL {
     }
 
     initializeBaseProperties() {
-        this.rotations = [
-            4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 72, 90,
-        ];
+        this.rotations = [4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 72, 90];
     }
 
     initializeProperties() {

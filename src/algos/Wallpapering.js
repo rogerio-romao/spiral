@@ -61,9 +61,7 @@ export default class Wallpapering extends AL {
                 this.y = 0;
                 this.size = AL.random(35, 200);
 
-                this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                    this.modes,
-                );
+                this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
             }
         }
 

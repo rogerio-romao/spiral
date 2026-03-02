@@ -32,12 +32,7 @@ export default class Starship extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-            0,
-            255,
-            0.6,
-            1,
-        );
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 1);
     }
 
     draw() {

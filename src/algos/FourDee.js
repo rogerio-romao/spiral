@@ -19,12 +19,7 @@ export default class FourDee extends AL {
     }
 
     initializeProperties() {
-        this.weight = AL.createParticle(
-            AL.random(0, this.w),
-            AL.random(0, this.h),
-            0,
-            0,
-        );
+        this.weight = AL.createParticle(AL.random(0, this.w), AL.random(0, this.h), 0, 0);
         this.weight.radius = 20;
         this.rotate = AL.random(-90, -1);
         this.k = Math.random();
@@ -51,13 +46,7 @@ export default class FourDee extends AL {
             this.weight.update();
 
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.weight.x,
-                this.weight.y,
-                this.weight.radius,
-                0,
-                2 * Math.PI,
-            );
+            this.ctx.arc(this.weight.x, this.weight.y, this.weight.radius, 0, 2 * Math.PI);
             this.ctx.fill();
         }
 

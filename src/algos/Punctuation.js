@@ -66,11 +66,7 @@ export default class Punctuation extends AL {
             }
 
             if (this.stagger === 3) {
-                this.ctx.fillText(
-                    `      ${this.letter}`,
-                    this.w / 2,
-                    this.h / 2,
-                );
+                this.ctx.fillText(`      ${this.letter}`, this.w / 2, this.h / 2);
             }
 
             this.stagger += 1;

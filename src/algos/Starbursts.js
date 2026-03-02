@@ -42,10 +42,7 @@ export default class Starbursts extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.lineTo(
-                    this.w / 2 + this.length,
-                    this.h / 2 - this.length,
-                );
+                this.ctx.lineTo(this.w / 2 + this.length, this.h / 2 - this.length);
             }
 
             if (this.stagger === 2) {

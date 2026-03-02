@@ -31,10 +31,7 @@ export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
     const a = Number((Math.random() * (maxA - minA) + minA).toFixed(3));
 
     // detect if the browser support p3 color space and use it if available, otherwise fallback to rgba
-    if (
-        globalThis.CSS &&
-        CSS.supports('color', 'color(display-p3 1 0 0 / 1)')
-    ) {
+    if (globalThis.CSS && CSS.supports('color', 'color(display-p3 1 0 0 / 1)')) {
         return `color(display-p3 ${r} ${g} ${b} / ${a})`;
     }
 
@@ -51,13 +48,7 @@ export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
  * @param {number} [maxA] - Maximum alpha value (0-1).
  * @returns {string[]} Array of RGBA color strings.
  */
-export function generateRGBAPalette(
-    count,
-    minC = 0,
-    maxC = 255,
-    minA = 0.5,
-    maxA = 1,
-) {
+export function generateRGBAPalette(count, minC = 0, maxC = 255, minA = 0.5, maxA = 1) {
     const palette = [];
     for (let i = 0; i < count; i++) {
         palette.push(randomColor(minC, maxC, minA, maxA));

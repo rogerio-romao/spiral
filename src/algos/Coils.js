@@ -47,13 +47,7 @@ export default class Coils extends AL {
     draw() {
         if (this.t % this.speed === 0) {
             this.ctx.beginPath();
-            this.ctx.arc(
-                this.obj1.x,
-                this.obj1.y,
-                this.obj1.radius,
-                0,
-                2 * Math.PI,
-            );
+            this.ctx.arc(this.obj1.x, this.obj1.y, this.obj1.radius, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.stroke();
             this.ctx.closePath();
@@ -112,8 +106,7 @@ export default class Coils extends AL {
                     duration: this.dur4,
                     ease: 'power1',
                     onUpdate: () => {
-                        this.ctx.strokeStyle = this.ctx.shadowColor =
-                            this.obj1.color;
+                        this.ctx.strokeStyle = this.ctx.shadowColor = this.obj1.color;
                     },
                 },
                 '<',

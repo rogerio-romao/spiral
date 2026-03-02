@@ -43,14 +43,7 @@ export default class FadeIn extends AL {
             this.ctx.moveTo(this.ox, this.oy);
             this.ox += this.c1;
             this.oy += this.c2;
-            this.ctx.bezierCurveTo(
-                this.x1,
-                this.y1,
-                this.x2,
-                this.y2,
-                this.dx,
-                this.dy,
-            );
+            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
             this.ctx.stroke();
 
             this.x1 += this.c3;

@@ -34,12 +34,7 @@ export default class RadioWaves extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(
-            30,
-            255,
-            1,
-            1,
-        );
+        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(30, 255, 1, 1);
     }
 
     draw() {
@@ -56,13 +51,7 @@ export default class RadioWaves extends AL {
                 this.rotateCanvasRadians(Math.PI / this.divisor);
             }
 
-            this.ctx.arc(
-                this.w / this.posX,
-                this.h / this.posY,
-                radius,
-                0,
-                2 * Math.PI,
-            );
+            this.ctx.arc(this.w / this.posX, this.h / this.posY, radius, 0, 2 * Math.PI);
             this.ctx.stroke();
         }
 

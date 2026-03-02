@@ -31,13 +31,7 @@ export default class Networks extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(
-                this.x,
-                this.y,
-                this.size,
-                0,
-                this.drawAmount * Math.PI * 2,
-            );
+            this.ctx.arc(this.x, this.y, this.size, 0, this.drawAmount * Math.PI * 2);
             this.ctx.stroke();
 
             this.drawAmount += 0.001;

@@ -50,9 +50,7 @@ export default class Glow extends AL {
 
         if (this.t % (this.speed * 180) === 0) {
             this.rotate = AL.random(1, 60);
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(
-                this.modes,
-            );
+            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         this.requestFrame();

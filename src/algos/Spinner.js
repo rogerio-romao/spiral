@@ -41,12 +41,7 @@ export default class Spinner extends AL {
             this.ctx.shadowBlur = 0;
             this.ctx.globalCompositeOperation = 'difference';
             this.ctx.fillStyle = this.color2;
-            this.ctx.fillRect(
-                this.w / 2,
-                this.h / 2,
-                this.gap1 * 2,
-                this.gap2 * 2,
-            );
+            this.ctx.fillRect(this.w / 2, this.h / 2, this.gap1 * 2, this.gap2 * 2);
         }
 
         this.t += 1;

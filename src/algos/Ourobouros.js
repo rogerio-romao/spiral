@@ -16,9 +16,8 @@ export default class Ourobouros extends AL {
 
     initializeBaseProperties() {
         this.letters = [
-            2503, 2504, 2508, 2509, 2510, 2519, 2527, 2528, 2529, 2530, 2531,
-            2536, 2537, 2539, 2541, 2544, 2545, 2563, 2566, 2569, 2584, 2591,
-            2596,
+            2503, 2504, 2508, 2509, 2510, 2519, 2527, 2528, 2529, 2530, 2531, 2536, 2537, 2539,
+            2541, 2544, 2545, 2563, 2566, 2569, 2584, 2591, 2596,
         ];
         this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
     }
@@ -55,9 +54,7 @@ export default class Ourobouros extends AL {
         }
 
         if (this.t % (this.speed * 1000) === 0) {
-            this.letter = String.fromCodePoint(
-                AL.pickRandomElement(this.letters),
-            );
+            this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
         }
 
         this.requestFrame();

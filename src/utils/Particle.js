@@ -59,9 +59,7 @@ export default class Particle {
         this.gravitations.map((gravitation) => this.gravitateTo(gravitation));
     }
     handleSprings() {
-        this.springs.map((spring) =>
-            this.springTo(spring.point, spring.k, spring.length),
-        );
+        this.springs.map((spring) => this.springTo(spring.point, spring.k, spring.length));
     }
     removeGravitation(particle) {
         const gravIndex = this.gravitations.indexOf(particle);
@@ -70,9 +68,7 @@ export default class Particle {
         }
     }
     removeSpring(point) {
-        const springIndex = this.springs.findIndex(
-            (spring) => spring.point === point,
-        );
+        const springIndex = this.springs.findIndex((spring) => spring.point === point);
         if (springIndex !== -1) {
             this.springs.splice(springIndex, 1);
         }

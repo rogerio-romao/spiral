@@ -1,7 +1,4 @@
-import {
-    algorithms,
-    templateAlgorithms,
-} from './generated/algorithmRegistry.js';
+import { algorithms, templateAlgorithms } from './generated/algorithmRegistry.js';
 
 export default class DevModeController {
     constructor({ transitionManager, hud }) {
@@ -19,12 +16,9 @@ export default class DevModeController {
         this._algoA = null;
         this._algoB = null;
 
-        this._onEnableChangeHandler = (e) =>
-            this._onEnableChange(e.target.checked);
-        this._onAlgoAChangeHandler = (e) =>
-            this._onAlgoChange('A', e.target.value);
-        this._onAlgoBChangeHandler = (e) =>
-            this._onAlgoChange('B', e.target.value);
+        this._onEnableChangeHandler = (e) => this._onEnableChange(e.target.checked);
+        this._onAlgoAChangeHandler = (e) => this._onAlgoChange('A', e.target.value);
+        this._onAlgoBChangeHandler = (e) => this._onAlgoChange('B', e.target.value);
 
         // Combine both for dev mode
         // Concatenate and sort by class name so Template* appears with other T algos
@@ -66,18 +60,9 @@ export default class DevModeController {
     }
 
     _bindEvents() {
-        this._enableCheckbox.addEventListener(
-            'change',
-            this._onEnableChangeHandler,
-        );
-        this._algoASelect.addEventListener(
-            'change',
-            this._onAlgoAChangeHandler,
-        );
-        this._algoBSelect.addEventListener(
-            'change',
-            this._onAlgoBChangeHandler,
-        );
+        this._enableCheckbox.addEventListener('change', this._onEnableChangeHandler);
+        this._algoASelect.addEventListener('change', this._onAlgoAChangeHandler);
+        this._algoBSelect.addEventListener('change', this._onAlgoBChangeHandler);
     }
 
     toggle() {
@@ -112,15 +97,9 @@ export default class DevModeController {
 
     _onAlgoChange(slot, value) {
         if (slot === 'A') {
-            this._algoA =
-                value === ''
-                    ? null
-                    : this._allAlgorithms[Number.parseInt(value, 10)];
+            this._algoA = value === '' ? null : this._allAlgorithms[Number.parseInt(value, 10)];
         } else {
-            this._algoB =
-                value === ''
-                    ? null
-                    : this._allAlgorithms[Number.parseInt(value, 10)];
+            this._algoB = value === '' ? null : this._allAlgorithms[Number.parseInt(value, 10)];
         }
 
         if (this._active) {
@@ -133,17 +112,8 @@ export default class DevModeController {
     }
 
     destroy() {
-        this._enableCheckbox.removeEventListener(
-            'change',
-            this._onEnableChangeHandler,
-        );
-        this._algoASelect.removeEventListener(
-            'change',
-            this._onAlgoAChangeHandler,
-        );
-        this._algoBSelect.removeEventListener(
-            'change',
-            this._onAlgoBChangeHandler,
-        );
+        this._enableCheckbox.removeEventListener('change', this._onEnableChangeHandler);
+        this._algoASelect.removeEventListener('change', this._onAlgoAChangeHandler);
+        this._algoBSelect.removeEventListener('change', this._onAlgoBChangeHandler);
     }
 }

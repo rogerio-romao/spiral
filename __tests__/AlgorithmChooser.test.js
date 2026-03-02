@@ -1,13 +1,7 @@
 import AlgorithmChooser from '../src/AlgorithmChooser.js';
 
 vi.mock(import('../src/generated/algorithmRegistry.js'), () => ({
-    algorithms: [
-        class AlgoA {},
-        class AlgoB {},
-        class AlgoC {},
-        class AlgoD {},
-        class AlgoE {},
-    ],
+    algorithms: [class AlgoA {}, class AlgoB {}, class AlgoC {}, class AlgoD {}, class AlgoE {}],
 }));
 
 describe('algorithmChooser', () => {

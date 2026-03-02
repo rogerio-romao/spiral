@@ -27,12 +27,7 @@ export default class Nebulas extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = this.ctx.strokeStyle = AL.randomColor(
-            5,
-            255,
-            0.02,
-            0.02,
-        );
+        this.ctx.fillStyle = this.ctx.strokeStyle = AL.randomColor(5, 255, 0.02, 0.02);
     }
 
     draw() {
@@ -53,12 +48,7 @@ export default class Nebulas extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 10) === 0) {
-            this.ctx.fillRect(
-                AL.random(0, this.w),
-                AL.random(0, this.h),
-                this.gap,
-                this.gap,
-            );
+            this.ctx.fillRect(AL.random(0, this.w), AL.random(0, this.h), this.gap, this.gap);
         }
 
         if (this.t % (this.speed * 70) === 0) {

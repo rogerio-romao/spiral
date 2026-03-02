@@ -22,15 +22,12 @@ export default class PaletteSquares extends AL {
     initializeProperties() {
         this.rotation = AL.random(1, 100);
         this.colors = AL.generateHSLAPalette(5, this.mode, 30);
-        this.squares = Array.from(
-            { length: this.colors.length },
-            (_, index) => ({
-                color: this.colors[index],
-                size: AL.random(10, 300),
-                x: AL.random(0, this.w),
-                y: AL.random(0, this.h),
-            }),
-        );
+        this.squares = Array.from({ length: this.colors.length }, (_, index) => ({
+            color: this.colors[index],
+            size: AL.random(10, 300),
+            x: AL.random(0, this.w),
+            y: AL.random(0, this.h),
+        }));
     }
 
     draw() {
