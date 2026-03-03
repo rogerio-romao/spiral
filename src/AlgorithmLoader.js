@@ -139,6 +139,12 @@ export default class AlgorithmLoader {
         return randomColor(minC, maxC, minA, maxA);
     }
 
+    /**
+     * Initializes a new algorithm instance.
+     * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
+     * @param {number} w - The width of the canvas.
+     * @param {number} h - The height of the canvas.
+     */
     constructor(ctx, w, h) {
         this.ctx = ctx;
         this.w = w;

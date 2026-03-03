@@ -11,8 +11,8 @@ export default class DevModeController {
      * @param {import('./HudController.js').default} options.hud - The HUD controller instance
      */
     constructor({ transitionManager, hud }) {
-        this._transitionManager = transitionManager;
-        this._hud = hud;
+        this.transitionManager = transitionManager;
+        this.hud = hud;
 
         this._isDev = globalThis.env?.isDev;
 
@@ -93,15 +93,15 @@ export default class DevModeController {
 
     _onEnableChange(enabled) {
         this._active = enabled;
-        this._transitionManager.setDevModeActive(enabled);
+        this.transitionManager.setDevModeActive(enabled);
 
         if (enabled) {
             this._updateAlgos();
             this._badge.style.display = 'block';
-            this._hud.displayMessage('DEV MODE ENABLED');
+            this.hud.displayMessage('DEV MODE ENABLED');
         } else {
             this._badge.style.display = 'none';
-            this._hud.displayMessage('DEV MODE DISABLED');
+            this.hud.displayMessage('DEV MODE DISABLED');
         }
     }
 
@@ -118,7 +118,7 @@ export default class DevModeController {
     }
 
     _updateAlgos() {
-        this._transitionManager.setDevModeAlgos(this._algoA, this._algoB);
+        this.transitionManager.setDevModeAlgos(this._algoA, this._algoB);
     }
 
     destroy() {
