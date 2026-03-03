@@ -98,11 +98,11 @@ export default class Spiral {
 
         // Keyboard controller (created after musicPlayer exists)
         this.keyboardController = new KeyboardController({
-            devModeController: this.devModeController,
-            hud: this.hud,
-            musicPlayer: this.musicPlayer,
-            spiral: this,
-            transition: this.transitionManager,
+            DevModeController: this.devModeController,
+            HudController: this.hud,
+            MusicPlayer: this.musicPlayer,
+            Spiral: this,
+            TransitionManager: this.transitionManager,
         });
         this.keyboardController.bind();
     }

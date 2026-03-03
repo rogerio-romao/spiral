@@ -58,7 +58,7 @@ describe('devModeController (browser)', () => {
     });
 
     it('populates selects with algorithm options in dev mode', () => {
-        globalThis.env = { isDev: true };
+        globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         const options = document.querySelectorAll('#dev-algo-a option');
@@ -68,7 +68,7 @@ describe('devModeController (browser)', () => {
     });
 
     it('hides modal and badge in prod mode', () => {
-        globalThis.env = { isDev: false };
+        globalThis.env = { isDevEnvironment: false };
         // oxlint-disable-next-line no-new
         new DevModeController(createDeps());
         expect(document.querySelector('#dev-mode').style.display).toBe('none');
@@ -76,7 +76,7 @@ describe('devModeController (browser)', () => {
     });
 
     it('toggle opens and closes the modal', () => {
-        globalThis.env = { isDev: true };
+        globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         ctrl.toggleDevModal();
@@ -87,7 +87,7 @@ describe('devModeController (browser)', () => {
     });
 
     it('enable checkbox calls setDevModeActive and shows badge', () => {
-        globalThis.env = { isDev: true };
+        globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         const checkbox = document.querySelector('#dev-enable');
@@ -99,7 +99,7 @@ describe('devModeController (browser)', () => {
     });
 
     it('algo select change triggers setDevModeAlgos when active', () => {
-        globalThis.env = { isDev: true };
+        globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         const checkbox = document.querySelector('#dev-enable');
@@ -114,7 +114,7 @@ describe('devModeController (browser)', () => {
     });
 
     it('destroy removes event listeners', () => {
-        globalThis.env = { isDev: true };
+        globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         ctrl.destroy();

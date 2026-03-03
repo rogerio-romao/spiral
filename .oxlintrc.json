@@ -55,6 +55,7 @@
         "eslint/complexity": ["warn", 33],
         "eslint/func-style": ["error", "declaration"],
         "eslint/sort-imports": "off",
+        "eslint/sort-keys": ["warn", "asc", { "caseSensitive": false }],
         "oxc/no-optional-chaining": "off",
         "oxc/no-async-await": "off",
         "oxc/no-rest-spread-properties": "off",
