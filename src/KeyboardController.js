@@ -69,13 +69,15 @@ export default class KeyboardController {
             }
 
             case 'KeyS': {
-                this._hud.toggleSilent();
-                this._hud.displayMessage(this._hud.silent ? 'Silent mode' : 'Display mode');
+                this._hud.toggleSilenceMode();
+                this._hud.displayMessage(
+                    this._hud.silenceMessages ? 'Silent mode' : 'Display mode',
+                );
                 break;
             }
 
             case 'KeyH': {
-                this._hud.toggleHelp();
+                this._hud.toggleHelpView();
                 break;
             }
 
@@ -86,7 +88,7 @@ export default class KeyboardController {
 
             case 'KeyE': {
                 if (this._isDev) {
-                    this._devModeController.toggle();
+                    this._devModeController.toggleDevModal();
                 }
                 break;
             }

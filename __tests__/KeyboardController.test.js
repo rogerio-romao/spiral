@@ -10,8 +10,8 @@ function makeController({ isDev = false } = {}) {
     const hud = {
         displayMessage: vi.fn(),
         silent: false,
-        toggleHelp: vi.fn(),
-        toggleSilent: vi.fn(),
+        toggleHelpView: vi.fn(),
+        toggleSilenceMode: vi.fn(),
     };
     const transition = {
         autoChange: 60,
@@ -19,7 +19,7 @@ function makeController({ isDev = false } = {}) {
         manual: false,
     };
     const musicPlayer = { togglePlayerVisibility: vi.fn() };
-    const devModeController = { toggle: vi.fn() };
+    const devModeController = { toggleDevModal: vi.fn() };
     const spiral = { toggleWaveform: vi.fn() };
 
     controller = new KeyboardController({
@@ -106,17 +106,17 @@ describe('keyboardController', () => {
         expect(hud.displayMessage).toHaveBeenCalledWith('Auto mode');
     });
 
-    it('keyS calls toggleSilent and displayMessage', () => {
+    it('keyS calls toggleSilenceMode and displayMessage', () => {
         const { hud } = makeController();
         dispatch('KeyS');
-        expect(hud.toggleSilent).toHaveBeenCalledOnce();
+        expect(hud.toggleSilenceMode).toHaveBeenCalledOnce();
         expect(hud.displayMessage).toHaveBeenCalledOnce();
     });
 
-    it('keyH calls hud.toggleHelp()', () => {
+    it('keyH calls hud.toggleHelpView()', () => {
         const { hud } = makeController();
         dispatch('KeyH');
-        expect(hud.toggleHelp).toHaveBeenCalledOnce();
+        expect(hud.toggleHelpView).toHaveBeenCalledOnce();
     });
 
     it('keyP calls musicPlayer.togglePlayerVisibility()', () => {
@@ -125,16 +125,16 @@ describe('keyboardController', () => {
         expect(musicPlayer.togglePlayerVisibility).toHaveBeenCalledOnce();
     });
 
-    it('keyE calls devModeController.toggle() in dev mode', () => {
+    it('keyE calls devModeController.toggleDevModal() in dev mode', () => {
         const { devModeController } = makeController({ isDev: true });
         dispatch('KeyE');
-        expect(devModeController.toggle).toHaveBeenCalledOnce();
+        expect(devModeController.toggleDevModal).toHaveBeenCalledOnce();
     });
 
-    it('keyE does not call toggle() in production mode', () => {
+    it('keyE does not call toggleDevModal() in production mode', () => {
         const { devModeController } = makeController({ isDev: false });
         dispatch('KeyE');
-        expect(devModeController.toggle).not.toHaveBeenCalled();
+        expect(devModeController.toggleDevModal).not.toHaveBeenCalled();
     });
 
     it('keyW calls spiral.toggleWaveform()', () => {
