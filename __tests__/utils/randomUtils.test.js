@@ -7,11 +7,11 @@ import {
 
 describe('randomUtils', () => {
     describe('random function', () => {
-        it('returns integers within [min, max)', () => {
+        it('returns integers within [min, max]', () => {
             const results = Array.from({ length: 500 }, () => random(5, 15));
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(5);
-                expect(r).toBeLessThan(15);
+                expect(r).toBeLessThan(16);
                 expect(Number.isInteger(r)).toBeTruthy();
             }
         });

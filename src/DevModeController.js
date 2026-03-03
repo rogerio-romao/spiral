@@ -1,11 +1,21 @@
 import { algorithms, templateAlgorithms } from './generated/algorithmRegistry.js';
 
+/**
+ * Controller for the Developer Mode feature.
+ * Handles the UI and logic for selecting and testing specific algorithms.
+ */
 export default class DevModeController {
+    /**
+     * @param {Object} options - Configuration options for the DevModeController
+     * @param {import('./TransitionManager.js').default} options.transitionManager - The transition manager instance
+     * @param {import('./HudController.js').default} options.hud - The HUD controller instance
+     */
     constructor({ transitionManager, hud }) {
         this._transitionManager = transitionManager;
         this._hud = hud;
 
         this._isDev = globalThis.env?.isDev;
+
         this._modal = document.querySelector('#dev-mode');
         this._enableCheckbox = document.querySelector('#dev-enable');
         this._algoASelect = document.querySelector('#dev-algo-a');

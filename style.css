@@ -11,9 +11,7 @@
     font-weight: 400;
 }
 
-/* ========================
-   CSS CUSTOM PROPERTIES
-   ======================== */
+/* CSS CUSTOM PROPERTIES */
 :root {
     /* Colors */
     --color-primary: orange;

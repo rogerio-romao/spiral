@@ -137,6 +137,6 @@
         "URL": "readonly",
         "Event": "readonly",
         "HTMLMediaElement": "readonly"
-    }
-    // "ignorePatterns": ["__tests__/**", "scripts/__tests__/**"]
+    },
+    "ignorePatterns": ["*.d.ts"]
 }
