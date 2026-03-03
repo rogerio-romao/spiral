@@ -79,9 +79,9 @@ describe('devModeController (browser)', () => {
         globalThis.env = { isDev: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
-        ctrl.toggle();
+        ctrl.toggleDevModal();
         expect(document.querySelector('#dev-mode').style.display).toBe('block');
-        ctrl.toggle();
+        ctrl.toggleDevModal();
         expect(document.querySelector('#dev-mode').style.display).toBe('none');
         ctrl.destroy();
     });
