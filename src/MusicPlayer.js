@@ -11,7 +11,7 @@ export default class MusicPlayer {
     // INSTANCE PROPERTIES
     currentSongIndex = 0;
     eqRafId = null;
-    fadeRafId = null;
+    frequencyAnalyser = null;
     isPlaying = false;
     playlistEls = null;
     playlistIsOpen = false;
@@ -180,57 +180,36 @@ export default class MusicPlayer {
     }
 
     /**
-     * Fade audio volume to zero, then pause playback and restore volume to 1.
+     * Fade gain to zero via the GainNode, then pause playback.
      * Eliminates the audible click that occurs with an abrupt pause.
      * @param {number} durationMs - Duration of the fade-out in milliseconds.
      */
     async fadePause(durationMs = this.playToggleFadeDurationInMs) {
-        await this.fadeVolume(this.audio.volume, 0, durationMs);
+        if (this.frequencyAnalyser) {
+            await this.frequencyAnalyser.fadeTo(0, durationMs);
+        }
         this.audio.pause();
     }
 
     /**
-     * Start audio playback at zero volume, then fade in to full volume.
+     * Start audio playback at zero gain, then fade in to full gain.
      * Eliminates the audible click that occurs with an abrupt resume.
      */
     async fadePlay() {
-        this.audio.volume = 0;
+        if (this.frequencyAnalyser) {
+            this.frequencyAnalyser.setGain(0);
+        }
         try {
             await this.audio.play();
         } catch {
-            this.audio.volume = 1;
+            if (this.frequencyAnalyser) {
+                this.frequencyAnalyser.setGain(1);
+            }
             return;
         }
-        await this.fadeVolume(this.audio.volume, 1, this.playToggleFadeDurationInMs);
-    }
-
-    /**
-     * Interpolate audio volume from one value to another over a given duration.
-     * Uses requestAnimationFrame for smooth per-frame updates.
-     * @param {number} from - Starting volume (0–1).
-     * @param {number} to - Target volume (0–1).
-     * @param {number} durationMs - Duration of the fade in milliseconds.
-     * @returns {Promise<void>} Resolves when the fade is complete.
-     */
-    fadeVolume(from, to, durationMs) {
-        cancelAnimationFrame(this.fadeRafId);
-        // oxlint-disable-next-line promise/avoid-new
-        return new Promise((resolve) => {
-            const start = globalThis.performance.now();
-            const step = (now) => {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / durationMs, 1);
-                // Ease-out (fast initial drop) when fading to 0, ease-in (slow rise) when fading to 1
-                const easedProgress = to < from ? 1 - (1 - progress) ** 2 : progress ** 2;
-                this.audio.volume = Math.min(1, Math.max(0, from + (to - from) * easedProgress));
-                if (progress < 1) {
-                    this.fadeRafId = requestAnimationFrame(step);
-                } else {
-                    resolve();
-                }
-            };
-            this.fadeRafId = requestAnimationFrame(step);
-        });
+        if (this.frequencyAnalyser) {
+            await this.frequencyAnalyser.fadeTo(1, this.playToggleFadeDurationInMs);
+        }
     }
 
     /**

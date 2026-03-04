@@ -25,9 +25,21 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
 
     const mockSource = { connect: vi.fn() };
 
+    const mockGainNode = {
+        connect: vi.fn(),
+        gain: {
+            cancelScheduledValues: vi.fn(),
+            linearRampToValueAtTime: vi.fn(),
+            setValueAtTime: vi.fn(),
+            value: 1,
+        },
+    };
+
     const mockCtx = {
         createAnalyser: () => mockAnalyser,
+        createGain: () => mockGainNode,
         createMediaElementSource: () => mockSource,
+        currentTime: 0,
         destination: {},
         resume: vi.fn(),
         state: 'running',
@@ -39,7 +51,7 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
         return mockCtx;
     });
 
-    return { dataArray, mockAnalyser, mockCtx, timeDomainData };
+    return { dataArray, mockAnalyser, mockCtx, mockGainNode, timeDomainData };
 }
 
 describe('frequencyAnalyser', () => {
@@ -150,6 +162,69 @@ describe('frequencyAnalyser', () => {
             analyser.audioContext.state = 'running';
             analyser.resume();
             expect(analyser.audioContext.resume).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('fadeTo', () => {
+        beforeEach(() => {
+            vi.useFakeTimers();
+        });
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        it('cancels scheduled values and anchors current gain before ramp', async () => {
+            const promise = analyser.fadeTo(0, 80);
+            vi.runAllTimers();
+            await promise;
+
+            const { gain } = analyser.gainNode;
+            expect(gain.cancelScheduledValues).toHaveBeenCalledWith(0);
+            expect(gain.setValueAtTime).toHaveBeenCalledWith(1, 0);
+        });
+
+        it('schedules a linear ramp to the target gain', async () => {
+            const promise = analyser.fadeTo(0, 80);
+            vi.runAllTimers();
+            await promise;
+
+            const { gain } = analyser.gainNode;
+            expect(gain.linearRampToValueAtTime).toHaveBeenCalledWith(0, 0.08);
+        });
+
+        it('resolves after the given duration', async () => {
+            let isResolved = false;
+
+            // eslint-disable-next-line func-style
+            const doFade = async () => {
+                await analyser.fadeTo(0, 80);
+                isResolved = true;
+            };
+
+            doFade();
+
+            expect(isResolved).toBeFalsy();
+            vi.advanceTimersByTime(80);
+            await Promise.resolve();
+            expect(isResolved).toBeTruthy();
+        });
+    });
+
+    describe('setGain', () => {
+        it('cancels scheduled values and immediately sets gain', () => {
+            analyser.setGain(0);
+
+            const { gain } = analyser.gainNode;
+            expect(gain.cancelScheduledValues).toHaveBeenCalledWith(0);
+            expect(gain.setValueAtTime).toHaveBeenCalledWith(0, 0);
+        });
+
+        it('works for any gain value', () => {
+            analyser.setGain(0.5);
+
+            const { gain } = analyser.gainNode;
+            expect(gain.setValueAtTime).toHaveBeenCalledWith(0.5, 0);
         });
     });
 });

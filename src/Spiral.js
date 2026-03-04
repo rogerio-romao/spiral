@@ -83,6 +83,7 @@ export default class Spiral {
         // Frequency analyser — connects to the audio element owned by MusicPlayer
         this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
         AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
+        this.musicPlayer.frequencyAnalyser = this.frequencyAnalyser;
 
         // Waveform controller — uses frequency analyser to render waveform
         this.waveformController = new WaveformController({

@@ -2,8 +2,8 @@
  * FrequencyAnalyser — wraps the Web Audio API to provide real-time
  * frequency band data from an HTMLAudioElement.
  *
- * Audio graph: MediaElementSource → AnalyserNode → AudioContext.destination
- * (audio still plays through speakers).
+ * Audio graph: MediaElementSource → AnalyserNode → GainNode → AudioContext.destination
+ * (audio still plays through speakers; the GainNode is used for sample-accurate fade in/out).
  *
  * Usage:
  *   const analyser = new FrequencyAnalyser(audioElement, { bandCount: 5 });
@@ -28,9 +28,13 @@ export default class FrequencyAnalyser {
         this._analyser.smoothingTimeConstant = smoothing;
 
         // createMediaElementSource can only be called once per element
+        this._gain = this._ctx.createGain();
+        this._gain.gain.value = 1;
+
         this._source = this._ctx.createMediaElementSource(audioElement);
         this._source.connect(this._analyser);
-        this._analyser.connect(this._ctx.destination);
+        this._analyser.connect(this._gain);
+        this._gain.connect(this._ctx.destination);
 
         // Reusable buffer for frequency data
         this._dataArray = new Uint8Array(this._analyser.frequencyBinCount);
@@ -66,6 +70,40 @@ export default class FrequencyAnalyser {
         if (this._ctx.state === 'suspended') {
             this._ctx.resume();
         }
+    }
+
+    /**
+     * Smoothly ramp the output gain to `targetGain` over `durationMs` milliseconds.
+     * Schedules a sample-accurate linear ramp on the GainNode — eliminates the
+     * quantisation clicks that occur when mutating HTMLAudioElement.volume per frame.
+     *
+     * @param {number} targetGain - Target gain value (0 = silent, 1 = full volume).
+     * @param {number} durationMs - Duration of the ramp in milliseconds.
+     * @returns {Promise<void>} Resolves after the ramp duration has elapsed.
+     */
+    fadeTo(targetGain, durationMs) {
+        const { gain } = this._gain;
+        const { currentTime } = this._ctx;
+        gain.cancelScheduledValues(currentTime);
+        gain.setValueAtTime(gain.value, currentTime);
+        gain.linearRampToValueAtTime(targetGain, currentTime + durationMs / 1000);
+        // oxlint-disable-next-line promise/avoid-new
+        return new Promise((resolve) => {
+            setTimeout(resolve, durationMs);
+        });
+    }
+
+    /**
+     * Immediately set the output gain to `value` with no ramp.
+     * Cancels any scheduled ramp first to avoid conflicts.
+     *
+     * @param {number} value - Gain value to apply instantly (0–1).
+     */
+    setGain(value) {
+        const { gain } = this._gain;
+        const { currentTime } = this._ctx;
+        gain.cancelScheduledValues(currentTime);
+        gain.setValueAtTime(value, currentTime);
     }
 
     /**
@@ -137,6 +175,14 @@ export default class FrequencyAnalyser {
      */
     get analyserNode() {
         return this._analyser;
+    }
+
+    /**
+     * The underlying GainNode, for advanced use.
+     * @returns {GainNode} The GainNode instance.
+     */
+    get gainNode() {
+        return this._gain;
     }
 
     /**
