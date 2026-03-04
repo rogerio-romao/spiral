@@ -210,12 +210,7 @@ export default class MusicPlayer {
 
         this.audio.src = this.trackList[this.currentSongIndex];
         if (this.isPlaying) {
-            clearTimeout(this.trackSkipWhilePlayingTimeout);
-            this.trackSkipWhilePlayingTimeout = setTimeout(() => {
-                this.audio.play();
-                this.togglePlayPauseIcon(true);
-                this.startEq();
-            }, this.trackSkipIntervalInMs);
+            this.enqueuePlay();
         } else {
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         }
@@ -257,7 +252,7 @@ export default class MusicPlayer {
     }
 
     /**
-     * Scrub to clicked position on the progress bar.
+     * Scrub to clicked position on the progress bar. While the user is dragging, the audio is paused to allow for smooth scrubbing without stuttering. When they release the mouse button, the audio will resume if it was playing before.
      * @param {MouseEvent} e - The mouse event from the progress bar click.
      */
     scrub(e) {
@@ -282,11 +277,11 @@ export default class MusicPlayer {
 
     /**
      * Toggle the play/pause icon SVGs.
-     * @param {boolean} playing - Whether the player is currently playing.
+     * @param {boolean} isPlaying - Whether the player is currently playing.
      */
-    togglePlayPauseIcon(playing) {
-        this.iconPlay.style.display = playing ? 'none' : 'inline';
-        this.iconPause.style.display = playing ? 'inline' : 'none';
+    togglePlayPauseIcon(isPlaying) {
+        this.iconPlay.style.display = isPlaying ? 'none' : 'inline';
+        this.iconPause.style.display = isPlaying ? 'inline' : 'none';
     }
 
     /** Toggle the playlist accordion open/closed. */
@@ -301,6 +296,7 @@ export default class MusicPlayer {
         if (this.trackNames.length === 0) {
             return;
         }
+
         this.trackNameEl.textContent = this.trackNames[this.currentSongIndex] ?? '';
     }
 
@@ -312,14 +308,19 @@ export default class MusicPlayer {
         if (!this.playlistEls || index === this.currentSongIndex) {
             return;
         }
+
         this.audio.pause();
         this.audio.currentTime = 0;
         this.progress.value = 0;
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
         this.currentSongIndex = index;
-        this.updatePlaylistStyle();
         this.audio.src = this.trackList[this.currentSongIndex];
+        this.updatePlaylistStyle();
+        this.enqueuePlay();
+    }
+
+    enqueuePlay() {
         clearTimeout(this.trackSkipWhilePlayingTimeout);
         this.trackSkipWhilePlayingTimeout = setTimeout(() => {
             this.isPlaying = true;
@@ -346,7 +347,7 @@ export default class MusicPlayer {
         `;
         listItem.querySelector('.remove-track').addEventListener('click', (e) => {
             e.stopPropagation();
-            const idx = Number.parseInt(listItem.dataset.index, 10);
+            const idx = Number(listItem.dataset.index);
             this.removeTrack(idx);
         });
         return listItem;
@@ -355,17 +356,19 @@ export default class MusicPlayer {
     /** Render the entire playlist from trackList. */
     renderPlaylist() {
         this.playListEl.innerHTML = '';
+        const fragment = document.createDocumentFragment();
         for (let i = 0; i < this.trackList.length; i++) {
             const fileName = this.trackNames[i];
             const listItem = this.createPlaylistItem(fileName, i);
-            this.playListEl.append(listItem);
+            fragment.append(listItem);
         }
+        this.playListEl.append(fragment);
         this.playlistEls = document.querySelectorAll('.list-item');
         this.bindDragEvents(this.playlistEls);
         this.updatePlaylistStyle();
     }
 
-    /** Update data-index attributes for all list items. */
+    /** Update data-index attributes for all list items. This is needed when the user reorders tracks by drag and drop or removes a track. */
     updatePlaylistIndices() {
         const items = this.playListEl.querySelectorAll('.list-item');
         for (let i = 0; i < items.length; i++) {
@@ -393,7 +396,7 @@ export default class MusicPlayer {
      * @param {DragEvent} e - The drag event.
      */
     handleDragStart(e) {
-        this.draggedIndex = Number.parseInt(e.target.dataset.index, 10);
+        this.draggedIndex = Number(e.target.dataset.index);
         e.target.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
     }
@@ -442,7 +445,7 @@ export default class MusicPlayer {
         if (!targetItem) {
             return;
         }
-        const dropIndex = Number.parseInt(targetItem.dataset.index, 10);
+        const dropIndex = Number(targetItem.dataset.index);
         if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
             return;
         }
@@ -454,13 +457,16 @@ export default class MusicPlayer {
         this.trackNames.splice(dropIndex, 0, removedName);
 
         if (this.currentSongIndex === this.draggedIndex) {
+            // moving the currently playing track - update currentSongIndex to new location
             this.currentSongIndex = dropIndex;
         } else if (
+            // track being moved was before the currently playing track, and now is after, decrement currentSongIndex to account for the shift
             this.draggedIndex < this.currentSongIndex &&
             dropIndex >= this.currentSongIndex
         ) {
             this.currentSongIndex -= 1;
         } else if (
+            // track being moved was after the currently playing track, and now is before, increment currentSongIndex to account for the shift
             this.draggedIndex > this.currentSongIndex &&
             dropIndex <= this.currentSongIndex
         ) {
@@ -510,7 +516,7 @@ export default class MusicPlayer {
             }
             this.audio.src = this.trackList[this.currentSongIndex];
             if (this.isPlaying) {
-                this.audio.play();
+                this.enqueuePlay();
             }
         }
 
@@ -534,11 +540,14 @@ export default class MusicPlayer {
             cancelAnimationFrame(this.eqRafId);
             this.eqRafId = null;
         }
-        this.drawFlatEq();
+        this.drawEq(true);
     }
 
-    /** Draw the EQ with current frequency data. */
-    drawEq() {
+    /** Draw the EQ with current frequency data.
+     * If `flat` is true, draw flat bars (used when music is paused). Otherwise, use frequency data from the AlgorithmLoader's frequencyAnalyser to draw dynamic bars. The animation is smoothed by blending current frequency values with previous ones.
+     * @param {boolean} flat - Whether to draw flat bars (true when music is paused) or dynamic bars based on frequency data (false when music is playing).
+     */
+    drawEq(flat = false) {
         if (!this.eqCtx) {
             return;
         }
@@ -546,46 +555,34 @@ export default class MusicPlayer {
         const { width, height } = this.eqCanvas;
         const bandCount = 5;
         const bandWidth = width / bandCount;
-        const smoothing = 0.7;
-
-        const newBands =
-            AlgorithmLoader.frequencyAnalyser && this.isPlaying
-                ? AlgorithmLoader.frequencyAnalyser.getBands()
-                : [0, 0, 0, 0, 0];
-
-        this.previousFreqBandValues = this.previousFreqBandValues.map(
-            (prev, i) => prev * smoothing + newBands[i] * (1 - smoothing),
-        );
 
         this.eqCtx.clearRect(0, 0, width, height);
         this.eqCtx.fillStyle = '#32cd32';
 
+        let bands = [0, 0, 0, 0, 0];
+
+        if (!flat) {
+            const smoothing = 0.7;
+            const newBands =
+                AlgorithmLoader.frequencyAnalyser && this.isPlaying
+                    ? AlgorithmLoader.frequencyAnalyser.getBands()
+                    : [0, 0, 0, 0, 0];
+
+            this.previousFreqBandValues = this.previousFreqBandValues.map(
+                (prev, i) => prev * smoothing + newBands[i] * (1 - smoothing),
+            );
+            bands = this.previousFreqBandValues;
+        }
+
         for (let i = 0; i < bandCount; i++) {
-            const bandHeight = Math.max(1, this.previousFreqBandValues[i] * height);
+            const bandHeight = flat ? 1 : Math.max(1, bands[i] * height);
             const x = i * bandWidth;
             const y = height - bandHeight;
             this.eqCtx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
         }
 
-        this.eqRafId = requestAnimationFrame(() => this.drawEq());
-    }
-
-    /** Draw flat (zero) EQ bars. */
-    drawFlatEq() {
-        if (!this.eqCtx) {
-            return;
-        }
-
-        const { width, height } = this.eqCanvas;
-        const bandCount = 5;
-        const bandWidth = width / bandCount;
-
-        this.eqCtx.clearRect(0, 0, width, height);
-        this.eqCtx.fillStyle = '#32cd32';
-
-        for (let i = 0; i < bandCount; i++) {
-            const x = i * bandWidth;
-            this.eqCtx.fillRect(x + 1, height - 1, bandWidth - 2, 1);
+        if (!flat) {
+            this.eqRafId = requestAnimationFrame(() => this.drawEq());
         }
     }
 

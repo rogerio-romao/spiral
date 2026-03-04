@@ -1,6 +1,6 @@
 import MusicPlayer from '../../src/MusicPlayer.js';
 
-// oxlint-disable-next-line vitest/prefer-import-in-mock
+// eslint-disable-next-line vitest/prefer-import-in-mock
 vi.mock('../../src/AlgorithmLoader.js', () => ({
     default: { frequencyAnalyser: null },
 }));
@@ -57,14 +57,14 @@ describe('musicPlayer (browser)', () => {
     describe('setPlayIcon', () => {
         it('shows pause icon and hides play icon when playing', () => {
             const player = createPlayer();
-            player.setPlayIcon(true);
+            player.togglePlayPauseIcon(true);
             expect(document.querySelector('#icon-play').style.display).toBe('none');
             expect(document.querySelector('#icon-pause').style.display).toBe('inline');
         });
 
         it('shows play icon and hides pause icon when not playing', () => {
             const player = createPlayer();
-            player.setPlayIcon(false);
+            player.togglePlayPauseIcon(false);
             expect(document.querySelector('#icon-play').style.display).toBe('inline');
             expect(document.querySelector('#icon-pause').style.display).toBe('none');
         });
@@ -132,10 +132,10 @@ describe('musicPlayer (browser)', () => {
         });
     });
 
-    describe('drawFlatEq (real Canvas 2D)', () => {
+    describe('draw flat Eq (real Canvas 2D)', () => {
         it('renders flat eq bars without errors', () => {
             const player = createPlayer();
-            expect(() => player.drawFlatEq()).not.toThrow();
+            expect(() => player.drawEq(true)).not.toThrow();
         });
 
         it('canvas has correct dimensions', () => {
@@ -149,7 +149,7 @@ describe('musicPlayer (browser)', () => {
     describe('destroy', () => {
         it('calls revokeObjectURL for all blob URLs', () => {
             const player = createPlayer();
-            player.blobUrls = ['blob:url1', 'blob:url2'];
+            player.trackList = ['blob:url1', 'blob:url2'];
             player.destroy();
             expect(URL.revokeObjectURL).toHaveBeenCalledTimes(2);
         });
