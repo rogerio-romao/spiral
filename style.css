@@ -108,6 +108,9 @@ canvas {
     top: 0;
     left: 0;
     cursor: pointer;
+
+    /* forces GPU layer promotion */
+    transform: translateZ(0);
 }
 
 #waveform {

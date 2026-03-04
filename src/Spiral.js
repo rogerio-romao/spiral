@@ -8,25 +8,45 @@ import TransitionManager from './TransitionManager.js';
 import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import WaveformController from './WaveformController.js';
 
+/**
+ * Spiral orchestrates the main application logic for the generative art visualizer.
+ *
+ * Handles canvas setup, HUD, algorithm lifecycle, music player, audio analysis,
+ * waveform rendering, keyboard shortcuts, and global event listeners.
+ *
+ * Entry point for the renderer process.
+ */
 export default class Spiral {
+    // INSTANCE PROPERTIES
+    algoChangeDebounceDelayInMs = 250;
+    cursorHideDelayInMs = 4000;
+    cursorHideTimeout = null;
+    debounceTimeout = null;
+    frequencyAnalyser = null;
+    keyboardController = null;
+    musicPlayer = null;
+    resizeTimeout = null;
+    waveformController = null;
+
     constructor() {
+        // CANVAS SETUP
         this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
         this.w = globalThis.innerWidth;
         this.h = globalThis.innerHeight;
-        this._applyDpr();
+        this.applyDpr();
 
-        // forces GPU layer promotion
-        this.canvas.style.transform = 'translateZ(0)';
-
-        this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
-        this.algorithmChooser = new AlgorithmChooser();
-
+        // HUD SETUP
         this.hud = new HudController({
             algosDisplayElement: document.querySelector('#algos'),
             helpElement: document.querySelector('#help'),
             messageElement: document.querySelector('#msg'),
         });
+
+        // ALGORITHM & TRANSITION MANAGEMENT
+        this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
+
+        this.algorithmChooser = new AlgorithmChooser();
 
         this.transitionManager = new TransitionManager({
             algorithmChooser: this.algorithmChooser,
@@ -37,79 +57,27 @@ export default class Spiral {
             hud: this.hud,
         });
 
+        // DEV MODE CONTROLLER
         this.devModeController = new DevModeController({
             hud: this.hud,
             transitionManager: this.transitionManager,
         });
 
-        this.musicPlayer = null;
-        this.frequencyAnalyser = null;
-        this.keyboardController = null;
-        this.cursorHideTimeout = null;
-        this.resizeTimeout = null;
-
         this.init();
     }
 
-    init() {
-        // display some user tips on screen
-        this.canvas.focus();
-
-        // Hide cursor by default on launch
-        this.canvas.style.cursor = 'none';
-        this.hud.displayMessage('WELCOME');
-        this._welcomeTimers = [
-            setTimeout(() => {
-                this.hud.displayMessage('PRESS H FOR HELP');
-            }, 10_000),
-            setTimeout(() => {
-                this.hud.displayMessage('TIP: F FOR FULLSCREEN');
-            }, 20_000),
-        ];
-
-        // make algorithms auto-change if not in manual mode
-        this.transitionManager.resetAutoChangeTimer();
-
-        // add canvas-level event listeners
-        this._addCanvasListeners();
-
-        // trigger the first algorithm
-        this.transitionManager.startFirst();
-
-        // Music player — deferred from constructor so algorithm loading
-        // and first render are not blocked by audio subsystem setup
-        this.musicPlayer = new MusicPlayer();
-
-        // Frequency analyser — connects to the audio element owned by MusicPlayer
-        this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
-        AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
-        this.musicPlayer.frequencyAnalyser = this.frequencyAnalyser;
-
-        // Waveform controller — uses frequency analyser to render waveform
-        this.waveformController = new WaveformController({
-            canvasElement: document.querySelector('#waveform'),
-            frequencyAnalyser: this.frequencyAnalyser,
-        });
-        AlgorithmLoader.waveformController = this.waveformController;
-
-        // Resume AudioContext on any play event (covers play, next, prev)
-        this.musicPlayer.audio.addEventListener('play', () => {
-            this.frequencyAnalyser.resume();
-        });
-
-        // Keyboard controller (created after musicPlayer exists)
-        this.keyboardController = new KeyboardController({
-            DevModeController: this.devModeController,
-            HudController: this.hud,
-            MusicPlayer: this.musicPlayer,
-            Spiral: this,
-            TransitionManager: this.transitionManager,
-        });
-        this.keyboardController.bind();
-    }
-
-    _addCanvasListeners() {
-        // recover from algorithm draw() errors by loading the next algorithm
+    /**
+     * Adds all event listeners related to the main canvas element.
+     *
+     * Handles:
+     * - Algorithm error recovery (loads next algorithm on error)
+     * - Window resize (stops current algorithm, resizes canvas and waveform, debounces restart)
+     * - Canvas click (triggers new algorithm)
+     * - Mouse movement (shows/hides cursor after inactivity)
+     * - Device pixel ratio changes (re-applies DPR and restarts algorithm)
+     */
+    addCanvasListeners() {
+        // recover from algorithm draw() errors by loading the next algorithm - this is a custom event emitted by the AlgorithmLoader wrapper around the algorithm draw calls
         this.canvas.addEventListener('algorithm-error', () => {
             this.transitionManager.changeAlgorithm();
         });
@@ -122,13 +90,13 @@ export default class Spiral {
             const rect = this.canvas.getBoundingClientRect();
             this.w = rect.width;
             this.h = rect.height;
-            this._applyDpr();
+            this.applyDpr();
 
             // Also resize waveform canvas
             this.waveformController?.resize();
 
             // Debounce algorithm restart
-            this._debounceAlgorithmRestart();
+            this.debounceAlgorithmRestart();
         });
 
         // on canvas click, generate a new spiral
@@ -138,22 +106,19 @@ export default class Spiral {
 
         // on mousemove, show the cursor
         this.canvas.addEventListener('mousemove', () => {
-            // Show cursor
             this.canvas.style.cursor = 'pointer';
 
-            // Clear existing timeout to prevent unbounded setTimeout accumulation
             if (this.cursorHideTimeout) {
                 clearTimeout(this.cursorHideTimeout);
             }
 
-            // Set new timeout and store ID for debouncing
             this.cursorHideTimeout = setTimeout(() => {
                 this.canvas.style.cursor = 'none';
-            }, 4000);
+            }, this.cursorHideDelayInMs);
         });
 
         // Detect devicePixelRatio changes (e.g. dragging between monitors)
-        this._watchDprChange();
+        this.watchDprChange();
     }
 
     /**
@@ -161,7 +126,7 @@ export default class Spiral {
      * Keeps this.w / this.h as logical CSS pixels; the canvas buffer is
      * scaled up so rendering is sharp on HiDPI / Retina displays.
      */
-    _applyDpr() {
+    applyDpr() {
         const dpr = globalThis.devicePixelRatio || 1;
         this.canvas.width = this.w * dpr;
         this.canvas.height = this.h * dpr;
@@ -172,9 +137,19 @@ export default class Spiral {
         this.ctx.scale(dpr, dpr);
     }
 
-    toggleWaveform() {
-        const isOn = this.waveformController.toggle();
-        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF');
+    /**
+     * Debounce algorithm restart after resize or DPR change.
+     * Ensures only one restart is pending at a time.
+     * @param {number} delay - The debounce delay in milliseconds.
+     */
+    debounceAlgorithmRestart(delay = this.algoChangeDebounceDelayInMs) {
+        if (this.debounceTimeout) {
+            clearTimeout(this.debounceTimeout);
+        }
+        this.debounceTimeout = setTimeout(() => {
+            this.transitionManager.changeAlgorithm();
+            this.debounceTimeout = null;
+        }, delay);
     }
 
     /** Clean up resources before the app closes. */
@@ -194,35 +169,93 @@ export default class Spiral {
     }
 
     /**
-     * Debounce algorithm restart after resize or DPR change.
-     * Ensures only one restart is pending at a time.
-     * @param {number} delay - The debounce delay in milliseconds.
+     * Initializes the Spiral application.
+     *
+     * Sets up the canvas, HUD, event listeners, algorithm transitions,
+     * music player, frequency analyser, waveform controller, and keyboard shortcuts.
+     * This method is called from the constructor after all controllers are created.
      */
-    _debounceAlgorithmRestart(delay = 250) {
-        if (this._debounceTimer) {
-            clearTimeout(this._debounceTimer);
-        }
-        this._debounceTimer = setTimeout(() => {
-            this.transitionManager.changeAlgorithm();
-            this._debounceTimer = null;
-        }, delay);
+    init() {
+        // Hide cursor by default on launch
+        this.canvas.style.cursor = 'none';
+
+        // welcome messages and tips
+        this.hud.displayMessage('WELCOME');
+        this._welcomeTimers = [
+            setTimeout(() => {
+                this.hud.displayMessage('PRESS H FOR HELP');
+            }, 10_000),
+            setTimeout(() => {
+                this.hud.displayMessage('TIP: F FOR FULLSCREEN');
+            }, 20_000),
+            setTimeout(() => {
+                this.hud.displayMessage('TIP: P TO OPEN MUSIC PLAYER');
+            }, 30_000),
+        ];
+
+        // initiate the transitions timer
+        this.transitionManager.resetAutoChangeTimer();
+
+        // add event listeners
+        this.addCanvasListeners();
+
+        // trigger the first algorithm
+        this.transitionManager.startFirst();
+
+        // Music player — deferred from constructor so algorithm loading
+        // and first render are not blocked by audio subsystem setup
+        this.musicPlayer = new MusicPlayer();
+
+        // Frequency analyser — connects to the audio element owned by MusicPlayer, and we pass it to AlgorithmLoader so algorithms can access frequency data if they want, and the musicPlayer makes use of it for graphic eq viz and for gain node control over the audio output.
+        this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
+        AlgorithmLoader.frequencyAnalyser = this.frequencyAnalyser;
+        this.musicPlayer.frequencyAnalyser = this.frequencyAnalyser;
+
+        // Waveform controller — uses frequency analyser to render waveform, and we pass it to AlgorithmLoader so algorithms can use the waveform data
+        this.waveformController = new WaveformController({
+            canvasElement: document.querySelector('#waveform'),
+            frequencyAnalyser: this.frequencyAnalyser,
+        });
+        AlgorithmLoader.waveformController = this.waveformController;
+
+        // Resume AudioContext on any play event (covers play, next, prev)
+        this.musicPlayer.audio.addEventListener('play', () => {
+            this.frequencyAnalyser.resume();
+        });
+
+        // Keyboard controller for global shortcuts
+        this.keyboardController = new KeyboardController({
+            DevModeController: this.devModeController,
+            HudController: this.hud,
+            MusicPlayer: this.musicPlayer,
+            Spiral: this,
+            TransitionManager: this.transitionManager,
+        });
+        this.keyboardController.bind();
+    }
+
+    /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */
+    toggleWaveform() {
+        const isOn = this.waveformController.toggle();
+        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF');
     }
 
     /**
-     * Watches for devicePixelRatio changes via matchMedia.
-     * Re-registers on each change since the media query targets a specific DPR.
+     * Sets up a listener for changes in devicePixelRatio, which can occur when dragging the window between monitors with different DPIs. When a change is detected, it reapplies the DPR settings to the canvas and restarts the current algorithm to ensure it renders correctly at the new resolution.
      */
-    _watchDprChange() {
+    watchDprChange() {
+        // Listen for changes in devicePixelRatio using the 'change' event on a MediaQueryList that matches the current DPR. This is a more efficient way to detect DPR changes than polling.
         const mql = globalThis.matchMedia(`(resolution: ${globalThis.devicePixelRatio}dppx)`);
+
         mql.addEventListener(
             'change',
             () => {
-                this._applyDpr();
+                this.applyDpr();
                 // Stop current algorithm immediately and debounce restart
                 this.transitionManager.stopCurrentAlgorithm();
-                this._debounceAlgorithmRestart();
+                this.debounceAlgorithmRestart();
                 // Re-register for the new DPR value
-                this._watchDprChange();
+                this.watchDprChange();
             },
             { once: true },
         );

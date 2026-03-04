@@ -182,11 +182,10 @@ export default class MusicPlayer {
     /**
      * Fade gain to zero via the GainNode, then pause playback.
      * Eliminates the audible click that occurs with an abrupt pause.
-     * @param {number} durationMs - Duration of the fade-out in milliseconds.
      */
-    async fadePause(durationMs = this.playToggleFadeDurationInMs) {
+    async fadePause() {
         if (this.frequencyAnalyser) {
-            await this.frequencyAnalyser.fadeTo(0, durationMs);
+            await this.frequencyAnalyser.fadeTo(0, this.playToggleFadeDurationInMs);
         }
         this.audio.pause();
     }
