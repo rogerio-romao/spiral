@@ -286,7 +286,7 @@ input[type='file'] {
         transform var(--transition-slow) ease;
 }
 
-#playlist-toggle.visible {
+#playlist-toggle.tracks-present {
     display: inline-flex;
 }
 

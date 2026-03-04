@@ -66,16 +66,6 @@ export default class DevModeController {
         this.algoASelect = document.querySelector('#dev-algo-a');
         this.algoBSelect = document.querySelector('#dev-algo-b');
         this.badge = document.querySelector('#dev-badge');
-
-        if (
-            !this.modal ||
-            !this.enableCheckbox ||
-            !this.algoASelect ||
-            !this.algoBSelect ||
-            !this.badge
-        ) {
-            throw new Error('DevModeController: Missing required DOM elements');
-        }
     }
 
     /**
