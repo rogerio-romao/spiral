@@ -3,7 +3,9 @@ import htmlEscape from './utils/htmlEscape.js';
 
 /**
  * MusicPlayer — handles audio playback, playlist management,
- * and progress bar.
+ * and progress bar, as well as the EQ visualization.
+ * It also manages the UI state for play/pause icons, track highlighting, and playlist accordion.
+ * The class is designed to be instantiated once and manages its own DOM references and event listeners.
  */
 export default class MusicPlayer {
     // INSTANCE PROPERTIES
@@ -18,15 +20,45 @@ export default class MusicPlayer {
     isPlaying = false;
     playlistEls = null;
     eqRafId = null;
+    // used for smoothing the EQ animation by keeping track of previous values, and for zeroing out the display when music is paused
+    previousFreqBandValues = [0, 0, 0, 0, 0];
 
     constructor() {
-        // used for smoothing the EQ animation by keeping track of previous values, and for zeroing out the display when music is paused
-        this.previousFreqBandValues = [0, 0, 0, 0, 0];
-
         this.initDomRefs();
         this.bindEvents();
     }
 
+    /**
+     * Bind all event listeners for player controls and UI elements.
+     * This method attaches handlers for file input, playback controls,
+     * progress bar, playlist toggling, and playlist item clicks.
+     * Should be called once in the constructor.
+     */
+    bindEvents() {
+        this.input.addEventListener('change', () => this.handleFiles());
+
+        this.playBtn.addEventListener('click', () => this.playTrack());
+        this.stopBtn.addEventListener('click', () => this.stopPlayback());
+        this.nextBtn.addEventListener('click', () => this.playNext());
+        this.prevBtn.addEventListener('click', () => this.playPrev());
+
+        this.audio.addEventListener('ended', () => this.playNext());
+        this.audio.addEventListener('timeupdate', () => this.displayProgress());
+        this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
+
+        this.progress.addEventListener('mousedown', () => this.audio.pause());
+        this.progress.addEventListener('mouseup', (e) => this.scrub(e));
+        this.elapsedEl.addEventListener('click', () => this.onElapsedClick());
+
+        this.playlistToggle.addEventListener('click', () => this.togglePlaylist());
+        this.playListEl.addEventListener('click', (e) => this.onPlaylistClick(e));
+    }
+
+    /**
+     * Initialize DOM references for all player UI elements.
+     * This method queries the DOM for required elements and assigns them to instance properties.
+     * Should be called once in the constructor.
+     */
     initDomRefs() {
         this.player = document.querySelector('#player');
         this.input = document.querySelector('#input');
@@ -49,50 +81,11 @@ export default class MusicPlayer {
         this.eqCtx = this.eqCanvas?.getContext('2d');
     }
 
-    bindEvents() {
-        this.input.addEventListener('change', () => this.handleFiles());
-
-        this.playBtn.addEventListener('click', () => this.playTrack());
-        this.stopBtn.addEventListener('click', () => this.stopPlayback());
-        this.nextBtn.addEventListener('click', () => this.playNext());
-        this.prevBtn.addEventListener('click', () => this.playPrev());
-
-        this.audio.addEventListener('ended', () => this.playNext());
-        this.audio.addEventListener('timeupdate', () => this.displayProgress());
-        this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
-
-        this.progress.addEventListener('mousedown', () => this.audio.pause());
-        this.progress.addEventListener('mouseup', (e) => this.scrub(e));
-        this.elapsedEl.addEventListener('click', () => this.onElapsedClick());
-
-        this.playlistToggle.addEventListener('click', () => this.togglePlaylist());
-        this.playListEl.addEventListener('click', (e) => this.onPlaylistClick(e));
-    }
-
-    onLoadedMetadata() {
-        this.totalEl.textContent = this.formatTime(this.audio.duration);
-        this.elapsedEl.textContent = '0:00';
-    }
-
-    onElapsedClick() {
-        this.showRemaining = !this.showRemaining;
-        this.displayProgress();
-    }
-
     /**
-     * Handle playlist clicks using event delegation.
-     * Uses `closest` to safely traverse UP to the parent `.list-item` to get the `data-index`, ensuring it works correctly even if a child element (like the text span) was clicked, and also ensuring that clicks on the "remove" button don't trigger a track jump.
-     * @param {MouseEvent} e - The click event.
+     * Handle file input changes and build or update the playlist.
+     * Processes selected files, avoids duplicates, updates the UI,
+     * and manages playback state as needed.
      */
-    onPlaylistClick(e) {
-        const listItem = e.target.closest('.list-item');
-        if (listItem && !e.target.closest('.remove-track')) {
-            const index = Number(listItem.dataset.index);
-            this.jumpToTrack(index);
-        }
-    }
-
-    /** Process file input and build the playlist. */
     handleFiles() {
         // Pause playback while updating the playlist, and remember if we were playing so we can resume if needed
         const wasPlaying = this.isPlaying;
@@ -142,7 +135,41 @@ export default class MusicPlayer {
         this.input.value = '';
     }
 
-    /** Play or pause the current track. */
+    /**
+     * Toggle between showing elapsed and remaining time in the player UI.
+     * Updates the progress display accordingly.
+     */
+    onElapsedClick() {
+        this.showRemaining = !this.showRemaining;
+        this.displayProgress();
+    }
+
+    /**
+     * Handler for the audio element's 'loadedmetadata' event.
+     * Updates the total duration and resets the elapsed time display.
+     */
+    onLoadedMetadata() {
+        this.totalEl.textContent = this.formatTime(this.audio.duration);
+        this.elapsedEl.textContent = '0:00';
+    }
+
+    /**
+     * Handle playlist clicks using event delegation.
+     * Uses `closest` to safely traverse UP to the parent `.list-item` to get the `data-index`, ensuring it works correctly even if a child element (like the text span) was clicked, and also ensuring that clicks on the "remove" button don't trigger a track jump.
+     * @param {MouseEvent} e - The click event.
+     */
+    onPlaylistClick(e) {
+        const listItem = e.target.closest('.list-item');
+        if (listItem && !e.target.closest('.remove-track')) {
+            const index = Number(listItem.dataset.index);
+            this.jumpToTrack(index);
+        }
+    }
+
+    /**
+     * Play or pause the current track.
+     * Handles toggling playback state, updating UI, and EQ animation.
+     */
     playTrack() {
         if (!this.isPlaying && this.playlistEls) {
             this.isPlaying = true;
@@ -159,7 +186,10 @@ export default class MusicPlayer {
         }
     }
 
-    /** Stop playback and rewind. */
+    /**
+     * Stop playback and rewind the current track.
+     * Resets playback state, progress, and UI highlights.
+     */
     stopPlayback() {
         if (this.isPlaying) {
             this.audio.pause();
@@ -267,7 +297,11 @@ export default class MusicPlayer {
         }
     }
 
-    /** Style the playlist to highlight the current track. */
+    /**
+     * Update the playlist UI to highlight the current track.
+     * Resets all track colors, highlights the active one, scrolls it into view,
+     * and updates the now-playing track name.
+     */
     updatePlaylistStyle() {
         [...this.playlistEls].map((el) => (el.style.color = '#555'));
         this.playlistEls[this.currentSongIndex].style.color = 'orange';
@@ -284,7 +318,10 @@ export default class MusicPlayer {
         this.iconPause.style.display = isPlaying ? 'inline' : 'none';
     }
 
-    /** Toggle the playlist accordion open/closed. */
+    /**
+     * Toggle the playlist accordion open or closed.
+     * Updates the UI state for the playlist and its toggle button.
+     */
     togglePlaylist() {
         this.playlistIsOpen = !this.playlistIsOpen;
         this.accordionEl.classList.toggle('open', this.playlistIsOpen);
@@ -301,7 +338,8 @@ export default class MusicPlayer {
     }
 
     /**
-     * Jump directly to a track and start playback.
+     * Jump to a specific track that was clicked in the playlist. If the clicked track is already playing, this will do nothing. If it's a different track, this will switch to it and start playback if the player was already playing, after a brief pause to allow the new track to load without stuttering.
+     * Updates the audio source, resets progress, and updates the playlist UI.
      * @param {number} index - The index of the track to jump to.
      */
     jumpToTrack(index) {
@@ -320,6 +358,10 @@ export default class MusicPlayer {
         this.enqueuePlay();
     }
 
+    /**
+     * Schedule playback after a brief delay to allow for track switching.
+     * Ensures smooth transitions between tracks by avoiding stutter.
+     */
     enqueuePlay() {
         clearTimeout(this.trackSkipWhilePlayingTimeout);
         this.trackSkipWhilePlayingTimeout = setTimeout(() => {
@@ -353,7 +395,10 @@ export default class MusicPlayer {
         return listItem;
     }
 
-    /** Render the entire playlist from trackList. */
+    /**
+     * Render the entire playlist UI from the current track list.
+     * Rebuilds the playlist DOM, binds drag events, and updates the playlist style.
+     */
     renderPlaylist() {
         this.playListEl.innerHTML = '';
         const fragment = document.createDocumentFragment();
@@ -436,8 +481,9 @@ export default class MusicPlayer {
     }
 
     /**
-     * Drop - reorder tracks.
-     * @param {DragEvent} e - The drag event.
+     * Handle drop event for drag-and-drop playlist reordering.
+     * Moves the dragged track to the drop position and updates the playlist state, adjusting the current song index as needed to ensure the correct track continues playing if the currently playing track was moved.
+     * @param {DragEvent} e - The drop event.
      */
     handleDrop(e) {
         e.preventDefault();
@@ -479,7 +525,8 @@ export default class MusicPlayer {
     }
 
     /**
-     * Remove a track from the playlist.
+     * Remove a track from the playlist by index.
+     * Updates the playlist, UI, and playback state as needed.
      * @param {number} index - The index of the track to remove.
      */
     removeTrack(index) {
@@ -525,7 +572,10 @@ export default class MusicPlayer {
         this.updatePlaylistStyle();
     }
 
-    /** Start the EQ animation loop. */
+    /**
+     * Start the EQ animation loop.
+     * Resets previous frequency band values and begins drawing the EQ visualization.
+     */
     startEq() {
         if (!this.eqCanvas || !this.eqCtx) {
             return;
@@ -586,14 +636,14 @@ export default class MusicPlayer {
         }
     }
 
-    /** Clean up resources (blob URLs, etc.) on app close. */
+    /** Clean up resources (blob URLs) on app close. */
     destroy() {
         for (const url of this.trackList) {
             globalThis.URL.revokeObjectURL(url);
         }
     }
 
-    /** Toggle player panel visibility. Called by KeyboardController. */
+    /** Toggle music player panel visibility. Called by KeyboardController. */
     togglePlayerVisibility() {
         this.showPlayer = !this.showPlayer;
         this.player.style.display = this.showPlayer ? 'block' : 'none';
