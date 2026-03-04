@@ -3,7 +3,7 @@ import TransitionManager from '../src/TransitionManager.js';
 import createMockCanvas from './helpers/mockCanvas.js';
 
 function createDeps(overrides = {}) {
-    const { canvas, ctx } = createMockCanvas();
+    const { canvas } = createMockCanvas();
     const mockHud = { displayAlgorithmName: vi.fn() };
     const mockChooser = {
         getRandomAlgorithm: vi.fn(
@@ -17,12 +17,11 @@ function createDeps(overrides = {}) {
     };
 
     return {
-        algorithmChooser: mockChooser,
-        algorithmLoader: { speed: 0 },
+        AlgorithmChooser: mockChooser,
+        AlgorithmLoader: { speed: 0 },
         canvas,
-        ctx,
         getDimensions: () => ({ h: 1080, w: 1920 }),
-        hud: mockHud,
+        HudController: mockHud,
         ...overrides,
     };
 }
@@ -32,8 +31,8 @@ describe('transitionManager', () => {
         it('initialises with correct defaults', () => {
             const tm = new TransitionManager(createDeps());
             expect(tm.currentAlgorithm).toBeNull();
-            expect(tm.autoChange).toBe(60);
-            expect(tm.manual).toBeFalsy();
+            expect(tm.autoChangeIntervalInSeconds).toBe(60);
+            expect(tm.isInManualMode).toBeFalsy();
             expect(tm.isTransitioning).toBeFalsy();
         });
     });
@@ -42,14 +41,14 @@ describe('transitionManager', () => {
         it('calls stop() on the current algorithm', () => {
             const tm = new TransitionManager(createDeps());
             const stopSpy = vi.fn();
-            tm._currentAlgorithm = { stop: stopSpy };
+            tm.currentAlgorithm = { stop: stopSpy };
             tm.stopCurrentAlgorithm();
             expect(stopSpy).toHaveBeenCalledOnce();
         });
 
         it('sets currentAlgorithm to null', () => {
             const tm = new TransitionManager(createDeps());
-            tm._currentAlgorithm = { stop: vi.fn() };
+            tm.currentAlgorithm = { stop: vi.fn() };
             tm.stopCurrentAlgorithm();
             expect(tm.currentAlgorithm).toBeNull();
         });
@@ -66,7 +65,7 @@ describe('transitionManager', () => {
             const tm = new TransitionManager(deps);
             tm.changeAlgorithm();
             // oxlint-disable-next-line jest/prefer-called-with
-            expect(deps.algorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
+            expect(deps.AlgorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
             expect(tm.currentAlgorithm).not.toBeNull();
         });
 
@@ -74,15 +73,15 @@ describe('transitionManager', () => {
             const deps = createDeps();
             const tm = new TransitionManager(deps);
             tm.changeAlgorithm();
-            expect(deps.hud.displayAlgorithmName).toHaveBeenCalledWith('FakeAlgo');
+            expect(deps.HudController.displayAlgorithmName).toHaveBeenCalledWith('FakeAlgo');
         });
 
         it('does nothing when already transitioning', () => {
             const deps = createDeps();
             const tm = new TransitionManager(deps);
-            tm._isTransitioning = true;
+            tm.isTransitioning = true;
             tm.changeAlgorithm();
-            expect(deps.algorithmChooser.getRandomAlgorithm).not.toHaveBeenCalled();
+            expect(deps.AlgorithmChooser.getRandomAlgorithm).not.toHaveBeenCalled();
         });
 
         it('resets isTransitioning to false after completion', () => {
@@ -92,7 +91,7 @@ describe('transitionManager', () => {
         });
     });
 
-    describe('_chooseAlgos retry logic', () => {
+    describe('chooseAlgos retry logic', () => {
         it('retries up to 3 times when the algorithm constructor throws', () => {
             let callCount = 0;
             const chooser = {
@@ -106,19 +105,19 @@ describe('transitionManager', () => {
                 }),
             };
 
-            const tm = new TransitionManager(createDeps({ algorithmChooser: chooser }));
-            tm._chooseAlgos();
+            const tm = new TransitionManager(createDeps({ AlgorithmChooser: chooser }));
+            tm.chooseAlgos();
 
             // Should try 3 times (1 initial + 2 retries) then stop
             expect(callCount).toBe(3);
-            expect(tm._algoRetries).toBe(0);
+            expect(tm.algoRetries).toBe(0);
         });
 
         it('resets retry counter on success', () => {
             const tm = new TransitionManager(createDeps());
-            tm._algoRetries = 2;
-            tm._chooseAlgos();
-            expect(tm._algoRetries).toBe(0);
+            tm.algoRetries = 2;
+            tm.chooseAlgos();
+            expect(tm.algoRetries).toBe(0);
         });
     });
 
@@ -135,24 +134,24 @@ describe('transitionManager', () => {
             const deps = createDeps();
             const tm = new TransitionManager(deps);
             tm.resetAutoChangeTimer();
-            expect(tm._regen).not.toBeNull();
+            expect(tm.autoChangeTimeout).not.toBeNull();
         });
 
         it('does not start an interval when manual is true', () => {
             const tm = new TransitionManager(createDeps());
-            tm.manual = true;
+            tm.isInManualMode = true;
             tm.resetAutoChangeTimer();
-            expect(tm._regen).toBeNull();
+            expect(tm.autoChangeTimeout).toBeNull();
         });
 
         it('calls changeAlgorithm after the autoChange interval elapses', () => {
             const deps = createDeps();
             const tm = new TransitionManager(deps);
-            tm.autoChange = 5;
+            tm.autoChangeIntervalInSeconds = 2;
             tm.resetAutoChangeTimer();
-            vi.advanceTimersByTime(5000);
+            vi.advanceTimersByTime(2000);
             // oxlint-disable-next-line jest/prefer-called-with
-            expect(deps.algorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
+            expect(deps.AlgorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
         });
     });
 
@@ -160,8 +159,8 @@ describe('transitionManager', () => {
         it('setDevModeActive enables dev mode', () => {
             const tm = new TransitionManager(createDeps());
             tm.setDevModeActive(true);
-            expect(tm._devModeActive).toBeTruthy();
-            expect(tm._devModeAlternator).toBe(0);
+            expect(tm.devModeActive).toBeTruthy();
+            expect(tm.devModeAlternator).toBe(0);
         });
 
         it('setDevModeAlgos sets the algo slots', () => {
@@ -169,8 +168,8 @@ describe('transitionManager', () => {
             const AlgoA = class {};
             const AlgoB = class {};
             tm.setDevModeAlgos(AlgoA, AlgoB);
-            expect(tm._devModeAlgoA).toBe(AlgoA);
-            expect(tm._devModeAlgoB).toBe(AlgoB);
+            expect(tm.devModeAlgoA).toBe(AlgoA);
+            expect(tm.devModeAlgoB).toBe(AlgoB);
         });
 
         it('alternates between algoA and algoB in dev mode', () => {
@@ -189,9 +188,9 @@ describe('transitionManager', () => {
             tm.setDevModeActive(true);
             tm.setDevModeAlgos(AlgoA, AlgoB);
 
-            tm._chooseAlgos();
+            tm.chooseAlgos();
             const firstPick = tm.currentAlgorithm.name;
-            tm._chooseAlgos();
+            tm.chooseAlgos();
             const secondPick = tm.currentAlgorithm.name;
 
             expect(firstPick).toBe('A');

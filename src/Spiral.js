@@ -49,12 +49,11 @@ export default class Spiral {
         this.algorithmChooser = new AlgorithmChooser();
 
         this.transitionManager = new TransitionManager({
-            algorithmChooser: this.algorithmChooser,
-            algorithmLoader: this.algorithmLoader,
+            AlgorithmChooser: this.algorithmChooser,
+            AlgorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
-            ctx: this.ctx,
             getDimensions: () => ({ h: this.h, w: this.w }),
-            hud: this.hud,
+            HudController: this.hud,
         });
 
         // DEV MODE CONTROLLER
@@ -178,6 +177,9 @@ export default class Spiral {
     init() {
         // Hide cursor by default on launch
         this.canvas.style.cursor = 'none';
+
+        this.ctx.imageSmoothingEnabled = true;
+        this.ctx.imageSmoothingQuality = 'high';
 
         // welcome messages and tips
         this.hud.displayMessage('WELCOME');

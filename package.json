@@ -15,19 +15,19 @@
     "type": "module",
     "main": "main.js",
     "scripts": {
-        "generate:algos": "node scripts/generateAlgorithmRegistry.mjs",
-        "prestart": "pnpm generate:algos",
-        "pretest": "pnpm generate:algos",
-        "test": "vitest run",
-        "test:watch": "vitest",
-        "test:coverage": "vitest run --coverage",
         "format": "oxfmt",
         "format:check": "oxfmt --check",
+        "generate:algos": "node scripts/generateAlgorithmRegistry.mjs",
         "lint": "oxlint",
-        "lint:fix": "oxlint --fix",
         "lint:css": "stylelint '**/*.css'",
+        "lint:fix": "oxlint --fix",
+        "prestart": "pnpm generate:algos",
+        "pretest": "pnpm generate:algos",
         "start": "NODE_ENV=development electron .",
-        "start:prod": "NODE_ENV=production electron ."
+        "start:prod": "NODE_ENV=production electron .",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:watch": "vitest"
     },
     "devDependencies": {
         "@electron/packager": "^19.0.5",
