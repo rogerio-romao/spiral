@@ -9,23 +9,39 @@ import htmlEscape from './utils/htmlEscape.js';
  */
 export default class MusicPlayer {
     // INSTANCE PROPERTIES
-    showPlayer = false;
-    showRemaining = false;
-    playlistIsOpen = false;
-    trackSkipWhilePlayingTimeout = null;
-    trackSkipIntervalInMs = 200;
-    trackList = [];
-    trackNames = [];
     currentSongIndex = 0;
+    eqRafId = null;
     isPlaying = false;
     playlistEls = null;
-    eqRafId = null;
+    playlistIsOpen = false;
+    showPlayer = false;
+    showRemaining = false;
+    trackList = [];
+    trackNames = [];
+    trackSkipIntervalInMs = 200;
+    trackSkipWhilePlayingTimeout = null;
+
     // used for smoothing the EQ animation by keeping track of previous values, and for zeroing out the display when music is paused
     previousFreqBandValues = [0, 0, 0, 0, 0];
 
     constructor() {
         this.initDomRefs();
         this.bindEvents();
+    }
+
+    /** Bind drag-and-drop events to playlist items.
+     * This allows users to reorder tracks in the playlist by dragging and dropping list items. The handlers manage the drag state and update the track order accordingly when an item is dropped.
+     * @param {NodeListOf<HTMLLIElement>} playlistEls - The list item elements to bind events to.
+     */
+    bindDragEvents(playlistEls) {
+        for (const playlistItem of playlistEls) {
+            playlistItem.addEventListener('dragstart', (e) => this.handleDragStart(e));
+            playlistItem.addEventListener('dragover', (e) => this.handleDragOver(e));
+            playlistItem.addEventListener('drop', (e) => this.handleDrop(e));
+            playlistItem.addEventListener('dragenter', (e) => this.handleDragEnter(e));
+            playlistItem.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+            playlistItem.addEventListener('dragend', (e) => this.handleDragEnd(e));
+        }
     }
 
     /**
@@ -55,30 +71,214 @@ export default class MusicPlayer {
     }
 
     /**
-     * Initialize DOM references for all player UI elements.
-     * This method queries the DOM for required elements and assigns them to instance properties.
-     * Should be called once in the constructor.
+     * Create a playlist item DOM element.
+     * @param {string} baseName - The name of the track.
+     * @param {number} index - The index of the track in the playlist.
+     * @returns {HTMLLIElement} The created list item element.
      */
-    initDomRefs() {
-        this.player = document.querySelector('#player');
-        this.input = document.querySelector('#input');
-        this.label = document.querySelector('#click-label');
-        this.playListEl = document.querySelector('#playlist');
-        this.playBtn = document.querySelector('#play');
-        this.iconPlay = document.querySelector('#icon-play');
-        this.iconPause = document.querySelector('#icon-pause');
-        this.stopBtn = document.querySelector('#stop');
-        this.prevBtn = document.querySelector('#prev');
-        this.nextBtn = document.querySelector('#next');
-        this.audio = document.querySelector('#audio');
-        this.progress = document.querySelector('#progress-percent');
-        this.elapsedEl = document.querySelector('#time-elapsed');
-        this.totalEl = document.querySelector('#time-total');
-        this.trackNameEl = document.querySelector('#track-name');
-        this.playlistToggle = document.querySelector('#playlist-toggle');
-        this.accordionEl = document.querySelector('#playlist-accordion');
-        this.eqCanvas = document.querySelector('#eq-display');
-        this.eqCtx = this.eqCanvas?.getContext('2d');
+    createPlaylistItem(baseName, index) {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-item');
+        listItem.setAttribute('draggable', 'true');
+        listItem.dataset.index = index;
+        listItem.innerHTML = `
+            <span class="track-name">${htmlEscape(baseName)}</span>
+            <button class="remove-track" title="Remove track">remove</button>
+        `;
+        listItem.querySelector('.remove-track').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = Number(listItem.dataset.index);
+            this.removeTrack(idx);
+        });
+        return listItem;
+    }
+
+    /** Clean up resources (blob URLs) on app close. */
+    destroy() {
+        for (const url of this.trackList) {
+            globalThis.URL.revokeObjectURL(url);
+        }
+    }
+
+    /** Update the progress bar and time displays based on current playback position. */
+    displayProgress() {
+        // Guard against division by zero if metadata isn't loaded yet
+        if (this.audio.duration === 0) {
+            this.progress.value = 0;
+            this.elapsedEl.textContent = '';
+            this.totalEl.textContent = '';
+            return;
+        }
+
+        const { currentTime, duration } = this.audio;
+        const progressPercent = (currentTime / duration) * 100;
+        this.progress.value = progressPercent.toFixed(2);
+        this.elapsedEl.textContent = this.showRemaining
+            ? `-${this.formatTime(duration - currentTime)}`
+            : this.formatTime(currentTime);
+        this.totalEl.textContent = this.formatTime(duration);
+    }
+
+    /** Draw the EQ with current frequency data.
+     * If `flat` is true, draw flat bars (used when music is paused). Otherwise, use frequency data from the AlgorithmLoader's frequencyAnalyser to draw dynamic bars. The animation is smoothed by blending current frequency values with previous ones.
+     * @param {boolean} flat - Whether to draw flat bars (true when music is paused) or dynamic bars based on frequency data (false when music is playing).
+     */
+    drawEq(flat = false) {
+        if (!this.eqCtx) {
+            return;
+        }
+
+        const { width, height } = this.eqCanvas;
+        const bandCount = 5;
+        const bandWidth = width / bandCount;
+
+        this.eqCtx.clearRect(0, 0, width, height);
+        this.eqCtx.fillStyle = '#32cd32';
+
+        let bands = [0, 0, 0, 0, 0];
+
+        if (!flat) {
+            const smoothing = 0.7;
+            const newBands =
+                AlgorithmLoader.frequencyAnalyser && this.isPlaying
+                    ? AlgorithmLoader.frequencyAnalyser.getBands()
+                    : [0, 0, 0, 0, 0];
+
+            this.previousFreqBandValues = this.previousFreqBandValues.map(
+                (prev, i) => prev * smoothing + newBands[i] * (1 - smoothing),
+            );
+            bands = this.previousFreqBandValues;
+        }
+
+        for (let i = 0; i < bandCount; i++) {
+            const bandHeight = flat ? 1 : Math.max(1, bands[i] * height);
+            const x = i * bandWidth;
+            const y = height - bandHeight;
+            this.eqCtx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
+        }
+
+        if (!flat) {
+            this.eqRafId = requestAnimationFrame(() => this.drawEq());
+        }
+    }
+
+    /**
+     * Schedule playback after a brief delay to allow for track switching.
+     * Ensures smooth transitions between tracks by avoiding stutter.
+     * @param {number|null} overrideIntervalInMs - Optional override for the delay interval in milliseconds. If not provided, uses the default `trackSkipIntervalInMs`.
+     */
+    enqueuePlay(overrideIntervalInMs = null) {
+        clearTimeout(this.trackSkipWhilePlayingTimeout);
+        this.trackSkipWhilePlayingTimeout = setTimeout(() => {
+            this.isPlaying = true;
+            this.audio.play();
+            this.togglePlayPauseIcon(true);
+            this.startEq();
+        }, overrideIntervalInMs ?? this.trackSkipIntervalInMs);
+    }
+
+    /**
+     * Format seconds into M:SS string.
+     * @param {number} seconds - The time in seconds to format.
+     * @returns {string} The formatted time string in M:SS format.
+     */
+    formatTime(seconds) {
+        // this should never happen, but just in case
+        if (!Number.isFinite(seconds) || seconds <= 0 || Number.isNaN(seconds)) {
+            return '0:00';
+        }
+
+        const minutes = Math.floor(seconds / 60);
+        const secondsRemaining = Math.floor(seconds % 60);
+        return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
+    }
+
+    /**
+     * Drag end - clean up visual feedback.
+     * @param {DragEvent} e - The drag event.
+     */
+    handleDragEnd(e) {
+        e.target.classList.remove('dragging');
+        this.draggedIndex = null;
+    }
+
+    /**
+     * Drag enter - visual feedback.
+     * @param {DragEvent} e - The drag event.
+     */
+    handleDragEnter(e) {
+        e.target.classList.add('drag-over');
+    }
+
+    /**
+     * Drag leave - remove visual feedback.
+     * @param {DragEvent} e - The drag event.
+     */
+    handleDragLeave(e) {
+        e.target.classList.remove('drag-over');
+    }
+
+    /**
+     * Drag start - store the index of dragged item.
+     * @param {DragEvent} e - The drag event.
+     */
+    handleDragStart(e) {
+        this.draggedIndex = Number(e.target.dataset.index);
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    }
+
+    /**
+     * Drag over - allow dropping.
+     * @param {DragEvent} e - The drag event.
+     */
+    handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    }
+
+    /**
+     * Handle drop event for drag-and-drop playlist reordering.
+     * Moves the dragged track to the drop position and updates the playlist state, adjusting the current song index as needed to ensure the correct track continues playing if the currently playing track was moved.
+     * @param {DragEvent} e - The drop event.
+     */
+    handleDrop(e) {
+        e.preventDefault();
+        const targetItem = e.target.closest('.list-item');
+        if (!targetItem) {
+            return;
+        }
+        const dropIndex = Number(targetItem.dataset.index);
+        if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
+            return;
+        }
+
+        const [removed] = this.trackList.splice(this.draggedIndex, 1);
+        this.trackList.splice(dropIndex, 0, removed);
+
+        const [removedName] = this.trackNames.splice(this.draggedIndex, 1);
+        this.trackNames.splice(dropIndex, 0, removedName);
+
+        if (this.currentSongIndex === this.draggedIndex) {
+            // moving the currently playing track - update currentSongIndex to new location
+            this.currentSongIndex = dropIndex;
+        } else if (
+            // track being moved was before the currently playing track, and now is after, decrement currentSongIndex to account for the shift
+            this.draggedIndex < this.currentSongIndex &&
+            dropIndex >= this.currentSongIndex
+        ) {
+            this.currentSongIndex -= 1;
+        } else if (
+            // track being moved was after the currently playing track, and now is before, increment currentSongIndex to account for the shift
+            this.draggedIndex > this.currentSongIndex &&
+            dropIndex <= this.currentSongIndex
+        ) {
+            this.currentSongIndex += 1;
+        }
+
+        this.renderPlaylist();
+        this.updatePlaylistIndices();
+        this.updatePlaylistStyle();
     }
 
     /**
@@ -125,14 +325,60 @@ export default class MusicPlayer {
             this.isPlaying = false;
             this.togglePlayPauseIcon(false);
         } else if (wasPlaying) {
-            this.isPlaying = true;
-            this.togglePlayPauseIcon(true);
-            this.audio.play();
+            this.enqueuePlay();
         }
 
         this.playlistToggle.classList.add('tracks-present');
         this.updateTrackName();
         this.input.value = '';
+    }
+
+    /**
+     * Initialize DOM references for all player UI elements.
+     * This method queries the DOM for required elements and assigns them to instance properties.
+     * Should be called once in the constructor.
+     */
+    initDomRefs() {
+        this.player = document.querySelector('#player');
+        this.input = document.querySelector('#input');
+        this.label = document.querySelector('#click-label');
+        this.playListEl = document.querySelector('#playlist');
+        this.playBtn = document.querySelector('#play');
+        this.iconPlay = document.querySelector('#icon-play');
+        this.iconPause = document.querySelector('#icon-pause');
+        this.stopBtn = document.querySelector('#stop');
+        this.prevBtn = document.querySelector('#prev');
+        this.nextBtn = document.querySelector('#next');
+        this.audio = document.querySelector('#audio');
+        this.progress = document.querySelector('#progress-percent');
+        this.elapsedEl = document.querySelector('#time-elapsed');
+        this.totalEl = document.querySelector('#time-total');
+        this.trackNameEl = document.querySelector('#track-name');
+        this.playlistToggle = document.querySelector('#playlist-toggle');
+        this.accordionEl = document.querySelector('#playlist-accordion');
+        this.eqCanvas = document.querySelector('#eq-display');
+        this.eqCtx = this.eqCanvas?.getContext('2d');
+    }
+
+    /**
+     * Jump to a specific track that was clicked in the playlist. If the clicked track is already playing, this will do nothing. If it's a different track, this will switch to it and start playback if the player was already playing, after a brief pause to allow the new track to load without stuttering.
+     * Updates the audio source, resets progress, and updates the playlist UI.
+     * @param {number} index - The index of the track to jump to.
+     */
+    jumpToTrack(index) {
+        if (!this.playlistEls || index === this.currentSongIndex) {
+            return;
+        }
+
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.progress.value = 0;
+        this.elapsedEl.textContent = '0:00';
+        this.totalEl.textContent = '0:00';
+        this.currentSongIndex = index;
+        this.audio.src = this.trackList[this.currentSongIndex];
+        this.updatePlaylistStyle();
+        this.enqueuePlay();
     }
 
     /**
@@ -166,6 +412,16 @@ export default class MusicPlayer {
         }
     }
 
+    /** Cue and play the next track. */
+    playNext() {
+        this.skipTrack(1);
+    }
+
+    /** Cue and play the previous track. */
+    playPrev() {
+        this.skipTrack(-1);
+    }
+
     /**
      * Play or pause the current track.
      * Handles toggling playback state, updating UI, and EQ animation.
@@ -184,344 +440,6 @@ export default class MusicPlayer {
             this.stopEq();
             this.audio.pause();
         }
-    }
-
-    /**
-     * Stop playback and rewind the current track.
-     * Resets playback state, progress, and UI highlights.
-     */
-    stopPlayback() {
-        if (this.isPlaying) {
-            this.audio.pause();
-            this.audio.currentTime = 0;
-            this.isPlaying = false;
-            this.togglePlayPauseIcon(false);
-            this.stopEq();
-            [...this.playlistEls].map((el) => (el.style.color = '#555'));
-            this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
-        } else if (this.playlistEls) {
-            this.audio.currentTime = 0;
-        }
-    }
-
-    /** Cue and play the previous track. */
-    playPrev() {
-        this.skipTrack(-1);
-    }
-
-    /** Cue and play the next track. */
-    playNext() {
-        this.skipTrack(1);
-    }
-
-    /** Play next/previous track, with a small pause before resuming playback.
-     * @param {number} direction - The direction to skip: -1 for previous track, +1 for next track.
-     */
-    skipTrack(direction) {
-        if (!this.playlistEls || this.trackList.length === 0) {
-            return;
-        }
-
-        this.audio.pause();
-        this.togglePlayPauseIcon(false);
-        this.audio.currentTime = 0;
-        this.progress.value = 0;
-        this.elapsedEl.textContent = '0:00';
-        this.totalEl.textContent = '0:00';
-
-        this.currentSongIndex += direction;
-        if (this.currentSongIndex < 0) {
-            this.currentSongIndex = this.trackList.length - 1;
-        } else if (this.currentSongIndex > this.trackList.length - 1) {
-            this.currentSongIndex = 0;
-        }
-
-        this.updatePlaylistStyle();
-
-        this.audio.src = this.trackList[this.currentSongIndex];
-        if (this.isPlaying) {
-            this.enqueuePlay();
-        } else {
-            this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
-        }
-    }
-
-    /** Update the progress bar and time displays based on current playback position. */
-    displayProgress() {
-        // Guard against division by zero if metadata isn't loaded yet
-        if (this.audio.duration === 0) {
-            this.progress.value = 0;
-            this.elapsedEl.textContent = '';
-            this.totalEl.textContent = '';
-            return;
-        }
-
-        const { currentTime, duration } = this.audio;
-        const progressPercent = (currentTime / duration) * 100;
-        this.progress.value = progressPercent.toFixed(2);
-        this.elapsedEl.textContent = this.showRemaining
-            ? `-${this.formatTime(duration - currentTime)}`
-            : this.formatTime(currentTime);
-        this.totalEl.textContent = this.formatTime(duration);
-    }
-
-    /**
-     * Format seconds into M:SS string.
-     * @param {number} seconds - The time in seconds to format.
-     * @returns {string} The formatted time string in M:SS format.
-     */
-    formatTime(seconds) {
-        // this should never happen, but just in case
-        if (!Number.isFinite(seconds) || seconds <= 0 || Number.isNaN(seconds)) {
-            return '0:00';
-        }
-
-        const minutes = Math.floor(seconds / 60);
-        const secondsRemaining = Math.floor(seconds % 60);
-        return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
-    }
-
-    /**
-     * Scrub to clicked position on the progress bar. While the user is dragging, the audio is paused to allow for smooth scrubbing without stuttering. When they release the mouse button, the audio will resume if it was playing before.
-     * @param {MouseEvent} e - The mouse event from the progress bar click.
-     */
-    scrub(e) {
-        if (!this.playlistEls) {
-            return;
-        }
-
-        const scrubTime = (e.offsetX / this.progress.offsetWidth) * this.audio.duration;
-        this.audio.currentTime = scrubTime;
-        if (this.isPlaying) {
-            this.audio.play();
-        }
-    }
-
-    /**
-     * Update the playlist UI to highlight the current track.
-     * Resets all track colors, highlights the active one, scrolls it into view,
-     * and updates the now-playing track name.
-     */
-    updatePlaylistStyle() {
-        [...this.playlistEls].map((el) => (el.style.color = '#555'));
-        this.playlistEls[this.currentSongIndex].style.color = 'orange';
-        this.playlistEls[this.currentSongIndex].scrollIntoView({ block: 'nearest' });
-        this.updateTrackName();
-    }
-
-    /**
-     * Toggle the play/pause icon SVGs.
-     * @param {boolean} isPlaying - Whether the player is currently playing.
-     */
-    togglePlayPauseIcon(isPlaying) {
-        this.iconPlay.style.display = isPlaying ? 'none' : 'inline';
-        this.iconPause.style.display = isPlaying ? 'inline' : 'none';
-    }
-
-    /**
-     * Toggle the playlist accordion open or closed.
-     * Updates the UI state for the playlist and its toggle button.
-     */
-    togglePlaylist() {
-        this.playlistIsOpen = !this.playlistIsOpen;
-        this.accordionEl.classList.toggle('open', this.playlistIsOpen);
-        this.playlistToggle.classList.toggle('open', this.playlistIsOpen);
-    }
-
-    /** Update the now-playing track name display. */
-    updateTrackName() {
-        if (this.trackNames.length === 0) {
-            return;
-        }
-
-        this.trackNameEl.textContent = this.trackNames[this.currentSongIndex] ?? '';
-    }
-
-    /**
-     * Jump to a specific track that was clicked in the playlist. If the clicked track is already playing, this will do nothing. If it's a different track, this will switch to it and start playback if the player was already playing, after a brief pause to allow the new track to load without stuttering.
-     * Updates the audio source, resets progress, and updates the playlist UI.
-     * @param {number} index - The index of the track to jump to.
-     */
-    jumpToTrack(index) {
-        if (!this.playlistEls || index === this.currentSongIndex) {
-            return;
-        }
-
-        this.audio.pause();
-        this.audio.currentTime = 0;
-        this.progress.value = 0;
-        this.elapsedEl.textContent = '0:00';
-        this.totalEl.textContent = '0:00';
-        this.currentSongIndex = index;
-        this.audio.src = this.trackList[this.currentSongIndex];
-        this.updatePlaylistStyle();
-        this.enqueuePlay();
-    }
-
-    /**
-     * Schedule playback after a brief delay to allow for track switching.
-     * Ensures smooth transitions between tracks by avoiding stutter.
-     */
-    enqueuePlay() {
-        clearTimeout(this.trackSkipWhilePlayingTimeout);
-        this.trackSkipWhilePlayingTimeout = setTimeout(() => {
-            this.isPlaying = true;
-            this.audio.play();
-            this.togglePlayPauseIcon(true);
-            this.startEq();
-        }, this.trackSkipIntervalInMs);
-    }
-
-    /**
-     * Create a playlist item DOM element.
-     * @param {string} baseName - The name of the track.
-     * @param {number} index - The index of the track in the playlist.
-     * @returns {HTMLLIElement} The created list item element.
-     */
-    createPlaylistItem(baseName, index) {
-        const listItem = document.createElement('li');
-        listItem.classList.add('list-item');
-        listItem.setAttribute('draggable', 'true');
-        listItem.dataset.index = index;
-        listItem.innerHTML = `
-            <span class="track-name">${htmlEscape(baseName)}</span>
-            <button class="remove-track" title="Remove track">remove</button>
-        `;
-        listItem.querySelector('.remove-track').addEventListener('click', (e) => {
-            e.stopPropagation();
-            const idx = Number(listItem.dataset.index);
-            this.removeTrack(idx);
-        });
-        return listItem;
-    }
-
-    /**
-     * Render the entire playlist UI from the current track list.
-     * Rebuilds the playlist DOM, binds drag events, and updates the playlist style.
-     */
-    renderPlaylist() {
-        this.playListEl.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i < this.trackList.length; i++) {
-            const fileName = this.trackNames[i];
-            const listItem = this.createPlaylistItem(fileName, i);
-            fragment.append(listItem);
-        }
-        this.playListEl.append(fragment);
-        this.playlistEls = document.querySelectorAll('.list-item');
-        this.bindDragEvents(this.playlistEls);
-        this.updatePlaylistStyle();
-    }
-
-    /** Update data-index attributes for all list items. This is needed when the user reorders tracks by drag and drop or removes a track. */
-    updatePlaylistIndices() {
-        const items = this.playListEl.querySelectorAll('.list-item');
-        for (let i = 0; i < items.length; i++) {
-            items[i].dataset.index = i;
-        }
-    }
-
-    /** Bind drag-and-drop events to playlist items.
-     * This allows users to reorder tracks in the playlist by dragging and dropping list items. The handlers manage the drag state and update the track order accordingly when an item is dropped.
-     * @param {NodeListOf<HTMLLIElement>} playlistEls - The list item elements to bind events to.
-     */
-    bindDragEvents(playlistEls) {
-        for (const playlistItem of playlistEls) {
-            playlistItem.addEventListener('dragstart', (e) => this.handleDragStart(e));
-            playlistItem.addEventListener('dragover', (e) => this.handleDragOver(e));
-            playlistItem.addEventListener('drop', (e) => this.handleDrop(e));
-            playlistItem.addEventListener('dragenter', (e) => this.handleDragEnter(e));
-            playlistItem.addEventListener('dragleave', (e) => this.handleDragLeave(e));
-            playlistItem.addEventListener('dragend', (e) => this.handleDragEnd(e));
-        }
-    }
-
-    /**
-     * Drag start - store the index of dragged item.
-     * @param {DragEvent} e - The drag event.
-     */
-    handleDragStart(e) {
-        this.draggedIndex = Number(e.target.dataset.index);
-        e.target.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-    }
-
-    /**
-     * Drag over - allow dropping.
-     * @param {DragEvent} e - The drag event.
-     */
-    handleDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-    }
-
-    /**
-     * Drag enter - visual feedback.
-     * @param {DragEvent} e - The drag event.
-     */
-    handleDragEnter(e) {
-        e.target.classList.add('drag-over');
-    }
-
-    /**
-     * Drag leave - remove visual feedback.
-     * @param {DragEvent} e - The drag event.
-     */
-    handleDragLeave(e) {
-        e.target.classList.remove('drag-over');
-    }
-
-    /**
-     * Drag end - clean up visual feedback.
-     * @param {DragEvent} e - The drag event.
-     */
-    handleDragEnd(e) {
-        e.target.classList.remove('dragging');
-        this.draggedIndex = null;
-    }
-
-    /**
-     * Handle drop event for drag-and-drop playlist reordering.
-     * Moves the dragged track to the drop position and updates the playlist state, adjusting the current song index as needed to ensure the correct track continues playing if the currently playing track was moved.
-     * @param {DragEvent} e - The drop event.
-     */
-    handleDrop(e) {
-        e.preventDefault();
-        const targetItem = e.target.closest('.list-item');
-        if (!targetItem) {
-            return;
-        }
-        const dropIndex = Number(targetItem.dataset.index);
-        if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
-            return;
-        }
-
-        const [removed] = this.trackList.splice(this.draggedIndex, 1);
-        this.trackList.splice(dropIndex, 0, removed);
-
-        const [removedName] = this.trackNames.splice(this.draggedIndex, 1);
-        this.trackNames.splice(dropIndex, 0, removedName);
-
-        if (this.currentSongIndex === this.draggedIndex) {
-            // moving the currently playing track - update currentSongIndex to new location
-            this.currentSongIndex = dropIndex;
-        } else if (
-            // track being moved was before the currently playing track, and now is after, decrement currentSongIndex to account for the shift
-            this.draggedIndex < this.currentSongIndex &&
-            dropIndex >= this.currentSongIndex
-        ) {
-            this.currentSongIndex -= 1;
-        } else if (
-            // track being moved was after the currently playing track, and now is before, increment currentSongIndex to account for the shift
-            this.draggedIndex > this.currentSongIndex &&
-            dropIndex <= this.currentSongIndex
-        ) {
-            this.currentSongIndex += 1;
-        }
-
-        this.renderPlaylist();
-        this.updatePlaylistIndices();
-        this.updatePlaylistStyle();
     }
 
     /**
@@ -573,6 +491,73 @@ export default class MusicPlayer {
     }
 
     /**
+     * Render the entire playlist UI from the current track list.
+     * Rebuilds the playlist DOM, binds drag events, and updates the playlist style.
+     */
+    renderPlaylist() {
+        this.playListEl.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < this.trackList.length; i++) {
+            const fileName = this.trackNames[i];
+            const listItem = this.createPlaylistItem(fileName, i);
+            fragment.append(listItem);
+        }
+        this.playListEl.append(fragment);
+        this.playlistEls = document.querySelectorAll('.list-item');
+        this.bindDragEvents(this.playlistEls);
+        this.updatePlaylistStyle();
+    }
+
+    /**
+     * Scrub to clicked position on the progress bar. While the user is dragging, the audio is paused to allow for smooth scrubbing without stuttering. When they release the mouse button, the audio will resume if it was playing before.
+     * @param {MouseEvent} e - The mouse event from the progress bar click.
+     */
+    scrub(e) {
+        if (!this.playlistEls) {
+            return;
+        }
+
+        const scrubTime = (e.offsetX / this.progress.offsetWidth) * this.audio.duration;
+        this.audio.currentTime = scrubTime;
+        if (this.isPlaying) {
+            // slight delay to avoid stutter when seeking while playing
+            this.enqueuePlay(50);
+        }
+    }
+
+    /** Play next/previous track, with a small pause before resuming playback.
+     * @param {number} direction - The direction to skip: -1 for previous track, +1 for next track.
+     */
+    skipTrack(direction) {
+        if (!this.playlistEls || this.trackList.length === 0) {
+            return;
+        }
+
+        this.audio.pause();
+        this.togglePlayPauseIcon(false);
+        this.audio.currentTime = 0;
+        this.progress.value = 0;
+        this.elapsedEl.textContent = '0:00';
+        this.totalEl.textContent = '0:00';
+
+        this.currentSongIndex += direction;
+        if (this.currentSongIndex < 0) {
+            this.currentSongIndex = this.trackList.length - 1;
+        } else if (this.currentSongIndex > this.trackList.length - 1) {
+            this.currentSongIndex = 0;
+        }
+
+        this.updatePlaylistStyle();
+
+        this.audio.src = this.trackList[this.currentSongIndex];
+        if (this.isPlaying) {
+            this.enqueuePlay();
+        } else {
+            this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
+        }
+    }
+
+    /**
      * Start the EQ animation loop.
      * Resets previous frequency band values and begins drawing the EQ visualization.
      */
@@ -593,53 +578,21 @@ export default class MusicPlayer {
         this.drawEq(true);
     }
 
-    /** Draw the EQ with current frequency data.
-     * If `flat` is true, draw flat bars (used when music is paused). Otherwise, use frequency data from the AlgorithmLoader's frequencyAnalyser to draw dynamic bars. The animation is smoothed by blending current frequency values with previous ones.
-     * @param {boolean} flat - Whether to draw flat bars (true when music is paused) or dynamic bars based on frequency data (false when music is playing).
+    /**
+     * Stop playback and rewind the current track.
+     * Resets playback state, progress, and UI highlights.
      */
-    drawEq(flat = false) {
-        if (!this.eqCtx) {
-            return;
-        }
-
-        const { width, height } = this.eqCanvas;
-        const bandCount = 5;
-        const bandWidth = width / bandCount;
-
-        this.eqCtx.clearRect(0, 0, width, height);
-        this.eqCtx.fillStyle = '#32cd32';
-
-        let bands = [0, 0, 0, 0, 0];
-
-        if (!flat) {
-            const smoothing = 0.7;
-            const newBands =
-                AlgorithmLoader.frequencyAnalyser && this.isPlaying
-                    ? AlgorithmLoader.frequencyAnalyser.getBands()
-                    : [0, 0, 0, 0, 0];
-
-            this.previousFreqBandValues = this.previousFreqBandValues.map(
-                (prev, i) => prev * smoothing + newBands[i] * (1 - smoothing),
-            );
-            bands = this.previousFreqBandValues;
-        }
-
-        for (let i = 0; i < bandCount; i++) {
-            const bandHeight = flat ? 1 : Math.max(1, bands[i] * height);
-            const x = i * bandWidth;
-            const y = height - bandHeight;
-            this.eqCtx.fillRect(x + 1, y, bandWidth - 2, bandHeight);
-        }
-
-        if (!flat) {
-            this.eqRafId = requestAnimationFrame(() => this.drawEq());
-        }
-    }
-
-    /** Clean up resources (blob URLs) on app close. */
-    destroy() {
-        for (const url of this.trackList) {
-            globalThis.URL.revokeObjectURL(url);
+    stopPlayback() {
+        if (this.isPlaying) {
+            this.audio.pause();
+            this.audio.currentTime = 0;
+            this.isPlaying = false;
+            this.togglePlayPauseIcon(false);
+            this.stopEq();
+            [...this.playlistEls].map((el) => (el.style.color = '#555'));
+            this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
+        } else if (this.playlistEls) {
+            this.audio.currentTime = 0;
         }
     }
 
@@ -647,5 +600,53 @@ export default class MusicPlayer {
     togglePlayerVisibility() {
         this.showPlayer = !this.showPlayer;
         this.player.style.display = this.showPlayer ? 'block' : 'none';
+    }
+
+    /**
+     * Toggle the playlist accordion open or closed.
+     * Updates the UI state for the playlist and its toggle button.
+     */
+    togglePlaylist() {
+        this.playlistIsOpen = !this.playlistIsOpen;
+        this.accordionEl.classList.toggle('open', this.playlistIsOpen);
+        this.playlistToggle.classList.toggle('open', this.playlistIsOpen);
+    }
+
+    /**
+     * Toggle the play/pause icon SVGs.
+     * @param {boolean} isPlaying - Whether the player is currently playing.
+     */
+    togglePlayPauseIcon(isPlaying) {
+        this.iconPlay.style.display = isPlaying ? 'none' : 'inline';
+        this.iconPause.style.display = isPlaying ? 'inline' : 'none';
+    }
+
+    /** Update data-index attributes for all list items. This is needed when the user reorders tracks by drag and drop or removes a track. */
+    updatePlaylistIndices() {
+        const items = this.playListEl.querySelectorAll('.list-item');
+        for (let i = 0; i < items.length; i++) {
+            items[i].dataset.index = i;
+        }
+    }
+
+    /**
+     * Update the playlist UI to highlight the current track.
+     * Resets all track colors, highlights the active one, scrolls it into view,
+     * and updates the now-playing track name.
+     */
+    updatePlaylistStyle() {
+        [...this.playlistEls].map((el) => (el.style.color = '#555'));
+        this.playlistEls[this.currentSongIndex].style.color = 'orange';
+        this.playlistEls[this.currentSongIndex].scrollIntoView({ block: 'nearest' });
+        this.updateTrackName();
+    }
+
+    /** Update the now-playing track name display. */
+    updateTrackName() {
+        if (this.trackNames.length === 0) {
+            return;
+        }
+
+        this.trackNameEl.textContent = this.trackNames[this.currentSongIndex] ?? '';
     }
 }
