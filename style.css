@@ -36,10 +36,13 @@
     --radius-lg: 5px;
     --radius-xl: 15px;
 
-    /* Transitions */
-    --transition-fast: 0.15s;
-    --transition-normal: 0.2s;
-    --transition-slow: 0.35s;
+    /* Easing */
+    --easing: cubic-bezier(0.66, 0, 0.34, 1);
+
+    /* Transitions (include easing) */
+    --transition-fast: 0.15s var(--easing);
+    --transition-normal: 0.22s var(--easing);
+    --transition-slow: 0.35s var(--easing);
 }
 
 /* GLOBAL */

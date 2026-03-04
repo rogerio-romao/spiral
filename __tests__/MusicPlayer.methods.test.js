@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-function
 import MusicPlayer from '../src/MusicPlayer.js';
 
 // Access prototype methods directly to avoid constructor DOM side effects.
@@ -107,6 +108,131 @@ describe('musicPlayer methods', () => {
             instance.updateTrackName();
 
             expect(instance.trackNameEl.textContent).toBe('previous');
+        });
+    });
+
+    describe('fadeVolume', () => {
+        it('sets audio volume to the target value when rAF completes the animation', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { volume: 0 };
+            instance.fadeRafId = null;
+
+            vi.spyOn(globalThis, 'cancelAnimationFrame').mockImplementation(() => {});
+            vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((step) => {
+                step(100);
+                return 0;
+            });
+            vi.spyOn(globalThis.performance, 'now').mockReturnValue(0);
+
+            await instance.fadeVolume(0, 1, 40);
+
+            expect(instance.audio.volume).toBe(1);
+        });
+
+        it('clamps progress at 1 and does not schedule another rAF after completion', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { volume: 0 };
+            instance.fadeRafId = null;
+
+            vi.spyOn(globalThis, 'cancelAnimationFrame').mockImplementation(() => {});
+            const rafSpy = vi
+                .spyOn(globalThis, 'requestAnimationFrame')
+                .mockImplementation((step) => {
+                    step(100);
+                    return 0;
+                });
+            vi.spyOn(globalThis.performance, 'now').mockReturnValue(0);
+
+            await instance.fadeVolume(0, 1, 40);
+
+            // rAF scheduled once (initial); no second call because progress hits 1
+            expect(rafSpy).toHaveBeenCalledOnce();
+        });
+
+        it('cancels any in-progress rAF before starting a new fade', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { volume: 0 };
+            instance.fadeRafId = 99;
+
+            const cancelSpy = vi
+                .spyOn(globalThis, 'cancelAnimationFrame')
+                .mockImplementation(() => {});
+            vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((step) => {
+                step(100);
+                return 0;
+            });
+            vi.spyOn(globalThis.performance, 'now').mockReturnValue(0);
+
+            await instance.fadeVolume(0, 1, 40);
+
+            expect(cancelSpy).toHaveBeenCalledWith(99);
+        });
+    });
+
+    describe('fadePause', () => {
+        it('fades from the current volume to 0, then pauses', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { pause: vi.fn(), volume: 0.5 };
+            instance.playToggleFadeDurationInMs = 80;
+            vi.spyOn(instance, 'fadeVolume').mockResolvedValue(null);
+
+            await instance.fadePause();
+
+            expect(instance.fadeVolume).toHaveBeenCalledWith(
+                0.5,
+                0,
+                instance.playToggleFadeDurationInMs,
+            );
+            expect(instance.audio.pause).toHaveBeenCalledWith();
+        });
+
+        it('pauses only after the fade completes', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { pause: vi.fn(), volume: 1 };
+            instance.playToggleFadeDurationInMs = 80;
+            const order = [];
+            vi.spyOn(instance, 'fadeVolume').mockImplementation(() => {
+                order.push('fade');
+                return Promise.resolve(null);
+            });
+            // oxlint-disable-next-line jest/prefer-mock-return-shorthand
+            vi.spyOn(instance.audio, 'pause').mockImplementation(() => order.push('pause'));
+
+            await instance.fadePause();
+
+            expect(order).toStrictEqual(['fade', 'pause']);
+        });
+    });
+
+    describe('fadePlay', () => {
+        it('sets volume to 0, plays, then calls fadeVolume from 0 to 1', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { play: vi.fn().mockResolvedValue(null), volume: 1 };
+            vi.spyOn(instance, 'fadeVolume').mockResolvedValue(null);
+
+            await instance.fadePlay();
+
+            expect(instance.audio.volume).toBe(0);
+            expect(instance.audio.play).toHaveBeenCalledWith();
+            expect(instance.fadeVolume).toHaveBeenCalledWith(
+                0,
+                1,
+                instance.playToggleFadeDurationInMs,
+            );
+        });
+
+        it('resets volume to 1 and returns early if audio.play() rejects', async () => {
+            const instance = Object.create(proto);
+            instance.audio = {
+                play: vi.fn().mockRejectedValue(new Error('AbortError')),
+                volume: 0,
+            };
+            vi.spyOn(instance, 'fadeVolume').mockResolvedValue(null);
+
+            await instance.fadePlay();
+
+            expect(instance.audio.volume).toBe(1);
+            expect(instance.fadeVolume).not.toHaveBeenCalled();
         });
     });
 });
