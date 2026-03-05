@@ -55,6 +55,7 @@
         "eslint/complexity": ["warn", 33],
         "eslint/func-style": ["error", "declaration"],
         "eslint/sort-imports": "off",
+        "eslint/no-extend-native": "off",
         "eslint/sort-keys": ["warn", "asc", { "caseSensitive": false }],
         "oxc/no-optional-chaining": "off",
         "oxc/no-async-await": "off",
@@ -112,33 +113,9 @@
         }
     },
     "env": {
-        "builtin": true
-    },
-    "globals": {
-        "setTimeout": "readonly",
-        "clearTimeout": "readonly",
-        "setInterval": "readonly",
-        "clearInterval": "readonly",
-        "document": "readonly",
-        "cancelAnimationFrame": "readonly",
-        "requestAnimationFrame": "readonly",
-        "console": "readonly",
-        "process": "readonly",
-        "CSS": "readonly",
-        "require": "readonly",
-        "CustomEvent": "readonly",
-        "CanvasRenderingContext2D": "readonly",
-        "describe": "readonly",
-        "it": "readonly",
-        "expect": "readonly",
-        "expectTypeOf": "readonly",
-        "vi": "readonly",
-        "beforeEach": "readonly",
-        "afterEach": "readonly",
-        "URL": "readonly",
-        "Event": "readonly",
-        "HTMLMediaElement": "readonly",
-        "HTMLElement": "readonly"
+        "browser": true,
+        "node": true,
+        "vitest": true
     },
     "ignorePatterns": ["*.d.ts"]
 }

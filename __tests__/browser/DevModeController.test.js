@@ -1,5 +1,6 @@
 import DevModeController from '../../src/DevModeController.js';
 
+// Mock the algorithm registry to provide predictable algorithm options for testing
 vi.mock(import('../../src/generated/algorithmRegistry.js'), () => ({
     // oxlint-disable unicorn/no-static-only-class - we just want to group static properties together for this mock
     algorithms: [
@@ -17,6 +18,7 @@ vi.mock(import('../../src/generated/algorithmRegistry.js'), () => ({
     ],
 }));
 
+// This fixture includes the necessary DOM elements for the DevModeController to function.
 const FIXTURE = `
     <div id="dev-mode" style="display:none">
         <label><input type="checkbox" id="dev-enable" /><span>Enable Dev Mode</span></label>
@@ -34,6 +36,7 @@ const FIXTURE = `
     <div id="dev-badge">DEV</div>
 `;
 
+// Helper function to create mock dependencies for the DevModeController
 function createDeps() {
     return {
         hudController: {
@@ -47,45 +50,79 @@ function createDeps() {
 }
 
 describe('devModeController (browser)', () => {
-    describe('random option sets algoA/algoB to null and calls setDevModeAlgos', () => {
-        beforeEach(() => {
-            globalThis.env = { isDevEnvironment: true };
-        });
-
-        it('selecting Random for algoA sets algoA to null and calls setDevModeAlgos', () => {
-            const deps = createDeps();
-            const ctrl = new DevModeController(deps);
-            // Enable dev mode
-            const checkbox = document.querySelector('#dev-enable');
-            checkbox.checked = true;
-            checkbox.dispatchEvent(new Event('change'));
-            deps.transitionManager.setDevModeAlgos.mockClear();
-            // Select Random for algoA
-            const algoASelect = document.querySelector('#dev-algo-a');
-            algoASelect.value = 'random';
-            algoASelect.dispatchEvent(new Event('change'));
-            expect(ctrl.algoA).toBeNull();
-            expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(null, ctrl.algoB);
-            ctrl.destroy();
-        });
-
-        it('selecting Random for algoB sets algoB to null and calls setDevModeAlgos', () => {
-            const deps = createDeps();
-            const ctrl = new DevModeController(deps);
-            // Enable dev mode
-            const checkbox = document.querySelector('#dev-enable');
-            checkbox.checked = true;
-            checkbox.dispatchEvent(new Event('change'));
-            deps.transitionManager.setDevModeAlgos.mockClear();
-            // Select Random for algoB
-            const algoBSelect = document.querySelector('#dev-algo-b');
-            algoBSelect.value = 'random';
-            algoBSelect.dispatchEvent(new Event('change'));
-            expect(ctrl.algoB).toBeNull();
-            expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(ctrl.algoA, null);
-            ctrl.destroy();
-        });
+    beforeEach(() => {
+        document.body.innerHTML = FIXTURE;
     });
+
+    afterEach(() => {
+        delete globalThis.env;
+    });
+
+    it('shows and hides the dev badge and updates HUD messages correctly', () => {
+        globalThis.env = { isDevEnvironment: true };
+        const deps = createDeps();
+        const ctrl = new DevModeController(deps);
+        const checkbox = document.querySelector('#dev-enable');
+
+        // Enable dev mode
+        checkbox.checked = true;
+        checkbox.dispatchEvent(new Event('change'));
+        // Badge should be visible
+        expect(document.querySelector('#dev-badge').style.display).toBe('block');
+        // HUD should show correct message
+        expect(deps.hudController.displayMessage).toHaveBeenLastCalledWith('DEV MODE ENABLED');
+
+        // Disable dev mode
+        checkbox.checked = false;
+        checkbox.dispatchEvent(new Event('change'));
+        // Badge should be hidden
+        expect(document.querySelector('#dev-badge').style.display).toBe('none');
+        // HUD should show correct message
+        expect(deps.hudController.displayMessage).toHaveBeenLastCalledWith('DEV MODE DISABLED');
+
+        ctrl.destroy();
+    });
+
+    it('selecting Random for algoA sets algoA to null and calls setDevModeAlgos', () => {
+        globalThis.env = { isDevEnvironment: true };
+        const deps = createDeps();
+        const ctrl = new DevModeController(deps);
+
+        // Enable dev mode
+        const checkbox = document.querySelector('#dev-enable');
+        checkbox.checked = true;
+        checkbox.dispatchEvent(new Event('change'));
+        // Clear any previous calls to setDevModeAlgos
+        deps.transitionManager.setDevModeAlgos.mockClear();
+
+        // Select Random for algoA
+        const algoASelect = document.querySelector('#dev-algo-a');
+        algoASelect.value = 'random';
+        algoASelect.dispatchEvent(new Event('change'));
+        expect(ctrl.algoA).toBeNull();
+
+        expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(null, ctrl.algoB);
+        ctrl.destroy();
+    });
+
+    it('selecting Random for algoB sets algoB to null and calls setDevModeAlgos', () => {
+        globalThis.env = { isDevEnvironment: true };
+        const deps = createDeps();
+        const ctrl = new DevModeController(deps);
+        // Enable dev mode
+        const checkbox = document.querySelector('#dev-enable');
+        checkbox.checked = true;
+        checkbox.dispatchEvent(new Event('change'));
+        deps.transitionManager.setDevModeAlgos.mockClear();
+        // Select Random for algoB
+        const algoBSelect = document.querySelector('#dev-algo-b');
+        algoBSelect.value = 'random';
+        algoBSelect.dispatchEvent(new Event('change'));
+        expect(ctrl.algoB).toBeNull();
+        expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(ctrl.algoA, null);
+        ctrl.destroy();
+    });
+
     describe('error handling for missing DOM elements', () => {
         const requiredSelectors = [
             { label: 'dev-badge', selector: '#dev-badge' },
@@ -109,13 +146,6 @@ describe('devModeController (browser)', () => {
                 );
             },
         );
-    });
-    beforeEach(() => {
-        document.body.innerHTML = FIXTURE;
-    });
-
-    afterEach(() => {
-        delete globalThis.env;
     });
 
     it('populates selects with algorithm options in dev mode', () => {
