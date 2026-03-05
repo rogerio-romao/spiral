@@ -82,7 +82,7 @@ export default class MusicPlayer {
         const listItem = document.createElement('li');
         listItem.classList.add('list-item');
         listItem.setAttribute('draggable', 'true');
-        listItem.dataset.index = index;
+        listItem.dataset.index = String(index);
         listItem.innerHTML = `
             <span class="track-name">${htmlEscape(baseName)}</span>
             <button class="remove-track" title="Remove track">remove</button>
@@ -106,7 +106,7 @@ export default class MusicPlayer {
     displayProgress() {
         // Guard against division by zero or NaN if metadata isn't loaded yet
         if (!Number.isFinite(this.audio.duration) || this.audio.duration === 0) {
-            this.progress.value = 0;
+            this.progress.value = '0';
             this.elapsedEl.textContent = '';
             this.totalEl.textContent = '';
             return;
@@ -232,7 +232,9 @@ export default class MusicPlayer {
      * @param {DragEvent} e - The drag event.
      */
     handleDragEnd(e) {
-        e.target.classList.remove('dragging');
+        if (e.target instanceof HTMLElement) {
+            e.target.classList.remove('dragging');
+        }
         this.draggedIndex = null;
     }
 
@@ -241,7 +243,9 @@ export default class MusicPlayer {
      * @param {DragEvent} e - The drag event.
      */
     handleDragEnter(e) {
-        e.target.classList.add('drag-over');
+        if (e.target instanceof HTMLElement) {
+            e.target.classList.add('drag-over');
+        }
     }
 
     /**
@@ -249,7 +253,9 @@ export default class MusicPlayer {
      * @param {DragEvent} e - The drag event.
      */
     handleDragLeave(e) {
-        e.target.classList.remove('drag-over');
+        if (e.target instanceof HTMLElement) {
+            e.target.classList.remove('drag-over');
+        }
     }
 
     /**
@@ -257,9 +263,11 @@ export default class MusicPlayer {
      * @param {DragEvent} e - The drag event.
      */
     handleDragStart(e) {
-        this.draggedIndex = Number(e.target.dataset.index);
-        e.target.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
+        if (e.target instanceof HTMLElement) {
+            this.draggedIndex = Number(e.target.dataset.index);
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
     }
 
     /**
@@ -278,8 +286,12 @@ export default class MusicPlayer {
      */
     handleDrop(e) {
         e.preventDefault();
+        if (!(e.target instanceof HTMLElement)) {
+            return;
+        }
+
         const targetItem = e.target.closest('.list-item');
-        if (!targetItem) {
+        if (!targetItem || !(targetItem instanceof HTMLElement)) {
             return;
         }
         const dropIndex = Number(targetItem.dataset.index);
@@ -375,25 +387,36 @@ export default class MusicPlayer {
      * Should be called once in the constructor.
      */
     initDomRefs() {
-        this.player = document.querySelector('#player');
-        this.input = document.querySelector('#input');
-        this.label = document.querySelector('#click-label');
-        this.playListEl = document.querySelector('#playlist');
-        this.playBtn = document.querySelector('#play');
-        this.iconPlay = document.querySelector('#icon-play');
-        this.iconPause = document.querySelector('#icon-pause');
-        this.stopBtn = document.querySelector('#stop');
-        this.prevBtn = document.querySelector('#prev');
-        this.nextBtn = document.querySelector('#next');
+        /** @type {HTMLAudioElement} */
         this.audio = document.querySelector('#audio');
-        this.progressPanel = document.querySelector('#progress');
+        /** @type {HTMLCanvasElement} */
+        this.eqCanvas = document.querySelector('#eq-display');
+        /** @type {HTMLButtonElement} */
+        this.iconPause = document.querySelector('#icon-pause');
+        /** @type {HTMLButtonElement} */
+        this.iconPlay = document.querySelector('#icon-play');
+        /** @type {HTMLInputElement} */
+        this.input = document.querySelector('#input');
+        /** @type {HTMLDivElement} */
+        this.player = document.querySelector('#player');
+        /** @type {HTMLUListElement} */
+        this.playListEl = document.querySelector('#playlist');
+        /** @type {HTMLInputElement} */
         this.progress = document.querySelector('#progress-percent');
+        /** @type {HTMLDivElement} */
+        this.progressPanel = document.querySelector('#progress');
+
+        this.accordionEl = document.querySelector('#playlist-accordion');
         this.elapsedEl = document.querySelector('#time-elapsed');
+        this.label = document.querySelector('#click-label');
+        this.nextBtn = document.querySelector('#next');
+        this.playBtn = document.querySelector('#play');
+        this.prevBtn = document.querySelector('#prev');
+        this.playlistToggle = document.querySelector('#playlist-toggle');
+        this.stopBtn = document.querySelector('#stop');
         this.totalEl = document.querySelector('#time-total');
         this.trackNameEl = document.querySelector('#track-name');
-        this.playlistToggle = document.querySelector('#playlist-toggle');
-        this.accordionEl = document.querySelector('#playlist-accordion');
-        this.eqCanvas = document.querySelector('#eq-display');
+
         this.eqCtx = this.eqCanvas?.getContext('2d');
     }
 
@@ -409,7 +432,7 @@ export default class MusicPlayer {
 
         this.audio.pause();
         this.audio.currentTime = 0;
-        this.progress.value = 0;
+        this.progress.value = '0';
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
         this.currentSongIndex = index;
@@ -442,8 +465,12 @@ export default class MusicPlayer {
      * @param {MouseEvent} e - The click event.
      */
     onPlaylistClick(e) {
+        if (!(e.target instanceof HTMLElement)) {
+            return;
+        }
+
         const listItem = e.target.closest('.list-item');
-        if (listItem && !e.target.closest('.remove-track')) {
+        if (listItem && listItem instanceof HTMLElement && !e.target.closest('.remove-track')) {
             const index = Number(listItem.dataset.index);
             this.jumpToTrack(index);
         }
@@ -574,7 +601,7 @@ export default class MusicPlayer {
         this.audio.pause();
         this.togglePlayPauseIcon(false);
         this.audio.currentTime = 0;
-        this.progress.value = 0;
+        this.progress.value = '0';
         this.elapsedEl.textContent = '0:00';
         this.totalEl.textContent = '0:00';
 
@@ -661,9 +688,10 @@ export default class MusicPlayer {
 
     /** Update data-index attributes for all list items. This is needed when the user reorders tracks by drag and drop or removes a track. */
     updatePlaylistIndices() {
+        /** @type {NodeListOf<HTMLLIElement>} */
         const items = this.playListEl.querySelectorAll('.list-item');
         for (let i = 0; i < items.length; i++) {
-            items[i].dataset.index = i;
+            items[i].dataset.index = String(i);
         }
     }
 

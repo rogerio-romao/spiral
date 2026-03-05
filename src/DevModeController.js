@@ -32,12 +32,8 @@ export default class DevModeController {
             return;
         }
 
-        if (this.modal instanceof HTMLElement) {
-            this.modal.style.display = 'none';
-        }
-        if (this.badge instanceof HTMLElement) {
-            this.badge.style.display = 'none';
-        }
+        this.modal.style.display = 'none';
+        this.badge.style.display = 'none';
     }
 
     /**
@@ -65,11 +61,14 @@ export default class DevModeController {
      * Throws an error if any of the required elements are missing.
      */
     initDomRefs() {
+        /** @type {HTMLElement} */
+        this.badge = document.querySelector('#dev-badge');
+        /** @type {HTMLElement} */
         this.modal = document.querySelector('#dev-mode');
-        this.enableCheckbox = document.querySelector('#dev-enable');
+
         this.algoASelect = document.querySelector('#dev-algo-a');
         this.algoBSelect = document.querySelector('#dev-algo-b');
-        this.badge = document.querySelector('#dev-badge');
+        this.enableCheckbox = document.querySelector('#dev-enable');
     }
 
     /**
@@ -134,14 +133,10 @@ export default class DevModeController {
 
         if (enabled) {
             this.updateDevAlgos();
-            if (this.badge instanceof HTMLElement) {
-                this.badge.style.display = 'block';
-            }
+            this.badge.style.display = 'block';
             this.hudController.displayMessage('DEV MODE ENABLED');
         } else {
-            if (this.badge instanceof HTMLElement) {
-                this.badge.style.display = 'none';
-            }
+            this.badge.style.display = 'none';
             this.hudController.displayMessage('DEV MODE DISABLED');
         }
     }
@@ -169,10 +164,8 @@ export default class DevModeController {
      * Toggles the visibility of the Developer Mode modal.
      */
     toggleDevModal() {
-        if (this.modal instanceof HTMLElement) {
-            const currentDisplayMode = this.modal.style.display;
-            this.modal.style.display = currentDisplayMode === 'block' ? 'none' : 'block';
-        }
+        const currentDisplayMode = this.modal.style.display;
+        this.modal.style.display = currentDisplayMode === 'block' ? 'none' : 'block';
     }
 
     /**
