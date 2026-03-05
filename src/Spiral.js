@@ -30,6 +30,7 @@ export default class Spiral {
 
     constructor() {
         // CANVAS SETUP
+        /** @type {HTMLCanvasElement} */
         this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
         this.w = globalThis.innerWidth;
@@ -49,11 +50,11 @@ export default class Spiral {
         this.algorithmChooser = new AlgorithmChooser();
 
         this.transitionManager = new TransitionManager({
-            AlgorithmChooser: this.algorithmChooser,
-            AlgorithmLoader: this.algorithmLoader,
+            algorithmChooser: this.algorithmChooser,
+            algorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
             getDimensions: () => ({ h: this.h, w: this.w }),
-            HudController: this.hud,
+            hudController: this.hud,
         });
 
         // DEV MODE CONTROLLER
@@ -228,11 +229,11 @@ export default class Spiral {
 
         // Keyboard controller for global shortcuts
         this.keyboardController = new KeyboardController({
-            DevModeController: this.devModeController,
+            devModeController: this.devModeController,
             hudController: this.hud,
-            MusicPlayer: this.musicPlayer,
-            Spiral: this,
-            TransitionManager: this.transitionManager,
+            musicPlayer: this.musicPlayer,
+            spiral: this,
+            transitionManager: this.transitionManager,
         });
         this.keyboardController.bind();
     }

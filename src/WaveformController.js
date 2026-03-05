@@ -12,7 +12,7 @@ export default class WaveformController {
     /**
      * @param {Object} params - Parameters object containing required components
      * @param {HTMLCanvasElement} params.canvasElement - The canvas element to draw the waveform on.
-     * @param {Object} params.frequencyAnalyser - FrequencyAnalyser instance providing waveform data.
+     * @param {import('./utils/FrequencyAnalyser.js').default} params.frequencyAnalyser - FrequencyAnalyser instance providing waveform data.
      * @param {string} [params.waveColor] - The color of the waveform.
      */
     constructor({ canvasElement, frequencyAnalyser, waveColor = 'white' }) {

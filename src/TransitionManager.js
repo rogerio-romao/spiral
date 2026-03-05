@@ -23,18 +23,18 @@ export default class TransitionManager {
 
     /**
      * @param {Object} deps - Dependencies object containing required components
-     * @param {HTMLCanvasElement}        deps.canvas - The HTML canvas element
-     * @param {AlgorithmLoader}          deps.AlgorithmLoader - Algorithm loader instance
-     * @param {AlgorithmChooser}         deps.AlgorithmChooser - Algorithm chooser instance
-     * @param {HUDController}            deps.HudController - HUD controller instance
-     * @param {Function}                 deps.getDimensions  - Returns { w, h }
+     * @param {HTMLCanvasElement} deps.canvas - The HTML canvas element
+     * @param {import('./AlgorithmLoader.js').default} deps.algorithmLoader - Algorithm loader instance
+     * @param {import('./AlgorithmChooser.js').default} deps.algorithmChooser - Algorithm chooser instance
+     * @param {import('./HudController.js').default} deps.hudController - HUD controller instance
+     * @param {Function} deps.getDimensions  - Returns { w, h }
      */
-    constructor({ canvas, AlgorithmLoader, AlgorithmChooser, HudController, getDimensions }) {
+    constructor({ canvas, algorithmLoader, algorithmChooser, hudController, getDimensions }) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.AlgorithmLoader = AlgorithmLoader;
-        this.AlgorithmChooser = AlgorithmChooser;
-        this.HudController = HudController;
+        this.algorithmLoader = algorithmLoader;
+        this.algorithmChooser = algorithmChooser;
+        this.hudController = hudController;
         this.getDimensions = getDimensions;
     }
 
@@ -53,7 +53,7 @@ export default class TransitionManager {
 
             this.resetCanvasContext();
 
-            this.AlgorithmLoader.speed = random(2, 6);
+            this.algorithmLoader.speed = random(2, 6);
 
             this.chooseAlgos();
 
@@ -77,15 +77,15 @@ export default class TransitionManager {
             const isSlotA = this.devModeAlternator === 0;
             this.devModeAlternator = 1 - this.devModeAlternator;
             const algoChoice = isSlotA ? this.devModeAlgoA : this.devModeAlgoB;
-            AlgorithmClass = algoChoice || this.AlgorithmChooser.getRandomAlgorithm();
+            AlgorithmClass = algoChoice || this.algorithmChooser.getRandomAlgorithm();
         } else {
-            AlgorithmClass = this.AlgorithmChooser.getRandomAlgorithm();
+            AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
         }
 
         // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.
         try {
             this.currentAlgorithm = new AlgorithmClass(this.ctx, w, h);
-            this.HudController.displayAlgorithmName(this.currentAlgorithm.name);
+            this.hudController.displayAlgorithmName(this.currentAlgorithm.name);
             this.algoRetries = 0;
         } catch {
             this.algoRetries += 1;

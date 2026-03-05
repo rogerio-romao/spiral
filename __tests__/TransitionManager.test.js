@@ -17,11 +17,11 @@ function createDeps(overrides = {}) {
     };
 
     return {
-        AlgorithmChooser: mockChooser,
-        AlgorithmLoader: { speed: 0 },
+        algorithmChooser: mockChooser,
+        algorithmLoader: { speed: 0 },
         canvas,
         getDimensions: () => ({ h: 1080, w: 1920 }),
-        HudController: mockHud,
+        hudController: mockHud,
         ...overrides,
     };
 }
@@ -65,7 +65,7 @@ describe('transitionManager', () => {
             const tm = new TransitionManager(deps);
             tm.changeAlgorithm();
             // oxlint-disable-next-line jest/prefer-called-with
-            expect(deps.AlgorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
+            expect(deps.algorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
             expect(tm.currentAlgorithm).not.toBeNull();
         });
 
@@ -73,7 +73,7 @@ describe('transitionManager', () => {
             const deps = createDeps();
             const tm = new TransitionManager(deps);
             tm.changeAlgorithm();
-            expect(deps.HudController.displayAlgorithmName).toHaveBeenCalledWith('FakeAlgo');
+            expect(deps.hudController.displayAlgorithmName).toHaveBeenCalledWith('FakeAlgo');
         });
 
         it('does nothing when already transitioning', () => {
@@ -81,7 +81,7 @@ describe('transitionManager', () => {
             const tm = new TransitionManager(deps);
             tm.isTransitioning = true;
             tm.changeAlgorithm();
-            expect(deps.AlgorithmChooser.getRandomAlgorithm).not.toHaveBeenCalled();
+            expect(deps.algorithmChooser.getRandomAlgorithm).not.toHaveBeenCalled();
         });
 
         it('resets isTransitioning to false after completion', () => {
@@ -105,7 +105,7 @@ describe('transitionManager', () => {
                 }),
             };
 
-            const tm = new TransitionManager(createDeps({ AlgorithmChooser: chooser }));
+            const tm = new TransitionManager(createDeps({ algorithmChooser: chooser }));
             tm.chooseAlgos();
 
             // Should try 3 times (1 initial + 2 retries) then stop
@@ -151,7 +151,7 @@ describe('transitionManager', () => {
             tm.resetAutoChangeTimer();
             vi.advanceTimersByTime(2000);
             // oxlint-disable-next-line jest/prefer-called-with
-            expect(deps.AlgorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
+            expect(deps.algorithmChooser.getRandomAlgorithm).toHaveBeenCalled();
         });
     });
 
