@@ -1,8 +1,7 @@
 import DevModeController from '../../src/DevModeController.js';
 
-// oxlint-disable-next-line vitest/prefer-import-in-mock
-vi.mock('../../src/generated/algorithmRegistry.js', () => ({
-    // oxlint-disable unicorn/no-static-only-class
+vi.mock(import('../../src/generated/algorithmRegistry.js'), () => ({
+    // oxlint-disable unicorn/no-static-only-class - we just want to group static properties together for this mock
     algorithms: [
         class AlgoA {
             static name = 'AlgoA';
@@ -16,7 +15,6 @@ vi.mock('../../src/generated/algorithmRegistry.js', () => ({
             static name = 'TmplA';
         },
     ],
-    // oxlint-enable unicorn/no-static-only-class
 }));
 
 const FIXTURE = `
@@ -25,11 +23,11 @@ const FIXTURE = `
         <div class="dev-selects">
             <label>
                 <span>Algorithm A:</span>
-                <select id="dev-algo-a"><option value="">Random</option></select>
+                <select id="dev-algo-a"><option value="random">Random</option></select>
             </label>
             <label>
                 <span>Algorithm B:</span>
-                <select id="dev-algo-b"><option value="">Random</option></select>
+                <select id="dev-algo-b"><option value="random">Random</option></select>
             </label>
         </div>
     </div>
@@ -49,6 +47,69 @@ function createDeps() {
 }
 
 describe('devModeController (browser)', () => {
+    describe('random option sets algoA/algoB to null and calls setDevModeAlgos', () => {
+        beforeEach(() => {
+            globalThis.env = { isDevEnvironment: true };
+        });
+
+        it('selecting Random for algoA sets algoA to null and calls setDevModeAlgos', () => {
+            const deps = createDeps();
+            const ctrl = new DevModeController(deps);
+            // Enable dev mode
+            const checkbox = document.querySelector('#dev-enable');
+            checkbox.checked = true;
+            checkbox.dispatchEvent(new Event('change'));
+            deps.transitionManager.setDevModeAlgos.mockClear();
+            // Select Random for algoA
+            const algoASelect = document.querySelector('#dev-algo-a');
+            algoASelect.value = 'random';
+            algoASelect.dispatchEvent(new Event('change'));
+            expect(ctrl.algoA).toBeNull();
+            expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(null, ctrl.algoB);
+            ctrl.destroy();
+        });
+
+        it('selecting Random for algoB sets algoB to null and calls setDevModeAlgos', () => {
+            const deps = createDeps();
+            const ctrl = new DevModeController(deps);
+            // Enable dev mode
+            const checkbox = document.querySelector('#dev-enable');
+            checkbox.checked = true;
+            checkbox.dispatchEvent(new Event('change'));
+            deps.transitionManager.setDevModeAlgos.mockClear();
+            // Select Random for algoB
+            const algoBSelect = document.querySelector('#dev-algo-b');
+            algoBSelect.value = 'random';
+            algoBSelect.dispatchEvent(new Event('change'));
+            expect(ctrl.algoB).toBeNull();
+            expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(ctrl.algoA, null);
+            ctrl.destroy();
+        });
+    });
+    describe('error handling for missing DOM elements', () => {
+        const requiredSelectors = [
+            { label: 'dev-badge', selector: '#dev-badge' },
+            { label: 'dev-mode', selector: '#dev-mode' },
+            { label: 'dev-algo-a', selector: '#dev-algo-a' },
+            { label: 'dev-algo-b', selector: '#dev-algo-b' },
+            { label: 'dev-enable', selector: '#dev-enable' },
+        ];
+
+        it.each(requiredSelectors)(
+            'throws if required DOM element %s is missing',
+            ({ selector, label }) => {
+                globalThis.env = { isDevEnvironment: true };
+                // Remove the element from the fixture
+                document.body.innerHTML = FIXTURE;
+                const el = document.querySelector(selector);
+                el?.remove();
+                const deps = createDeps();
+                expect(() => new DevModeController(deps)).toThrow(
+                    new RegExp(`Missing required DOM element: #${label}`),
+                );
+            },
+        );
+    });
     beforeEach(() => {
         document.body.innerHTML = FIXTURE;
     });
