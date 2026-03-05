@@ -8,10 +8,10 @@ export default class DevModeController {
     /**
      * @param {Object} options - Configuration options for the DevModeController
      * @param {import('./TransitionManager.js').default} options.transitionManager - The transition manager instance
-     * @param {import('./HudController.js').default} options.hud - The HUD controller instance
+     * @param {import('./HudController.js').default} options.hudController - The HUD controller instance
      */
-    constructor({ hud, transitionManager }) {
-        this.hud = hud;
+    constructor({ hudController, transitionManager }) {
+        this.hudController = hudController;
         this.transitionManager = transitionManager;
 
         this.initDomRefs();
@@ -37,7 +37,7 @@ export default class DevModeController {
     }
 
     /**
-     * Binds the previously prepared handlers (in initHandlers) as listeners to the Developer Mode UI elements.
+     * Binds the previously prepared handlers (in `initHandlers`) as listeners to the Developer Mode UI elements.
      * These events handle enabling/disabling Developer Mode and selecting algorithms.
      */
     bindEvents() {
@@ -131,10 +131,10 @@ export default class DevModeController {
         if (enabled) {
             this.updateDevAlgos();
             this.badge.style.display = 'block';
-            this.hud.displayMessage('DEV MODE ENABLED');
+            this.hudController.displayMessage('DEV MODE ENABLED');
         } else {
             this.badge.style.display = 'none';
-            this.hud.displayMessage('DEV MODE DISABLED');
+            this.hudController.displayMessage('DEV MODE DISABLED');
         }
     }
 

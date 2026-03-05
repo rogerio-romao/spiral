@@ -38,7 +38,7 @@ const FIXTURE = `
 
 function createDeps() {
     return {
-        hud: {
+        hudController: {
             displayMessage: vi.fn(),
         },
         transitionManager: {

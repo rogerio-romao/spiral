@@ -58,7 +58,7 @@ export default class Spiral {
 
         // DEV MODE CONTROLLER
         this.devModeController = new DevModeController({
-            hud: this.hud,
+            hudController: this.hud,
             transitionManager: this.transitionManager,
         });
 
