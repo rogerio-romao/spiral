@@ -100,8 +100,8 @@ describe('devModeController (browser)', () => {
         algoASelect.value = 'random';
         algoASelect.dispatchEvent(new Event('change'));
         expect(ctrl.algoA).toBeNull();
-
         expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(null, ctrl.algoB);
+
         ctrl.destroy();
     });
 
@@ -109,17 +109,20 @@ describe('devModeController (browser)', () => {
         globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
+
         // Enable dev mode
         const checkbox = document.querySelector('#dev-enable');
         checkbox.checked = true;
         checkbox.dispatchEvent(new Event('change'));
         deps.transitionManager.setDevModeAlgos.mockClear();
+
         // Select Random for algoB
         const algoBSelect = document.querySelector('#dev-algo-b');
         algoBSelect.value = 'random';
         algoBSelect.dispatchEvent(new Event('change'));
         expect(ctrl.algoB).toBeNull();
         expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(ctrl.algoA, null);
+
         ctrl.destroy();
     });
 
@@ -136,13 +139,13 @@ describe('devModeController (browser)', () => {
             'throws if required DOM element %s is missing',
             ({ selector, label }) => {
                 globalThis.env = { isDevEnvironment: true };
+                const deps = createDeps();
                 // Remove the element from the fixture
                 document.body.innerHTML = FIXTURE;
                 const el = document.querySelector(selector);
                 el?.remove();
-                const deps = createDeps();
                 expect(() => new DevModeController(deps)).toThrow(
-                    new RegExp(`Missing required DOM element: #${label}`),
+                    `Missing required DOM element: #${label}`,
                 );
             },
         );
@@ -153,27 +156,33 @@ describe('devModeController (browser)', () => {
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         const options = document.querySelectorAll('#dev-algo-a option');
-        // 3 algo classes appended to existing "Random" option = 4 total
+
+        // 3 algo classes from our algorithms mock appended to existing "Random" option = 4 total
         expect(options).toHaveLength(4);
         ctrl.destroy();
     });
 
     it('hides modal and badge in prod mode', () => {
         globalThis.env = { isDevEnvironment: false };
-        // oxlint-disable-next-line no-new
-        new DevModeController(createDeps());
+        const ctrl = new DevModeController(createDeps());
+
         expect(document.querySelector('#dev-mode').style.display).toBe('none');
         expect(document.querySelector('#dev-badge').style.display).toBe('none');
+
+        ctrl.destroy();
     });
 
     it('toggle opens and closes the modal', () => {
         globalThis.env = { isDevEnvironment: true };
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
+
         ctrl.toggleDevModal();
         expect(document.querySelector('#dev-mode').style.display).toBe('block');
+
         ctrl.toggleDevModal();
         expect(document.querySelector('#dev-mode').style.display).toBe('none');
+
         ctrl.destroy();
     });
 
@@ -184,8 +193,10 @@ describe('devModeController (browser)', () => {
         const checkbox = document.querySelector('#dev-enable');
         checkbox.checked = true;
         checkbox.dispatchEvent(new Event('change'));
+
         expect(deps.transitionManager.setDevModeActive).toHaveBeenCalledWith(true);
         expect(document.querySelector('#dev-badge').style.display).toBe('block');
+
         ctrl.destroy();
     });
 
@@ -197,10 +208,12 @@ describe('devModeController (browser)', () => {
         checkbox.checked = true;
         checkbox.dispatchEvent(new Event('change'));
         deps.transitionManager.setDevModeAlgos.mockClear();
+
         const algoASelect = document.querySelector('#dev-algo-a');
         algoASelect.value = '0';
         algoASelect.dispatchEvent(new Event('change'));
         expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledOnce();
+
         ctrl.destroy();
     });
 
@@ -209,6 +222,7 @@ describe('devModeController (browser)', () => {
         const deps = createDeps();
         const ctrl = new DevModeController(deps);
         ctrl.destroy();
+        // after destroy, changing the checkbox should not call setDevModeActive because the event listener should have been removed
         const checkbox = document.querySelector('#dev-enable');
         checkbox.checked = true;
         checkbox.dispatchEvent(new Event('change'));
