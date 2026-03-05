@@ -123,17 +123,22 @@ export default class Particle {
         this.vy += ay;
     }
 
-    /** Apply all gravitation and spring forces to update the particle's velocity, then update its position. */
+    /**
+     * Apply all gravitation forces to update the particle's velocity.
+     */
     handleGravitations() {
         this.gravitations.map((gravitation) => this.gravitateTo(gravitation));
     }
 
-    /** Apply all spring forces to update the particle's velocity, then update its position. */
+    /**
+     * Apply all spring forces to update the particle's velocity.
+     */
     handleSprings() {
         this.springs.map((spring) => this.springTo(spring.point, spring.k, spring.length));
     }
 
-    /** Remove a gravitation effect from another particle.
+    /**
+     * Remove a gravitation effect from another particle.
      * @param {Particle} particle - The particle to stop gravitating towards.
      */
     removeGravitation(particle) {
@@ -143,7 +148,8 @@ export default class Particle {
         }
     }
 
-    /** Remove a spring connection to another point.
+    /**
+     * Remove a spring connection to another point.
      * @param {Particle} point - The point to disconnect the spring from.
      */
     removeSpring(point) {
@@ -191,7 +197,9 @@ export default class Particle {
         this.vy += (dy / distance) * springForce;
     }
 
-    /** Update the particle's position based on its velocity, applying friction and gravity. */
+    /**
+     * Update the particle's position based on its velocity, applying friction and gravity.
+     */
     update() {
         this.handleSprings();
         this.handleGravitations();

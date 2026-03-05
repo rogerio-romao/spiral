@@ -1,5 +1,6 @@
 /**
  * roundRectExtra polyfill for CanvasRenderingContext2D.
+ * This was taken from somewhere on the internet, but I can't find the source anymore. If you know where this came from, please let me know so I can give proper credit. It was before canvas had native support for rounded rectangles, but it adds extra features like different radii for each corner and the option to only stroke or fill. @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/roundRect for the native method, which is now widely supported and should be preferred if you don't need the extra features.
  * Import this module for its side effect — it patches the prototype
  * so roundRectExtra is available on every canvas context.
  * @param {number} x - The x-coordinate of the rectangle.
@@ -10,6 +11,8 @@
  * @param {boolean} fill - Whether to fill the rectangle.
  * @param {boolean} [stroke] - Whether to stroke the rectangle.
  */
+
+// @ts-ignore complains that roundRectExtra is not defined on CanvasRenderingContext2D, but that's the whole point of this polyfill
 // oxlint-disable-next-line max-params
 CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(
     x,
