@@ -19,11 +19,11 @@ export default class AlgorithmLoader {
     // STATIC PROPERTIES
 
     /**
-     * Reference to the FrequencyAnalyser instance, providing access to audio FFT data/bands.
-     * Gets injected by Spiral after initialization. Algorithms can check if it's available and use it to get frequency data for visualization.
+     * Reference to the `FrequencyAnalyser` instance, providing access to audio FFT data/bands.
+     * Gets injected by `Spiral` after initialization. Algorithms can check if it's available and use it to get frequency data for visualization.
      *
      * @static
-     * @type {import('./FrequencyAnalyser.js').default|null}
+     * @type {import('./utils/FrequencyAnalyser.js').default|null}
      */
     static frequencyAnalyser = null;
 
@@ -93,8 +93,8 @@ export default class AlgorithmLoader {
      * @param {number|null} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
      * @returns {string[]} Array of length `count` of HSLA color strings.
      */
-    static generateHSLAPalette(count, mode = 'hue') {
-        return generateHSLAPalette(count, mode);
+    static generateHSLAPalette(count, mode = 'hue', degrees = null) {
+        return generateHSLAPalette(count, mode, degrees);
     }
 
     /**

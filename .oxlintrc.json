@@ -137,7 +137,8 @@
         "afterEach": "readonly",
         "URL": "readonly",
         "Event": "readonly",
-        "HTMLMediaElement": "readonly"
+        "HTMLMediaElement": "readonly",
+        "HTMLElement": "readonly"
     },
     "ignorePatterns": ["*.d.ts"]
 }

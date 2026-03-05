@@ -32,8 +32,12 @@ export default class DevModeController {
             return;
         }
 
-        this.modal.style.display = 'none';
-        this.badge.style.display = 'none';
+        if (this.modal instanceof HTMLElement) {
+            this.modal.style.display = 'none';
+        }
+        if (this.badge instanceof HTMLElement) {
+            this.badge.style.display = 'none';
+        }
     }
 
     /**
@@ -130,10 +134,14 @@ export default class DevModeController {
 
         if (enabled) {
             this.updateDevAlgos();
-            this.badge.style.display = 'block';
+            if (this.badge instanceof HTMLElement) {
+                this.badge.style.display = 'block';
+            }
             this.hudController.displayMessage('DEV MODE ENABLED');
         } else {
-            this.badge.style.display = 'none';
+            if (this.badge instanceof HTMLElement) {
+                this.badge.style.display = 'none';
+            }
             this.hudController.displayMessage('DEV MODE DISABLED');
         }
     }
@@ -147,7 +155,7 @@ export default class DevModeController {
 
         for (const [index, AlgoClass] of this.allAlgorithms.entries()) {
             const option = document.createElement('option');
-            option.value = index;
+            option.value = String(index);
             option.textContent = AlgoClass.name;
             fragment.append(option);
         }
@@ -161,8 +169,10 @@ export default class DevModeController {
      * Toggles the visibility of the Developer Mode modal.
      */
     toggleDevModal() {
-        const currentDisplayMode = this.modal.style.display;
-        this.modal.style.display = currentDisplayMode === 'block' ? 'none' : 'block';
+        if (this.modal instanceof HTMLElement) {
+            const currentDisplayMode = this.modal.style.display;
+            this.modal.style.display = currentDisplayMode === 'block' ? 'none' : 'block';
+        }
     }
 
     /**

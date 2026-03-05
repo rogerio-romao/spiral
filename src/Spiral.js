@@ -229,7 +229,7 @@ export default class Spiral {
         // Keyboard controller for global shortcuts
         this.keyboardController = new KeyboardController({
             DevModeController: this.devModeController,
-            HudController: this.hud,
+            hudController: this.hud,
             MusicPlayer: this.musicPlayer,
             Spiral: this,
             TransitionManager: this.transitionManager,

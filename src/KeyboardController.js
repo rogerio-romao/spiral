@@ -10,18 +10,18 @@ export default class KeyboardController {
 
     /**
      * @param {Object} deps Dependencies for keyboard shortcut handling.
-     * @param {import('./HudController.js').default}     deps.HudController - The HUD controller for displaying messages and managing UI visibility.
-     * @param {import('./TransitionManager.js').default} deps.TransitionManager - The transition manager for handling algorithm changes and auto-change settings.
-     * @param {import('./MusicPlayer.js').default}       deps.MusicPlayer - The music player for controlling audio playback visibility.
-     * @param {import('./DevModeController.js').default} deps.DevModeController - The dev mode controller for enabling developer features.
-     * @param {import('./Spiral.js').default}            deps.Spiral - The spiral instance for controlling toggling the waveform display.
+     * @param {import('./HudController.js').default}     deps.hudController - The HUD controller for displaying messages and managing UI visibility.
+     * @param {import('./TransitionManager.js').default} deps.transitionManager - The transition manager for handling algorithm changes and auto-change settings.
+     * @param {import('./MusicPlayer.js').default}       deps.musicPlayer - The music player for controlling audio playback visibility.
+     * @param {import('./DevModeController.js').default} deps.devModeController - The dev mode controller for enabling developer features.
+     * @param {import('./Spiral.js').default}            deps.spiral - The spiral instance for controlling toggling the waveform display.
      */
-    constructor({ HudController, TransitionManager, MusicPlayer, DevModeController, Spiral }) {
-        this.HudController = HudController;
-        this.TransitionManager = TransitionManager;
-        this.MusicPlayer = MusicPlayer;
-        this.DevModeController = DevModeController;
-        this.Spiral = Spiral;
+    constructor({ hudController, transitionManager, musicPlayer, devModeController, spiral }) {
+        this.hudController = hudController;
+        this.transitionManager = transitionManager;
+        this.musicPlayer = musicPlayer;
+        this.devModeController = devModeController;
+        this.spiral = spiral;
 
         // Dev mode shortcut should only work in development, we need to check this
         this.isDevEnvironment = globalThis.env?.isDevEnvironment;
@@ -48,12 +48,13 @@ export default class KeyboardController {
         switch (e.code) {
             // Decrease auto-change time by `transitionTimeStepInSeconds`, with a minimum of `minTransitionTimeInSeconds`
             case 'KeyD': {
-                this.TransitionManager.autoChange = Math.max(
-                    this.TransitionManager.autoChange - this.transitionTimeStepInSeconds,
+                this.transitionManager.autoChangeIntervalInSeconds = Math.max(
+                    this.transitionManager.autoChangeIntervalInSeconds -
+                        this.transitionTimeStepInSeconds,
                     this.minTransitionTimeInSeconds,
                 );
-                this.HudController.displayMessage(
-                    `Auto-change: ${this.TransitionManager.autoChange}secs`,
+                this.hudController.displayMessage(
+                    `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
                 );
                 break;
             }
@@ -61,7 +62,7 @@ export default class KeyboardController {
             // Toggle Developer Mode modal visibility in development environment
             case 'KeyE': {
                 if (this.isDevEnvironment) {
-                    this.DevModeController.toggleDevModal();
+                    this.devModeController.toggleDevModal();
                 }
                 break;
             }
@@ -78,56 +79,57 @@ export default class KeyboardController {
 
             // Toggle the help view in the HUD
             case 'KeyH': {
-                this.HudController.toggleHelpView();
+                this.hudController.toggleHelpView();
                 break;
             }
 
             // Increase auto-change time by `transitionTimeStepInSeconds`, with a maximum of `maxTransitionTimeInSeconds`
             case 'KeyI': {
-                this.TransitionManager.autoChange = Math.min(
-                    this.TransitionManager.autoChange + this.transitionTimeStepInSeconds,
+                this.transitionManager.autoChangeIntervalInSeconds = Math.min(
+                    this.transitionManager.autoChangeIntervalInSeconds +
+                        this.transitionTimeStepInSeconds,
                     this.maxTransitionTimeInSeconds,
                 );
-                this.HudController.displayMessage(
-                    `Auto-change: ${this.TransitionManager.autoChange}secs`,
+                this.hudController.displayMessage(
+                    `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
                 );
                 break;
             }
 
             // Toggle manual mode on/off. In manual mode, algorithms only change when the user triggers it (e.g. by pressing Space), and the auto-change timer is paused. In auto mode, algorithms change automatically based on the auto-change timer.
             case 'KeyM': {
-                this.TransitionManager.manual = !this.TransitionManager.manual;
-                this.HudController.displayMessage(
-                    this.TransitionManager.manual ? 'Manual mode' : 'Auto mode',
+                this.transitionManager.isInManualMode = !this.transitionManager.isInManualMode;
+                this.hudController.displayMessage(
+                    this.transitionManager.isInManualMode ? 'Manual mode' : 'Auto mode',
                 );
                 break;
             }
 
             // Toggle the music player's visibility
             case 'KeyP': {
-                this.MusicPlayer.togglePlayerVisibility();
+                this.musicPlayer.togglePlayerVisibility();
                 break;
             }
 
             // Toggle silent mode on/off. In silent mode, algorithm names are not shown in the HUD. This is useful for users who want a more immersive experience.
             case 'KeyS': {
-                this.HudController.toggleSilenceMode();
-                this.HudController.displayMessage(
-                    this.HudController.silenceMessages ? 'Silent mode' : 'Display mode',
+                this.hudController.toggleSilenceMode();
+                this.hudController.displayMessage(
+                    this.hudController.silenceMessages ? 'Silent mode' : 'Display mode',
                 );
                 break;
             }
 
             // Toggle the waveform display on/off in the Spiral visualization
             case 'KeyW': {
-                this.Spiral.toggleWaveform();
+                this.spiral.toggleWaveform();
                 break;
             }
 
             // Trigger an immediate algorithm change
             case 'Space': {
                 e.preventDefault();
-                this.TransitionManager.changeAlgorithm();
+                this.transitionManager.changeAlgorithm();
                 break;
             }
 

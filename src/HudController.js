@@ -54,7 +54,7 @@ export default class HudController {
     }
 
     /**
-     * Show a temporary message for `this.messageDisplayTimeInMs` ms. Clears any prior message. Messages are uppercased for clarity. These messages are always shown, regardless of silent mode. Used for transient notifications like "Welcome", "Auto-change: 60secs", etc. This is called externally by various modules, such as the KeyboardController when adjusting auto-change settings, or the DevModeController when toggling Developer Mode.
+     * Show a temporary message for `this.messageDisplayTimeInMs` ms. Clears any prior message. Messages are uppercased for clarity. These messages are always shown, regardless of silent mode. Used for transient notifications like "Welcome", "Auto-change: 60secs", etc. This is called externally by various modules, such as the `KeyboardController` when adjusting auto-change settings, or the `DevModeController` when toggling Developer Mode.
      *
      * @param {string} message - The message to display.
      */
