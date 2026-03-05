@@ -16,12 +16,18 @@ export default class MusicPlayer {
     playlistEls = null;
     playlistIsOpen = false;
     playToggleFadeDurationInMs = 80;
-    showPlayer = false;
+    showPlayer = true;
     showRemaining = false;
-    trackList = [];
-    trackNames = [];
     trackSkipIntervalInMs = 200;
     trackSkipWhilePlayingTimeout = null;
+
+    /**
+     * List of audio track blob URLs.
+     * @type {string[]}
+     */
+    trackList = [];
+    /** @type {string[]} */
+    trackNames = [];
 
     // used for smoothing the EQ animation by keeping track of previous values, and for zeroing out the display when music is paused
     previousFreqBandValues = [0, 0, 0, 0, 0];
