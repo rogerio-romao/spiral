@@ -205,7 +205,7 @@ input[type='file'] {
 
 #player {
     background: var(--color-bg-dark);
-    display: none;
+    display: block;
     position: absolute;
     top: 0;
     width: 100vw;
@@ -321,7 +321,7 @@ input[type='file'] {
 }
 
 #playlist-accordion.open {
-    max-height: 175px;
+    max-height: 225px;
     opacity: 1;
 }
 
@@ -331,7 +331,7 @@ input[type='file'] {
     text-transform: uppercase;
     padding: 0.25em 1em;
     margin: 0;
-    max-height: 155px;
+    max-height: 210px;
     overflow-y: auto;
     user-select: none;
     list-style: none;
@@ -428,7 +428,7 @@ input[type='file'] {
 
 /* PLAYER - PROGRESS */
 #progress {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 0.5em;
     margin-top: 0.75em;

@@ -330,6 +330,7 @@ export default class MusicPlayer {
 
         const { files } = this.input;
         if (!files?.length) {
+            this.progressPanel.style.display = 'none';
             return;
         }
 
@@ -351,6 +352,7 @@ export default class MusicPlayer {
             this.trackList.push(blob);
         }
 
+        this.progressPanel.style.display = 'flex';
         this.renderPlaylist();
 
         if (isFirstLoad) {
@@ -384,6 +386,7 @@ export default class MusicPlayer {
         this.prevBtn = document.querySelector('#prev');
         this.nextBtn = document.querySelector('#next');
         this.audio = document.querySelector('#audio');
+        this.progressPanel = document.querySelector('#progress');
         this.progress = document.querySelector('#progress-percent');
         this.elapsedEl = document.querySelector('#time-elapsed');
         this.totalEl = document.querySelector('#time-total');
@@ -496,6 +499,7 @@ export default class MusicPlayer {
             this.currentSongIndex = 0;
             this.playlistEls = null;
             this.playListEl.innerHTML = '';
+            this.progressPanel.style.display = 'none';
             this.isPlaying = false;
             this.togglePlayPauseIcon(false);
             this.trackNameEl.textContent = '';

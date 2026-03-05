@@ -1,20 +1,110 @@
+/**
+ * Controls the rendering of the audio waveform on a canvas element.
+ * Handles resizing, toggling display, animation, and smoothing of waveform data.
+ */
 export default class WaveformController {
-    constructor({ canvasElement, frequencyAnalyser }) {
+    // INSTANCE PROPERTIES
+    showWaveform = false;
+    smoothing = 0.6;
+    waveformData = null;
+    animationRafId = null;
+
+    /**
+     * @param {Object} params - Parameters object containing required components
+     * @param {HTMLCanvasElement} params.canvasElement - The canvas element to draw the waveform on.
+     * @param {Object} params.frequencyAnalyser - FrequencyAnalyser instance providing waveform data.
+     * @param {string} [params.waveColor] - The color of the waveform.
+     */
+    constructor({ canvasElement, frequencyAnalyser, waveColor = 'white' }) {
         this.canvas = canvasElement;
         this.ctx = canvasElement?.getContext('2d');
+        this.waveColor = waveColor;
+
         this.frequencyAnalyser = frequencyAnalyser;
 
-        this.show = false;
-        this.smoothing = 0.6;
-        this._waveformData = null;
-        this._animationId = null;
-
-        if (canvasElement) {
-            this._resizeCanvas();
-        }
+        this.resizeCanvas();
     }
 
-    _resizeCanvas() {
+    /**
+     * Destroy the controller and stop animation.
+     */
+    destroy() {
+        if (this.animationRafId) {
+            cancelAnimationFrame(this.animationRafId);
+            this.animationRafId = null;
+        }
+
+        const w = this.canvas.width / (globalThis.devicePixelRatio || 1);
+        const h = this.canvas.height / (globalThis.devicePixelRatio || 1);
+        this.ctx.clearRect(0, 0, w, h);
+    }
+
+    /**
+     * Draw the current waveform data to the canvas.
+     */
+    draw() {
+        if (!this.showWaveform) {
+            return;
+        }
+
+        if (!this.ctx || !this.frequencyAnalyser) {
+            // Re-schedule even if not ready, otherwise it stops permanently
+            this.animationRafId = requestAnimationFrame(() => this.draw());
+            return;
+        }
+
+        const w = this.canvas.width / (globalThis.devicePixelRatio || 1);
+        const h = this.canvas.height / (globalThis.devicePixelRatio || 1);
+
+        const newData = this.frequencyAnalyser.getWaveform();
+
+        // Initialize waveformData on the first frame, then apply smoothing on subsequent frames
+        if (!this.waveformData) {
+            this.waveformData = newData;
+        }
+        this.waveformData = this.waveformData.map(
+            (prev, i) => prev * this.smoothing + newData[i] * (1 - this.smoothing),
+        );
+
+        this.ctx.clearRect(0, 0, w, h);
+        this.ctx.beginPath();
+
+        this.ctx.strokeStyle = this.waveColor;
+        this.ctx.lineWidth = 2;
+        this.ctx.shadowColor = this.waveColor;
+        this.ctx.shadowBlur = 10;
+
+        const sliceWidth = w / this.waveformData.length;
+        let x = 0;
+
+        for (const value of this.waveformData) {
+            const y = value * h;
+
+            if (x === 0) {
+                this.ctx.moveTo(x, y);
+            } else {
+                this.ctx.lineTo(x, y);
+            }
+
+            x += sliceWidth;
+        }
+
+        this.ctx.stroke();
+
+        this.animationRafId = requestAnimationFrame(() => this.draw());
+    }
+
+    /**
+     * Get the current waveform data from the frequency analyser.
+     * @returns {number[]|undefined} The waveform data array, or undefined if not available.
+     */
+    getWaveformData() {
+        return this.frequencyAnalyser?.getWaveform();
+    }
+
+    /**     * Resize the canvas to fit the window while maintaining high resolution, dependent on device pixel ratio.
+     */
+    resizeCanvas() {
         if (!this.canvas) {
             return;
         }
@@ -22,108 +112,47 @@ export default class WaveformController {
         const dpr = globalThis.devicePixelRatio || 1;
         const w = globalThis.innerWidth - 80;
         const h = Math.min(400, globalThis.innerHeight);
+        // Keep both the drawing buffer (high-DPI) and CSS layout size.
+        // canvas.width/height set the internal pixel buffer (multiplied by devicePixelRatio)
+        // canvas.style.width/height set the element's layout size in CSS pixels.
         this.canvas.width = w * dpr;
         this.canvas.height = h * dpr;
         this.canvas.style.width = `${w}px`;
         this.canvas.style.height = `${h}px`;
+
         if (this.ctx) {
             this.ctx.resetTransform();
             this.ctx.scale(dpr, dpr);
         }
     }
 
-    resize() {
-        this._resizeCanvas();
+    /**
+     * Start the waveform animation loop.
+     */
+    start() {
+        // Prevent multiple animation loops if already running
+        if (this.animationRafId) {
+            return;
+        }
+
+        // Reset waveform data to avoid showing stale data when starting
+        this.waveformData = null;
+
+        this.draw();
     }
 
-    toggle() {
-        this.show = !this.show;
-        if (this.show) {
-            this._resizeCanvas();
-            this._start();
+    /**
+     * Toggle the waveform display on or off.
+     * @returns {boolean} The new visibility state.
+     */
+    toggleWaveform() {
+        this.showWaveform = !this.showWaveform;
+        if (this.showWaveform) {
+            this.resizeCanvas();
+            this.start();
         } else {
-            this._stop();
+            this.destroy();
         }
-        return this.show;
-    }
-
-    _start() {
-        if (this._animationId) {
-            return;
-        }
-        this._waveformData = null;
-        const draw = () => {
-            if (!this.show) {
-                return;
-            }
-            this._draw();
-            this._animationId = requestAnimationFrame(draw);
-        };
-        draw();
-    }
-
-    _stop() {
-        if (this._animationId) {
-            cancelAnimationFrame(this._animationId);
-            this._animationId = null;
-        }
-        if (this.ctx && this.canvas) {
-            const w = this.canvas.width / (globalThis.devicePixelRatio || 1);
-            const h = this.canvas.height / (globalThis.devicePixelRatio || 1);
-            this.ctx.clearRect(0, 0, w, h);
-        }
-    }
-
-    _draw() {
-        if (!this.ctx || !this.frequencyAnalyser) {
-            return;
-        }
-
-        const { ctx } = this;
-        const w = this.canvas.width / (globalThis.devicePixelRatio || 1);
-        const h = this.canvas.height / (globalThis.devicePixelRatio || 1);
-
-        const newData = this.frequencyAnalyser.getWaveform();
-
-        if (!this._waveformData) {
-            this._waveformData = newData;
-        }
-
-        this._waveformData = this._waveformData.map(
-            (prev, i) => prev * this.smoothing + newData[i] * (1 - this.smoothing),
-        );
-
-        ctx.clearRect(0, 0, w, h);
-
-        ctx.beginPath();
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
-        ctx.shadowColor = 'white';
-        ctx.shadowBlur = 10;
-
-        const sliceWidth = w / this._waveformData.length;
-        let x = 0;
-
-        for (const value of this._waveformData) {
-            const y = value * h;
-
-            if (x === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
-            }
-
-            x += sliceWidth;
-        }
-
-        ctx.stroke();
-    }
-
-    destroy() {
-        this._stop();
-    }
-
-    getWaveformData() {
-        return this.frequencyAnalyser?.getWaveform();
+        return this.showWaveform;
     }
 }
