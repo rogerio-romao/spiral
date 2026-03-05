@@ -71,17 +71,17 @@ describe('musicPlayer (browser)', () => {
     });
 
     describe('togglePlayerVisibility', () => {
-        it('shows the player on first call', () => {
+        it('hides the player on first call', () => {
             const player = createPlayer();
-            player.togglePlayerVisibility();
-            expect(document.querySelector('#player').style.display).toBe('block');
-        });
-
-        it('hides the player on second call', () => {
-            const player = createPlayer();
-            player.togglePlayerVisibility();
             player.togglePlayerVisibility();
             expect(document.querySelector('#player').style.display).toBe('none');
+        });
+
+        it('shows the player on second call', () => {
+            const player = createPlayer();
+            player.togglePlayerVisibility();
+            player.togglePlayerVisibility();
+            expect(document.querySelector('#player').style.display).toBe('block');
         });
     });
 
