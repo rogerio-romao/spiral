@@ -3,6 +3,9 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
+        browser: {
+            screenshotFailures: false,
+        },
         coverage: {
             exclude: ['src/algos/**', 'src/generated/**', 'coverage/**'],
             include: ['src/**/*.js', 'scripts/**/*.mjs'],

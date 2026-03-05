@@ -57,6 +57,8 @@
         "eslint/sort-imports": "off",
         "eslint/no-extend-native": "off",
         "eslint/sort-keys": ["warn", "asc", { "caseSensitive": false }],
+        "eslint/no-promise-executor-return": "off",
+        "promise/avoid-new": "off",
         "oxc/no-optional-chaining": "off",
         "oxc/no-async-await": "off",
         "oxc/no-rest-spread-properties": "off",
