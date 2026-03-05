@@ -218,7 +218,6 @@ export default class Spiral {
         this.waveformController = new WaveformController({
             canvasElement: document.querySelector('#waveform'),
             frequencyAnalyser: this.frequencyAnalyser,
-            waveColor: 'red',
         });
         AlgorithmLoader.waveformController = this.waveformController;
 
