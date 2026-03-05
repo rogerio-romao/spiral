@@ -21,11 +21,13 @@ describe('hudController (browser smoke)', () => {
         hud.destroy();
     });
 
-    it('toggleHelp shows and hides the help panel', () => {
+    it('toggleHelpView shows and hides the help panel', () => {
         const { hud, helpElement } = createHud();
-        expect(hud.toggleHelp()).toBeTruthy();
+        hud.toggleHelpView();
+        expect(hud.showHelpView).toBeTruthy();
         expect(helpElement.style.display).toBe('block');
-        expect(hud.toggleHelp()).toBeFalsy();
+        hud.toggleHelpView();
+        expect(hud.showHelpView).toBeFalsy();
         expect(helpElement.style.display).toBe('none');
         hud.destroy();
     });

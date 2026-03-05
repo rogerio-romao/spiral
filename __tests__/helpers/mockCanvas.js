@@ -2,6 +2,7 @@ export default function createMockCanvas(width = 1920, height = 1080) {
     const canvas = {
         addEventListener: vi.fn(),
         dispatchEvent: vi.fn(),
+        getContext: vi.fn(() => ctx),
         height,
         style: {},
         width,

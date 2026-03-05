@@ -72,3 +72,4 @@ Space, F, I, D, M, S, H, P, E
 
 - NO inline comments - if comment is needed, write it in its own line above the
   code
+- Dont use `_` prefix for private methods/props - just use normal names.

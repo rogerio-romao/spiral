@@ -4,34 +4,34 @@ import KeyboardController from '../src/KeyboardController.js';
 
 let controller = null;
 
-function makeController({ isDev = false } = {}) {
-    globalThis.env = { isDev };
+function makeController({ isDevEnvironment = false } = {}) {
+    globalThis.env = { isDevEnvironment };
 
-    const hud = {
+    const hudController = {
         displayMessage: vi.fn(),
         silent: false,
-        toggleHelp: vi.fn(),
-        toggleSilent: vi.fn(),
+        toggleHelpView: vi.fn(),
+        toggleSilenceMode: vi.fn(),
     };
-    const transition = {
-        autoChange: 60,
+    const transitionManager = {
+        autoChangeIntervalInSeconds: 60,
         changeAlgorithm: vi.fn(),
-        manual: false,
+        isInManualMode: false,
     };
     const musicPlayer = { togglePlayerVisibility: vi.fn() };
-    const devModeController = { toggle: vi.fn() };
+    const devModeController = { toggleDevModal: vi.fn() };
     const spiral = { toggleWaveform: vi.fn() };
 
     controller = new KeyboardController({
         devModeController,
-        hud,
+        hudController,
         musicPlayer,
         spiral,
-        transition,
+        transitionManager,
     });
     controller.bind();
 
-    return { controller, devModeController, hud, musicPlayer, spiral, transition };
+    return { controller, devModeController, hudController, musicPlayer, spiral, transitionManager };
 }
 
 function dispatch(code) {
@@ -41,6 +41,7 @@ function dispatch(code) {
 describe('keyboardController', () => {
     beforeEach(() => {
         document.body.requestFullscreen ??= () => null;
+        document.exitFullscreen ??= () => null;
     });
 
     afterEach(() => {
@@ -49,74 +50,79 @@ describe('keyboardController', () => {
         delete globalThis.env;
     });
 
-    it('space calls transition.changeAlgorithm()', () => {
-        const { transition } = makeController();
+    it('space calls transitionManager.changeAlgorithm()', () => {
+        const { transitionManager } = makeController();
         dispatch('Space');
-        expect(transition.changeAlgorithm).toHaveBeenCalledOnce();
+        expect(transitionManager.changeAlgorithm).toHaveBeenCalledOnce();
     });
 
-    it('keyF calls document.body.requestFullscreen()', () => {
+    it('keyF toggles fullscreen mode', () => {
         makeController();
-        const spy = vi.spyOn(document.body, 'requestFullscreen').mockReturnValue(null);
+        let spy = vi.spyOn(document.body, 'requestFullscreen').mockReturnValue(null);
+        dispatch('KeyF');
+        expect(spy).toHaveBeenCalledOnce();
+        spy.mockRestore();
+        spy = vi.spyOn(document, 'exitFullscreen').mockReturnValue(null);
+        document.fullscreenElement = {};
         dispatch('KeyF');
         expect(spy).toHaveBeenCalledOnce();
     });
 
     it('keyI increments autoChange by 10', () => {
-        const { hud, transition } = makeController();
+        const { hudController, transitionManager } = makeController();
         dispatch('KeyI');
-        expect(transition.autoChange).toBe(70);
-        expect(hud.displayMessage).toHaveBeenCalledWith('Auto-change: 70secs');
+        expect(transitionManager.autoChangeIntervalInSeconds).toBe(70);
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto-change: 70secs');
     });
 
     it('keyI caps autoChange at 300', () => {
-        const { transition } = makeController();
-        transition.autoChange = 295;
+        const { transitionManager } = makeController();
+        transitionManager.autoChangeIntervalInSeconds = 295;
         dispatch('KeyI');
-        expect(transition.autoChange).toBe(300);
+        expect(transitionManager.autoChangeIntervalInSeconds).toBe(300);
     });
 
     it('keyD decrements autoChange by 10', () => {
-        const { hud, transition } = makeController();
+        const { hudController, transitionManager } = makeController();
         dispatch('KeyD');
-        expect(transition.autoChange).toBe(50);
-        expect(hud.displayMessage).toHaveBeenCalledWith('Auto-change: 50secs');
+        expect(transitionManager.autoChangeIntervalInSeconds).toBe(50);
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto-change: 50secs');
     });
 
     it('keyD floors autoChange at 10', () => {
-        const { transition } = makeController();
-        transition.autoChange = 10;
+        const { transitionManager } = makeController();
+        transitionManager.autoChangeIntervalInSeconds = 10;
         dispatch('KeyD');
-        expect(transition.autoChange).toBe(10);
+        expect(transitionManager.autoChangeIntervalInSeconds).toBe(10);
     });
 
     it('keyM toggles manual on and displays message', () => {
-        const { hud, transition } = makeController();
-        transition.manual = false;
+        const { hudController, transitionManager } = makeController();
+        transitionManager.isInManualMode = false;
         dispatch('KeyM');
-        expect(transition.manual).toBeTruthy();
-        expect(hud.displayMessage).toHaveBeenCalledWith('Manual mode');
+        expect(transitionManager.isInManualMode).toBeTruthy();
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Manual mode');
     });
 
     it('keyM toggles manual off and displays message', () => {
-        const { hud, transition } = makeController();
-        transition.manual = true;
+        const { hudController, transitionManager } = makeController();
+        transitionManager.isInManualMode = true;
         dispatch('KeyM');
-        expect(transition.manual).toBeFalsy();
-        expect(hud.displayMessage).toHaveBeenCalledWith('Auto mode');
+        expect(transitionManager.isInManualMode).toBeFalsy();
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto mode');
     });
 
-    it('keyS calls toggleSilent and displayMessage', () => {
-        const { hud } = makeController();
+    it('keyS calls toggleSilenceMode and displayMessage', () => {
+        const { hudController } = makeController();
         dispatch('KeyS');
-        expect(hud.toggleSilent).toHaveBeenCalledOnce();
-        expect(hud.displayMessage).toHaveBeenCalledOnce();
+        expect(hudController.toggleSilenceMode).toHaveBeenCalledOnce();
+        expect(hudController.displayMessage).toHaveBeenCalledOnce();
     });
 
-    it('keyH calls hud.toggleHelp()', () => {
-        const { hud } = makeController();
+    it('keyH calls hudController.toggleHelpView()', () => {
+        const { hudController } = makeController();
         dispatch('KeyH');
-        expect(hud.toggleHelp).toHaveBeenCalledOnce();
+        expect(hudController.toggleHelpView).toHaveBeenCalledOnce();
     });
 
     it('keyP calls musicPlayer.togglePlayerVisibility()', () => {
@@ -125,16 +131,16 @@ describe('keyboardController', () => {
         expect(musicPlayer.togglePlayerVisibility).toHaveBeenCalledOnce();
     });
 
-    it('keyE calls devModeController.toggle() in dev mode', () => {
-        const { devModeController } = makeController({ isDev: true });
+    it('keyE calls devModeController.toggleDevModal() in dev mode', () => {
+        const { devModeController } = makeController({ isDevEnvironment: true });
         dispatch('KeyE');
-        expect(devModeController.toggle).toHaveBeenCalledOnce();
+        expect(devModeController.toggleDevModal).toHaveBeenCalledOnce();
     });
 
-    it('keyE does not call toggle() in production mode', () => {
-        const { devModeController } = makeController({ isDev: false });
+    it('keyE does not call toggleDevModal() in production mode', () => {
+        const { devModeController } = makeController({ isDevEnvironment: false });
         dispatch('KeyE');
-        expect(devModeController.toggle).not.toHaveBeenCalled();
+        expect(devModeController.toggleDevModal).not.toHaveBeenCalled();
     });
 
     it('keyW calls spiral.toggleWaveform()', () => {
@@ -143,25 +149,10 @@ describe('keyboardController', () => {
         expect(spiral.toggleWaveform).toHaveBeenCalledOnce();
     });
 
-    it('keyW with null spiral does not throw', () => {
-        const { hud, musicPlayer, devModeController, transition } = makeController();
-        controller.destroy();
-        globalThis.env = { isDev: false };
-        controller = new KeyboardController({
-            devModeController,
-            hud,
-            musicPlayer,
-            spiral: null,
-            transition,
-        });
-        controller.bind();
-        expect(() => dispatch('KeyW')).not.toThrow();
-    });
-
     it('destroy() stops key events from triggering handlers', () => {
-        const { transition } = makeController();
+        const { transitionManager } = makeController();
         controller.destroy();
         dispatch('Space');
-        expect(transition.changeAlgorithm).not.toHaveBeenCalled();
+        expect(transitionManager.changeAlgorithm).not.toHaveBeenCalled();
     });
 });

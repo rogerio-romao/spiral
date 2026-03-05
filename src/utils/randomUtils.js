@@ -6,13 +6,13 @@
  */
 
 /**
- * Generate a random integer between min (inclusive) and max (exclusive).
+ * Generate a random integer between min (inclusive) and max (inclusive).
  * @param {number} min - Minimum integer value (inclusive).
- * @param {number} max - Maximum integer value (exclusive).
+ * @param {number} max - Maximum integer value (inclusive).
  * @returns {number} Random integer between min and max.
  */
 export function random(min, max) {
-    const num = Math.floor(Math.random() * (max - min)) + min;
+    const num = Math.floor(Math.random() * (max - min + 1)) + min;
     return num;
 }
 
@@ -25,14 +25,17 @@ export function random(min, max) {
  * @returns {string} RGBA or P3 color string.
  */
 export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
-    const r = random(minC, maxC) / 255;
-    const g = random(minC, maxC) / 255;
-    const b = random(minC, maxC) / 255;
+    const r = random(minC, maxC);
+    const g = random(minC, maxC);
+    const b = random(minC, maxC);
     const a = Number((Math.random() * (maxA - minA) + minA).toFixed(3));
 
     // detect if the browser support p3 color space and use it if available, otherwise fallback to rgba
     if (globalThis.CSS && CSS.supports('color', 'color(display-p3 1 0 0 / 1)')) {
-        return `color(display-p3 ${r} ${g} ${b} / ${a})`;
+        const rP3 = r / 255;
+        const gP3 = g / 255;
+        const bP3 = b / 255;
+        return `color(display-p3 ${rP3.toFixed(3)} ${gP3.toFixed(3)} ${bP3.toFixed(3)} / ${a})`;
     }
 
     return `rgba(${r}, ${g}, ${b}, ${a})`;
@@ -40,13 +43,13 @@ export function randomColor(minC = 0, maxC = 255, minA = 0.1, maxA = 1) {
 
 /**
  * Generate an array of random RGBA colors.
- * Delegates to randomColor, accepts same parameters.
+ * Delegates to randomColor, accepts these parameters.
  * @param {number} count - Number of colors to generate.
- * @param {number} [minC] - Minimum color value (0-255).
- * @param {number} [maxC] - Maximum color value (0-255).
+ * @param {number} [minC] - Minimum color value for each channel (0-255).
+ * @param {number} [maxC] - Maximum color value for each channel (0-255).
  * @param {number} [minA] - Minimum alpha value (0-1).
  * @param {number} [maxA] - Maximum alpha value (0-1).
- * @returns {string[]} Array of RGBA color strings.
+ * @returns {string[]} Array of length `count` of RGBA color strings.
  */
 export function generateRGBAPalette(count, minC = 0, maxC = 255, minA = 0.5, maxA = 1) {
     const palette = [];
@@ -61,7 +64,7 @@ export function generateRGBAPalette(count, minC = 0, maxC = 255, minA = 0.5, max
  * @param {number} count - Number of colors to generate.
  * @param {'hue'|'saturation'|'luminosity'|'alpha'|'random'} [mode] - Which property to vary (defaults to 'hue').
  * @param {number|null} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
- * @returns {string[]} Array of HSLA color strings.
+ * @returns {string[]} Array of length `count` of HSLA color strings.
  */
 export function generateHSLAPalette(count, mode = 'hue', degrees = null) {
     // Random base values

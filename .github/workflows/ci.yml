@@ -9,22 +9,12 @@ jobs:
     lint:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-
-            - name: Install pnpm
-              uses: pnpm/action-setup@v3
+            - uses: actions/checkout@v6
+            - run: npm i -g --force corepack && corepack enable
+            - uses: actions/setup-node@v6
               with:
-                  version: latest
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 'lts/*'
-                  cache: 'pnpm'
-
-            - name: Enable corepack (for pnpm)
-              run: corepack enable
+                  node-version: lts/*
+                  cache: pnpm
 
             - name: Install dependencies
               run: pnpm install

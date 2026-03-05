@@ -37,19 +37,19 @@ describe('waveformController', () => {
         it('initialises state correctly', () => {
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
-            expect(wc.show).toBeFalsy();
+            expect(wc.showWaveform).toBeFalsy();
             expect(wc.smoothing).toBe(0.6);
-            expect(wc._waveformData).toBeNull();
-            expect(wc._animationId).toBeNull();
+            expect(wc.waveformData).toBeNull();
+            expect(wc.animationRafId).toBeNull();
         });
 
-        it('calls _resizeCanvas when canvas is provided', () => {
+        it('calls resizeCanvas when canvas is provided', () => {
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
             // dpr=1, w=180-80=100, h=min(400,500)=400
             expect(canvas.width).toBe(100);
             expect(canvas.height).toBe(400);
-            expect(wc.show).toBeFalsy();
+            expect(wc.showWaveform).toBeFalsy();
         });
 
         it('handles null canvas without throwing', () => {
@@ -59,7 +59,7 @@ describe('waveformController', () => {
         });
     });
 
-    describe('_resizeCanvas', () => {
+    describe('resizeCanvas', () => {
         it('sets canvas pixel dimensions using devicePixelRatio', () => {
             globalThis.devicePixelRatio = 2;
             // w = 130-80 = 50, dpr=2 → canvas.width = 100
@@ -68,7 +68,7 @@ describe('waveformController', () => {
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
             expect(canvas.width).toBe(100);
             expect(canvas.style.width).toBe('50px');
-            expect(wc.show).toBeFalsy();
+            expect(wc.showWaveform).toBeFalsy();
         });
 
         it('calls ctx.resetTransform and ctx.scale with dpr', () => {
@@ -77,25 +77,25 @@ describe('waveformController', () => {
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
             expect(ctx.resetTransform).toHaveBeenCalledOnce();
             expect(ctx.scale).toHaveBeenCalledWith(2, 2);
-            expect(wc.show).toBeFalsy();
+            expect(wc.showWaveform).toBeFalsy();
         });
 
         it('no-ops when canvas is null', () => {
             const wc = new WaveformController({ canvasElement: null, frequencyAnalyser: null });
-            expect(() => wc._resizeCanvas()).not.toThrow();
+            expect(() => wc.resizeCanvas()).not.toThrow();
         });
     });
 
-    describe('toggle', () => {
-        it('first call sets show to true and returns true', () => {
+    describe('toggleWaveform', () => {
+        it('first call sets showWaveform to true and returns true', () => {
             vi.useFakeTimers();
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            expect(wc.toggle()).toBeTruthy();
-            expect(wc.show).toBeTruthy();
+            expect(wc.toggleWaveform()).toBeTruthy();
+            expect(wc.showWaveform).toBeTruthy();
         });
 
         it('first call starts animation loop via requestAnimationFrame', () => {
@@ -106,39 +106,39 @@ describe('waveformController', () => {
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc.toggle();
+            wc.toggleWaveform();
             expect(rafSpy).toHaveBeenCalledOnce();
         });
 
-        it('second call sets show to false and returns false', () => {
+        it('second call sets showWaveform to false and returns false', () => {
             vi.useFakeTimers();
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc.toggle();
-            expect(wc.toggle()).toBeFalsy();
-            expect(wc.show).toBeFalsy();
+            wc.toggleWaveform();
+            expect(wc.toggleWaveform()).toBeFalsy();
+            expect(wc.showWaveform).toBeFalsy();
         });
 
-        it('second call triggers _stop and clears the canvas', () => {
+        it('second call triggers stop and clears the canvas', () => {
             vi.useFakeTimers();
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc.toggle();
+            wc.toggleWaveform();
             ctx.clearRect.mockClear();
             const cafSpy = vi.spyOn(globalThis, 'cancelAnimationFrame');
-            wc.toggle();
+            wc.toggleWaveform();
             expect(cafSpy).toHaveBeenCalledOnce();
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 400);
         });
     });
 
-    describe('_start', () => {
+    describe('start', () => {
         it('calls requestAnimationFrame', () => {
             vi.useFakeTimers();
             const { canvas } = createMockCanvas();
@@ -146,68 +146,69 @@ describe('waveformController', () => {
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc.show = true;
+            wc.showWaveform = true;
             const rafSpy = vi.spyOn(globalThis, 'requestAnimationFrame');
-            wc._start();
+            wc.start();
             expect(rafSpy).toHaveBeenCalledOnce();
         });
 
-        it('no-ops if _animationId is already set (prevents double-start)', () => {
+        it('no-ops if animationRafId is already set (prevents double-start)', () => {
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc._animationId = 999;
+            wc.animationRafId = 999;
             const rafSpy = vi.spyOn(globalThis, 'requestAnimationFrame');
-            wc._start();
+            wc.start();
             expect(rafSpy).not.toHaveBeenCalled();
         });
     });
 
-    describe('_stop and destroy', () => {
-        it('_stop cancels animation frame and clears canvas', () => {
+    describe('stop and destroy', () => {
+        it('stop cancels animation frame and clears canvas', () => {
             vi.useFakeTimers();
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc.show = true;
-            wc._start();
+            wc.showWaveform = true;
+            wc.start();
             ctx.clearRect.mockClear();
             const cafSpy = vi.spyOn(globalThis, 'cancelAnimationFrame');
-            wc._stop();
-            expect(wc._animationId).toBeNull();
+            wc.destroy();
+            expect(wc.animationRafId).toBeNull();
             expect(cafSpy).toHaveBeenCalledOnce();
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 400);
         });
 
-        it('destroy delegates to _stop', () => {
+        it('destroy delegates to stop', () => {
             vi.useFakeTimers();
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc.show = true;
-            wc._start();
+            wc.showWaveform = true;
+            wc.start();
             ctx.clearRect.mockClear();
             wc.destroy();
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 400);
-            expect(wc._animationId).toBeNull();
+            expect(wc.animationRafId).toBeNull();
         });
     });
 
-    describe('_draw', () => {
-        it('first draw initialises _waveformData and calls canvas path methods', () => {
+    describe('draw', () => {
+        it('first draw initialises waveformData and calls canvas path methods', () => {
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            wc._draw();
-            expect(wc._waveformData).not.toBeNull();
+            wc.showWaveform = true;
+            wc.draw();
+            expect(wc.waveformData).not.toBeNull();
             expect(ctx.beginPath).toHaveBeenCalledOnce();
             expect(ctx.moveTo).toHaveBeenCalledWith(expect.any(Number), expect.any(Number));
             expect(ctx.lineTo).toHaveBeenCalledWith(expect.any(Number), expect.any(Number));
@@ -221,13 +222,14 @@ describe('waveformController', () => {
                 canvasElement: canvas,
                 frequencyAnalyser: analyser,
             });
-            // initialise _waveformData with [0.5, 0.5, 0.5]
-            wc._draw();
+            wc.showWaveform = true;
+            // initialise waveformData with [0.5, 0.5, 0.5]
+            wc.draw();
             analyser.getWaveform.mockReturnValue([1, 1, 1]);
             // smooth: 0.5 * 0.6 + 1 * 0.4
-            wc._draw();
+            wc.draw();
             const expected = 0.5 * 0.6 + 1 * 0.4;
-            expect(wc._waveformData).toStrictEqual([expected, expected, expected]);
+            expect(wc.waveformData).toStrictEqual([expected, expected, expected]);
         });
     });
 

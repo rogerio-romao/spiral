@@ -11,9 +11,7 @@
     font-weight: 400;
 }
 
-/* ========================
-   CSS CUSTOM PROPERTIES
-   ======================== */
+/* CSS CUSTOM PROPERTIES */
 :root {
     /* Colors */
     --color-primary: orange;
@@ -38,10 +36,13 @@
     --radius-lg: 5px;
     --radius-xl: 15px;
 
-    /* Transitions */
-    --transition-fast: 0.15s;
-    --transition-normal: 0.2s;
-    --transition-slow: 0.35s;
+    /* Easing */
+    --easing: cubic-bezier(0.66, 0, 0.34, 1);
+
+    /* Transitions (include easing) */
+    --transition-fast: 0.15s var(--easing);
+    --transition-normal: 0.22s var(--easing);
+    --transition-slow: 0.35s var(--easing);
 }
 
 /* GLOBAL */
@@ -107,6 +108,9 @@ canvas {
     top: 0;
     left: 0;
     cursor: pointer;
+
+    /* forces GPU layer promotion */
+    transform: translateZ(0);
 }
 
 #waveform {
@@ -201,7 +205,7 @@ input[type='file'] {
 
 #player {
     background: var(--color-bg-dark);
-    display: none;
+    display: block;
     position: absolute;
     top: 0;
     width: 100vw;
@@ -211,6 +215,9 @@ input[type='file'] {
     text-shadow: none;
     opacity: 0.7;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    transition:
+        background var(--transition-normal),
+        opacity var(--transition-normal);
 }
 
 #player:hover {
@@ -288,7 +295,7 @@ input[type='file'] {
         transform var(--transition-slow) ease;
 }
 
-#playlist-toggle.visible {
+#playlist-toggle.tracks-present {
     display: inline-flex;
 }
 
@@ -317,7 +324,7 @@ input[type='file'] {
 }
 
 #playlist-accordion.open {
-    max-height: 175px;
+    max-height: 225px;
     opacity: 1;
 }
 
@@ -327,7 +334,7 @@ input[type='file'] {
     text-transform: uppercase;
     padding: 0.25em 1em;
     margin: 0;
-    max-height: 155px;
+    max-height: 210px;
     overflow-y: auto;
     user-select: none;
     list-style: none;
@@ -424,7 +431,7 @@ input[type='file'] {
 
 /* PLAYER - PROGRESS */
 #progress {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 0.5em;
     margin-top: 0.75em;
@@ -441,7 +448,7 @@ progress {
 }
 
 progress::-webkit-progress-bar {
-    background-color: var(--color-muted);
+    background-color: var(--color-border);
     border-radius: 3px;
 }
 

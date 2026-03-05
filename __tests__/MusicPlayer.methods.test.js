@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-function
 import MusicPlayer from '../src/MusicPlayer.js';
 
 // Access prototype methods directly to avoid constructor DOM side effects.
@@ -18,7 +19,7 @@ describe('musicPlayer methods', () => {
             instance.iconPlay = { style: { display: 'inline' } };
             instance.iconPause = { style: { display: 'none' } };
 
-            instance.setPlayIcon(true);
+            instance.togglePlayPauseIcon(true);
 
             expect(instance.iconPlay.style.display).toBe('none');
             expect(instance.iconPause.style.display).toBe('inline');
@@ -29,7 +30,7 @@ describe('musicPlayer methods', () => {
             instance.iconPlay = { style: { display: 'none' } };
             instance.iconPause = { style: { display: 'inline' } };
 
-            instance.setPlayIcon(false);
+            instance.togglePlayPauseIcon(false);
 
             expect(instance.iconPlay.style.display).toBe('inline');
             expect(instance.iconPause.style.display).toBe('none');
@@ -39,50 +40,50 @@ describe('musicPlayer methods', () => {
     describe('togglePlayerVisibility', () => {
         it('shows the player when hidden', () => {
             const instance = Object.create(proto);
-            instance.playerShow = false;
+            instance.showPlayer = false;
             instance.player = { style: { display: 'none' } };
 
             instance.togglePlayerVisibility();
 
-            expect(instance.playerShow).toBeTruthy();
+            expect(instance.showPlayer).toBeTruthy();
             expect(instance.player.style.display).toBe('block');
         });
 
         it('hides the player when shown', () => {
             const instance = Object.create(proto);
-            instance.playerShow = true;
+            instance.showPlayer = true;
             instance.player = { style: { display: 'block' } };
 
             instance.togglePlayerVisibility();
 
-            expect(instance.playerShow).toBeFalsy();
+            expect(instance.showPlayer).toBeFalsy();
             expect(instance.player.style.display).toBe('none');
         });
     });
 
     describe('togglePlaylist', () => {
-        it('sets playlistOpen to true on first toggle', () => {
+        it('sets playlistIsOpen to true on first toggle', () => {
             const instance = Object.create(proto);
-            instance.playlistOpen = false;
+            instance.playlistIsOpen = false;
             instance.accordionEl = { classList: { toggle: vi.fn() } };
             instance.playlistToggle = { classList: { toggle: vi.fn() } };
 
             instance.togglePlaylist();
 
-            expect(instance.playlistOpen).toBeTruthy();
+            expect(instance.playlistIsOpen).toBeTruthy();
             expect(instance.accordionEl.classList.toggle).toHaveBeenCalledWith('open', true);
             expect(instance.playlistToggle.classList.toggle).toHaveBeenCalledWith('open', true);
         });
 
-        it('sets playlistOpen to false on second toggle', () => {
+        it('sets playlistIsOpen to false on second toggle', () => {
             const instance = Object.create(proto);
-            instance.playlistOpen = true;
+            instance.playlistIsOpen = true;
             instance.accordionEl = { classList: { toggle: vi.fn() } };
             instance.playlistToggle = { classList: { toggle: vi.fn() } };
 
             instance.togglePlaylist();
 
-            expect(instance.playlistOpen).toBeFalsy();
+            expect(instance.playlistIsOpen).toBeFalsy();
             expect(instance.accordionEl.classList.toggle).toHaveBeenCalledWith('open', false);
         });
     });
@@ -91,7 +92,7 @@ describe('musicPlayer methods', () => {
         it('sets the track name from the current playlist entry', () => {
             const instance = Object.create(proto);
             instance.trackNames = ['Song One', 'Song Two'];
-            instance.currentSong = 1;
+            instance.currentSongIndex = 1;
             instance.trackNameEl = { textContent: '' };
 
             instance.updateTrackName();
@@ -110,27 +111,98 @@ describe('musicPlayer methods', () => {
         });
     });
 
-    describe('revokeBlobUrls', () => {
-        it('calls URL.revokeObjectURL for each stored blob url', () => {
+    describe('fadeVolume', () => {
+        it('is not defined (replaced by GainNode-based fadeTo in FrequencyAnalyser)', () => {
             const instance = Object.create(proto);
-            instance.blobUrls = ['blob:1', 'blob:2'];
-            instance.trackNames = ['Track 1', 'Track 2'];
+            expect(instance.fadeVolume).toBeUndefined();
+        });
+    });
 
-            instance.revokeBlobUrls();
+    describe('fadePause', () => {
+        it('calls frequencyAnalyser.fadeTo(0, duration) then pauses', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { pause: vi.fn() };
+            instance.playToggleFadeDurationInMs = 80;
+            instance.frequencyAnalyser = { fadeTo: vi.fn().mockResolvedValue(null) };
 
-            expect(globalThis.URL.revokeObjectURL).toHaveBeenCalledWith('blob:1');
-            expect(globalThis.URL.revokeObjectURL).toHaveBeenCalledWith('blob:2');
+            await instance.fadePause();
+
+            expect(instance.frequencyAnalyser.fadeTo).toHaveBeenCalledWith(0, 80);
+            expect(instance.audio.pause).toHaveBeenCalledWith();
         });
 
-        it('resets blobUrls and trackNames to empty arrays', () => {
+        it('pauses only after the fade completes', async () => {
             const instance = Object.create(proto);
-            instance.blobUrls = ['blob:1'];
-            instance.trackNames = ['Track 1'];
+            instance.audio = { pause: vi.fn() };
+            instance.playToggleFadeDurationInMs = 80;
+            const order = [];
+            instance.frequencyAnalyser = {
+                fadeTo: vi.fn().mockImplementation(() => {
+                    order.push('fade');
+                    return Promise.resolve(null);
+                }),
+            };
+            // oxlint-disable-next-line jest/prefer-mock-return-shorthand
+            vi.spyOn(instance.audio, 'pause').mockImplementation(() => order.push('pause'));
 
-            instance.revokeBlobUrls();
+            await instance.fadePause();
 
-            expect(instance.blobUrls).toStrictEqual([]);
-            expect(instance.trackNames).toStrictEqual([]);
+            expect(order).toStrictEqual(['fade', 'pause']);
+        });
+
+        it('pauses immediately when frequencyAnalyser is not set', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { pause: vi.fn() };
+            instance.frequencyAnalyser = null;
+
+            await instance.fadePause();
+
+            expect(instance.audio.pause).toHaveBeenCalledWith();
+        });
+    });
+
+    describe('fadePlay', () => {
+        it('sets gain to 0, plays, then fades in to 1', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { play: vi.fn().mockResolvedValue(null) };
+            instance.playToggleFadeDurationInMs = 80;
+            instance.frequencyAnalyser = {
+                fadeTo: vi.fn().mockResolvedValue(null),
+                setGain: vi.fn(),
+            };
+
+            await instance.fadePlay();
+
+            expect(instance.frequencyAnalyser.setGain).toHaveBeenCalledWith(0);
+            expect(instance.audio.play).toHaveBeenCalledWith();
+            expect(instance.frequencyAnalyser.fadeTo).toHaveBeenCalledWith(1, 80);
+        });
+
+        it('resets gain to 1 and returns early if audio.play() rejects', async () => {
+            const instance = Object.create(proto);
+            instance.audio = {
+                play: vi.fn().mockRejectedValue(new Error('AbortError')),
+            };
+            instance.frequencyAnalyser = {
+                fadeTo: vi.fn().mockResolvedValue(null),
+                setGain: vi.fn(),
+            };
+
+            await instance.fadePlay();
+
+            expect(instance.frequencyAnalyser.setGain).toHaveBeenCalledWith(0);
+            expect(instance.frequencyAnalyser.setGain).toHaveBeenCalledWith(1);
+            expect(instance.frequencyAnalyser.fadeTo).not.toHaveBeenCalled();
+        });
+
+        it('plays immediately when frequencyAnalyser is not set', async () => {
+            const instance = Object.create(proto);
+            instance.audio = { play: vi.fn().mockResolvedValue(null) };
+            instance.frequencyAnalyser = null;
+
+            await instance.fadePlay();
+
+            expect(instance.audio.play).toHaveBeenCalledWith();
         });
     });
 });

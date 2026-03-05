@@ -9,5 +9,5 @@ contextBridge.exposeInMainWorld('versions', {
 });
 
 contextBridge.exposeInMainWorld('env', {
-    isDev: process.env.NODE_ENV === 'development',
+    isDevEnvironment: process.env.NODE_ENV === 'development',
 });

@@ -112,7 +112,7 @@ describe('algorithmLoader', () => {
         it('random returns a number within range', () => {
             const num = AlgorithmLoader.random(1, 10);
             expect(num).toBeGreaterThanOrEqual(1);
-            expect(num).toBeLessThan(10);
+            expect(num).toBeLessThan(11);
         });
 
         it('pickRandomElement returns an element from the array', () => {

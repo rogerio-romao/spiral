@@ -3,6 +3,10 @@
  * algorithm name display, silent mode, and help screen toggle.
  */
 export default class HudController {
+    // INSTANCE PROPERTIES
+    messageDisplayTimeInMs = 7500;
+    algorithmNameDisplayTimeInMs = 5000;
+
     /**
      * @param {Object} options - Configuration object for HUD elements
      * @param {HTMLElement} options.messageElement     - The #msg element
@@ -10,80 +14,78 @@ export default class HudController {
      * @param {HTMLElement} options.helpElement         - The #help element
      */
     constructor({ messageElement, algosDisplayElement, helpElement }) {
-        this._messageElement = messageElement;
-        this._algosDisplayElement = algosDisplayElement;
-        this._helpElement = helpElement;
+        this.messageElement = messageElement;
+        this.algosDisplayElement = algosDisplayElement;
+        this.helpElement = helpElement;
 
-        this._messageTimer = null;
-        this._algorithmNameTimer = null;
-        this._helpView = false;
-        this._silent = false;
+        this.messageTimer = null;
+        this.algorithmNameTimer = null;
+
+        this.showHelpView = false;
+        this.silenceMessages = false;
+    }
+
+    /** Clear all timers, called when the app closes. */
+    destroy() {
+        clearTimeout(this.messageTimer);
+        clearTimeout(this.algorithmNameTimer);
     }
 
     /**
-     * Whether silent mode is active (read-only).
-     * @returns {boolean} The current silent mode state.
-     */
-    get silent() {
-        return this._silent;
-    }
-
-    /**
-     * Show a temporary message for 7500 ms. Clears any prior message.
-     * @param {string} message - The message to display.
-     */
-    displayMessage(message) {
-        clearTimeout(this._messageTimer);
-        this._messageElement.textContent = message.toUpperCase();
-        this._messageElement.style.display = 'block';
-        this._messageTimer = setTimeout(() => {
-            this._messageElement.style.display = 'none';
-            this._messageElement.textContent = '';
-        }, 7500);
-    }
-
-    /**
-     * Show algorithm name for 5000 ms. Respects silent mode.
+     * Show algorithm name in uppercase for `this.algorithmNameDisplayTimeInMs` ms. Respects silent mode. This is called externally by the `TransitionManager` whenever a new algorithm starts.
      * @param {string} name - The algorithm name to display.
      */
     displayAlgorithmName(name) {
-        if (this._silent) {
+        if (this.silenceMessages) {
             return;
         }
-        clearTimeout(this._algorithmNameTimer);
-        this._algosDisplayElement.textContent = `${name.toUpperCase()}`;
-        this._algosDisplayElement.style.display = 'block';
 
-        this._algorithmNameTimer = setTimeout(() => {
-            this._algosDisplayElement.style.display = 'none';
-            this._algosDisplayElement.textContent = '';
-        }, 5000);
+        // clear any existing timers to reset the display time if a new algorithm name comes in before the prior one is hidden
+        clearTimeout(this.algorithmNameTimer);
+
+        this.algosDisplayElement.textContent = `${name.toUpperCase()}`;
+        this.algosDisplayElement.style.display = 'block';
+
+        // hide the algorithm name after the default display time
+        this.algorithmNameTimer = setTimeout(() => {
+            this.algosDisplayElement.style.display = 'none';
+            this.algosDisplayElement.textContent = '';
+        }, this.algorithmNameDisplayTimeInMs);
     }
 
     /**
-     * Toggle silent mode on/off.
-     * @returns {boolean} The new silent state.
+     * Show a temporary message for `this.messageDisplayTimeInMs` ms. Clears any prior message. Messages are uppercased for clarity. These messages are always shown, regardless of silent mode. Used for transient notifications like "Welcome", "Auto-change: 60secs", etc. This is called externally by various modules, such as the `KeyboardController` when adjusting auto-change settings, or the `DevModeController` when toggling Developer Mode.
+     *
+     * @param {string} message - The message to display.
      */
-    toggleSilent() {
-        this._silent = !this._silent;
-        this._algosDisplayElement.textContent = '';
-        this._algosDisplayElement.style.display = 'none';
-        return this._silent;
+    displayMessage(message) {
+        // clear any existing message timers to reset the display time if a new message comes in
+        clearTimeout(this.messageTimer);
+
+        this.messageElement.textContent = message.toUpperCase();
+        this.messageElement.style.display = 'block';
+
+        // hide the message after the default display time
+        this.messageTimer = setTimeout(() => {
+            this.messageElement.style.display = 'none';
+            this.messageElement.textContent = '';
+        }, this.messageDisplayTimeInMs);
     }
 
     /**
      * Toggle help screen on/off.
-     * @returns {boolean} The new help-view state.
      */
-    toggleHelp() {
-        this._helpView = !this._helpView;
-        this._helpElement.style.display = this._helpView ? 'block' : 'none';
-        return this._helpView;
+    toggleHelpView() {
+        this.showHelpView = !this.showHelpView;
+        this.helpElement.style.display = this.showHelpView ? 'block' : 'none';
     }
 
-    /** Clear all timers and reset HUD state. */
-    destroy() {
-        clearTimeout(this._messageTimer);
-        clearTimeout(this._algorithmNameTimer);
+    /**
+     * Toggle silence mode on/off.
+     */
+    toggleSilenceMode() {
+        this.silenceMessages = !this.silenceMessages;
+        this.algosDisplayElement.textContent = '';
+        this.algosDisplayElement.style.display = 'none';
     }
 }

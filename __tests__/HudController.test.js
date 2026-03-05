@@ -59,7 +59,7 @@ describe('hudController', () => {
 
         it('does nothing when silent mode is active', () => {
             const { hud, algosDisplayElement } = createHud();
-            hud.toggleSilent();
+            hud.toggleSilenceMode();
             hud.displayAlgorithmName('myAlgo');
             expect(algosDisplayElement.textContent).toBe('');
             hud.destroy();
@@ -75,42 +75,45 @@ describe('hudController', () => {
         });
     });
 
-    describe('toggleSilent', () => {
+    describe('toggleSilenceMode', () => {
         it('returns true on first call', () => {
             const { hud } = createHud();
-            expect(hud.toggleSilent()).toBeTruthy();
+            hud.toggleSilenceMode();
+            expect(hud.silenceMessages).toBeTruthy();
             hud.destroy();
         });
 
         it('returns false on second call', () => {
             const { hud } = createHud();
-            hud.toggleSilent();
-            expect(hud.toggleSilent()).toBeFalsy();
+            hud.toggleSilenceMode();
+            expect(hud.toggleSilenceMode()).toBeFalsy();
             hud.destroy();
         });
 
         it('clears algos display on activation', () => {
             const { hud, algosDisplayElement } = createHud();
             hud.displayAlgorithmName('test');
-            hud.toggleSilent();
+            hud.toggleSilenceMode();
             expect(algosDisplayElement.textContent).toBe('');
             expect(algosDisplayElement.style.display).toBe('none');
             hud.destroy();
         });
     });
 
-    describe('toggleHelp', () => {
+    describe('toggleHelpView', () => {
         it('shows help on first call', () => {
             const { hud, helpElement } = createHud();
-            expect(hud.toggleHelp()).toBeTruthy();
+            hud.toggleHelpView();
+            expect(hud.showHelpView).toBeTruthy();
             expect(helpElement.style.display).toBe('block');
             hud.destroy();
         });
 
         it('hides help on second call', () => {
             const { hud, helpElement } = createHud();
-            hud.toggleHelp();
-            expect(hud.toggleHelp()).toBeFalsy();
+            hud.toggleHelpView();
+            hud.toggleHelpView();
+            expect(hud.showHelpView).toBeFalsy();
             expect(helpElement.style.display).toBe('none');
             hud.destroy();
         });
@@ -143,10 +146,10 @@ describe('hudController', () => {
             hud.destroy();
         });
 
-        it('returns true after toggleSilent()', () => {
+        it('returns true after toggleSilenceMode()', () => {
             const { hud } = createHud();
-            hud.toggleSilent();
-            expect(hud.silent).toBeTruthy();
+            hud.toggleSilenceMode();
+            expect(hud.silenceMessages).toBeTruthy();
             hud.destroy();
         });
     });

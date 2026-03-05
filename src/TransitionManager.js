@@ -1,144 +1,121 @@
-/**
- * TransitionManager — algorithm lifecycle, canvas context reset,
- * auto-change timer, and the one-algorithm-at-a-time guarantee.
- */
 import { random, randomColor } from './utils/randomUtils.js';
 
+/**
+ * Manages algorithm transitions, including timing, error handling, and dev mode.
+ * Responsibilities:
+ * - Starting/stopping algorithms
+ * - Resetting canvas context between algorithms
+ * - Handling auto-change timer and manual mode
+ * - Dev mode for testing specific algorithms
+ */
 export default class TransitionManager {
+    // INSTANCE PROPERTIES
+    algoRetries = 0;
+    autoChangeIntervalInSeconds = 60;
+    autoChangeTimeout = null;
+    currentAlgorithm = null;
+    devModeActive = false;
+    devModeAlgoA = null;
+    devModeAlgoB = null;
+    devModeAlternator = 0;
+    isInManualMode = false;
+    isTransitioning = false;
+
     /**
      * @param {Object} deps - Dependencies object containing required components
-     * @param {HTMLCanvasElement}        deps.canvas - The HTML canvas element
-     * @param {CanvasRenderingContext2D} deps.ctx - The 2D rendering context
-     * @param {AlgorithmLoader}          deps.algorithmLoader - Algorithm loader instance
-     * @param {AlgorithmChooser}         deps.algorithmChooser - Algorithm chooser instance
-     * @param {HUDController}            deps.hud - HUD controller instance
-     * @param {Function}                 deps.getDimensions  - Returns { w, h }
+     * @param {HTMLCanvasElement} deps.canvas - The HTML canvas element
+     * @param {import('./AlgorithmLoader.js').default} deps.algorithmLoader - Algorithm loader instance
+     * @param {import('./AlgorithmChooser.js').default} deps.algorithmChooser - Algorithm chooser instance
+     * @param {import('./HudController.js').default} deps.hudController - HUD controller instance
+     * @param {Function} deps.getDimensions  - Returns { w, h }
      */
-    constructor({ canvas, ctx, algorithmLoader, algorithmChooser, hud, getDimensions }) {
-        this._canvas = canvas;
-        this._ctx = ctx;
-        this._algorithmLoader = algorithmLoader;
-        this._algorithmChooser = algorithmChooser;
-        this._hud = hud;
-        this._getDimensions = getDimensions;
-
-        this._currentAlgorithm = null;
-        this._regen = null;
-        this._autoChange = 60;
-        this._manual = false;
-        this._isTransitioning = false;
-        this._algoRetries = 0;
-
-        this._devModeActive = false;
-        this._devModeAlgoA = null;
-        this._devModeAlgoB = null;
-        this._devModeAlternator = 0;
+    constructor({ canvas, algorithmLoader, algorithmChooser, hudController, getDimensions }) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.algorithmLoader = algorithmLoader;
+        this.algorithmChooser = algorithmChooser;
+        this.hudController = hudController;
+        this.getDimensions = getDimensions;
     }
 
-    /**
-     * The currently running algorithm instance (read-only).
-     * @returns {Object|null} The current algorithm instance or null if none is running.
-     */
-    get currentAlgorithm() {
-        return this._currentAlgorithm;
-    }
-
-    /**
-     * Auto-change interval in seconds.
-     * @returns {number} The auto-change interval in seconds.
-     */
-    get autoChange() {
-        return this._autoChange;
-    }
-
-    set autoChange(value) {
-        this._autoChange = value;
-    }
-
-    /**
-     * Manual mode flag.
-     * @returns {boolean} Whether manual mode is enabled.
-     */
-    get manual() {
-        return this._manual;
-    }
-
-    set manual(value) {
-        this._manual = value;
-    }
-
-    /**
-     * Whether a transition is currently in progress.
-     * @returns {boolean} True if a transition is in progress, false otherwise.
-     */
-    get isTransitioning() {
-        return this._isTransitioning;
-    }
-
-    /** Load the first algorithm (called once from Spiral.init()). */
-    startFirst() {
-        this._chooseAlgos();
-    }
-
-    /** Start or restart the auto-change timer based on current settings. */
-    resetAutoChangeTimer() {
-        clearInterval(this._regen);
-        this._regen = null;
-
-        if (!this._manual) {
-            this._regen = setInterval(() => {
-                this.changeAlgorithm();
-            }, this._autoChange * 1000);
-        }
-    }
-
-    /** Trigger a full algorithm transition. */
+    /** Change to a new algorithm, handling timing, errors, and dev mode. Idempotent if a transition is already in progress. */
     changeAlgorithm() {
-        if (this._isTransitioning) {
+        if (this.isTransitioning) {
             return;
         }
-        this._isTransitioning = true;
+        this.isTransitioning = true;
 
         try {
             this.stopCurrentAlgorithm();
 
-            clearInterval(this._regen);
-            this._regen = null;
+            clearInterval(this.autoChangeTimeout);
+            this.autoChangeTimeout = null;
 
-            this._resetCanvasContext();
+            this.resetCanvasContext();
 
-            this._algorithmLoader.speed = random(2, 6);
+            this.algorithmLoader.speed = random(2, 6);
 
-            this._chooseAlgos();
+            this.chooseAlgos();
 
-            if (!this._manual) {
-                this._regen = setInterval(() => {
+            if (!this.isInManualMode) {
+                this.autoChangeTimeout = setInterval(() => {
                     this.changeAlgorithm();
-                }, this._autoChange * 1000);
+                }, this.autoChangeIntervalInSeconds * 1000);
             }
         } finally {
-            this._isTransitioning = false;
+            this.isTransitioning = false;
         }
     }
 
-    /** Stop the currently running algorithm. Idempotent. */
-    stopCurrentAlgorithm() {
-        if (this._currentAlgorithm?.stop) {
-            this._currentAlgorithm.stop();
-        } else if (this._currentAlgorithm?.interval) {
-            cancelAnimationFrame(this._currentAlgorithm.interval);
-            this._currentAlgorithm.interval = null;
+    /** Choose and instantiate a new algorithm, with retry logic for constructor errors. Respects dev mode settings. Idempotent if already transitioning. */
+    chooseAlgos() {
+        const { w, h } = this.getDimensions();
+
+        let AlgorithmClass = null;
+        if (this.devModeActive) {
+            // In dev mode, alternate between two specified algorithms (or random if null) on each call. This allows for quick testing of specific algorithms without changing code.
+            const isSlotA = this.devModeAlternator === 0;
+            this.devModeAlternator = 1 - this.devModeAlternator;
+            const algoChoice = isSlotA ? this.devModeAlgoA : this.devModeAlgoB;
+            AlgorithmClass = algoChoice || this.algorithmChooser.getRandomAlgorithm();
+        } else {
+            AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
         }
-        this._currentAlgorithm = null;
+
+        // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.
+        try {
+            this.currentAlgorithm = new AlgorithmClass(this.ctx, w, h);
+            this.hudController.displayAlgorithmName(this.currentAlgorithm.name);
+            this.algoRetries = 0;
+        } catch {
+            this.algoRetries += 1;
+            if (this.algoRetries < 3) {
+                this.chooseAlgos();
+            } else {
+                this.algoRetries = 0;
+            }
+        }
+    }
+
+    /** Start or restart the auto-change timer based on current settings. */
+    resetAutoChangeTimer() {
+        clearInterval(this.autoChangeTimeout);
+        this.autoChangeTimeout = null;
+
+        // Only start the timer if we're not in manual mode
+        if (!this.isInManualMode) {
+            this.autoChangeTimeout = setInterval(() => {
+                this.changeAlgorithm();
+            }, this.autoChangeIntervalInSeconds * 1000);
+        }
     }
 
     /**
      * Comprehensive canvas context reset — consolidates all property
      * resets and adds 7 previously missing ones.
      */
-    _resetCanvasContext() {
-        const ctx = this._ctx;
-        const canvas = this._canvas;
+    resetCanvasContext() {
+        const { canvas, ctx } = this;
         const dpr = globalThis.devicePixelRatio || 1;
 
         // Reset transform fully (clears accumulated rotation)
@@ -163,7 +140,7 @@ export default class TransitionManager {
         ctx.setLineDash([]);
         ctx.lineDashOffset = 0;
 
-        // Line cap/join (NEW — previously missing)
+        // Line cap/join
         ctx.lineCap = 'butt';
         ctx.lineJoin = 'miter';
         ctx.miterLimit = 10;
@@ -174,14 +151,10 @@ export default class TransitionManager {
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
 
-        // Text (NEW — previously missing)
+        // Text
         ctx.textAlign = 'start';
         ctx.textBaseline = 'alphabetic';
         ctx.direction = 'inherit';
-
-        // Image smoothing (NEW — imageSmoothingEnabled was missing)
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
 
         // Filter
         ctx.filter = 'none';
@@ -193,41 +166,13 @@ export default class TransitionManager {
         ctx.beginPath();
     }
 
-    /** Pick a random algorithm, instantiate it, handle errors with retry. */
-    _chooseAlgos() {
-        const { w, h } = this._getDimensions();
-        let AlgorithmClass = null;
-
-        if (this._devModeActive) {
-            const isSlotA = this._devModeAlternator === 0;
-            this._devModeAlternator = 1 - this._devModeAlternator;
-            const algoChoice = isSlotA ? this._devModeAlgoA : this._devModeAlgoB;
-            AlgorithmClass = algoChoice || this._algorithmChooser.getRandomAlgorithm();
-        } else {
-            AlgorithmClass = this._algorithmChooser.getRandomAlgorithm();
-        }
-
-        try {
-            this._currentAlgorithm = new AlgorithmClass(this._ctx, w, h);
-            this._hud.displayAlgorithmName(this._currentAlgorithm.name);
-            this._algoRetries = 0;
-        } catch {
-            this._algoRetries += 1;
-            if (this._algoRetries < 3) {
-                this._chooseAlgos();
-            } else {
-                this._algoRetries = 0;
-            }
-        }
-    }
-
     /**
      * Enable or disable dev mode.
      * @param {boolean} active - Whether to enable dev mode.
      */
     setDevModeActive(active) {
-        this._devModeActive = active;
-        this._devModeAlternator = 0;
+        this.devModeActive = active;
+        this.devModeAlternator = 0;
     }
 
     /**
@@ -236,7 +181,24 @@ export default class TransitionManager {
      * @param {Function|null} algoB - The second algorithm class or null for random.
      */
     setDevModeAlgos(algoA, algoB) {
-        this._devModeAlgoA = algoA;
-        this._devModeAlgoB = algoB;
+        this.devModeAlgoA = algoA;
+        this.devModeAlgoB = algoB;
+    }
+
+    /** Load the first algorithm (called once from `Spiral.init()`). */
+    startFirst() {
+        this.chooseAlgos();
+    }
+
+    /** Stop the currently running algorithm. Idempotent. */
+    stopCurrentAlgorithm() {
+        // Some algorithms use a `stop()` method, while others use an `interval` property for their animation loop. Handle both cases and ensure idempotency.
+        if (this.currentAlgorithm?.stop) {
+            this.currentAlgorithm.stop();
+        } else if (this.currentAlgorithm?.interval) {
+            cancelAnimationFrame(this.currentAlgorithm.interval);
+            this.currentAlgorithm.interval = null;
+        }
+        this.currentAlgorithm = null;
     }
 }
