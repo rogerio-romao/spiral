@@ -15,6 +15,7 @@
     "type": "module",
     "main": "main.js",
     "scripts": {
+        "check": "pnpm format:check && pnpm lint && pnpm lint:css && pnpm test",
         "format": "oxfmt",
         "format:check": "oxfmt --check",
         "generate:algos": "node scripts/generateAlgorithmRegistry.mjs",

@@ -177,6 +177,7 @@ export default class Spiral {
      */
     init() {
         // Hide cursor by default on launch
+        this.canvas.focus();
         this.canvas.style.cursor = 'none';
 
         this.ctx.imageSmoothingEnabled = true;
