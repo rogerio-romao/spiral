@@ -5,42 +5,66 @@
  * Audio graph: MediaElementSource → AnalyserNode → GainNode → AudioContext.destination
  * (audio still plays through speakers; the GainNode is used for sample-accurate fade in/out).
  *
- * Usage:
+ * @example
+ * ```js
  *   const analyser = new FrequencyAnalyser(audioElement, { bandCount: 5 });
  *   analyser.resume();          // call on user gesture
  *   const bands = analyser.getBands(); // [0.72, 0.35, 0.11, ...] (0–1 normalised)
+ *  ```
  */
 export default class FrequencyAnalyser {
     /**
      * @param {HTMLAudioElement} audioElement — the <audio> element to analyse.
-     * @param {object}  [options] — configuration options for the analyser.
-     * @param {number}  [options.bandCount]  — number of frequency bands.
-     * @param {number}  [options.fftSize] — FFT window size (power of 2).
-     * @param {number}  [options.smoothing] — smoothingTimeConstant (0–1).
+     * @param {object}  [options] - optional configuration options for the analyser.
+     * @param {number}  [options.bandCount]  - number of frequency bands.
+     * @param {number}  [options.fftSize] - FFT window size (power of 2).
+     * @param {number}  [options.smoothing] - smoothingTimeConstant (0–1).
      */
+
     constructor(audioElement, { bandCount = 5, fftSize = 2048, smoothing = 0.8 } = {}) {
+        // private so we can validate in the setter and prevent invalid states (e.g. negative band count, floating point values)
         this._bandCount = bandCount;
 
         // Create the audio context and graph
-        this._ctx = new (globalThis.AudioContext || globalThis.webkitAudioContext)();
-        this._analyser = this._ctx.createAnalyser();
-        this._analyser.fftSize = fftSize;
-        this._analyser.smoothingTimeConstant = smoothing;
+        this.ctx = new (globalThis.AudioContext || globalThis.webkitAudioContext)();
+        this.analyser = this.ctx.createAnalyser();
+        this.analyser.fftSize = fftSize;
+        this.analyser.smoothingTimeConstant = smoothing;
 
-        // createMediaElementSource can only be called once per element
-        this._gain = this._ctx.createGain();
-        this._gain.gain.value = 1;
+        this.gain = this.ctx.createGain();
+        this.gain.gain.value = 1;
 
-        this._source = this._ctx.createMediaElementSource(audioElement);
-        this._source.connect(this._analyser);
-        this._analyser.connect(this._gain);
-        this._gain.connect(this._ctx.destination);
+        // createMediaElementSource can only be called once per element, so we do it here in the constructor and store the source node for potential future use (e.g. disconnecting/reconnecting)
+        this.source = this.ctx.createMediaElementSource(audioElement);
+
+        // Connect the audio graph: source → analyser → gain → destination
+        this.source.connect(this.analyser);
+        this.analyser.connect(this.gain);
+        this.gain.connect(this.ctx.destination);
 
         // Reusable buffer for frequency data
-        this._dataArray = new Uint8Array(this._analyser.frequencyBinCount);
+        this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
 
         // Reusable buffer for time-domain (waveform) data
-        this._timeDomainData = new Uint8Array(this._analyser.fftSize);
+        this.timeDomainData = new Uint8Array(this.analyser.fftSize);
+    }
+
+    // GETTERS & SETTERS
+
+    /**
+     * The underlying AudioContext, for advanced use.
+     * @returns {AudioContext} The AudioContext instance.
+     */
+    get audioContext() {
+        return this.ctx;
+    }
+
+    /**
+     * The underlying AnalyserNode, for advanced configuration.
+     * @returns {AnalyserNode} The AnalyserNode instance.
+     */
+    get analyserNode() {
+        return this.analyser;
     }
 
     /**
@@ -62,28 +86,27 @@ export default class FrequencyAnalyser {
     }
 
     /**
-     * Resume the AudioContext — must be called from a user gesture
-     * (e.g. click/keypress) to satisfy browser autoplay policy.
-     * Subsequent calls are no-ops.
+     * The underlying GainNode, for advanced use.
+     * @returns {GainNode} The GainNode instance.
      */
-    resume() {
-        if (this._ctx.state === 'suspended') {
-            this._ctx.resume();
-        }
+    get gainNode() {
+        return this.gain;
     }
+
+    // METHODS
 
     /**
      * Smoothly ramp the output gain to `targetGain` over `durationMs` milliseconds.
-     * Schedules a sample-accurate linear ramp on the GainNode — eliminates the
-     * quantisation clicks that occur when mutating HTMLAudioElement.volume per frame.
+     * Schedules a sample-accurate linear ramp on the `GainNode` — eliminates the
+     * quantisation clicks that occur when mutating `HTMLAudioElement.volume` per frame.
      *
      * @param {number} targetGain - Target gain value (0 = silent, 1 = full volume).
      * @param {number} durationMs - Duration of the ramp in milliseconds.
      * @returns {Promise<void>} Resolves after the ramp duration has elapsed.
      */
     fadeTo(targetGain, durationMs) {
-        const { gain } = this._gain;
-        const { currentTime } = this._ctx;
+        const { gain } = this.gain;
+        const { currentTime } = this.ctx;
         gain.cancelScheduledValues(currentTime);
         gain.setValueAtTime(gain.value, currentTime);
         gain.linearRampToValueAtTime(targetGain, currentTime + durationMs / 1000);
@@ -91,19 +114,6 @@ export default class FrequencyAnalyser {
         return new Promise((resolve) => {
             setTimeout(resolve, durationMs);
         });
-    }
-
-    /**
-     * Immediately set the output gain to `value` with no ramp.
-     * Cancels any scheduled ramp first to avoid conflicts.
-     *
-     * @param {number} value - Gain value to apply instantly (0–1).
-     */
-    setGain(value) {
-        const { gain } = this._gain;
-        const { currentTime } = this._ctx;
-        gain.cancelScheduledValues(currentTime);
-        gain.setValueAtTime(value, currentTime);
     }
 
     /**
@@ -115,15 +125,17 @@ export default class FrequencyAnalyser {
      *   Returns all zeros when nothing is playing.
      */
     getBands() {
-        this._analyser.getByteFrequencyData(this._dataArray);
+        // Get the raw frequency data into our reusable buffer
+        this.analyser.getByteFrequencyData(this.dataArray);
 
-        const binCount = this._dataArray.length;
+        const binCount = this.dataArray.length;
         const bands = Array.from({ length: this._bandCount }, () => 0);
 
         if (this._bandCount <= 0 || binCount <= 0) {
             return bands;
         }
 
+        // Calculate logarithmic band boundaries and average the bins within each band
         const activeBandCount = Math.min(this._bandCount, binCount);
         const logMax = Math.log(binCount + 1);
 
@@ -136,7 +148,7 @@ export default class FrequencyAnalyser {
 
             let sum = 0;
             for (let i = start; i < end; i++) {
-                sum += this._dataArray[i];
+                sum += this.dataArray[i];
             }
 
             const binSpan = end - start;
@@ -153,8 +165,8 @@ export default class FrequencyAnalyser {
      * @returns {Uint8Array} The internal data array (mutated on each call).
      */
     getRawData() {
-        this._analyser.getByteFrequencyData(this._dataArray);
-        return this._dataArray;
+        this.analyser.getByteFrequencyData(this.dataArray);
+        return this.dataArray;
     }
 
     /**
@@ -165,31 +177,31 @@ export default class FrequencyAnalyser {
      *   Returns all 0.5s when nothing is playing.
      */
     getWaveform() {
-        this._analyser.getByteTimeDomainData(this._timeDomainData);
-        return [...this._timeDomainData].map((value) => value / 255);
+        this.analyser.getByteTimeDomainData(this.timeDomainData);
+        return [...this.timeDomainData].map((value) => value / 255);
     }
 
     /**
-     * The underlying AnalyserNode, for advanced configuration.
-     * @returns {AnalyserNode} The AnalyserNode instance.
+     * Resume the `AudioContext` — must be called from a user gesture
+     * (e.g. click/keypress) to satisfy browser autoplay policy.
+     * Subsequent calls are no-ops.
      */
-    get analyserNode() {
-        return this._analyser;
+    resume() {
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
     }
 
     /**
-     * The underlying GainNode, for advanced use.
-     * @returns {GainNode} The GainNode instance.
+     * Immediately set the output gain to `value` with no ramp.
+     * Cancels any scheduled ramp first to avoid conflicts.
+     *
+     * @param {number} value - Gain value to apply instantly (0–1).
      */
-    get gainNode() {
-        return this._gain;
-    }
-
-    /**
-     * The underlying AudioContext, for advanced use.
-     * @returns {AudioContext} The AudioContext instance.
-     */
-    get audioContext() {
-        return this._ctx;
+    setGain(value) {
+        const { gain } = this.gain;
+        const { currentTime } = this.ctx;
+        gain.cancelScheduledValues(currentTime);
+        gain.setValueAtTime(value, currentTime);
     }
 }
