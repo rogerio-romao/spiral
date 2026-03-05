@@ -20,7 +20,7 @@ export default class AlgorithmLoader {
 
     /**
      * Reference to the FrequencyAnalyser instance, providing access to audio FFT data/bands.
-     * Accessible via `AlgorithmLoader.frequencyAnalyser?.getBands()`.
+     * Gets injected by Spiral after initialization. Algorithms can check if it's available and use it to get frequency data for visualization.
      *
      * @static
      * @type {import('./FrequencyAnalyser.js').default|null}
@@ -51,7 +51,7 @@ export default class AlgorithmLoader {
     static mathUtils = mathUtils;
 
     /**
-     * Reference to the WaveformController instance, providing access to audio waveform data.
+     * Reference to the WaveformController instance, providing access to audio waveform data. This gets injected by Spiral after initialization. Algorithms can check if it's available and use it to get waveform data for visualization.
      *
      * @static
      * @type {import('./WaveformController.js').default|null}
@@ -62,6 +62,7 @@ export default class AlgorithmLoader {
 
     /**
      * Create a new Particle instance.
+     * @static
      * @param {number} x - The initial x coordinate.
      * @param {number} y - The initial y coordinate.
      * @param {number} speed - The initial speed.
@@ -75,6 +76,7 @@ export default class AlgorithmLoader {
 
     /**
      * Create a new Vector instance.
+     * @static
      * @param {number} x - The x coordinate.
      * @param {number} y - The y coordinate.
      * @returns {Vector} A new Vector instance.
@@ -85,6 +87,7 @@ export default class AlgorithmLoader {
 
     /**
      * Generate an array of HSLA color strings, varying one property equally across the range with wrap-around.
+     * @static
      * @param {number} count - Number of colors to generate.
      * @param {'hue'|'saturation'|'luminosity'|'alpha'|'random'} [mode] - Which property to vary (defaults to 'hue').
      * @param {number|null} [degrees] - Optional step in degrees for hue mode (overrides automatic calculation).
@@ -97,6 +100,7 @@ export default class AlgorithmLoader {
     /**
      * Generate an array of random RGBA colors.
      * Delegates to randomColor, accepts these parameters.
+     * @static
      * @param {number} count - Number of colors to generate.
      * @param {number} [minC] - Minimum color value for each channel (0-255).
      * @param {number} [maxC] - Maximum color value for each channel (0-255).
@@ -110,6 +114,7 @@ export default class AlgorithmLoader {
 
     /**
      * Pick a random element from an array.
+     * @static
      * @param {Array<any>} array - The array to pick from.
      * @returns {any} A random element from the given array.
      */
@@ -119,6 +124,7 @@ export default class AlgorithmLoader {
 
     /**
      * Generate a random integer between min (inclusive) and max (inclusive).
+     * @static
      * @param {number} min - Minimum integer value (inclusive).
      * @param {number} max - Maximum integer value (inclusive).
      * @returns {number} Random integer between min and max.
@@ -129,6 +135,7 @@ export default class AlgorithmLoader {
 
     /**
      * Generate a random RGBA or P3 color string.
+     * @static
      * @param {number} [minC] - Minimum color value (0-255).
      * @param {number} [maxC] - Maximum color value (0-255).
      * @param {number} [minA] - Minimum alpha value (0-1).
@@ -193,15 +200,17 @@ export default class AlgorithmLoader {
     /**
      * Abstract draw method. Must be overridden by subclasses.
      *
-     * Do NOT call super.draw() in your algorithm. If you see this error,
-     * it means your subclass did not implement draw(), or you called super.draw() by mistake.
+     * Do NOT call `super.draw()` in your algorithm. If you see this error,
+     * it means your subclass did not implement `draw()`, or you called `super.draw()` by mistake.
      *
-     * Example:
+     * @example
+     * ```js
      *   class MyAlgo extends AlgorithmLoader {
      *       draw() {
      *           // ...your drawing code...
      *       }
      *   }
+     * ```
      */
     draw() {
         throw new Error(
