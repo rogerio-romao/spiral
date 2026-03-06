@@ -16,6 +16,53 @@ function createHud() {
 }
 
 describe('hudController (browser smoke)', () => {
+    it('throws if any required DOM element is missing', () => {
+        // messageElement missing
+        expect(
+            () =>
+                new HudController({
+                    algosDisplayElement: document.createElement('div'),
+                    helpElement: document.createElement('div'),
+                    messageElement: null,
+                }),
+        ).toThrow('Missing required DOM element: #msg');
+
+        // algosDisplayElement missing
+        expect(
+            () =>
+                new HudController({
+                    algosDisplayElement: null,
+                    helpElement: document.createElement('div'),
+                    messageElement: document.createElement('div'),
+                }),
+        ).toThrow('Missing required DOM element: #algos');
+
+        // helpElement missing
+        expect(
+            () =>
+                new HudController({
+                    algosDisplayElement: document.createElement('div'),
+                    helpElement: null,
+                    messageElement: document.createElement('div'),
+                }),
+        ).toThrow('Missing required DOM element: #help');
+    });
+
+    it('calls clearTimeout on both timers in destroy', () => {
+        const { hud } = createHud();
+        const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
+
+        hud.displayMessage('test');
+        hud.displayAlgorithmName('algo');
+        const messageTimerId = hud.messageTimer;
+        const algoTimerId = hud.algorithmNameTimer;
+
+        hud.destroy();
+        expect(clearTimeoutSpy).toHaveBeenCalledWith(messageTimerId);
+        expect(clearTimeoutSpy).toHaveBeenCalledWith(algoTimerId);
+        clearTimeoutSpy.mockRestore();
+    });
+
     it('displays a message in the real browser DOM', () => {
         const { hud, messageElement } = createHud();
         hud.displayMessage('browser test');
