@@ -19,7 +19,7 @@ vi.mock(import('../../src/generated/algorithmRegistry.js'), () => ({
 }));
 
 // This fixture includes the necessary DOM elements for the DevModeController to function.
-const FIXTURE = `
+const FIXTURE = /* html */ `
     <div id="dev-mode" style="display:none">
         <label><input type="checkbox" id="dev-enable" /><span>Enable Dev Mode</span></label>
         <div class="dev-selects">

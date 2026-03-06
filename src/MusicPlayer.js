@@ -89,10 +89,11 @@ export default class MusicPlayer {
         listItem.classList.add('list-item');
         listItem.setAttribute('draggable', 'true');
         listItem.dataset.index = String(index);
-        listItem.innerHTML = `
+        listItem.innerHTML = /* html */ `
             <span class="track-name">${htmlEscape(baseName)}</span>
             <button class="remove-track" title="Remove track">remove</button>
         `;
+
         listItem.querySelector('.remove-track').addEventListener('click', (e) => {
             e.stopPropagation();
             const idx = Number(listItem.dataset.index);

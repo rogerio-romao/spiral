@@ -1,12 +1,11 @@
 import MusicPlayer from '../../src/MusicPlayer.js';
 
-// eslint-disable-next-line vitest/prefer-import-in-mock
-vi.mock('../../src/AlgorithmLoader.js', () => ({
+vi.mock(import('../../src/AlgorithmLoader.js'), () => ({
     default: { frequencyAnalyser: null },
 }));
 
-const FIXTURE = `
-    <div id="player" style="display: none">
+const FIXTURE = /* html */ `
+    <div id="player" style="display: block">
         <label id="click-label" for="input">Add Track(s)</label>
         <input type="file" id="input" accept="audio/*" multiple />
         <canvas id="eq-display" width="50" height="20"></canvas>
@@ -28,6 +27,10 @@ const FIXTURE = `
     <audio id="audio"></audio>
 `;
 
+// Mocks DOM/media APIs to:
+// - Prevent real resource allocation and side effects (blobs, audio playback)
+// - Ensure test determinism and speed
+// - Avoid errors or unpredictable behavior in test environments
 function createPlayer() {
     document.body.innerHTML = FIXTURE;
     vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
@@ -48,9 +51,9 @@ describe('musicPlayer (browser)', () => {
             expect(player).toBeDefined();
         });
 
-        it('hides player panel initially', () => {
+        it('shows player panel initially', () => {
             createPlayer();
-            expect(document.querySelector('#player').style.display).toBe('none');
+            expect(document.querySelector('#player').style.display).toBe('block');
         });
     });
 
@@ -71,7 +74,7 @@ describe('musicPlayer (browser)', () => {
     });
 
     describe('togglePlayerVisibility', () => {
-        it('hides the player on first call', () => {
+        it('player is visible initially, hides the player on first call', () => {
             const player = createPlayer();
             player.togglePlayerVisibility();
             expect(document.querySelector('#player').style.display).toBe('none');
@@ -101,6 +104,7 @@ describe('musicPlayer (browser)', () => {
             player.trackNames = ['Track One', 'Track Two'];
             player.currentSong = 0;
             player.renderPlaylist();
+
             const items = document.querySelectorAll('.list-item');
             expect(items[0].querySelector('.track-name').textContent).toBe('Track One');
             expect(items[1].querySelector('.track-name').textContent).toBe('Track Two');
@@ -112,7 +116,6 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2', 'blob:url3'];
             player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
-            player.blobUrls = ['blob:url1', 'blob:url2', 'blob:url3'];
             player.currentSong = 0;
             player.renderPlaylist();
             player.removeTrack(1);
@@ -124,7 +127,6 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2'];
             player.trackNames = ['Track 1', 'Track 2'];
-            player.blobUrls = ['blob:url1', 'blob:url2'];
             player.currentSong = 0;
             player.renderPlaylist();
             player.removeTrack(0);
@@ -141,6 +143,7 @@ describe('musicPlayer (browser)', () => {
         it('canvas has correct dimensions', () => {
             createPlayer();
             const canvas = document.querySelector('#eq-display');
+            // these dimension are set in index.html
             expect(canvas.width).toBe(50);
             expect(canvas.height).toBe(20);
         });

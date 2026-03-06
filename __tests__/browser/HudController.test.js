@@ -2,7 +2,7 @@ import HudController from '../../src/HudController.js';
 import sleep from '../helpers/sleep.js';
 
 function createHud() {
-    document.body.innerHTML = '<div id="msg"></div><div id="algos"></div><div id="help"></div>';
+    document.body.innerHTML = /* html */ `<div id="msg"></div><div id="algos"></div><div id="help"></div>`;
 
     const algosDisplayElement = document.querySelector('#algos');
     const helpElement = document.querySelector('#help');
