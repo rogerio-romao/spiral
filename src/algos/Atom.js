@@ -35,10 +35,7 @@ export default class Atom extends AL {
             this.ctx.stroke();
 
             this.change += this.rate;
-            if (
-                Math.abs(this.change) >
-                Math.max(this.w / 2, this.h / 2 || this.change + this.rate <= 0)
-            ) {
+            if (Math.abs(this.change) > Math.max(this.w / 2, this.h / 2)) {
                 this.rate = -this.rate;
             }
 

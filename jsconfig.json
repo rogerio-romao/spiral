@@ -4,5 +4,5 @@
         "lib": ["dom", "es2023"],
         "target": "es2023"
     },
-    "include": ["src"]
+    "include": ["src", "global.d.ts"]
 }

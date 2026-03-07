@@ -21,8 +21,7 @@ export default class Swirls extends AL {
         this.y3 = AL.random(0, this.h);
         this.rotate = AL.random(1, 10);
         this.numColors = 7;
-        this.mode = 'hue';
-        this.colors = AL.generateHSLAPalette(this.numColors, this.mode);
+        this.colors = AL.generateHSLAPalette(this.numColors, 'hue');
         this.colorIndex = 0;
     }
 
@@ -53,7 +52,7 @@ export default class Swirls extends AL {
         }
 
         if (this.t % (this.speed * 600) === 0) {
-            this.colors = AL.generateHSLAPalette(this.numColors, this.mode);
+            this.colors = AL.generateHSLAPalette(this.numColors, 'hue');
         }
 
         this.requestFrame();

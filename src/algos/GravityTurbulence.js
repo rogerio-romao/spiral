@@ -1,5 +1,19 @@
 import AL from '../AlgorithmLoader.js';
 
+/**
+ * @typedef {object} GravityTurbulenceParticle
+ * @property {number} x - The x coordinate of the particle.
+ * @property {number} y - The y coordinate of the particle.
+ * @property {number} vx - The velocity in the x direction.
+ * @property {number} vy - The velocity in the y direction.
+ * @property {number} [radius] - The radius of the particle (extension).
+ * @property {number} [direction] - The direction of the particle (extension).
+ * @property {number} [speed] - The speed of the particle (extension).
+ * @property {number} [mass] - The mass of the particle (extension).
+ * @property {function} addGravitation - Method to add gravitational influence from another particle.
+ * @property {function} update - Method to update the particle's position based on its velocity and gravitational influences.
+ */
+
 export default class GravityTurbulence extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
@@ -13,7 +27,9 @@ export default class GravityTurbulence extends AL {
     }
 
     initializeProperties() {
+        /** @type {GravityTurbulenceParticle} */
         this.sun1 = AL.createParticle(150, 200, 1, Math.random() * Math.PI * 2);
+        /** @type {GravityTurbulenceParticle} */
         this.sun2 = AL.createParticle(this.w / 2, this.h / 2, 2, Math.random() * Math.PI * 2);
 
         this.sun1.radius = 40;
@@ -25,6 +41,7 @@ export default class GravityTurbulence extends AL {
         this.particles = [];
 
         for (let i = 0; i < this.numParticles; i++) {
+            /** @type {GravityTurbulenceParticle} */
             const particle = AL.createParticle(
                 AL.mathUtils.randomRange(0, this.w),
                 AL.mathUtils.randomRange(0, this.h),

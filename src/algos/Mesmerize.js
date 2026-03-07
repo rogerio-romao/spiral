@@ -6,6 +6,11 @@ export default class Mesmerize extends AL {
 
         this.name = 'Mesmerize';
 
+        // Uses gsap, throw if not present
+        if (!AL.gsap) {
+            throw new Error('GSAP is required for Mesmerize algorithm');
+        }
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

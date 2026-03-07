@@ -131,6 +131,16 @@ describe('algorithmLoader', () => {
 
             expect(arr).toContain(result);
         });
+
+        it('pickRandomElement returns null for empty array', () => {
+            expect(AlgorithmLoader.pickRandomElement([])).toBeNull();
+        });
+
+        it('pickRandomElement returns null for non-array input', () => {
+            expect(AlgorithmLoader.pickRandomElement(null)).toBeNull();
+            expect(AlgorithmLoader.pickRandomElement({})).toBeNull();
+            expect(AlgorithmLoader.pickRandomElement('not an array')).toBeNull();
+        });
     });
 
     describe('base draw throws when not overridden', () => {
@@ -167,6 +177,35 @@ describe('algorithmLoader', () => {
             const palette = AlgorithmLoader.generateHSLAPalette(3, 'hue');
 
             expect(palette).toHaveLength(3);
+        });
+    });
+
+    describe('static properties: GSAP, frequencyAnalyser, waveformController', () => {
+        it('gsap is null if not present on globalThis', () => {
+            const original = globalThis.gsap;
+            expect(AlgorithmLoader.gsap).toBe(original);
+
+            delete globalThis.gsap;
+
+            expect(AlgorithmLoader.gsap).toBeNull();
+            globalThis.gsap = original;
+        });
+
+        it('frequencyAnalyser and waveformController are null by default', () => {
+            expect(AlgorithmLoader.frequencyAnalyser).toBeNull();
+            expect(AlgorithmLoader.waveformController).toBeNull();
+        });
+
+        it('frequencyAnalyser and waveformController can be set and used', () => {
+            const fakeFreq = { getBands: () => [1, 2, 3] };
+            const fakeWave = { getWave: () => [0.1, 0.2] };
+            AlgorithmLoader.frequencyAnalyser = fakeFreq;
+            AlgorithmLoader.waveformController = fakeWave;
+            expect(AlgorithmLoader.frequencyAnalyser.getBands()).toStrictEqual([1, 2, 3]);
+            expect(AlgorithmLoader.waveformController.getWave()).toStrictEqual([0.1, 0.2]);
+            // Reset
+            AlgorithmLoader.frequencyAnalyser = null;
+            AlgorithmLoader.waveformController = null;
         });
     });
 
