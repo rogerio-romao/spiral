@@ -13,6 +13,8 @@
  * @returns {string[]} Array of length `count` of HSLA color strings.
  */
 export function generateHSLAPalette(count, mode = 'hue', degrees = null) {
+    // Ensure count is a non-negative integer
+    const clampedCount = Math.max(0, Math.floor(count));
     // Random base values
     const baseHue = Math.floor(Math.random() * 360);
     const baseSat = Math.floor(Math.random() * 101);
@@ -21,22 +23,22 @@ export function generateHSLAPalette(count, mode = 'hue', degrees = null) {
     const baseAlpha = Math.random() * 0.9 + 0.1;
 
     const palette = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < clampedCount; i++) {
         let hue = baseHue;
         let sat = baseSat;
         let lum = baseLum;
         let alpha = baseAlpha;
 
         if (mode === 'hue') {
-            const step = degrees === null ? 360 / count : degrees;
+            const step = degrees === null ? 360 / clampedCount : degrees;
             hue = (baseHue + i * step) % 360;
         } else if (mode === 'saturation') {
-            sat = (baseSat + i * (100 / count)) % 101;
+            sat = (baseSat + i * (100 / clampedCount)) % 101;
         } else if (mode === 'luminosity') {
-            lum = (baseLum + i * (100 / count)) % 101;
+            lum = (baseLum + i * (100 / clampedCount)) % 101;
         } else if (mode === 'alpha') {
             // Wrap alpha between 0.1 and 1
-            const step = 0.9 / count;
+            const step = 0.9 / clampedCount;
             alpha = baseAlpha + i * step;
             if (alpha > 1) {
                 alpha = 0.1 + (alpha - 1);
@@ -66,8 +68,10 @@ export function generateHSLAPalette(count, mode = 'hue', degrees = null) {
  * @returns {string[]} Array of length `count` of RGBA color strings.
  */
 export function generateRGBAPalette(count, minC = 0, maxC = 255, minA = 0.5, maxA = 1) {
+    // Ensure count is a non-negative integer
+    const clampedCount = Math.max(0, Math.floor(count));
     const palette = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < clampedCount; i++) {
         palette.push(randomColor(minC, maxC, minA, maxA));
     }
     return palette;
@@ -80,7 +84,10 @@ export function generateRGBAPalette(count, minC = 0, maxC = 255, minA = 0.5, max
  * @returns {number} Random integer between min and max.
  */
 export function random(min, max) {
-    const num = Math.floor(Math.random() * (max - min + 1)) + min;
+    // Ensure min and max are integers
+    const flooredMin = Math.floor(min);
+    const flooredMax = Math.floor(max);
+    const num = Math.floor(Math.random() * (flooredMax - flooredMin + 1)) + flooredMin;
     return num;
 }
 
