@@ -9,6 +9,7 @@ describe('randomUtils', () => {
     describe('random function', () => {
         it('returns integers within [min, max]', () => {
             const results = Array.from({ length: 200 }, () => random(5, 15));
+
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(5);
                 expect(r).toBeLessThan(16);
@@ -23,6 +24,7 @@ describe('randomUtils', () => {
         it('works when min > max (swaps range)', () => {
             // Should still return a value in [max, min]
             const results = Array.from({ length: 100 }, () => random(10, 5));
+
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(5);
                 expect(r).toBeLessThanOrEqual(10);
@@ -31,9 +33,17 @@ describe('randomUtils', () => {
 
         it('handles float input by flooring', () => {
             const results = Array.from({ length: 100 }, () => random(1.2, 3.8));
+
             for (const r of results) {
                 expect([1, 2, 3]).toContain(r);
             }
+        });
+
+        it('throws TypeError for non-number inputs', () => {
+            expect(() => random('a', 5)).toThrow(TypeError);
+            expect(() => random(1, 'b')).toThrow(TypeError);
+            expect(() => random(null, 5)).toThrow(TypeError);
+            expect(() => random(1, {})).toThrow(TypeError);
         });
     });
 
@@ -50,19 +60,23 @@ describe('randomUtils', () => {
 
         it('returns the same color if minC == maxC and minA == maxA', () => {
             const color = randomColor(100, 100, 0.5, 0.5);
+
             expect(color).toMatch(/^rgba\(100, 100, 100, 0.5\)/);
         });
 
         it('works if minC > maxC and minA > maxA', () => {
             // Should swap internally or still produce a valid color
             const color = randomColor(200, 100, 0.8, 0.5);
+
             expect(color).toMatch(/^rgba\(/);
         });
 
         it('does not clamp out-of-bounds values', () => {
             // Should still produce a string, but values may be out of normal range
             const color = randomColor(-50, 300, -1, 2);
+
             expectTypeOf(color).toBeString();
+            expect(color).toMatch(/^rgba\(/);
         });
 
         it('returns an rgba string when CSS.supports returns false', () => {
@@ -83,6 +97,13 @@ describe('randomUtils', () => {
             const color = randomColor(100, 200, 0.5, 0.8);
 
             expect(color).toMatch(/^rgba\(/);
+        });
+
+        it('throws TypeError for non-number inputs', () => {
+            expect(() => randomColor('a', 255, 0.5, 1)).toThrow(TypeError);
+            expect(() => randomColor(0, 'b', 0.5, 1)).toThrow(TypeError);
+            expect(() => randomColor(0, 255, 'c', 1)).toThrow(TypeError);
+            expect(() => randomColor(0, 255, 0.5, 'd')).toThrow(TypeError);
         });
     });
 
@@ -110,6 +131,23 @@ describe('randomUtils', () => {
 
         it('returns empty array for count 0', () => {
             expect(generateRGBAPalette(0)).toHaveLength(0);
+        });
+
+        it('accepts custom color and alpha ranges', () => {
+            const palette = generateRGBAPalette(3, 50, 150, 0.3, 0.7);
+
+            for (const color of palette) {
+                expectTypeOf(color).toBeString();
+                expect(color.length).toBeGreaterThan(0);
+            }
+        });
+
+        it('throws TypeError for non-number inputs', () => {
+            expect(() => generateRGBAPalette('a')).toThrow(TypeError);
+            expect(() => generateRGBAPalette(5, 'b')).toThrow(TypeError);
+            expect(() => generateRGBAPalette(5, 0, 'c')).toThrow(TypeError);
+            expect(() => generateRGBAPalette(5, 0, 255, 'd')).toThrow(TypeError);
+            expect(() => generateRGBAPalette(5, 0, 255, 0.5, 'e')).toThrow(TypeError);
         });
     });
 
@@ -168,6 +206,27 @@ describe('randomUtils', () => {
 
         it('supports random mode', () => {
             expect(generateHSLAPalette(3, 'random')).toHaveLength(3);
+        });
+
+        it('invalid mode defaults to varying hue', () => {
+            const palette = generateHSLAPalette(3, 'invalid-mode');
+
+            expect(palette).toHaveLength(3);
+            for (const color of palette) {
+                expect(color).toMatch(/^hsla\(/);
+            }
+        });
+
+        it('throws TypeError for non-number count', () => {
+            expect(() => generateHSLAPalette('a')).toThrow(TypeError);
+        });
+
+        it('throws TypeError for non-string mode', () => {
+            expect(() => generateHSLAPalette(5, 123)).toThrow(TypeError);
+        });
+
+        it('throws TypeError for non-number degrees', () => {
+            expect(() => generateHSLAPalette(5, 'hue', 'not-a-number')).toThrow(TypeError);
         });
     });
 });

@@ -4,6 +4,7 @@ import AlgorithmLoader from '../src/AlgorithmLoader.js';
 
 function createMockCtx() {
     const canvas = document.createElement('canvas');
+
     const ctx = {
         beginPath: vi.fn(),
         canvas,
@@ -15,6 +16,7 @@ function createMockCtx() {
         save: vi.fn(),
         translate: vi.fn(),
     };
+
     return { canvas, ctx };
 }
 
@@ -35,6 +37,7 @@ describe('algorithmLoader', () => {
         it('initialises state correctly', () => {
             const { ctx } = createMockCtx();
             const algo = new WorkingAlgo(ctx, 100, 200);
+
             expect(algo.ctx).toBe(ctx);
             expect(algo.w).toBe(100);
             expect(algo.h).toBe(200);
@@ -49,6 +52,7 @@ describe('algorithmLoader', () => {
             const { ctx } = createMockCtx();
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.stop();
+
             expect(algo.isRunning).toBeFalsy();
         });
 
@@ -57,6 +61,7 @@ describe('algorithmLoader', () => {
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.animationFrameId = 42;
             algo.stop();
+
             expect(algo.animationFrameId).toBeNull();
         });
     });
@@ -78,6 +83,7 @@ describe('algorithmLoader', () => {
             const { ctx } = createMockCtx();
             const algo = new BrokenAlgo(ctx, 100, 100);
             algo.draw();
+
             expect(algo.isRunning).toBeFalsy();
         });
 
@@ -92,6 +98,7 @@ describe('algorithmLoader', () => {
             const algo = new SpyAlgo(ctx, 100, 100);
             algo.stop();
             algo.draw();
+
             expect(drawSpy).not.toHaveBeenCalled();
         });
     });
@@ -99,18 +106,21 @@ describe('algorithmLoader', () => {
     describe('static factory methods', () => {
         it('createVector returns an object with x and y', () => {
             const vector = AlgorithmLoader.createVector(3, 4);
+
             expect(vector.x).toBe(3);
             expect(vector.y).toBe(4);
         });
 
         it('createParticle returns an object with position and velocity', () => {
             const particle = AlgorithmLoader.createParticle(10, 20, 5, 0);
+
             expect(particle.x).toBe(10);
             expect(particle.y).toBe(20);
         });
 
         it('random returns a number within range', () => {
             const num = AlgorithmLoader.random(1, 10);
+
             expect(num).toBeGreaterThanOrEqual(1);
             expect(num).toBeLessThan(11);
         });
@@ -118,6 +128,7 @@ describe('algorithmLoader', () => {
         it('pickRandomElement returns an element from the array', () => {
             const arr = ['a', 'b', 'c'];
             const result = AlgorithmLoader.pickRandomElement(arr);
+
             expect(arr).toContain(result);
         });
     });
@@ -139,11 +150,13 @@ describe('algorithmLoader', () => {
     describe('static color and palette methods', () => {
         it('randomColor returns an rgba string', () => {
             const color = AlgorithmLoader.randomColor();
+
             expect(color).toMatch(/^rgba\(/u);
         });
 
         it('generateRGBAPalette returns an array of the requested length', () => {
             const palette = AlgorithmLoader.generateRGBAPalette(3);
+
             expect(palette).toHaveLength(3);
             for (const color of palette) {
                 expect(color).toMatch(/^rgba\(/u);
@@ -152,6 +165,7 @@ describe('algorithmLoader', () => {
 
         it('generateHSLAPalette returns an array of the requested length', () => {
             const palette = AlgorithmLoader.generateHSLAPalette(3, 'hue');
+
             expect(palette).toHaveLength(3);
         });
     });
@@ -162,6 +176,7 @@ describe('algorithmLoader', () => {
             const algo = new WorkingAlgo(ctx, 100, 100);
             const spy = vi.spyOn(globalThis, 'requestAnimationFrame');
             algo.requestFrame();
+
             expect(spy).toHaveBeenCalledWith(algo.draw);
         });
 
@@ -171,6 +186,7 @@ describe('algorithmLoader', () => {
             canvas.height = 100;
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.clearScreen();
+
             expect(ctx.save).toHaveBeenCalledOnce();
             expect(ctx.resetTransform).toHaveBeenCalledOnce();
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 100);
@@ -183,6 +199,7 @@ describe('algorithmLoader', () => {
             canvas.height = 100;
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.fillScreen();
+
             expect(ctx.save).toHaveBeenCalledOnce();
             expect(ctx.resetTransform).toHaveBeenCalledOnce();
             expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, 100, 100);
@@ -193,6 +210,7 @@ describe('algorithmLoader', () => {
             const { ctx } = createMockCtx();
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.rotateCanvasRadians(Math.PI);
+
             expect(ctx.translate).toHaveBeenNthCalledWith(1, 50, 50);
             expect(ctx.rotate).toHaveBeenCalledWith(Math.PI);
             expect(ctx.translate).toHaveBeenNthCalledWith(2, -50, -50);
@@ -202,6 +220,7 @@ describe('algorithmLoader', () => {
             const { ctx } = createMockCtx();
             const algo = new WorkingAlgo(ctx, 100, 100);
             algo.rotateCanvasDegrees(90);
+
             expect(ctx.rotate).toHaveBeenCalledWith(Math.PI / 2);
         });
     });
