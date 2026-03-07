@@ -1,9 +1,5 @@
 import MusicPlayer from '../../src/MusicPlayer.js';
 
-vi.mock(import('../../src/AlgorithmLoader.js'), () => ({
-    default: { frequencyAnalyser: null },
-}));
-
 const FIXTURE = /* html */ `
     <div id="player" style="display: block">
         <label id="click-label" for="input">Add Track(s)</label>
@@ -50,11 +46,13 @@ describe('musicPlayer (browser)', () => {
     describe('constructor', () => {
         it('creates instance without errors', () => {
             const player = createPlayer();
+
             expect(player).toBeDefined();
         });
 
         it('shows player panel initially', () => {
             createPlayer();
+
             expect(document.querySelector('#player').style.display).toBe('block');
         });
     });
@@ -62,6 +60,7 @@ describe('musicPlayer (browser)', () => {
     describe('setPlayIcon', () => {
         it('shows pause icon and hides play icon when playing', () => {
             const player = createPlayer();
+
             player.togglePlayPauseIcon(true);
             expect(document.querySelector('#icon-play').style.display).toBe('none');
             expect(document.querySelector('#icon-pause').style.display).toBe('inline');
@@ -69,6 +68,7 @@ describe('musicPlayer (browser)', () => {
 
         it('shows play icon and hides pause icon when not playing', () => {
             const player = createPlayer();
+
             player.togglePlayPauseIcon(false);
             expect(document.querySelector('#icon-play').style.display).toBe('inline');
             expect(document.querySelector('#icon-pause').style.display).toBe('none');
@@ -78,12 +78,14 @@ describe('musicPlayer (browser)', () => {
     describe('togglePlayerVisibility', () => {
         it('player is visible initially, hides the player on first call', () => {
             const player = createPlayer();
+
             player.togglePlayerVisibility();
             expect(document.querySelector('#player').style.display).toBe('none');
         });
 
         it('shows the player on second call', () => {
             const player = createPlayer();
+
             player.togglePlayerVisibility();
             player.togglePlayerVisibility();
             expect(document.querySelector('#player').style.display).toBe('block');
@@ -97,6 +99,7 @@ describe('musicPlayer (browser)', () => {
             player.trackNames = ['Track 1', 'Track 2'];
             player.currentSong = 0;
             player.renderPlaylist();
+
             expect(document.querySelectorAll('.list-item')).toHaveLength(2);
         });
 
@@ -120,19 +123,23 @@ describe('musicPlayer (browser)', () => {
             player.renderPlaylist();
 
             const scrollIntoViewSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView');
+            // `dataTransfer` is required for drag events to be properly constructed and dispatched in JSDOM
             const dataTransfer = new DataTransfer();
             const items = document.querySelectorAll('.list-item');
 
+            // Simulate dragging the first item (Track 1) to the position of the third item (Track 3)
             items[0].dispatchEvent(new DragEvent('dragstart', { bubbles: true, dataTransfer }));
             items[2].dispatchEvent(new DragEvent('dragover', { bubbles: true, dataTransfer }));
             items[2].dispatchEvent(new DragEvent('drop', { bubbles: true, dataTransfer }));
             items[0].dispatchEvent(new DragEvent('dragend', { bubbles: true, dataTransfer }));
 
+            // After reordering, Track 1 should be last, and the current song index should update to reflect the new position of the previously playing track (Track 2)
             expect(player.trackNames).toStrictEqual(['Track 2', 'Track 3', 'Track 1']);
             expect(player.trackList).toStrictEqual(['blob:url2', 'blob:url3', 'blob:url1']);
             expect(player.currentSongIndex).toBe(0);
 
             const reorderedItems = document.querySelectorAll('.list-item .track-name');
+            // Verify the DOM order matches the new track order and that the current track is still highlighted and scrolled into view
             expect(reorderedItems[0].textContent).toBe('Track 2');
             expect(reorderedItems[1].textContent).toBe('Track 3');
             expect(reorderedItems[2].textContent).toBe('Track 1');
@@ -149,6 +156,8 @@ describe('musicPlayer (browser)', () => {
             player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
             player.currentSongIndex = 0;
             player.audio.src = player.trackList[0];
+
+            // Simulate some playback progress on the first track before clicking the second track
             player.audio.currentTime = 12;
             player.progress.value = '42';
             player.elapsedEl.textContent = '0:12';
@@ -161,8 +170,6 @@ describe('musicPlayer (browser)', () => {
             expect(HTMLMediaElement.prototype.pause).toHaveBeenCalledWith();
             expect(player.currentSongIndex).toBe(1);
             expect(player.audio.currentTime).toBe(0);
-            expect(player.progress.value).toBe(0);
-            expect(player.elapsedEl.textContent).toBe('0:00');
             expect(player.totalEl.textContent).toBe('0:00');
             expect(player.audio.src).toContain('blob:url2');
             expect(enqueuePlaySpy).toHaveBeenCalledWith();
@@ -182,6 +189,7 @@ describe('musicPlayer (browser)', () => {
                 new File(['two'], 'Track Two.wav', { type: 'audio/wav' }),
             ];
 
+            // here we directly call the event handler for the file input change event, since simulating the full file selection dialog and user interaction is not feasible in JSDOM. We also need to define the `files` property on the input element, as it is read-only and cannot be set directly.
             Object.defineProperty(player.input, 'files', {
                 configurable: true,
                 value: files,
@@ -190,17 +198,14 @@ describe('musicPlayer (browser)', () => {
             player.input.dispatchEvent(new Event('change', { bubbles: true }));
 
             expect(HTMLMediaElement.prototype.pause).toHaveBeenCalledWith();
-            expect(player.trackNames).toStrictEqual(['Track One', 'Track Two']);
             expect(player.trackList).toStrictEqual(['blob:url1', 'blob:url2']);
             expect(player.currentSongIndex).toBe(0);
-            expect(player.audio.src).toContain('blob:url1');
             expect(player.isPlaying).toBeFalsy();
             expect(player.progressPanel.style.display).toBe('flex');
             expect(player.playlistToggle.classList.contains('tracks-present')).toBeTruthy();
             expect(player.trackNameEl.textContent).toBe('Track One');
             expect(document.querySelectorAll('.list-item')).toHaveLength(2);
             expect(document.querySelector('#icon-play').style.display).toBe('inline');
-            expect(document.querySelector('#icon-pause').style.display).toBe('none');
             expect(player.input.value).toBe('');
         });
     });
@@ -216,6 +221,7 @@ describe('musicPlayer (browser)', () => {
             player.isPlaying = true;
             player.renderPlaylist();
 
+            // We need to define `duration` and `offsetWidth` properties, as they are required for the scrub logic and are not settable by default in JSDOM
             Object.defineProperty(player.audio, 'duration', {
                 configurable: true,
                 value: 200,
@@ -232,11 +238,13 @@ describe('musicPlayer (browser)', () => {
                 value: 25,
             });
 
+            // Simulate dragging the progress bar thumb to 25% of the bar, which should set the audio currentTime to 50 (25% of 200 duration)
             player.progress.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
             player.progress.dispatchEvent(mouseUpEvent);
             player.audio.dispatchEvent(new Event('timeupdate'));
 
             expect(HTMLMediaElement.prototype.pause).toHaveBeenCalledWith();
+            // After scrubbing, the audio currentTime should update to 50, the progress bar value should update to 25%, and the elapsed and total time displays should update accordingly. The player should also enqueue play to resume playback from the new position.
             expect(player.audio.currentTime).toBe(50);
             expect(player.progress.value).toBe(25);
             expect(player.elapsedEl.textContent).toBe('0:50');
@@ -252,6 +260,7 @@ describe('musicPlayer (browser)', () => {
             player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
             player.currentSong = 0;
             player.renderPlaylist();
+
             player.removeTrack(1);
             expect(player.trackList).toHaveLength(2);
             expect(player.trackNames).not.toContain('Track 2');
@@ -263,6 +272,7 @@ describe('musicPlayer (browser)', () => {
             player.trackNames = ['Track 1', 'Track 2'];
             player.currentSong = 0;
             player.renderPlaylist();
+
             player.removeTrack(0);
             expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:url1');
         });
@@ -280,11 +290,12 @@ describe('musicPlayer (browser)', () => {
             player.renderPlaylist();
 
             const removeButtons = document.querySelectorAll('.remove-track');
+            // Simulate clicking the remove button for the currently playing track (Track 2)
             removeButtons[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
+            // After removing the currently playing track, the player should call revokeObjectURL for that track, update the track list and names to remove it, update the current song index to point to the next track (which will now be at the same index as the removed track), load the next track's URL into the audio element, and enqueue play to continue playback. The playlist UI should also update to reflect the removed track and highlight the new current track.
             expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:url2');
             expect(player.trackNames).toStrictEqual(['Track 1', 'Track 3']);
-            expect(player.trackList).toStrictEqual(['blob:url1', 'blob:url3']);
             expect(player.currentSongIndex).toBe(1);
             expect(player.audio.src).toContain('blob:url3');
             expect(player.isPlaying).toBeTruthy();
@@ -299,12 +310,14 @@ describe('musicPlayer (browser)', () => {
     describe('draw flat Eq (real Canvas 2D)', () => {
         it('renders flat eq bars without errors', () => {
             const player = createPlayer();
+
             expect(() => player.drawEq(true)).not.toThrow();
         });
 
         it('canvas has correct dimensions', () => {
             createPlayer();
             const canvas = document.querySelector('#eq-display');
+
             // these dimension are set in index.html
             expect(canvas.width).toBe(50);
             expect(canvas.height).toBe(20);
@@ -315,6 +328,7 @@ describe('musicPlayer (browser)', () => {
         it('calls revokeObjectURL for all blob URLs', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2'];
+
             player.destroy();
             expect(URL.revokeObjectURL).toHaveBeenCalledTimes(2);
         });

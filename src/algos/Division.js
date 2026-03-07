@@ -15,8 +15,8 @@ export default class Division extends AL {
 
     initializeProperties() {
         this.radius = AL.random(25, Math.min(this.w, this.h) / 2);
-        this.circles = AL.random(5, 30);
-        this.size = AL.random(3, 24);
+        this.circles = [6, 8, 10, 12, 16, 20, 24, 32, 40, 48];
+        this.size = AL.pickRandomElement(this.circles);
         this.angle = 0;
     }
 
@@ -33,8 +33,8 @@ export default class Division extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            for (let i = 0; i < this.circles; i++) {
-                this.angle = (i * Math.PI * 2) / this.circles;
+            for (let i = 0; i < this.circles.length; i++) {
+                this.angle = (i * Math.PI * 2) / this.circles.length;
                 const x = this.w / 2 + Math.cos(this.angle) * this.radius;
                 const y = this.h / 2 + Math.sin(this.angle) * this.radius;
 
