@@ -138,13 +138,20 @@ I will suggest a CHANGELOG entry and wait for your approval:
 
 Once everything is verified and CHANGELOG is updated, I will create a PR:
 
-1. First, push the branch to origin:
+1. First, commit all changes to the branch with a conventional commit message:
+
+```bash
+git add .
+git commit -m "<TYPE>: <Brief description of the change>"
+```
+
+2. Second, push the branch to origin:
 
     ```bash
     git push origin <branch-name>
     ```
 
-2. Then create the PR using GitHub CLI:
+3. Then create the PR using GitHub CLI:
 
 ```bash
 gh pr create \

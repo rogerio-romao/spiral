@@ -121,14 +121,26 @@ canvas {
 }
 
 /* HUD */
-#hud {
+#algos,
+#msg {
     background: transparent;
     position: absolute;
-    bottom: 2em;
-    right: 2.5em;
-    text-align: right;
-    opacity: 0.7;
     z-index: 2;
+}
+
+#algos {
+    opacity: 0.7;
+    bottom: 3rem;
+    right: 3rem;
+    text-align: right;
+}
+
+#msg {
+    bottom: 8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: larger;
 }
 
 #help {
