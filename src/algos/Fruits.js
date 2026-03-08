@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Fruits extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Fruits';
 
@@ -26,35 +26,35 @@ export default class Fruits extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'black';
+        AL.ctx.strokeStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.33);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.33);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(
+            AL.ctx.arc(
                 this.col * this.cell - this.cell,
                 this.row * this.cell - this.cell,
                 this.size,
                 0,
                 2 * Math.PI,
             );
-            this.ctx.stroke();
-            this.ctx.fill();
-            this.ctx.beginPath();
+            AL.ctx.stroke();
+            AL.ctx.fill();
+            AL.ctx.beginPath();
 
             this.col += 1;
-            if (this.col * this.cell - this.cell * 2 > this.w) {
+            if (this.col * this.cell - this.cell * 2 > AL.w) {
                 this.col = 0;
                 this.row += 1;
             }
-            if (this.row * this.cell - this.cell * 2 > this.h) {
+            if (this.row * this.cell - this.cell * 2 > AL.h) {
                 this.initializeProperties();
                 this.setupDrawingStyles();
-                this.ctx.beginPath();
+                AL.ctx.beginPath();
             }
         }
 

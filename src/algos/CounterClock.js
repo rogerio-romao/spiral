@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class CounterClock extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Counter Clock';
 
@@ -23,20 +23,20 @@ export default class CounterClock extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
-        this.ctx.font = `${AL.random(75, 750)}px sans-serif`;
-        this.ctx.textAlign = 'center';
-        this.ctx.shadowBlur = 3;
-        this.ctx.lineWidth = 2;
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = this.color;
+        AL.ctx.font = `${AL.random(75, 750)}px sans-serif`;
+        AL.ctx.textAlign = 'center';
+        AL.ctx.shadowBlur = 3;
+        AL.ctx.lineWidth = 2;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.strokeText(`   ${this.letter}`, 0, 0);
-            this.ctx.rotate(-this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
-            this.ctx.beginPath();
+            AL.ctx.translate(AL.w / 2, AL.h / 2);
+            AL.ctx.strokeText(`   ${this.letter}`, 0, 0);
+            AL.ctx.rotate(-this.rotate);
+            AL.ctx.translate(-AL.w / 2, -AL.h / 2);
+            AL.ctx.beginPath();
         }
 
         this.t += 1;
@@ -44,20 +44,20 @@ export default class CounterClock extends AL {
         if (this.t % (this.speed * 45) === 0) {
             const col = Math.random();
             if (col < 0.125) {
-                this.ctx.lineWidth = 1;
-                this.ctx.shadowBlur = 5;
+                AL.ctx.lineWidth = 1;
+                AL.ctx.shadowBlur = 5;
                 this.color = 'white';
             } else if (col < 0.25) {
-                this.ctx.lineWidth = 3;
+                AL.ctx.lineWidth = 3;
                 this.color = 'black';
             } else {
-                this.ctx.shadowBlur = 3;
-                this.ctx.lineWidth = 2;
+                AL.ctx.shadowBlur = 3;
+                AL.ctx.lineWidth = 2;
                 this.color = AL.randomColor();
             }
 
-            this.ctx.font = `${AL.random(75, 750)}px sans-serif`;
-            this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
+            AL.ctx.font = `${AL.random(75, 750)}px sans-serif`;
+            AL.ctx.shadowColor = AL.ctx.strokeStyle = this.color;
         }
 
         if (this.t % (this.speed * 450) === 0) {

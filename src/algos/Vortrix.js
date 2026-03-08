@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Vortrix extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Vortrix';
 
@@ -14,19 +14,19 @@ export default class Vortrix extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.size = AL.random(60, 400);
         this.rotate = AL.random(1, 60);
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 10;
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        AL.ctx.shadowBlur = 10;
+        AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(0, 255, 0.5, 1);
+        AL.ctx.strokeStyle = AL.ctx.shadowColor = AL.randomColor(0, 255, 0.5, 1);
     }
 
     draw() {
@@ -48,13 +48,13 @@ export default class Vortrix extends AL {
     }
 
     drawTriangle(x, y) {
-        this.ctx.moveTo(x, y);
-        this.ctx.beginPath();
-        this.ctx.lineTo(x + this.size, y);
-        this.ctx.lineTo(x, y + this.size);
-        this.ctx.lineTo(x, y);
-        this.ctx.closePath();
-        this.ctx.fill();
-        this.ctx.stroke();
+        AL.ctx.moveTo(x, y);
+        AL.ctx.beginPath();
+        AL.ctx.lineTo(x + this.size, y);
+        AL.ctx.lineTo(x, y + this.size);
+        AL.ctx.lineTo(x, y);
+        AL.ctx.closePath();
+        AL.ctx.fill();
+        AL.ctx.stroke();
     }
 }

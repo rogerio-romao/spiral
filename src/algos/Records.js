@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Records extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Records';
 
@@ -18,22 +18,22 @@ export default class Records extends AL {
         this.rotate = AL.random(1, 45);
         this.offset = AL.random(50, 330);
         this.angleChange = Math.random() * 7;
-        this.radius = AL.random(50, Math.min(this.w, this.h) / 2);
+        this.radius = AL.random(50, Math.min(AL.w, AL.h) / 2);
     }
 
     setupConstantStyles() {
-        this.ctx.lineWidth = 2;
+        AL.ctx.lineWidth = 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor();
+        AL.ctx.strokeStyle = AL.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, Math.random() * Math.PI);
-            this.ctx.stroke();
+            AL.ctx.beginPath();
+            AL.ctx.arc(AL.w / 2, AL.h / 2, this.radius, 0, Math.random() * Math.PI);
+            AL.ctx.stroke();
 
             this.angle += this.angleChange;
             this.radius = Math.abs(this.radius + Math.sin(this.angle) * this.offset);
@@ -46,9 +46,9 @@ export default class Records extends AL {
         if (this.t % (this.speed * 120) === 0) {
             this.initializeProperties();
 
-            this.ctx.beginPath();
-            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, 2 * Math.PI);
-            this.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.arc(AL.w / 2, AL.h / 2, this.radius, 0, 2 * Math.PI);
+            AL.ctx.fill();
 
             this.setupDrawingStyles();
         }

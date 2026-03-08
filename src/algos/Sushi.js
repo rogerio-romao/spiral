@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Sushi extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Sushi';
 
@@ -16,34 +16,34 @@ export default class Sushi extends AL {
     initializeProperties() {
         this.gap = 4;
         this.radius = 40;
-        this.rows = Math.round(this.h / (this.radius + this.gap));
-        this.cols = Math.round(this.w / (this.radius + this.gap));
+        this.rows = Math.round(AL.h / (this.radius + this.gap));
+        this.cols = Math.round(AL.w / (this.radius + this.gap));
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'white';
-        this.ctx.globalCompositeOperation = 'difference';
+        AL.ctx.strokeStyle = 'white';
+        AL.ctx.globalCompositeOperation = 'difference';
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = AL.random(3, 17);
-        this.ctx.fillStyle = AL.randomColor();
+        AL.ctx.lineWidth = AL.random(3, 17);
+        AL.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
                 for (let j = 0; j <= this.cols; j++) {
-                    this.ctx.beginPath();
-                    this.ctx.arc(
+                    AL.ctx.beginPath();
+                    AL.ctx.arc(
                         100 * j - 50,
                         100 * i - 50,
                         this.radius,
                         Math.random(),
                         Math.random() * 2 * Math.PI,
                     );
-                    this.ctx.stroke();
-                    this.ctx.fill();
+                    AL.ctx.stroke();
+                    AL.ctx.fill();
                 }
             }
         }

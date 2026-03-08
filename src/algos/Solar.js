@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Solar extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Solar';
 
@@ -14,29 +14,29 @@ export default class Solar extends AL {
     }
 
     initializeProperties() {
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
         this.rotate = AL.random(1, 359);
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'hard-light';
+        AL.ctx.globalCompositeOperation = 'hard-light';
         this.colors = AL.generateHSLAPalette(7, 'random');
         this.colorIndex = 0;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.colors[this.colorIndex];
-        this.ctx.lineWidth = AL.random(1, 4);
+        AL.ctx.strokeStyle = this.colors[this.colorIndex];
+        AL.ctx.lineWidth = AL.random(1, 4);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(0, 0);
-            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.w, this.h);
-            this.ctx.stroke();
+            AL.ctx.moveTo(0, 0);
+            AL.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, AL.w, AL.h);
+            AL.ctx.stroke();
         }
 
         this.t += 1;
@@ -47,7 +47,7 @@ export default class Solar extends AL {
             this.colorIndex = (this.colorIndex + 1) % this.colors.length;
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

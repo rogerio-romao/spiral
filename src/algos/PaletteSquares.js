@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class PaletteSquares extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'PaletteSquares';
 
@@ -15,8 +15,8 @@ export default class PaletteSquares extends AL {
     initializeConstantProperties() {
         this.modes = ['hue', 'saturation', 'luminosity', 'alpha', 'random'];
         this.mode = AL.pickRandomElement(this.modes);
-        this.ctx.strokeStyle = 'black';
-        this.ctx.lineWidth = 4;
+        AL.ctx.strokeStyle = 'black';
+        AL.ctx.lineWidth = 4;
     }
 
     initializeProperties() {
@@ -25,22 +25,22 @@ export default class PaletteSquares extends AL {
         this.squares = Array.from({ length: this.colors.length }, (_, index) => ({
             color: this.colors[index],
             size: AL.random(10, 300),
-            x: AL.random(0, this.w),
-            y: AL.random(0, this.h),
+            x: AL.random(0, AL.w),
+            y: AL.random(0, AL.h),
         }));
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (const square of this.squares) {
-                this.ctx.fillStyle = square.color;
-                this.ctx.fillRect(
+                AL.ctx.fillStyle = square.color;
+                AL.ctx.fillRect(
                     square.x - square.size / 2,
                     square.y - square.size / 2,
                     square.size,
                     square.size,
                 );
-                this.ctx.strokeRect(
+                AL.ctx.strokeRect(
                     square.x - square.size / 2,
                     square.y - square.size / 2,
                     square.size,

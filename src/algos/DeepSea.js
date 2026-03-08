@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class DeepSea extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Deep Sea';
 
@@ -19,43 +19,36 @@ export default class DeepSea extends AL {
     }
 
     initializeProperties() {
-        this.startX = AL.random(0, this.w);
-        this.startY = AL.random(0, this.h);
-        this.cp1x = AL.random(0, this.w);
-        this.cp1y = AL.random(0, this.h);
-        this.cp2x = AL.random(0, this.w);
-        this.cp2y = AL.random(0, this.h);
-        this.endX = AL.random(0, this.w);
-        this.endY = AL.random(0, this.h);
+        this.startX = AL.random(0, AL.w);
+        this.startY = AL.random(0, AL.h);
+        this.cp1x = AL.random(0, AL.w);
+        this.cp1y = AL.random(0, AL.h);
+        this.cp2x = AL.random(0, AL.w);
+        this.cp2y = AL.random(0, AL.h);
+        this.endX = AL.random(0, AL.w);
+        this.endY = AL.random(0, AL.h);
         this.factor = AL.random(180, 850);
         this.factor2 = AL.random(36, 170);
         this.rotate = AL.pickRandomElement(this.rotations);
     }
 
     setupConstantStyles() {
-        this.ctx.lineWidth = 0.1;
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.045)';
-        this.ctx.shadowBlur = 2;
+        AL.ctx.lineWidth = 0.1;
+        AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.045)';
+        AL.ctx.shadowBlur = 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(50, 200, 0.35, 0.7);
-        this.ctx.shadowColor = AL.randomColor(75, 200, 0.3, 0.5);
+        AL.ctx.strokeStyle = AL.randomColor(50, 200, 0.35, 0.7);
+        AL.ctx.shadowColor = AL.randomColor(75, 200, 0.3, 0.5);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.fillScreen();
-            this.ctx.moveTo(this.startX, this.startY);
-            this.ctx.bezierCurveTo(
-                this.cp1x,
-                this.cp1y,
-                this.cp2x,
-                this.cp2y,
-                this.endX,
-                this.endY,
-            );
-            this.ctx.stroke();
+            AL.ctx.moveTo(this.startX, this.startY);
+            AL.ctx.bezierCurveTo(this.cp1x, this.cp1y, this.cp2x, this.cp2y, this.endX, this.endY);
+            AL.ctx.stroke();
 
             this.endX += Math.sin(this.t) * this.factor;
             this.endY += Math.cos(this.t) * this.factor;
@@ -70,7 +63,7 @@ export default class DeepSea extends AL {
         if (this.t % (this.speed * 270) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

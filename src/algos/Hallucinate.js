@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Hallucinate extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Hallucinate';
 
@@ -15,19 +15,19 @@ export default class Hallucinate extends AL {
     initializeProperties() {
         this.rows = AL.random(3, 17);
         this.rot = AL.random(1, 180);
-        this.height = this.h / this.rows;
+        this.height = AL.h / this.rows;
         this.colors = AL.generateRGBAPalette(this.rows);
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'soft-light';
+        AL.ctx.globalCompositeOperation = 'soft-light';
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.fillStyle = this.colors[i];
-                this.ctx.fillRect(-this.w, i * this.height, 3 * this.w, this.height);
+                AL.ctx.fillStyle = this.colors[i];
+                AL.ctx.fillRect(-AL.w, i * this.height, 3 * AL.w, this.height);
             }
         }
 

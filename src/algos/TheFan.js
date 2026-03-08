@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class TheFan extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'The Fan';
 
@@ -15,36 +15,36 @@ export default class TheFan extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(1, 359);
-        this.x1 = AL.random(0, this.w / 2);
-        this.y1 = AL.random(0, this.h / 2);
-        this.ox = AL.random(0, this.w / 2);
-        this.oy = AL.random(0, this.h / 2);
-        this.x2 = AL.random(this.w / 2, this.w);
-        this.y2 = AL.random(this.h / 2, this.h);
-        this.dx = AL.random(this.w / 2, this.w);
-        this.dy = AL.random(this.h / 2, this.h);
+        this.x1 = AL.random(0, AL.w / 2);
+        this.y1 = AL.random(0, AL.h / 2);
+        this.ox = AL.random(0, AL.w / 2);
+        this.oy = AL.random(0, AL.h / 2);
+        this.x2 = AL.random(AL.w / 2, AL.w);
+        this.y2 = AL.random(AL.h / 2, AL.h);
+        this.dx = AL.random(AL.w / 2, AL.w);
+        this.dy = AL.random(AL.h / 2, AL.h);
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'luminosity';
-        this.ctx.filter = 'saturate(500%)';
-        this.ctx.shadowColor = 'black';
-        this.ctx.shadowBlur = 4;
+        AL.ctx.globalCompositeOperation = 'luminosity';
+        AL.ctx.filter = 'saturate(500%)';
+        AL.ctx.shadowColor = 'black';
+        AL.ctx.shadowBlur = 4;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.ox, this.oy);
-            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
+            AL.ctx.moveTo(this.ox, this.oy);
+            AL.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
 
             this.ox += 1;
             this.dy += 1;
 
-            this.ctx.stroke();
+            AL.ctx.stroke();
         }
 
         this.t += 1;
@@ -54,7 +54,7 @@ export default class TheFan extends AL {
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

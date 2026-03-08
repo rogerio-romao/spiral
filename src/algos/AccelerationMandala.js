@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class AccelerationMandala extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Acceleration Mandala';
 
@@ -23,14 +23,14 @@ export default class AccelerationMandala extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(12, 255, 0.33, 0.33);
-        this.ctx.font = `bold ${AL.random(125, 550)}px sans-serif`;
-        this.ctx.textAlign = 'center';
+        AL.ctx.strokeStyle = AL.randomColor(12, 255, 0.33, 0.33);
+        AL.ctx.font = `bold ${AL.random(125, 550)}px sans-serif`;
+        AL.ctx.textAlign = 'center';
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
+            AL.ctx.strokeText(this.letter, AL.w / 2, AL.h / 2);
 
             this.rotateCanvasDegrees(this.rotate + 1);
         }
@@ -42,11 +42,11 @@ export default class AccelerationMandala extends AL {
         }
 
         if (this.t % (this.speed * 90) === 0) {
-            this.ctx.strokeStyle = AL.randomColor(12, 255, 0.33, 0.33);
+            AL.ctx.strokeStyle = AL.randomColor(12, 255, 0.33, 0.33);
         }
 
         if (this.t % (this.speed * 135) === 0) {
-            this.ctx.font = `bold ${AL.random(125, 550)}px sans-serif`;
+            AL.ctx.font = `bold ${AL.random(125, 550)}px sans-serif`;
         }
 
         if (this.t % (this.speed * 360) === 0) {

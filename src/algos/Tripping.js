@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Tripping extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Tripping';
 
@@ -14,30 +14,30 @@ export default class Tripping extends AL {
     }
 
     initializeProperties() {
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
         this.rotate = AL.random(1, 360);
-        this.width = AL.random(50, this.w);
-        this.height = AL.random(50, this.h);
-        this.ul = AL.random(10, Math.max(this.w, this.h));
-        this.ur = AL.random(10, Math.max(this.w, this.h));
-        this.ll = AL.random(10, Math.max(this.w, this.h));
-        this.lr = AL.random(10, Math.max(this.w, this.h));
+        this.width = AL.random(50, AL.w);
+        this.height = AL.random(50, AL.h);
+        this.ul = AL.random(10, Math.max(AL.w, AL.h));
+        this.ur = AL.random(10, Math.max(AL.w, AL.h));
+        this.ll = AL.random(10, Math.max(AL.w, AL.h));
+        this.lr = AL.random(10, Math.max(AL.w, AL.h));
     }
 
     setupConstantStyles() {
-        this.ctx.lineWidth = 0.5;
+        AL.ctx.lineWidth = 0.5;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.25, 0.5);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.25, 0.5);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(this.x1, this.y1, this.width, this.height, {
+            AL.ctx.roundRectExtra(this.x1, this.y1, this.width, this.height, {
                 lowerLeft: this.ll,
                 lowerRight: this.lr,
                 upperLeft: this.ul,
@@ -53,7 +53,7 @@ export default class Tripping extends AL {
             this.ll += 1;
             this.lr += 1;
 
-            this.ctx.roundRectExtra(this.x2, this.y2, this.height, this.width, {
+            AL.ctx.roundRectExtra(this.x2, this.y2, this.height, this.width, {
                 lowerLeft: this.ur,
                 lowerRight: this.ul,
                 upperLeft: this.lr,
@@ -72,7 +72,7 @@ export default class Tripping extends AL {
             this.initializeProperties();
             this.setupDrawingStyles();
             this.clearScreen();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

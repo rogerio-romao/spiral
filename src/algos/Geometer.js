@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Geometer extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Geometer';
 
@@ -19,19 +19,19 @@ export default class Geometer extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.lineWidth = AL.random(2, 7);
-        this.ctx.shadowColor = 'black';
-        this.ctx.shadowBlur = 1;
+        AL.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.lineWidth = AL.random(2, 7);
+        AL.ctx.shadowColor = 'black';
+        AL.ctx.shadowBlur = 1;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.lineTo(this.w / 2 + this.change, this.h / 2 + this.change);
-            this.ctx.stroke();
+            AL.ctx.lineTo(AL.w / 2 + this.change, AL.h / 2 + this.change);
+            AL.ctx.stroke();
 
             this.change += this.rate;
-            if (Math.abs(this.change + this.rate) > Math.max(this.w / 2, this.h / 2)) {
+            if (Math.abs(this.change + this.rate) > Math.max(AL.w / 2, AL.h / 2)) {
                 this.rate = -this.rate;
             }
 
@@ -43,19 +43,19 @@ export default class Geometer extends AL {
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();
 
-            this.ctx.beginPath();
-            this.ctx.lineWidth = AL.random(2, 7);
+            AL.ctx.beginPath();
+            AL.ctx.lineWidth = AL.random(2, 7);
 
             const color = Math.random();
             if (color < 0.2) {
-                this.ctx.strokeStyle = 'white';
-                this.ctx.shadowColor = 'black';
+                AL.ctx.strokeStyle = 'white';
+                AL.ctx.shadowColor = 'black';
             } else if (color < 0.4) {
-                this.ctx.strokeStyle = 'black';
-                this.ctx.shadowColor = 'white';
+                AL.ctx.strokeStyle = 'black';
+                AL.ctx.shadowColor = 'white';
             } else {
-                this.ctx.strokeStyle = AL.randomColor();
-                this.ctx.shadowColor = 'black';
+                AL.ctx.strokeStyle = AL.randomColor();
+                AL.ctx.shadowColor = 'black';
             }
         }
 

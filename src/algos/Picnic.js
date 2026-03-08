@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Picnic extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Picnic';
 
@@ -15,8 +15,8 @@ export default class Picnic extends AL {
     }
 
     initializeBaseProperties() {
-        this.rows = Math.ceil(this.h / 150) + 2;
-        this.cols = Math.ceil(this.w / 150) + 2;
+        this.rows = Math.ceil(AL.h / 150) + 2;
+        this.cols = Math.ceil(AL.w / 150) + 2;
     }
 
     initializeProperties() {
@@ -24,21 +24,21 @@ export default class Picnic extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'source-over';
+        AL.ctx.globalCompositeOperation = 'source-over';
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = AL.random(1, 25);
-        this.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
+        AL.ctx.lineWidth = AL.random(1, 25);
+        AL.ctx.strokeStyle = AL.randomColor(10, 255, 0.2, 0.5);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
                 for (let j = 0; j <= this.cols; j++) {
-                    this.ctx.beginPath();
-                    this.ctx.arc(225 * j - 225, 225 * i - 225, this.radius, 0, 2 * Math.PI);
-                    this.ctx.stroke();
+                    AL.ctx.beginPath();
+                    AL.ctx.arc(225 * j - 225, 225 * i - 225, this.radius, 0, 2 * Math.PI);
+                    AL.ctx.stroke();
                 }
             }
         }
@@ -48,23 +48,23 @@ export default class Picnic extends AL {
         if (this.t % (this.speed * 30) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.globalCompositeOperation = 'source-over';
+            AL.ctx.globalCompositeOperation = 'source-over';
         }
 
         if (this.t * (this.speed * 90) === 0) {
-            this.ctx.globalCompositeOperation = 'overlay';
+            AL.ctx.globalCompositeOperation = 'overlay';
         }
 
         if (this.t % (this.speed * 150) === 0) {
-            this.ctx.globalCompositeOperation = 'color';
+            AL.ctx.globalCompositeOperation = 'color';
         }
 
         if (this.t % (this.speed * 240) === 0) {
-            this.ctx.globalCompositeOperation = 'luminosity';
+            AL.ctx.globalCompositeOperation = 'luminosity';
         }
 
         if (this.t % (this.speed * 570) === 0) {
-            this.ctx.globalCompositeOperation = 'hue';
+            AL.ctx.globalCompositeOperation = 'hue';
         }
 
         this.requestFrame();

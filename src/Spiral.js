@@ -36,6 +36,11 @@ export default class Spiral {
         this.h = globalThis.innerHeight;
         this.applyDpr();
 
+        // Initialize static canvas properties for algorithms
+        AlgorithmLoader.ctx = this.ctx;
+        AlgorithmLoader.w = this.w;
+        AlgorithmLoader.h = this.h;
+
         // HUD SETUP
         this.hud = new HudController({
             algosDisplayElement: document.querySelector('#algos'),
@@ -44,12 +49,11 @@ export default class Spiral {
         });
 
         // ALGORITHM & TRANSITION MANAGEMENT
-        this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
+        this.algorithmLoader = new AlgorithmLoader();
 
         this.transitionManager = new TransitionManager({
             algorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
-            getDimensions: () => ({ h: this.h, w: this.w }),
             hudController: this.hud,
         });
 
@@ -86,6 +90,8 @@ export default class Spiral {
             const rect = this.canvas.getBoundingClientRect();
             this.w = rect.width;
             this.h = rect.height;
+            AlgorithmLoader.w = this.w;
+            AlgorithmLoader.h = this.h;
             this.applyDpr();
 
             // Also resize waveform canvas

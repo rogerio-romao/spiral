@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class UFOs extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'UFOs';
 
@@ -22,13 +22,13 @@ export default class UFOs extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'multiply';
-        this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`;
+        AL.ctx.globalCompositeOperation = 'multiply';
+        AL.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${this.color1}, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
+            AL.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
                 this.color1
             }, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`;
 
@@ -40,9 +40,9 @@ export default class UFOs extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
             this.initializeProperties();
-            this.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
+            AL.ctx.canvas.style.background = `repeating-radial-gradient(circle at center, ${
                 this.color1
             }, ${this.color2} ${this.perc2}%, ${this.color3} ${this.perc1}% ${this.repeats}px)`;
 

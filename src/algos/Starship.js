@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Starship extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Starship';
 
@@ -26,13 +26,13 @@ export default class Starship extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 2;
-        this.ctx.lineWidth = 0.5;
-        this.ctx.globalCompositeOperation = 'hard-light';
+        AL.ctx.shadowBlur = 2;
+        AL.ctx.lineWidth = 0.5;
+        AL.ctx.globalCompositeOperation = 'hard-light';
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 1);
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 1);
     }
 
     draw() {
@@ -41,7 +41,7 @@ export default class Starship extends AL {
             this.seq.push(radius);
             this.seq.shift();
 
-            if (radius > Math.max(this.w, this.h)) {
+            if (radius > Math.max(AL.w, AL.h)) {
                 this.first += 1;
                 this.second += 1;
                 this.seq = [this.first, this.second];
@@ -49,8 +49,8 @@ export default class Starship extends AL {
                 this.rotateCanvasRadians(Math.PI / this.divisor);
             }
 
-            this.ctx.arc(this.w / 2, this.h / 2, radius, 0, 2 * Math.PI);
-            this.ctx.stroke();
+            AL.ctx.arc(AL.w / 2, AL.h / 2, radius, 0, 2 * Math.PI);
+            AL.ctx.stroke();
         }
 
         this.t += 1;
@@ -58,7 +58,7 @@ export default class Starship extends AL {
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         if (this.t % (this.speed * 1200) === 0) {

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Networks extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Networks';
 
@@ -14,8 +14,8 @@ export default class Networks extends AL {
     }
 
     initializeBaseProperties() {
-        this.x = this.w / 2;
-        this.y = this.h / 2;
+        this.x = AL.w / 2;
+        this.y = AL.h / 2;
     }
 
     initializeProperties() {
@@ -26,17 +26,17 @@ export default class Networks extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(this.x, this.y, this.size, 0, this.drawAmount * Math.PI * 2);
-            this.ctx.stroke();
+            AL.ctx.arc(this.x, this.y, this.size, 0, this.drawAmount * Math.PI * 2);
+            AL.ctx.stroke();
 
             this.drawAmount += 0.001;
             this.size += this.sizeIncrease;
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.t += 1;
@@ -44,8 +44,8 @@ export default class Networks extends AL {
         this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 480) === 0) {
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
+            this.x = AL.random(0, AL.w);
+            this.y = AL.random(0, AL.h);
 
             this.initializeProperties();
             this.setupDrawingStyles();

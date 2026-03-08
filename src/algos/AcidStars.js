@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class AcidStars extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Acid Stars';
 
@@ -33,12 +33,12 @@ export default class AcidStars extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 15;
+        AL.ctx.shadowBlur = 15;
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${this.fontSize}px serif`;
-        this.ctx.shadowColor = this.ctx.fillStyle = AL.randomColor(0, 255, 1);
+        AL.ctx.font = `${this.fontSize}px serif`;
+        AL.ctx.shadowColor = AL.ctx.fillStyle = AL.randomColor(0, 255, 1);
     }
 
     draw() {
@@ -46,27 +46,27 @@ export default class AcidStars extends AL {
             this.stagger %= 3;
 
             if (this.stagger === 0) {
-                this.ctx.fillText(this.letter, this.w / 2 + this.side / 2, this.h / 2);
-                this.ctx.stroke();
+                AL.ctx.fillText(this.letter, AL.w / 2 + this.side / 2, AL.h / 2);
+                AL.ctx.stroke();
             }
 
             if (this.stagger === 1) {
-                this.ctx.fillText(this.letter, this.w / 2, this.h / 2 - this.side / 2);
+                AL.ctx.fillText(this.letter, AL.w / 2, AL.h / 2 - this.side / 2);
             }
 
             if (this.stagger === 2) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate((-this.rotate * Math.PI) / 180);
-                this.ctx.fillText(this.letter, this.w / 2 - this.side / 2, this.h / 2);
-                this.ctx.stroke();
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                AL.ctx.translate(AL.w / 2, AL.h / 2);
+                AL.ctx.rotate((-this.rotate * Math.PI) / 180);
+                AL.ctx.fillText(this.letter, AL.w / 2 - this.side / 2, AL.h / 2);
+                AL.ctx.stroke();
+                AL.ctx.translate(-AL.w / 2, -AL.h / 2);
             }
 
             this.stagger += 1;
         }
 
         this.side += this.change;
-        if (this.side > Math.max(this.w, this.h) || this.side < 5) {
+        if (this.side > Math.max(AL.w, AL.h) || this.side < 5) {
             this.change = -this.change;
         }
 
@@ -75,7 +75,7 @@ export default class AcidStars extends AL {
         if (this.t % (this.speed * 240) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         if (this.t % (this.speed * 720) === 0) {

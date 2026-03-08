@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Chillout extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Chillout';
 
@@ -14,29 +14,29 @@ export default class Chillout extends AL {
     }
 
     initializeProperties() {
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
-        this.x3 = AL.random(0, this.w);
-        this.y3 = AL.random(0, this.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
+        this.x3 = AL.random(0, AL.w);
+        this.y3 = AL.random(0, AL.h);
         this.rotate = AL.random(1, 10);
     }
 
     setupConstantStyles() {
-        this.ctx.filter = 'saturate(17.5%)';
+        AL.ctx.filter = 'saturate(17.5%)';
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = AL.random(1, 5);
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.4, 1);
+        AL.ctx.lineWidth = AL.random(1, 5);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.4, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.x3, this.y3);
-            this.ctx.quadraticCurveTo(this.x2, this.y2, this.x1, this.y1);
-            this.ctx.stroke();
+            AL.ctx.moveTo(this.x3, this.y3);
+            AL.ctx.quadraticCurveTo(this.x2, this.y2, this.x1, this.y1);
+            AL.ctx.stroke();
 
             this.rotateCanvasRadians(this.rotate);
         }
@@ -47,7 +47,7 @@ export default class Chillout extends AL {
             this.initializeProperties();
             this.setupDrawingStyles();
 
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

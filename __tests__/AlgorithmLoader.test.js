@@ -33,14 +33,17 @@ class BrokenAlgo extends AlgorithmLoader {
 }
 
 describe('algorithmLoader', () => {
+    beforeEach(() => {
+        const { ctx } = createMockCtx();
+        AlgorithmLoader.ctx = ctx;
+        AlgorithmLoader.w = 100;
+        AlgorithmLoader.h = 200;
+    });
+
     describe('constructor', () => {
         it('initialises state correctly', () => {
-            const { ctx } = createMockCtx();
-            const algo = new WorkingAlgo(ctx, 100, 200);
+            const algo = new WorkingAlgo();
 
-            expect(algo.ctx).toBe(ctx);
-            expect(algo.w).toBe(100);
-            expect(algo.h).toBe(200);
             expect(algo.t).toBe(0);
             expect(algo.isRunning).toBeTruthy();
             expect(algo.animationFrameId).toBeNull();
@@ -49,16 +52,14 @@ describe('algorithmLoader', () => {
 
     describe('stop', () => {
         it('sets isRunning to false', () => {
-            const { ctx } = createMockCtx();
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            const algo = new WorkingAlgo();
             algo.stop();
 
             expect(algo.isRunning).toBeFalsy();
         });
 
         it('clears animationFrameId', () => {
-            const { ctx } = createMockCtx();
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            const algo = new WorkingAlgo();
             algo.animationFrameId = 42;
             algo.stop();
 
@@ -69,7 +70,8 @@ describe('algorithmLoader', () => {
     describe('draw error handling', () => {
         it('dispatches algorithm-error on the canvas when draw throws', () => {
             const { canvas, ctx } = createMockCtx();
-            const algo = new BrokenAlgo(ctx, 100, 100);
+            AlgorithmLoader.ctx = ctx;
+            const algo = new BrokenAlgo();
 
             const handler = vi.fn();
             canvas.addEventListener('algorithm-error', handler);
@@ -80,22 +82,20 @@ describe('algorithmLoader', () => {
         });
 
         it('stops the algorithm after a draw error', () => {
-            const { ctx } = createMockCtx();
-            const algo = new BrokenAlgo(ctx, 100, 100);
+            const algo = new BrokenAlgo();
             algo.draw();
 
             expect(algo.isRunning).toBeFalsy();
         });
 
         it('skips draw when isRunning is false', () => {
-            const { ctx } = createMockCtx();
             const drawSpy = vi.fn();
             class SpyAlgo extends AlgorithmLoader {
                 draw() {
                     drawSpy();
                 }
             }
-            const algo = new SpyAlgo(ctx, 100, 100);
+            const algo = new SpyAlgo();
             algo.stop();
             algo.draw();
 
@@ -146,7 +146,8 @@ describe('algorithmLoader', () => {
     describe('base draw throws when not overridden', () => {
         it('dispatches algorithm-error because base draw throws', () => {
             const { canvas, ctx } = createMockCtx();
-            const algo = new AlgorithmLoader(ctx, 100, 100);
+            AlgorithmLoader.ctx = ctx;
+            const algo = new AlgorithmLoader();
 
             const handler = vi.fn();
             canvas.addEventListener('algorithm-error', handler);
@@ -211,8 +212,7 @@ describe('algorithmLoader', () => {
 
     describe('canvas instance methods', () => {
         it('requestFrame schedules draw via requestAnimationFrame', () => {
-            const { ctx } = createMockCtx();
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            const algo = new WorkingAlgo();
             const spy = vi.spyOn(globalThis, 'requestAnimationFrame');
             algo.requestFrame();
 
@@ -223,7 +223,8 @@ describe('algorithmLoader', () => {
             const { canvas, ctx } = createMockCtx();
             canvas.width = 100;
             canvas.height = 100;
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            AlgorithmLoader.ctx = ctx;
+            const algo = new WorkingAlgo();
             algo.clearScreen();
 
             expect(ctx.save).toHaveBeenCalledOnce();
@@ -236,7 +237,8 @@ describe('algorithmLoader', () => {
             const { canvas, ctx } = createMockCtx();
             canvas.width = 100;
             canvas.height = 100;
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            AlgorithmLoader.ctx = ctx;
+            const algo = new WorkingAlgo();
             algo.fillScreen();
 
             expect(ctx.save).toHaveBeenCalledOnce();
@@ -247,7 +249,10 @@ describe('algorithmLoader', () => {
 
         it('rotateCanvasRadians translates to center, rotates, then translates back', () => {
             const { ctx } = createMockCtx();
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            AlgorithmLoader.ctx = ctx;
+            AlgorithmLoader.w = 100;
+            AlgorithmLoader.h = 100;
+            const algo = new WorkingAlgo();
             algo.rotateCanvasRadians(Math.PI);
 
             expect(ctx.translate).toHaveBeenNthCalledWith(1, 50, 50);
@@ -257,7 +262,10 @@ describe('algorithmLoader', () => {
 
         it('rotateCanvasDegrees converts degrees to radians before rotating', () => {
             const { ctx } = createMockCtx();
-            const algo = new WorkingAlgo(ctx, 100, 100);
+            AlgorithmLoader.ctx = ctx;
+            AlgorithmLoader.w = 100;
+            AlgorithmLoader.h = 100;
+            const algo = new WorkingAlgo();
             algo.rotateCanvasDegrees(90);
 
             expect(ctx.rotate).toHaveBeenCalledWith(Math.PI / 2);

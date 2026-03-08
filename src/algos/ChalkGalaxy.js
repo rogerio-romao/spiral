@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class ChalkGalaxy extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Chalk Galaxy';
 
@@ -23,15 +23,15 @@ export default class ChalkGalaxy extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(150, 255, 0.25, 0.25);
-        this.ctx.font = `${AL.random(100, 700)}px bold`;
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-        this.ctx.fillRect(0, 0, this.w, this.h);
+        AL.ctx.strokeStyle = AL.randomColor(150, 255, 0.25, 0.25);
+        AL.ctx.font = `${AL.random(100, 700)}px bold`;
+        AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        AL.ctx.fillRect(0, 0, AL.w, AL.h);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
+            AL.ctx.strokeText(this.letter, AL.w / 2, AL.h / 2);
 
             this.rotateCanvasRadians(this.rotate);
         }
@@ -39,12 +39,12 @@ export default class ChalkGalaxy extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.strokeStyle = AL.randomColor(170, 255, 0.2, 0.2);
-            this.ctx.font = `${AL.random(100, 600)}px bold`;
+            AL.ctx.strokeStyle = AL.randomColor(170, 255, 0.2, 0.2);
+            AL.ctx.font = `${AL.random(100, 600)}px bold`;
         }
 
         if (this.t % (this.speed * 500) === 0) {
-            this.ctx.strokeStyle = AL.randomColor(0, 115, 0.2, 0.2);
+            AL.ctx.strokeStyle = AL.randomColor(0, 115, 0.2, 0.2);
             this.rotate = AL.random(1, 179);
         }
 

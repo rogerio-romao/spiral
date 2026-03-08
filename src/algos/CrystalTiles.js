@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class CrystalTiles extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Crystal Tiles';
 
@@ -43,28 +43,28 @@ export default class CrystalTiles extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.lineWidth = AL.random(1, 4);
-        this.ctx.strokeStyle = 'white';
+        AL.ctx.globalCompositeOperation = 'overlay';
+        AL.ctx.lineWidth = AL.random(1, 4);
+        AL.ctx.strokeStyle = 'white';
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeRect(this.x, this.y, this.size, this.size);
-            this.ctx.fillStyle = AL.randomColor();
-            this.ctx.fillRect(this.x, this.y, this.size, this.size);
+            AL.ctx.strokeRect(this.x, this.y, this.size, this.size);
+            AL.ctx.fillStyle = AL.randomColor();
+            AL.ctx.fillRect(this.x, this.y, this.size, this.size);
 
             this.x += this.size;
-            if (this.x > this.w) {
+            if (this.x > AL.w) {
                 this.x = 0;
                 this.y += this.size;
             }
-            if (this.y > this.h) {
+            if (this.y > AL.h) {
                 this.x = 0;
                 this.y = 0;
                 this.size = AL.random(35, 150);
 
-                this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+                AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
 
                 this.rotateCanvasRadians(this.rotate);
             }

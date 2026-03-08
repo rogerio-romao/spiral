@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Spikral extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Spikral';
 
@@ -23,14 +23,14 @@ export default class Spikral extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.25, 1);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.25, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(this.w / 2, this.h / 2, this.size, 0, this.fillAmount);
-            this.ctx.fill();
-            this.ctx.beginPath();
+            AL.ctx.arc(AL.w / 2, AL.h / 2, this.size, 0, this.fillAmount);
+            AL.ctx.fill();
+            AL.ctx.beginPath();
 
             this.size *= 1.06;
         }

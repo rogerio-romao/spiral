@@ -12,8 +12,8 @@ import AL from '../AlgorithmLoader.js';
  */
 
 export default class GameOfFlies extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Game Of Flies';
 
@@ -23,12 +23,12 @@ export default class GameOfFlies extends AL {
     }
 
     initializeProperties() {
-        this.springPoint = { x: this.w / 2, y: this.h / 2 };
+        this.springPoint = { x: AL.w / 2, y: AL.h / 2 };
 
         /** @type {GameOfFliesParticle} */
         const particle = AL.createParticle(
-            AL.random(0, this.w),
-            AL.random(0, this.h),
+            AL.random(0, AL.w),
+            AL.random(0, AL.h),
             AL.random(5, 50),
             Math.random() * Math.PI * 2,
         );
@@ -40,8 +40,8 @@ export default class GameOfFlies extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillStyle = 'rgba(0,0,0,0.14)';
-            this.ctx.fillRect(0, 0, this.w, this.h);
+            AL.ctx.fillStyle = 'rgba(0,0,0,0.14)';
+            AL.ctx.fillRect(0, 0, AL.w, AL.h);
 
             for (const particle of this.particles) {
                 const dx = this.springPoint.x - particle.x;
@@ -54,10 +54,10 @@ export default class GameOfFlies extends AL {
                 particle.vy += ay;
                 particle.update();
 
-                this.ctx.beginPath();
-                this.ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
-                this.ctx.fillStyle = particle.color;
-                this.ctx.fill();
+                AL.ctx.beginPath();
+                AL.ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
+                AL.ctx.fillStyle = particle.color;
+                AL.ctx.fill();
             }
         }
 
@@ -66,8 +66,8 @@ export default class GameOfFlies extends AL {
         if (this.t % (this.speed * 130) === 0) {
             /** @type {GameOfFliesParticle} */
             const newParticle = AL.createParticle(
-                AL.random(0, this.w),
-                AL.random(0, this.h),
+                AL.random(0, AL.w),
+                AL.random(0, AL.h),
                 AL.random(5, 50),
                 Math.random() * Math.PI * 2,
             );

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Harmonie extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Harmonie';
 
@@ -26,29 +26,29 @@ export default class Harmonie extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(40, this.w - 40);
-        this.y = AL.random(25, this.h - 25);
+        this.x = AL.random(40, AL.w - 40);
+        this.y = AL.random(25, AL.h - 25);
         this.size = AL.random(20, 55);
     }
 
     setupConstantStyles() {
-        this.ctx.textAlign = 'center';
+        AL.ctx.textAlign = 'center';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(35, 210, 0.2, 0.65);
-        this.ctx.fillStyle = AL.randomColor(35, 210, 0.2, 0.65);
-        this.ctx.font = `${this.size}px serif`;
+        AL.ctx.strokeStyle = AL.randomColor(35, 210, 0.2, 0.65);
+        AL.ctx.fillStyle = AL.randomColor(35, 210, 0.2, 0.65);
+        AL.ctx.font = `${this.size}px serif`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             if (this.t % 2) {
-                this.ctx.strokeText(this.letter1, this.x, this.y);
+                AL.ctx.strokeText(this.letter1, this.x, this.y);
             } else {
-                this.ctx.fillText(this.letter2, this.x, this.y);
+                AL.ctx.fillText(this.letter2, this.x, this.y);
             }
-            this.ctx.font = `${this.size}px serif`;
+            AL.ctx.font = `${this.size}px serif`;
         }
 
         this.t += 1;

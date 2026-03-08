@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Fluor extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Fluor';
 
@@ -15,31 +15,31 @@ export default class Fluor extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(1, 359);
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
-        this.ox = AL.random(0, this.w);
-        this.oy = AL.random(0, this.h);
-        this.dx = AL.random(0, this.w);
-        this.dy = AL.random(0, this.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
+        this.ox = AL.random(0, AL.w);
+        this.oy = AL.random(0, AL.h);
+        this.dx = AL.random(0, AL.w);
+        this.dy = AL.random(0, AL.h);
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.shadowBlur = 4;
-        this.ctx.lineWidth = 2;
+        AL.ctx.globalCompositeOperation = 'overlay';
+        AL.ctx.shadowBlur = 4;
+        AL.ctx.lineWidth = 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
+        AL.ctx.strokeStyle = AL.ctx.shadowColor = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.ox, this.oy);
-            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
-            this.ctx.stroke();
+            AL.ctx.moveTo(this.ox, this.oy);
+            AL.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
+            AL.ctx.stroke();
         }
 
         this.t += 1;
@@ -49,7 +49,7 @@ export default class Fluor extends AL {
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

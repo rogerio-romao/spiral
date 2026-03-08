@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class GasClouds extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Gas Clouds';
 
@@ -14,13 +14,13 @@ export default class GasClouds extends AL {
     }
 
     firstRunProperties() {
-        this.x = this.w / 2;
-        this.y = this.h / 2;
+        this.x = AL.w / 2;
+        this.y = AL.h / 2;
     }
 
     initializeProperties() {
-        this.width = AL.random(0, this.w / 2);
-        this.height = AL.random(0, this.h / 2);
+        this.width = AL.random(0, AL.w / 2);
+        this.height = AL.random(0, AL.h / 2);
         this.rotate = AL.random(1, 200);
         this.ul = AL.random(0, 300);
         this.ur = AL.random(0, 300);
@@ -31,13 +31,13 @@ export default class GasClouds extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 150, 0.2, 0.5);
-        this.ctx.fillStyle = AL.randomColor(25, 255, 0.02, 0.04);
+        AL.ctx.strokeStyle = AL.randomColor(0, 150, 0.2, 0.5);
+        AL.ctx.fillStyle = AL.randomColor(25, 255, 0.02, 0.04);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(
+            AL.ctx.roundRectExtra(
                 this.x,
                 this.y,
                 this.width,

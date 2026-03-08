@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Matter extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Matter';
 
@@ -21,12 +21,12 @@ export default class Matter extends AL {
     }
 
     initializeProperties() {
-        this.x1 = this.w / 2;
-        this.y1 = this.h / 2;
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
-        this.x3 = AL.random(0, this.w);
-        this.y3 = AL.random(0, this.h);
+        this.x1 = AL.w / 2;
+        this.y1 = AL.h / 2;
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
+        this.x3 = AL.random(0, AL.w);
+        this.y3 = AL.random(0, AL.h);
         this.radius1 = AL.random(5, 150);
         this.radius2 = AL.random(5, 150);
         this.radius3 = AL.random(5, 150);
@@ -34,20 +34,20 @@ export default class Matter extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(10, 255, 0.02, 0.07);
+        AL.ctx.fillStyle = AL.randomColor(10, 255, 0.02, 0.07);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.x1, this.y1, this.radius1, 0, 2 * Math.PI);
-            this.ctx.fill();
-            this.ctx.beginPath();
-            this.ctx.arc(this.x2, this.y2, this.radius2, 0, 2 * Math.PI);
-            this.ctx.fill();
-            this.ctx.beginPath();
-            this.ctx.arc(this.x3, this.y3, this.radius3, 0, 2 * Math.PI);
-            this.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.x1, this.y1, this.radius1, 0, 2 * Math.PI);
+            AL.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.x2, this.y2, this.radius2, 0, 2 * Math.PI);
+            AL.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.x3, this.y3, this.radius3, 0, 2 * Math.PI);
+            AL.ctx.fill();
         }
 
         this.t += 1;

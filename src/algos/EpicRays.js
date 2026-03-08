@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class EpicRays extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Epic Rays';
 
@@ -24,16 +24,16 @@ export default class EpicRays extends AL {
     }
 
     initializeProperties() {
-        this.pointAx = AL.random(0, this.w);
-        this.pointAy = AL.random(0, this.h);
-        this.pointBx = AL.random(0, this.w);
-        this.pointBy = AL.random(0, this.h);
-        this.pointCx = AL.random(0, this.w);
-        this.pointCy = AL.random(0, this.h);
+        this.pointAx = AL.random(0, AL.w);
+        this.pointAy = AL.random(0, AL.h);
+        this.pointBx = AL.random(0, AL.w);
+        this.pointBy = AL.random(0, AL.h);
+        this.pointCx = AL.random(0, AL.w);
+        this.pointCy = AL.random(0, AL.h);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(40, 255, 0.25, 0.5);
+        AL.ctx.strokeStyle = AL.randomColor(40, 255, 0.25, 0.5);
     }
 
     draw() {
@@ -41,24 +41,24 @@ export default class EpicRays extends AL {
             this.stagger %= 4;
 
             if (this.stagger === 0) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.w / 2, this.h / 2);
-                this.ctx.lineTo(this.pointAx, this.pointAy);
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(AL.w / 2, AL.h / 2);
+                AL.ctx.lineTo(this.pointAx, this.pointAy);
+                AL.ctx.stroke();
             }
 
             if (this.stagger === 1) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.pointAx, this.pointAy);
-                this.ctx.lineTo(this.pointBx, this.pointBy);
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(this.pointAx, this.pointAy);
+                AL.ctx.lineTo(this.pointBx, this.pointBy);
+                AL.ctx.stroke();
             }
 
             if (this.stagger === 2) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.pointBx, this.pointBy);
-                this.ctx.lineTo(this.pointCx, this.pointCy);
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(this.pointBx, this.pointBy);
+                AL.ctx.lineTo(this.pointCx, this.pointCy);
+                AL.ctx.stroke();
             }
         }
 

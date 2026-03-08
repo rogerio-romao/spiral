@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Orbits extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Orbits';
 
@@ -20,19 +20,19 @@ export default class Orbits extends AL {
 
     initializeProperties() {
         this.startAngle = AL.random(0, 100);
-        this.radius = AL.random(30, this.h);
+        this.radius = AL.random(30, AL.h);
         this.radius2 = AL.random(10, this.radius);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.2, 0.2);
+        AL.ctx.strokeStyle = AL.randomColor(5, 255, 0.2, 0.2);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.ellipse(
-                this.w / 2,
-                this.h / 2,
+            AL.ctx.ellipse(
+                AL.w / 2,
+                AL.h / 2,
                 this.radius,
                 this.radius2,
                 this.rotate,
@@ -40,7 +40,7 @@ export default class Orbits extends AL {
                 this.endAngle,
             );
         }
-        this.ctx.stroke();
+        AL.ctx.stroke();
 
         this.t += 1;
 
@@ -51,7 +51,7 @@ export default class Orbits extends AL {
             this.rotate = AL.random(-3, 3);
 
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

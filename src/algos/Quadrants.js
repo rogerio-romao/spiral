@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Quadrants extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Quadrants';
 
@@ -17,7 +17,7 @@ export default class Quadrants extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.fillStyle = AL.randomColor(0, 255, 0.3, 0.3);
+        AL.ctx.strokeStyle = AL.ctx.fillStyle = AL.randomColor(0, 255, 0.3, 0.3);
     }
 
     draw() {
@@ -25,33 +25,33 @@ export default class Quadrants extends AL {
             this.stagger %= 5;
 
             if (this.stagger === 0) {
-                this.ctx.arc(this.w / 4, this.h / 4, this.radius, 0, 360);
-                this.ctx.stroke();
-                this.ctx.beginPath();
+                AL.ctx.arc(AL.w / 4, AL.h / 4, this.radius, 0, 360);
+                AL.ctx.stroke();
+                AL.ctx.beginPath();
             }
 
             if (this.stagger === 1) {
-                this.ctx.arc(this.w * 0.75, this.h / 4, this.radius, 0, 360);
-                this.ctx.stroke();
-                this.ctx.beginPath();
+                AL.ctx.arc(AL.w * 0.75, AL.h / 4, this.radius, 0, 360);
+                AL.ctx.stroke();
+                AL.ctx.beginPath();
             }
 
             if (this.stagger === 2) {
-                this.ctx.arc(this.w / 4, this.h * 0.75, this.radius, 0, 360);
-                this.ctx.stroke();
-                this.ctx.beginPath();
+                AL.ctx.arc(AL.w / 4, AL.h * 0.75, this.radius, 0, 360);
+                AL.ctx.stroke();
+                AL.ctx.beginPath();
             }
 
             if (this.stagger === 3) {
-                this.ctx.arc(this.w * 0.75, this.h * 0.75, this.radius, 0, 360);
-                this.ctx.stroke();
-                this.ctx.beginPath();
+                AL.ctx.arc(AL.w * 0.75, AL.h * 0.75, this.radius, 0, 360);
+                AL.ctx.stroke();
+                AL.ctx.beginPath();
             }
 
             if (this.stagger === 4) {
-                this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, 360);
-                this.ctx.stroke();
-                this.ctx.beginPath();
+                AL.ctx.arc(AL.w / 2, AL.h / 2, this.radius, 0, 360);
+                AL.ctx.stroke();
+                AL.ctx.beginPath();
             }
 
             this.stagger += 1;
@@ -68,8 +68,8 @@ export default class Quadrants extends AL {
         }
 
         if (this.t % (this.speed * 225) === 0) {
-            this.ctx.lineWidth = AL.random(1, 40);
-            this.ctx.strokeStyle = this.ctx.fillStyle = 'black';
+            AL.ctx.lineWidth = AL.random(1, 40);
+            AL.ctx.strokeStyle = AL.ctx.fillStyle = 'black';
         }
 
         this.requestFrame();

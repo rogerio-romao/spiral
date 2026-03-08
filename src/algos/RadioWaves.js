@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class RadioWaves extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Radio Waves';
 
@@ -28,13 +28,13 @@ export default class RadioWaves extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'copy';
-        this.ctx.shadowBlur = 7;
-        this.ctx.lineWidth = 1;
+        AL.ctx.globalCompositeOperation = 'copy';
+        AL.ctx.shadowBlur = 7;
+        AL.ctx.lineWidth = 1;
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(30, 255, 1, 1);
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = AL.randomColor(30, 255, 1, 1);
     }
 
     draw() {
@@ -43,7 +43,7 @@ export default class RadioWaves extends AL {
             this.seq.push(radius);
             this.seq.shift();
 
-            if (radius > Math.max(this.w, this.h)) {
+            if (radius > Math.max(AL.w, AL.h)) {
                 this.first += 1;
                 this.second += 1;
                 this.seq = [this.first, this.second];
@@ -51,8 +51,8 @@ export default class RadioWaves extends AL {
                 this.rotateCanvasRadians(Math.PI / this.divisor);
             }
 
-            this.ctx.arc(this.w / this.posX, this.h / this.posY, radius, 0, 2 * Math.PI);
-            this.ctx.stroke();
+            AL.ctx.arc(AL.w / this.posX, AL.h / this.posY, radius, 0, 2 * Math.PI);
+            AL.ctx.stroke();
         }
 
         this.t += 1;
@@ -60,7 +60,7 @@ export default class RadioWaves extends AL {
         if (this.t % (this.speed * 360) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         if (this.t % (this.speed * 1440) === 0) {

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Abstractions extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Abstractions';
 
@@ -23,27 +23,27 @@ export default class Abstractions extends AL {
     }
 
     initializeProperties() {
-        this.pointAx = AL.random(0, this.w);
-        this.pointAy = AL.random(0, this.h);
-        this.pointCpAx = AL.random(0, this.w);
-        this.pointCpAy = AL.random(0, this.h);
-        this.pointBx = AL.random(0, this.w);
-        this.pointBy = AL.random(0, this.h);
-        this.pointCpBx = AL.random(0, this.w);
-        this.pointCpBy = AL.random(0, this.h);
-        this.pointCx = AL.random(0, this.w);
-        this.pointCy = AL.random(0, this.h);
-        this.pointCpCx = AL.random(0, this.w);
-        this.pointCpCy = AL.random(0, this.h);
+        this.pointAx = AL.random(0, AL.w);
+        this.pointAy = AL.random(0, AL.h);
+        this.pointCpAx = AL.random(0, AL.w);
+        this.pointCpAy = AL.random(0, AL.h);
+        this.pointBx = AL.random(0, AL.w);
+        this.pointBy = AL.random(0, AL.h);
+        this.pointCpBx = AL.random(0, AL.w);
+        this.pointCpBy = AL.random(0, AL.h);
+        this.pointCx = AL.random(0, AL.w);
+        this.pointCy = AL.random(0, AL.h);
+        this.pointCpCx = AL.random(0, AL.w);
+        this.pointCpCy = AL.random(0, AL.h);
         this.rotate = AL.pickRandomElement(this.rotations);
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 3;
+        AL.ctx.shadowBlur = 3;
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(0, 255, 0.25, 0.45);
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.25, 0.45);
     }
 
     draw() {
@@ -51,39 +51,24 @@ export default class Abstractions extends AL {
             this.stagger %= 4;
 
             if (this.stagger === 0) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.pointCx, this.pointCy);
-                this.ctx.quadraticCurveTo(
-                    this.pointCpAx,
-                    this.pointCpAy,
-                    this.pointAx,
-                    this.pointAy,
-                );
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(this.pointCx, this.pointCy);
+                AL.ctx.quadraticCurveTo(this.pointCpAx, this.pointCpAy, this.pointAx, this.pointAy);
+                AL.ctx.stroke();
             }
 
             if (this.stagger === 1) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.pointAx, this.pointAy);
-                this.ctx.quadraticCurveTo(
-                    this.pointCpBx,
-                    this.pointCpBy,
-                    this.pointBx,
-                    this.pointBy,
-                );
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(this.pointAx, this.pointAy);
+                AL.ctx.quadraticCurveTo(this.pointCpBx, this.pointCpBy, this.pointBx, this.pointBy);
+                AL.ctx.stroke();
             }
 
             if (this.stagger === 2) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.pointBx, this.pointBy);
-                this.ctx.quadraticCurveTo(
-                    this.pointCpCx,
-                    this.pointCpCy,
-                    this.pointCx,
-                    this.pointCy,
-                );
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(this.pointBx, this.pointBy);
+                AL.ctx.quadraticCurveTo(this.pointCpCx, this.pointCpCy, this.pointCx, this.pointCy);
+                AL.ctx.stroke();
             }
         }
 

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Wormholes extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Wormholes';
 
@@ -26,33 +26,33 @@ export default class Wormholes extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.textAlign = 'center';
-        this.ctx.font = `${this.size}px sans-serif`;
-        this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
+        AL.ctx.textAlign = 'center';
+        AL.ctx.font = `${this.size}px sans-serif`;
+        AL.ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillText(this.letter, this.w / 2, this.h / 2);
-            this.ctx.strokeText(this.letter, this.w / 2, this.h / 2);
+            AL.ctx.fillText(this.letter, AL.w / 2, AL.h / 2);
+            AL.ctx.strokeText(this.letter, AL.w / 2, AL.h / 2);
         }
 
         this.size += this.change;
-        this.ctx.font = `${this.size}px sans-serif`;
+        AL.ctx.font = `${this.size}px sans-serif`;
 
-        if (this.ctx.measureText(this.letter).width > this.w / 2) {
+        if (AL.ctx.measureText(this.letter).width > AL.w / 2) {
             this.change *= -1;
         }
-        if (this.ctx.measureText(this.letter).width < 5) {
+        if (AL.ctx.measureText(this.letter).width < 5) {
             this.change *= -1;
             this.rotate = AL.random(1, 22);
             this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             this.fillScreen();
 
-            this.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
+            AL.ctx.fillStyle = AL.randomColor(0, 255, 0.05, 0.15);
         }
 
         this.t += 1;

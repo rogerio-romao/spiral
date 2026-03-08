@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class FadeIn extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Fade In';
 
@@ -14,14 +14,14 @@ export default class FadeIn extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(1, 359);
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
-        this.ox = AL.random(0, this.w);
-        this.oy = AL.random(0, this.h);
-        this.dx = AL.random(0, this.w);
-        this.dy = AL.random(0, this.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
+        this.ox = AL.random(0, AL.w);
+        this.oy = AL.random(0, AL.h);
+        this.dx = AL.random(0, AL.w);
+        this.dy = AL.random(0, AL.h);
         this.c1 = AL.random(-2, 2);
         this.c2 = AL.random(-2, 2);
         this.c3 = AL.random(-2, 2);
@@ -33,18 +33,18 @@ export default class FadeIn extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.globalAlpha = 0.15;
-        this.ctx.lineWidth = 0.2;
+        AL.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.globalAlpha = 0.15;
+        AL.ctx.lineWidth = 0.2;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.ox, this.oy);
+            AL.ctx.moveTo(this.ox, this.oy);
             this.ox += this.c1;
             this.oy += this.c2;
-            this.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
-            this.ctx.stroke();
+            AL.ctx.bezierCurveTo(this.x1, this.y1, this.x2, this.y2, this.dx, this.dy);
+            AL.ctx.stroke();
 
             this.x1 += this.c3;
             this.y1 += this.c4;
@@ -61,8 +61,8 @@ export default class FadeIn extends AL {
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();
 
-            this.ctx.strokeStyle = AL.randomColor();
-            this.ctx.beginPath();
+            AL.ctx.strokeStyle = AL.randomColor();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

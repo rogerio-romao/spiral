@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class LisaJou extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'LisaJou';
 
@@ -13,8 +13,8 @@ export default class LisaJou extends AL {
     }
 
     initializeProperties() {
-        this.radiusX = AL.random(100, this.w * 0.75);
-        this.radiusY = AL.random(100, this.h * 0.75);
+        this.radiusX = AL.random(100, AL.w * 0.75);
+        this.radiusY = AL.random(100, AL.h * 0.75);
         this.speedX = Math.random() * 3;
         this.speedY = Math.random() * 3;
         this.size = AL.random(2, 16);
@@ -23,23 +23,23 @@ export default class LisaJou extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'black';
-        this.ctx.fillStyle = AL.randomColor();
-        this.ctx.fillStyle = AL.randomColor();
-        this.ctx.fillRect(0, 0, this.w, this.h);
+        AL.ctx.strokeStyle = 'black';
+        AL.ctx.fillStyle = AL.randomColor();
+        AL.ctx.fillStyle = AL.randomColor();
+        AL.ctx.fillRect(0, 0, AL.w, AL.h);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            const x = this.w / 2 + Math.cos(this.angleX) * this.radiusX;
-            const y = this.h / 2 + Math.sin(this.angleY) * this.radiusY;
+            const x = AL.w / 2 + Math.cos(this.angleX) * this.radiusX;
+            const y = AL.h / 2 + Math.sin(this.angleY) * this.radiusY;
             this.angleX += this.speedX;
             this.angleY += this.speedY;
 
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
-            this.ctx.fill();
-            this.ctx.stroke();
+            AL.ctx.beginPath();
+            AL.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
+            AL.ctx.fill();
+            AL.ctx.stroke();
         }
 
         this.t += 1;

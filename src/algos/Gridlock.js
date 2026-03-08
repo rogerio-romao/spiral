@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Gridlock extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Gridlock';
 
@@ -19,20 +19,20 @@ export default class Gridlock extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'white';
-        this.ctx.moveTo(this.gap, this.gap);
+        AL.ctx.strokeStyle = 'white';
+        AL.ctx.moveTo(this.gap, this.gap);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.lineTo(this.gap, this.h - this.gap);
-            this.ctx.stroke();
-            this.ctx.lineTo(this.w - this.gap, this.h - this.gap);
-            this.ctx.stroke();
-            this.ctx.lineTo(this.w - this.gap, this.gap);
-            this.ctx.stroke();
-            this.ctx.lineTo(this.gap + this.increment, this.gap);
-            this.ctx.stroke();
+            AL.ctx.lineTo(this.gap, AL.h - this.gap);
+            AL.ctx.stroke();
+            AL.ctx.lineTo(AL.w - this.gap, AL.h - this.gap);
+            AL.ctx.stroke();
+            AL.ctx.lineTo(AL.w - this.gap, this.gap);
+            AL.ctx.stroke();
+            AL.ctx.lineTo(this.gap + this.increment, this.gap);
+            AL.ctx.stroke();
 
             this.gap += this.increment;
         }
@@ -46,10 +46,10 @@ export default class Gridlock extends AL {
             this.increment = this.gap;
 
             this.isWhite = !this.isWhite;
-            this.ctx.strokeStyle = this.isWhite ? 'white' : 'black';
+            AL.ctx.strokeStyle = this.isWhite ? 'white' : 'black';
 
-            this.ctx.lineWidth = AL.random(1, 7);
-            this.ctx.beginPath();
+            AL.ctx.lineWidth = AL.random(1, 7);
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

@@ -2,8 +2,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Spikey extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Spikey';
 
@@ -19,21 +19,21 @@ export default class Spikey extends AL {
         this.rounded2 = AL.random(75, 475);
         this.rounded3 = AL.random(75, 475);
         this.rounded4 = AL.random(75, 475);
-        this.side1 = AL.random(0, this.w / 4);
-        this.side2 = AL.random(0, this.h / 4);
-        this.side3 = AL.random(0, this.w / 4);
-        this.side4 = AL.random(0, this.h / 4);
+        this.side1 = AL.random(0, AL.w / 4);
+        this.side2 = AL.random(0, AL.h / 4);
+        this.side3 = AL.random(0, AL.w / 4);
+        this.side4 = AL.random(0, AL.h / 4);
         this.rotate = (AL.random(2, 358) * Math.PI) / 180;
     }
 
     setupConstantStyles() {
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 0.25;
-        this.ctx.moveTo(this.w / 2, this.h / 2);
+        AL.ctx.beginPath();
+        AL.ctx.lineWidth = 0.25;
+        AL.ctx.moveTo(AL.w / 2, AL.h / 2);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(60, 255, 1, 1);
+        AL.ctx.strokeStyle = AL.randomColor(60, 255, 1, 1);
     }
 
     draw() {
@@ -41,9 +41,9 @@ export default class Spikey extends AL {
             this.stagger %= 2;
 
             if (this.stagger === 0) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rotate);
-                this.ctx.roundRectExtra(
+                AL.ctx.translate(AL.w / 2, AL.h / 2);
+                AL.ctx.rotate(this.rotate);
+                AL.ctx.roundRectExtra(
                     this.side1--,
                     this.side2--,
                     this.side1--,
@@ -57,13 +57,13 @@ export default class Spikey extends AL {
                     false,
                     true,
                 );
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                AL.ctx.translate(-AL.w / 2, -AL.h / 2);
             }
 
             if (this.stagger === 1) {
-                this.ctx.translate(this.w / 2, this.h / 2);
-                this.ctx.rotate(this.rotate);
-                this.ctx.roundRectExtra(
+                AL.ctx.translate(AL.w / 2, AL.h / 2);
+                AL.ctx.rotate(this.rotate);
+                AL.ctx.roundRectExtra(
                     this.side3++,
                     this.side4++,
                     this.side3++,
@@ -78,7 +78,7 @@ export default class Spikey extends AL {
                     true,
                 );
 
-                this.ctx.translate(-this.w / 2, -this.h / 2);
+                AL.ctx.translate(-AL.w / 2, -AL.h / 2);
             }
 
             this.stagger += 1;
@@ -89,12 +89,12 @@ export default class Spikey extends AL {
         if (this.t % (this.speed * 400) === 0) {
             this.initializeProperties();
 
-            this.ctx.save();
-            this.ctx.resetTransform();
+            AL.ctx.save();
+            AL.ctx.resetTransform();
             this.clearScreen();
-            this.ctx.restore();
+            AL.ctx.restore();
 
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
             this.setupDrawingStyles();
         }
 

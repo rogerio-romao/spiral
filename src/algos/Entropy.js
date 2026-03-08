@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Entropy extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Entropy';
 
@@ -14,22 +14,22 @@ export default class Entropy extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(1, 181);
-        this.width = AL.random(50, this.w);
-        this.height = AL.random(50, this.h);
+        this.width = AL.random(50, AL.w);
+        this.height = AL.random(50, AL.h);
 
-        this.ul = AL.random(10, Math.min(this.w, this.h));
-        this.ur = AL.random(10, Math.min(this.w, this.h));
-        this.ll = AL.random(10, Math.min(this.w, this.h));
-        this.lr = AL.random(10, Math.min(this.w, this.h));
+        this.ul = AL.random(10, Math.min(AL.w, AL.h));
+        this.ur = AL.random(10, Math.min(AL.w, AL.h));
+        this.ll = AL.random(10, Math.min(AL.w, AL.h));
+        this.lr = AL.random(10, Math.min(AL.w, AL.h));
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 1);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(0, 0, this.width, this.height, {
+            AL.ctx.roundRectExtra(0, 0, this.width, this.height, {
                 lowerLeft: this.ll,
                 lowerRight: this.lr,
                 upperLeft: this.ul,
@@ -43,7 +43,7 @@ export default class Entropy extends AL {
             this.ll -= 1;
             this.lr -= 1;
 
-            this.ctx.roundRectExtra(this.w, this.h, this.height, this.width, {
+            AL.ctx.roundRectExtra(AL.w, AL.h, this.height, this.width, {
                 lowerLeft: this.ur,
                 lowerRight: this.ul,
                 upperLeft: this.lr,
@@ -60,14 +60,14 @@ export default class Entropy extends AL {
 
             const colorRoll = Math.random();
             if (colorRoll < 0.1) {
-                this.ctx.strokeStyle = 'black';
+                AL.ctx.strokeStyle = 'black';
             } else if (colorRoll < 0.2) {
-                this.ctx.strokeStyle = 'white';
+                AL.ctx.strokeStyle = 'white';
             } else {
-                this.ctx.strokeStyle = AL.randomColor(0, 255, 1);
+                AL.ctx.strokeStyle = AL.randomColor(0, 255, 1);
             }
 
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

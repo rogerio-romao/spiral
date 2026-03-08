@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Radiance extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Radiance';
 
@@ -26,26 +26,26 @@ export default class Radiance extends AL {
         this.rounded2 = AL.random(15, 50);
         this.rounded3 = AL.random(15, 50);
         this.rounded4 = AL.random(15, 50);
-        this.x1 = AL.random(0, this.w / 2);
-        this.y1 = AL.random(0, this.h / 2);
-        this.y2 = AL.random(0, this.h / 2);
-        this.x4 = AL.random(0, this.w / 2);
-        this.side1 = AL.random(60, this.w / 2);
-        this.side2 = AL.random(60, this.h / 2);
-        this.side3 = AL.random(60, this.w / 2);
-        this.side4 = AL.random(60, this.h / 2);
-        this.side5 = AL.random(60, this.w / 2);
-        this.side6 = AL.random(60, this.h / 2);
-        this.side7 = AL.random(60, this.w / 2);
-        this.side8 = AL.random(60, this.h / 2);
-        this.x2 = AL.random(this.w / 2, this.w);
-        this.x3 = AL.random(this.w / 2, this.w);
-        this.y3 = AL.random(this.h / 2, this.h);
-        this.y4 = AL.random(this.h / 2, this.h);
+        this.x1 = AL.random(0, AL.w / 2);
+        this.y1 = AL.random(0, AL.h / 2);
+        this.y2 = AL.random(0, AL.h / 2);
+        this.x4 = AL.random(0, AL.w / 2);
+        this.side1 = AL.random(60, AL.w / 2);
+        this.side2 = AL.random(60, AL.h / 2);
+        this.side3 = AL.random(60, AL.w / 2);
+        this.side4 = AL.random(60, AL.h / 2);
+        this.side5 = AL.random(60, AL.w / 2);
+        this.side6 = AL.random(60, AL.h / 2);
+        this.side7 = AL.random(60, AL.w / 2);
+        this.side8 = AL.random(60, AL.h / 2);
+        this.x2 = AL.random(AL.w / 2, AL.w);
+        this.x3 = AL.random(AL.w / 2, AL.w);
+        this.y3 = AL.random(AL.h / 2, AL.h);
+        this.y4 = AL.random(AL.h / 2, AL.h);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
@@ -53,8 +53,8 @@ export default class Radiance extends AL {
             this.stagger %= 4;
 
             if (this.stagger === 0) {
-                this.ctx.strokeStyle = this.color1;
-                this.ctx.roundRectExtra(
+                AL.ctx.strokeStyle = this.color1;
+                AL.ctx.roundRectExtra(
                     this.x1,
                     this.y1,
                     this.side1,
@@ -71,8 +71,8 @@ export default class Radiance extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.strokeStyle = this.color2;
-                this.ctx.roundRectExtra(
+                AL.ctx.strokeStyle = this.color2;
+                AL.ctx.roundRectExtra(
                     this.x2,
                     this.y2,
                     this.side3,
@@ -89,8 +89,8 @@ export default class Radiance extends AL {
             }
 
             if (this.stagger === 2) {
-                this.ctx.strokeStyle = this.color3;
-                this.ctx.roundRectExtra(
+                AL.ctx.strokeStyle = this.color3;
+                AL.ctx.roundRectExtra(
                     this.x3,
                     this.y3,
                     this.side5,
@@ -107,8 +107,8 @@ export default class Radiance extends AL {
             }
 
             if (this.stagger === 3) {
-                this.ctx.strokeStyle = this.color4;
-                this.ctx.roundRectExtra(
+                AL.ctx.strokeStyle = this.color4;
+                AL.ctx.roundRectExtra(
                     this.x4,
                     this.y4,
                     this.side7,

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Pulsar extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Pulsar';
 
@@ -14,25 +14,25 @@ export default class Pulsar extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.rotate1 = AL.random(1, 90);
         this.rotate2 = AL.random(1, 90);
         this.pulse1 = AL.random(50, 300);
         this.pulse2 = AL.random(30, 200);
-        this.cp1x = AL.random(0, this.w);
-        this.cp1y = AL.random(0, this.h);
-        this.cp2x = AL.random(0, this.w);
-        this.cp2y = AL.random(0, this.h);
+        this.cp1x = AL.random(0, AL.w);
+        this.cp1y = AL.random(0, AL.h);
+        this.cp2x = AL.random(0, AL.w);
+        this.cp2y = AL.random(0, AL.h);
     }
 
     setupConstantProperties() {
-        this.ctx.lineWidth = 5;
-        this.ctx.shadowBlur = 2;
+        AL.ctx.lineWidth = 5;
+        AL.ctx.shadowBlur = 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor();
+        AL.ctx.strokeStyle = AL.ctx.shadowColor = AL.randomColor();
     }
 
     draw() {
@@ -58,15 +58,15 @@ export default class Pulsar extends AL {
     }
 
     drawBezier(rot) {
-        this.ctx.save();
-        this.ctx.beginPath();
-        this.ctx.moveTo(
-            this.w / 2 + Math.sin(this.t) * this.pulse1,
-            this.h / 2 + Math.cos(this.t) * this.pulse2,
+        AL.ctx.save();
+        AL.ctx.beginPath();
+        AL.ctx.moveTo(
+            AL.w / 2 + Math.sin(this.t) * this.pulse1,
+            AL.h / 2 + Math.cos(this.t) * this.pulse2,
         );
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((rot * Math.PI) / 180);
-        this.ctx.bezierCurveTo(
+        AL.ctx.translate(AL.w / 2, AL.h / 2);
+        AL.ctx.rotate((rot * Math.PI) / 180);
+        AL.ctx.bezierCurveTo(
             this.cp1x + rot,
             this.cp1y + this.pulse1,
             this.cp2x - rot,
@@ -74,9 +74,9 @@ export default class Pulsar extends AL {
             this.x,
             this.y,
         );
-        this.ctx.stroke();
-        this.ctx.closePath();
-        this.ctx.translate(-this.w / 2, -this.h / 2);
-        this.ctx.restore();
+        AL.ctx.stroke();
+        AL.ctx.closePath();
+        AL.ctx.translate(-AL.w / 2, -AL.h / 2);
+        AL.ctx.restore();
     }
 }

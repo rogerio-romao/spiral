@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class VanishingRays extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Vanishing Rays';
 
@@ -31,18 +31,18 @@ export default class VanishingRays extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(50, 200, 0.0025, 0.0025);
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
-        this.ctx.font = `bold ${this.fontSize}px sans-serif`;
+        AL.ctx.fillStyle = AL.randomColor(50, 200, 0.0025, 0.0025);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
+        AL.ctx.font = `bold ${this.fontSize}px sans-serif`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             if (this.t % 6 === 0) {
-                this.ctx.fillRect(0, 0, this.w, this.h);
+                AL.ctx.fillRect(0, 0, AL.w, AL.h);
             }
 
-            this.ctx.strokeText(this.letter.repeat(15), this.w / 2, this.h / 2);
+            AL.ctx.strokeText(this.letter.repeat(15), AL.w / 2, AL.h / 2);
 
             this.rotateCanvasDegrees(this.rotate * this.angle);
         }
@@ -50,19 +50,14 @@ export default class VanishingRays extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * (1440 / this.rotate)) === 0) {
-            this.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
+            AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.8, 0.8);
             this.fontSize = AL.random(30, 500);
-            this.ctx.font = `bold ${this.fontSize}px sans-serif`;
+            AL.ctx.font = `bold ${this.fontSize}px sans-serif`;
             this.angle *= -1;
         }
 
         if (this.t % (this.speed * 360) === 0) {
-            this.ctx.fillStyle = AL.randomColor(
-                0,
-                255,
-                0.006 + this.incAlpha,
-                0.006 + this.incAlpha,
-            );
+            AL.ctx.fillStyle = AL.randomColor(0, 255, 0.006 + this.incAlpha, 0.006 + this.incAlpha);
             this.incAlpha += 0.002;
         }
 

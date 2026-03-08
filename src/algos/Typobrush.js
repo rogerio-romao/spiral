@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Typobrush extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Typobrush';
 
@@ -25,30 +25,30 @@ export default class Typobrush extends AL {
 
     initializeProperties() {
         this.size = 20;
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.rotate = AL.random(1, 400);
         this.sizeIncrease = AL.random(1, 6);
     }
 
     setupConstantStyles() {
-        this.ctx.textAlign = 'center';
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        AL.ctx.textAlign = 'center';
+        AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         this.strokeColors = AL.generateRGBAPalette(8);
         this.fillColors = AL.generateRGBAPalette(8);
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${this.size}px serif`;
-        this.ctx.strokeStyle = AL.pickRandomElement(this.strokeColors);
-        this.ctx.fillStyle = AL.pickRandomElement(this.fillColors);
+        AL.ctx.font = `${this.size}px serif`;
+        AL.ctx.strokeStyle = AL.pickRandomElement(this.strokeColors);
+        AL.ctx.fillStyle = AL.pickRandomElement(this.fillColors);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText(this.letter, this.x, this.y);
-            this.ctx.font = `${this.size}px serif`;
-            this.ctx.fillText(this.letter, this.x + 2, this.y - 2);
+            AL.ctx.strokeText(this.letter, this.x, this.y);
+            AL.ctx.font = `${this.size}px serif`;
+            AL.ctx.fillText(this.letter, this.x + 2, this.y - 2);
             this.size += this.sizeIncrease;
         }
 
