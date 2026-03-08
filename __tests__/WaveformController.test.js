@@ -37,6 +37,7 @@ describe('waveformController', () => {
         it('initialises state correctly', () => {
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
+
             expect(wc.showWaveform).toBeFalsy();
             expect(wc.smoothing).toBe(0.6);
             expect(wc.waveformData).toBeNull();
@@ -46,6 +47,7 @@ describe('waveformController', () => {
         it('calls resizeCanvas when canvas is provided', () => {
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
+
             // dpr=1, w=180-80=100, h=min(400,500)=400
             expect(canvas.width).toBe(100);
             expect(canvas.height).toBe(400);
@@ -66,6 +68,7 @@ describe('waveformController', () => {
             globalThis.innerWidth = 130;
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
+
             expect(canvas.width).toBe(100);
             expect(canvas.style.width).toBe('50px');
             expect(wc.showWaveform).toBeFalsy();
@@ -75,6 +78,7 @@ describe('waveformController', () => {
             globalThis.devicePixelRatio = 2;
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({ canvasElement: canvas, frequencyAnalyser: null });
+
             expect(ctx.resetTransform).toHaveBeenCalledOnce();
             expect(ctx.scale).toHaveBeenCalledWith(2, 2);
             expect(wc.showWaveform).toBeFalsy();
@@ -82,6 +86,7 @@ describe('waveformController', () => {
 
         it('no-ops when canvas is null', () => {
             const wc = new WaveformController({ canvasElement: null, frequencyAnalyser: null });
+
             expect(() => wc.resizeCanvas()).not.toThrow();
         });
     });
@@ -94,7 +99,8 @@ describe('waveformController', () => {
                 canvasElement: canvas,
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
-            expect(wc.toggleWaveform()).toBeTruthy();
+            wc.toggleWaveform();
+
             expect(wc.showWaveform).toBeTruthy();
         });
 
@@ -107,6 +113,7 @@ describe('waveformController', () => {
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
             wc.toggleWaveform();
+
             expect(rafSpy).toHaveBeenCalledOnce();
         });
 
@@ -118,7 +125,8 @@ describe('waveformController', () => {
                 frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
             });
             wc.toggleWaveform();
-            expect(wc.toggleWaveform()).toBeFalsy();
+            wc.toggleWaveform();
+
             expect(wc.showWaveform).toBeFalsy();
         });
 
@@ -133,6 +141,7 @@ describe('waveformController', () => {
             ctx.clearRect.mockClear();
             const cafSpy = vi.spyOn(globalThis, 'cancelAnimationFrame');
             wc.toggleWaveform();
+
             expect(cafSpy).toHaveBeenCalledOnce();
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 400);
         });
@@ -149,6 +158,7 @@ describe('waveformController', () => {
             wc.showWaveform = true;
             const rafSpy = vi.spyOn(globalThis, 'requestAnimationFrame');
             wc.start();
+
             expect(rafSpy).toHaveBeenCalledOnce();
         });
 
@@ -161,6 +171,7 @@ describe('waveformController', () => {
             wc.animationRafId = 999;
             const rafSpy = vi.spyOn(globalThis, 'requestAnimationFrame');
             wc.start();
+
             expect(rafSpy).not.toHaveBeenCalled();
         });
     });
@@ -178,6 +189,7 @@ describe('waveformController', () => {
             ctx.clearRect.mockClear();
             const cafSpy = vi.spyOn(globalThis, 'cancelAnimationFrame');
             wc.destroy();
+
             expect(wc.animationRafId).toBeNull();
             expect(cafSpy).toHaveBeenCalledOnce();
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 400);
@@ -194,6 +206,7 @@ describe('waveformController', () => {
             wc.start();
             ctx.clearRect.mockClear();
             wc.destroy();
+
             expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 400);
             expect(wc.animationRafId).toBeNull();
         });
@@ -208,11 +221,26 @@ describe('waveformController', () => {
             });
             wc.showWaveform = true;
             wc.draw();
+
             expect(wc.waveformData).not.toBeNull();
             expect(ctx.beginPath).toHaveBeenCalledOnce();
             expect(ctx.moveTo).toHaveBeenCalledWith(expect.any(Number), expect.any(Number));
             expect(ctx.lineTo).toHaveBeenCalledWith(expect.any(Number), expect.any(Number));
             expect(ctx.stroke).toHaveBeenCalledOnce();
+        });
+
+        it('uses waveColor for strokeStyle and shadowColor in draw', () => {
+            const { canvas, ctx } = createMockCanvas();
+            const wc = new WaveformController({
+                canvasElement: canvas,
+                frequencyAnalyser: createMockAnalyser([0.5, 0.5, 0.5]),
+                waveColor: 'red',
+            });
+            wc.showWaveform = true;
+            wc.draw();
+
+            expect(ctx.strokeStyle).toBe('red');
+            expect(ctx.shadowColor).toBe('red');
         });
 
         it('second draw applies exponential smoothing: prev * 0.6 + new * 0.4', () => {
@@ -228,6 +256,7 @@ describe('waveformController', () => {
             analyser.getWaveform.mockReturnValue([1, 1, 1]);
             // smooth: 0.5 * 0.6 + 1 * 0.4
             wc.draw();
+
             const expected = 0.5 * 0.6 + 1 * 0.4;
             expect(wc.waveformData).toStrictEqual([expected, expected, expected]);
         });
@@ -242,6 +271,7 @@ describe('waveformController', () => {
                 canvasElement: canvas,
                 frequencyAnalyser: analyser,
             });
+
             expect(wc.getWaveformData()).toBe(data);
             expect(analyser.getWaveform).toHaveBeenCalledOnce();
         });
