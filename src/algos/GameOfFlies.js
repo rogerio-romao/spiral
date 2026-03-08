@@ -1,5 +1,16 @@
 import AL from '../AlgorithmLoader.js';
 
+/**
+ * @typedef {object} GameOfFliesParticle
+ * @property {number} x - The x coordinate of the particle.
+ * @property {number} y - The y coordinate of the particle.
+ * @property {number} vx - The velocity in the x direction.
+ * @property {number} vy - The velocity in the y direction.
+ * @property {number} [radius] - The radius of the particle (extension).
+ * @property {string} [color] - The color of the particle (extension).
+ * @property {function} update - Method to update the particle's position based on its velocity.
+ */
+
 export default class GameOfFlies extends AL {
     constructor(ctx, w, h) {
         super(ctx, w, h);
@@ -14,6 +25,7 @@ export default class GameOfFlies extends AL {
     initializeProperties() {
         this.springPoint = { x: this.w / 2, y: this.h / 2 };
 
+        /** @type {GameOfFliesParticle} */
         const particle = AL.createParticle(
             AL.random(0, this.w),
             AL.random(0, this.h),
@@ -52,6 +64,7 @@ export default class GameOfFlies extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 130) === 0) {
+            /** @type {GameOfFliesParticle} */
             const newParticle = AL.createParticle(
                 AL.random(0, this.w),
                 AL.random(0, this.h),

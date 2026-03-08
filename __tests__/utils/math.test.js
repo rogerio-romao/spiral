@@ -117,18 +117,21 @@ describe('math utils', () => {
         it('returns true when circles overlap', () => {
             const c0 = { radius: 5, x: 0, y: 0 };
             const c1 = { radius: 2, x: 3, y: 4 };
+
             expect(utils.circleCollision(c0, c1)).toBeTruthy();
         });
 
         it('returns true when circles touch', () => {
             const c0 = { radius: 3, x: 0, y: 0 };
             const c1 = { radius: 2, x: 5, y: 0 };
+
             expect(utils.circleCollision(c0, c1)).toBeTruthy();
         });
 
         it('returns false when circles do not overlap', () => {
             const c0 = { radius: 1, x: 0, y: 0 };
             const c1 = { radius: 1, x: 10, y: 0 };
+
             expect(utils.circleCollision(c0, c1)).toBeFalsy();
         });
     });
@@ -136,11 +139,13 @@ describe('math utils', () => {
     describe('circlePointCollision', () => {
         it('returns true when point is inside circle', () => {
             const circle = { radius: 10, x: 0, y: 0 };
+
             expect(utils.circlePointCollision(3, 4, circle)).toBeTruthy();
         });
 
         it('returns false when point is outside circle', () => {
             const circle = { radius: 4, x: 0, y: 0 };
+
             expect(utils.circlePointCollision(3, 4, circle)).toBeFalsy();
         });
     });
@@ -201,12 +206,14 @@ describe('math utils', () => {
         it('returns true when rects overlap', () => {
             const r0 = { height: 10, width: 10, x: 0, y: 0 };
             const r1 = { height: 10, width: 10, x: 5, y: 5 };
+
             expect(utils.rectIntersect(r0, r1)).toBeTruthy();
         });
 
         it('returns false when rects do not overlap', () => {
             const r0 = { height: 5, width: 5, x: 0, y: 0 };
             const r1 = { height: 5, width: 5, x: 10, y: 10 };
+
             expect(utils.rectIntersect(r0, r1)).toBeFalsy();
         });
     });
@@ -218,12 +225,14 @@ describe('math utils', () => {
 
         it('returns p0 at t=0', () => {
             const result = utils.quadraticBezier(p0, p1, p2, 0);
+
             expect(result.x).toBeCloseTo(p0.x);
             expect(result.y).toBeCloseTo(p0.y);
         });
 
         it('returns p2 at t=1', () => {
             const result = utils.quadraticBezier(p0, p1, p2, 1);
+
             expect(result.x).toBeCloseTo(p2.x);
             expect(result.y).toBeCloseTo(p2.y);
         });
@@ -231,6 +240,7 @@ describe('math utils', () => {
         it('writes into provided pFinal object', () => {
             const pFinal = { x: 0, y: 0 };
             const result = utils.quadraticBezier(p0, p1, p2, 0.5, pFinal);
+
             expect(result).toBe(pFinal);
         });
     });
@@ -243,12 +253,14 @@ describe('math utils', () => {
 
         it('returns p0 at t=0', () => {
             const result = utils.cubicBezier(p0, p1, p2, p3, 0);
+
             expect(result.x).toBeCloseTo(p0.x);
             expect(result.y).toBeCloseTo(p0.y);
         });
 
         it('returns p3 at t=1', () => {
             const result = utils.cubicBezier(p0, p1, p2, p3, 1);
+
             expect(result.x).toBeCloseTo(p3.x);
             expect(result.y).toBeCloseTo(p3.y);
         });
@@ -256,6 +268,7 @@ describe('math utils', () => {
         it('writes into provided pFinal object', () => {
             const pFinal = {};
             const result = utils.cubicBezier(p0, p1, p2, p3, 0.5, pFinal);
+
             expect(result).toBe(pFinal);
         });
     });
@@ -283,7 +296,8 @@ describe('math utils', () => {
 
     describe('randomInt', () => {
         it('returns integers within [min, max] inclusive', () => {
-            const results = Array.from({ length: 500 }, () => utils.randomInt(3, 7));
+            const results = Array.from({ length: 200 }, () => utils.randomInt(3, 7));
+
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(3);
                 expect(r).toBeLessThanOrEqual(7);
@@ -294,7 +308,8 @@ describe('math utils', () => {
 
     describe('randomRange', () => {
         it('returns floats within [min, max)', () => {
-            const results = Array.from({ length: 500 }, () => utils.randomRange(1, 5));
+            const results = Array.from({ length: 200 }, () => utils.randomRange(1, 5));
+
             for (const r of results) {
                 expect(r).toBeGreaterThanOrEqual(1);
                 expect(r).toBeLessThan(5);

@@ -4,8 +4,12 @@
  */
 export default class HudController {
     // INSTANCE PROPERTIES
-    messageDisplayTimeInMs = 7500;
     algorithmNameDisplayTimeInMs = 5000;
+    algorithmNameTimer = null;
+    messageDisplayTimeInMs = 7500;
+    messageTimer = null;
+    showHelpView = false;
+    silenceMessages = false;
 
     /**
      * @param {Object} options - Configuration object for HUD elements
@@ -14,15 +18,18 @@ export default class HudController {
      * @param {HTMLElement} options.helpElement         - The #help element
      */
     constructor({ messageElement, algosDisplayElement, helpElement }) {
+        if (!messageElement) {
+            throw new Error('Missing required DOM element: #msg');
+        }
+        if (!algosDisplayElement) {
+            throw new Error('Missing required DOM element: #algos');
+        }
+        if (!helpElement) {
+            throw new Error('Missing required DOM element: #help');
+        }
         this.messageElement = messageElement;
         this.algosDisplayElement = algosDisplayElement;
         this.helpElement = helpElement;
-
-        this.messageTimer = null;
-        this.algorithmNameTimer = null;
-
-        this.showHelpView = false;
-        this.silenceMessages = false;
     }
 
     /** Clear all timers, called when the app closes. */

@@ -6,6 +6,11 @@ export default class Coils extends AL {
 
         this.name = 'Coils';
 
+        // Uses gsap, throw if not present
+        if (!AL.gsap) {
+            throw new Error('GSAP is required for Coils algorithm');
+        }
+
         this.initializeProperties();
         this.setupDrawingStyles();
 

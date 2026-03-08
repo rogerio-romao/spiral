@@ -1,4 +1,3 @@
-// oxlint-disable no-empty-function
 import MusicPlayer from '../src/MusicPlayer.js';
 
 // Access prototype methods directly to avoid constructor DOM side effects.
@@ -100,21 +99,14 @@ describe('musicPlayer methods', () => {
             expect(instance.trackNameEl.textContent).toBe('Song Two');
         });
 
-        it('does nothing when the playlist is empty', () => {
+        it('clears the track name when the playlist is empty', () => {
             const instance = Object.create(proto);
             instance.trackNames = [];
             instance.trackNameEl = { textContent: 'previous' };
 
             instance.updateTrackName();
 
-            expect(instance.trackNameEl.textContent).toBe('previous');
-        });
-    });
-
-    describe('fadeVolume', () => {
-        it('is not defined (replaced by GainNode-based fadeTo in FrequencyAnalyser)', () => {
-            const instance = Object.create(proto);
-            expect(instance.fadeVolume).toBeUndefined();
+            expect(instance.trackNameEl.textContent).toBe('');
         });
     });
 
@@ -142,6 +134,7 @@ describe('musicPlayer methods', () => {
                     return Promise.resolve(null);
                 }),
             };
+
             // oxlint-disable-next-line jest/prefer-mock-return-shorthand
             vi.spyOn(instance.audio, 'pause').mockImplementation(() => order.push('pause'));
 

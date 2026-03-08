@@ -116,9 +116,12 @@ export default class AlgorithmLoader {
      * Pick a random element from an array.
      * @static
      * @param {Array<any>} array - The array to pick from.
-     * @returns {any} A random element from the given array.
+     * @returns {any|null} A random element from the given array, or null if the array is empty or invalid.
      */
     static pickRandomElement(array) {
+        if (!Array.isArray(array) || array.length === 0) {
+            return null;
+        }
         return array[Math.floor(Math.random() * array.length)];
     }
 

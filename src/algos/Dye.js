@@ -6,6 +6,11 @@ export default class Dye extends AL {
 
         this.name = 'Dye';
 
+        // Uses gsap, throw if not present
+        if (!AL.gsap) {
+            throw new Error('GSAP is required for Dye algorithm');
+        }
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
