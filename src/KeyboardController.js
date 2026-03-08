@@ -12,7 +12,7 @@ export default class KeyboardController {
      * @param {Object} deps Dependencies for keyboard shortcut handling.
      * @param {import('./HudController.js').default}     deps.hudController - The HUD controller for displaying messages and managing UI visibility.
      * @param {import('./TransitionManager.js').default} deps.transitionManager - The transition manager for handling algorithm changes and auto-change settings.
-     * @param {import('./MusicPlayer.js').default}       deps.musicPlayer - The music player for controlling audio playback visibility.
+     * @param {import('./MusicPlayer.js').default}       deps.musicPlayer - The music player for controlling audio playback and visibility.
      * @param {import('./DevModeController.js').default} deps.devModeController - The dev mode controller for enabling developer features.
      * @param {import('./Spiral.js').default}            deps.spiral - The spiral instance for controlling toggling the waveform display.
      */
@@ -46,15 +46,11 @@ export default class KeyboardController {
      */
     handleKeyup(e) {
         switch (e.code) {
-            // Decrease auto-change time by `transitionTimeStepInSeconds`, with a minimum of `minTransitionTimeInSeconds`
-            case 'KeyD': {
-                this.transitionManager.autoChangeIntervalInSeconds = Math.max(
-                    this.transitionManager.autoChangeIntervalInSeconds -
-                        this.transitionTimeStepInSeconds,
-                    this.minTransitionTimeInSeconds,
-                );
+            // Toggle Auto/Manual mode on/off. In manual mode, algorithms only change when the user triggers it (e.g. by pressing Space), and the auto-change timer is paused. In auto mode, algorithms change automatically based on the auto-change timer.
+            case 'KeyA': {
+                this.transitionManager.isInManualMode = !this.transitionManager.isInManualMode;
                 this.hudController.displayMessage(
-                    `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
+                    this.transitionManager.isInManualMode ? 'Manual mode' : 'Auto mode',
                 );
                 break;
             }
@@ -83,31 +79,15 @@ export default class KeyboardController {
                 break;
             }
 
-            // Increase auto-change time by `transitionTimeStepInSeconds`, with a maximum of `maxTransitionTimeInSeconds`
-            case 'KeyI': {
-                this.transitionManager.autoChangeIntervalInSeconds = Math.min(
-                    this.transitionManager.autoChangeIntervalInSeconds +
-                        this.transitionTimeStepInSeconds,
-                    this.maxTransitionTimeInSeconds,
-                );
-                this.hudController.displayMessage(
-                    `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
-                );
-                break;
-            }
-
-            // Toggle manual mode on/off. In manual mode, algorithms only change when the user triggers it (e.g. by pressing Space), and the auto-change timer is paused. In auto mode, algorithms change automatically based on the auto-change timer.
-            case 'KeyM': {
-                this.transitionManager.isInManualMode = !this.transitionManager.isInManualMode;
-                this.hudController.displayMessage(
-                    this.transitionManager.isInManualMode ? 'Manual mode' : 'Auto mode',
-                );
-                break;
-            }
-
             // Toggle the music player's visibility
-            case 'KeyP': {
+            case 'KeyM': {
                 this.musicPlayer.togglePlayerVisibility();
+                break;
+            }
+
+            // Toggle music play/pause
+            case 'KeyP': {
+                this.musicPlayer.playTrack();
                 break;
             }
 
@@ -123,6 +103,50 @@ export default class KeyboardController {
             // Toggle the waveform display on/off in the Spiral visualization
             case 'KeyW': {
                 this.spiral.toggleWaveform();
+                break;
+            }
+
+            // Stop music playback
+            case 'KeyX': {
+                this.musicPlayer.stopPlayback();
+                break;
+            }
+
+            // Skip to previous track
+            case 'ArrowLeft': {
+                this.musicPlayer.playPrev();
+                break;
+            }
+
+            // Skip to next track
+            case 'ArrowRight': {
+                this.musicPlayer.playNext();
+                break;
+            }
+
+            // Increase auto-change time by `transitionTimeStepInSeconds`, with a maximum of `maxTransitionTimeInSeconds`
+            case 'Equal': {
+                this.transitionManager.autoChangeIntervalInSeconds = Math.min(
+                    this.transitionManager.autoChangeIntervalInSeconds +
+                        this.transitionTimeStepInSeconds,
+                    this.maxTransitionTimeInSeconds,
+                );
+                this.hudController.displayMessage(
+                    `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
+                );
+                break;
+            }
+
+            // Decrease auto-change time by `transitionTimeStepInSeconds`, with a minimum of `minTransitionTimeInSeconds`
+            case 'Minus': {
+                this.transitionManager.autoChangeIntervalInSeconds = Math.max(
+                    this.transitionManager.autoChangeIntervalInSeconds -
+                        this.transitionTimeStepInSeconds,
+                    this.minTransitionTimeInSeconds,
+                );
+                this.hudController.displayMessage(
+                    `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
+                );
                 break;
             }
 
