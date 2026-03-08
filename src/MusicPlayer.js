@@ -89,10 +89,11 @@ export default class MusicPlayer {
         listItem.classList.add('list-item');
         listItem.setAttribute('draggable', 'true');
         listItem.dataset.index = String(index);
-        listItem.innerHTML = `
+        listItem.innerHTML = /* html */ `
             <span class="track-name">${htmlEscape(baseName)}</span>
             <button class="remove-track" title="Remove track">remove</button>
         `;
+
         listItem.querySelector('.remove-track').addEventListener('click', (e) => {
             e.stopPropagation();
             const idx = Number(listItem.dataset.index);
@@ -716,6 +717,7 @@ export default class MusicPlayer {
     /** Update the now-playing track name display. */
     updateTrackName() {
         if (this.trackNames.length === 0) {
+            this.trackNameEl.textContent = '';
             return;
         }
 

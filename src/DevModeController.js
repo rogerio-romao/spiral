@@ -63,12 +63,30 @@ export default class DevModeController {
     initDomRefs() {
         /** @type {HTMLElement} */
         this.badge = document.querySelector('#dev-badge');
+        if (!this.badge) {
+            throw new Error('Missing required DOM element: #dev-badge');
+        }
+
         /** @type {HTMLElement} */
         this.modal = document.querySelector('#dev-mode');
+        if (!this.modal) {
+            throw new Error('Missing required DOM element: #dev-mode');
+        }
 
         this.algoASelect = document.querySelector('#dev-algo-a');
+        if (!this.algoASelect) {
+            throw new Error('Missing required DOM element: #dev-algo-a');
+        }
+
         this.algoBSelect = document.querySelector('#dev-algo-b');
+        if (!this.algoBSelect) {
+            throw new Error('Missing required DOM element: #dev-algo-b');
+        }
+
         this.enableCheckbox = document.querySelector('#dev-enable');
+        if (!this.enableCheckbox) {
+            throw new Error('Missing required DOM element: #dev-enable');
+        }
     }
 
     /**

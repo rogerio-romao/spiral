@@ -20,7 +20,7 @@ CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(
     width,
     height,
     radius,
-    fill,
+    fill = false,
     stroke = true,
 ) {
     const cornerRadius = {

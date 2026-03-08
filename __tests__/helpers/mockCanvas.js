@@ -1,4 +1,11 @@
+/**
+ *
+ * @param {number} [width] - the canvas width, defaults to 1920
+ * @param {number} [height] - the canvas height, defaults to 1080
+ * @returns {{canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D}} - an object containing the mocked canvas and its 2D rendering context
+ */
 export default function createMockCanvas(width = 1920, height = 1080) {
+    // create a mock canvas element with the specified width and height, and a mocked 2D rendering context
     const canvas = {
         addEventListener: vi.fn(),
         dispatchEvent: vi.fn(),
@@ -8,6 +15,7 @@ export default function createMockCanvas(width = 1920, height = 1080) {
         width,
     };
 
+    // create a mocked 2D rendering context with all necessary properties and methods for testing
     const ctx = {
         beginPath: vi.fn(),
         canvas,

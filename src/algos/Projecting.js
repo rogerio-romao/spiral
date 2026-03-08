@@ -6,6 +6,11 @@ export default class Projecting extends AL {
 
         this.name = 'Projecting';
 
+        // Uses gsap, throw if not present
+        if (!AL.gsap) {
+            throw new Error('GSAP is required for Projecting algorithm');
+        }
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();

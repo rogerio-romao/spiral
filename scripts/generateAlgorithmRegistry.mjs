@@ -9,6 +9,13 @@ const algosDir = path.join(projectRoot, 'src', 'algos');
 const outputDir = path.join(projectRoot, 'src', 'generated');
 const outputFile = path.join(outputDir, 'algorithmRegistry.js');
 
+/**
+ * Converts a filename to a valid JavaScript identifier (without extension).
+ * Throws if the filename does not map to a valid identifier.
+ * @param {string} filename - The filename to convert (e.g. 'MyAlgo.js').
+ * @returns {string} The identifier (e.g. 'MyAlgo').
+ * @throws {Error} If the filename does not map to a valid JavaScript identifier.
+ */
 function toIdentifier(filename) {
     const baseName = filename.replace(/\.js$/u, '');
 
@@ -21,6 +28,12 @@ function toIdentifier(filename) {
     return baseName;
 }
 
+/**
+ * Builds import and array lines for a list of algorithm files.
+ * This is used to generate the contents of the algorithm registry file.
+ * @param {string[]} files - List of .js filenames (e.g. ['MyAlgo.js']).
+ * @returns {{ importLines: string[], arrayLines: string[] }} Object containing import lines and array lines for the given files.
+ */
 function buildFileContents(files) {
     const importLines = files.map((file) => {
         const identifier = toIdentifier(file);
@@ -30,8 +43,16 @@ function buildFileContents(files) {
     return { arrayLines, importLines };
 }
 
+/**
+ * Main function to generate the algorithm registry file.
+ * It reads the algorithm files from the algos directory, builds the import and array lines, and writes the output file.
+ * Throws if no .js files are found in the algos directory.
+ * @returns {Promise<void>} A promise that resolves when the file has been generated.
+ * @throws {Error} If no .js files are found in the algos directory or if any filename does not map to a valid identifier.
+ */
 async function run() {
     const entries = await fs.readdir(algosDir, { withFileTypes: true });
+
     const algoFiles = entries
         .filter(
             (entry) =>
@@ -39,6 +60,7 @@ async function run() {
         )
         .map((entry) => entry.name)
         .toSorted((a, b) => a.localeCompare(b));
+
     const templateFiles = entries
         .filter(
             (entry) =>
@@ -76,6 +98,7 @@ async function run() {
     await fs.writeFile(outputFile, `${contents}\n`, 'utf8');
 }
 
+// If this script is run directly (e.g. "node generateAlgorithmRegistry.mjs"), execute the run function.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     try {
         await run();

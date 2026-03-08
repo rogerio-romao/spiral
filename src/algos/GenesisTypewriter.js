@@ -6,6 +6,11 @@ export default class GenesisTypewriter extends AL {
 
         this.name = 'Genesis Typewriter';
 
+        // Uses gsap, throw if not present
+        if (!AL.gsap) {
+            throw new Error('GSAP is required for Genesis Typewriter algorithm');
+        }
+
         this.initializeBaseProperties();
         this.initializeProperties();
         this.setupConstantStyles();
@@ -24,7 +29,7 @@ export default class GenesisTypewriter extends AL {
     initializeProperties() {
         this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
         this.pos2 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
-        this.text = AL.pickRandomElement(this.letters);
+        this.text = AL.pickRandomElement([...this.letters]);
         this.font2 = { size: AL.random(160, 600) };
         this.font1 = { size: AL.random(20, 100) };
         this.rotate = { angle: AL.random(1, 44) };

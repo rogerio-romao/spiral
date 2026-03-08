@@ -2,6 +2,7 @@ node_modules
 /src/generated/
 WORKFLOW.md
 CHANGELOG.md
+TODO.md
 AGENTS.md
 .vscode/
 coverage/

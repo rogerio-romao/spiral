@@ -13,11 +13,13 @@ describe('algorithmChooser', () => {
 
     it('returns an algorithm class from the pool', () => {
         const result = chooser.getRandomAlgorithm();
+
         expect(chooser.algorithms).toContain(result);
     });
 
     it('adds picked algorithms to the history set', () => {
         chooser.getRandomAlgorithm();
+
         expect(chooser.lastAlgos.size).toBe(1);
     });
 
@@ -27,6 +29,7 @@ describe('algorithmChooser', () => {
         for (let i = 0; i < 5; i++) {
             picks.add(chooser.getRandomAlgorithm());
         }
+
         // With 5 algos and capacity 4, all 5 should eventually appear
         expect(picks.size).toBe(5);
     });
