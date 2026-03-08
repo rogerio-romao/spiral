@@ -34,12 +34,15 @@ the visuals.
 ## How to Use It
 
 - **Space** — Switch to a random new visualization
-- **P** — Toggle the music player open/closed
+- **M** — Toggle the music player open/closed
+- **P** — Play/pause music
+- **←** / **→** — Previous/next track
+- **X** — Stop playback
 - **H** — Show the help menu with all keyboard shortcuts
 - **F** — Toggle fullscreen mode
-- **I** — Increase auto-change interval (+10s)
-- **D** — Decrease auto-change interval (-10s)
-- **M** — Toggle manual/auto mode
+- **+** — Increase auto-change interval (+10s)
+- **-** — Decrease auto-change interval (-10s)
+- **A** — Toggle manual/auto mode
 - **S** — Toggle silent mode (hides algorithm name)
 - **W** — Toggle waveform display
 

@@ -4,6 +4,8 @@
 
 ## 2026-03-08
 
+- feat: Remap keyboard controls — add music player shortcuts (P=play/pause, ←/→=prev/next, X=stop), move player visibility to M, auto/manual mode to A, and timer interval to +/- keys
+
 - fix: Move #msg element from bottom-right to bottom-center of screen — positions messages centered while keeping algorithm names at bottom-right
 
 - refactor: Move AlgorithmChooser logic into TransitionManager — removes standalone AlgorithmChooser class, adds getRandomAlgorithm() method with lastAlgos history tracking to TransitionManager; updates tests accordingly

@@ -21,7 +21,13 @@ function makeController({ isDevEnvironment = false } = {}) {
         isInManualMode: false,
     };
 
-    const musicPlayer = { togglePlayerVisibility: vi.fn() };
+    const musicPlayer = {
+        playNext: vi.fn(),
+        playPrev: vi.fn(),
+        playTrack: vi.fn(),
+        stopPlayback: vi.fn(),
+        togglePlayerVisibility: vi.fn(),
+    };
     const devModeController = { toggleDevModal: vi.fn() };
     const spiral = { toggleWaveform: vi.fn() };
 
@@ -77,9 +83,9 @@ describe('keyboardController', () => {
         controller.destroy();
     });
 
-    it('keyI increments autoChange by 10', () => {
+    it('equal key increments autoChange by 10', () => {
         const { controller, hudController, transitionManager } = makeController();
-        dispatchKeyup('KeyI');
+        dispatchKeyup('Equal');
 
         expect(transitionManager.autoChangeIntervalInSeconds).toBe(70);
         expect(hudController.displayMessage).toHaveBeenCalledWith('Auto-change: 70secs');
@@ -87,19 +93,19 @@ describe('keyboardController', () => {
         controller.destroy();
     });
 
-    it('keyI caps autoChange at 300', () => {
+    it('equal key caps autoChange at 300', () => {
         const { controller, transitionManager } = makeController();
         transitionManager.autoChangeIntervalInSeconds = 295;
-        dispatchKeyup('KeyI');
+        dispatchKeyup('Equal');
 
         expect(transitionManager.autoChangeIntervalInSeconds).toBe(300);
 
         controller.destroy();
     });
 
-    it('keyD decrements autoChange by 10', () => {
+    it('minus key decrements autoChange by 10', () => {
         const { controller, hudController, transitionManager } = makeController();
-        dispatchKeyup('KeyD');
+        dispatchKeyup('Minus');
 
         expect(transitionManager.autoChangeIntervalInSeconds).toBe(50);
         expect(hudController.displayMessage).toHaveBeenCalledWith('Auto-change: 50secs');
@@ -107,20 +113,20 @@ describe('keyboardController', () => {
         controller.destroy();
     });
 
-    it('keyD floors autoChange at 10', () => {
+    it('minus key floors autoChange at 10', () => {
         const { controller, transitionManager } = makeController();
         transitionManager.autoChangeIntervalInSeconds = 10;
-        dispatchKeyup('KeyD');
+        dispatchKeyup('Minus');
 
         expect(transitionManager.autoChangeIntervalInSeconds).toBe(10);
 
         controller.destroy();
     });
 
-    it('keyM toggles manual on and displays message', () => {
+    it('keyA toggles manual on and displays message', () => {
         const { controller, hudController, transitionManager } = makeController();
         transitionManager.isInManualMode = false;
-        dispatchKeyup('KeyM');
+        dispatchKeyup('KeyA');
 
         expect(transitionManager.isInManualMode).toBeTruthy();
         expect(hudController.displayMessage).toHaveBeenCalledWith('Manual mode');
@@ -128,10 +134,10 @@ describe('keyboardController', () => {
         controller.destroy();
     });
 
-    it('keyM toggles manual off and displays message', () => {
+    it('keyA toggles manual off and displays message', () => {
         const { controller, hudController, transitionManager } = makeController();
         transitionManager.isInManualMode = true;
-        dispatchKeyup('KeyM');
+        dispatchKeyup('KeyA');
 
         expect(transitionManager.isInManualMode).toBeFalsy();
         expect(hudController.displayMessage).toHaveBeenCalledWith('Auto mode');
@@ -165,11 +171,47 @@ describe('keyboardController', () => {
         controller.destroy();
     });
 
-    it('keyP calls musicPlayer.togglePlayerVisibility()', () => {
+    it('keyM calls musicPlayer.togglePlayerVisibility()', () => {
+        const { controller, musicPlayer } = makeController();
+        dispatchKeyup('KeyM');
+
+        expect(musicPlayer.togglePlayerVisibility).toHaveBeenCalledOnce();
+
+        controller.destroy();
+    });
+
+    it('keyP calls musicPlayer.playTrack()', () => {
         const { controller, musicPlayer } = makeController();
         dispatchKeyup('KeyP');
 
-        expect(musicPlayer.togglePlayerVisibility).toHaveBeenCalledOnce();
+        expect(musicPlayer.playTrack).toHaveBeenCalledOnce();
+
+        controller.destroy();
+    });
+
+    it('keyX calls musicPlayer.stopPlayback()', () => {
+        const { controller, musicPlayer } = makeController();
+        dispatchKeyup('KeyX');
+
+        expect(musicPlayer.stopPlayback).toHaveBeenCalledOnce();
+
+        controller.destroy();
+    });
+
+    it('arrowLeft calls musicPlayer.playPrev()', () => {
+        const { controller, musicPlayer } = makeController();
+        dispatchKeyup('ArrowLeft');
+
+        expect(musicPlayer.playPrev).toHaveBeenCalledOnce();
+
+        controller.destroy();
+    });
+
+    it('arrowRight calls musicPlayer.playNext()', () => {
+        const { controller, musicPlayer } = makeController();
+        dispatchKeyup('ArrowRight');
+
+        expect(musicPlayer.playNext).toHaveBeenCalledOnce();
 
         controller.destroy();
     });

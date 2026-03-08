@@ -143,6 +143,7 @@ export default class WaveformController {
 
     /**
      * Toggle the waveform display on or off.
+     * @returns {boolean} The new state of the waveform display (true for on, false for off).
      */
     toggleWaveform() {
         this.showWaveform = !this.showWaveform;
@@ -152,5 +153,7 @@ export default class WaveformController {
         } else {
             this.destroy();
         }
+
+        return this.showWaveform;
     }
 }
