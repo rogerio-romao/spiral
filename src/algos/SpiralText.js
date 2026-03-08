@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class SpiralText extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Spiral Text';
 
@@ -14,51 +14,51 @@ export default class SpiralText extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.rotate = AL.random(1, 20);
         this.picker = AL.random(0, 11);
     }
 
     setupConstantStyles() {
-        this.ctx.textAlign = 'center';
-        this.ctx.globalCompositeOperation = 'color';
+        AL.ctx.textAlign = 'center';
+        AL.ctx.globalCompositeOperation = 'color';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
-        this.ctx.font = `bold ${AL.random(10, 400)}px sans-serif`;
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
+        AL.ctx.font = `bold ${AL.random(10, 400)}px sans-serif`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText('SPIRAL', this.x, this.y);
+            AL.ctx.strokeText('SPIRAL', this.x, this.y);
 
             this.rotateCanvasDegrees(this.rotate);
 
-            this.x = AL.random(0, this.w);
+            this.x = AL.random(0, AL.w);
         }
 
         this.t += 1;
 
         if (this.t % (this.speed * 90) === 0) {
-            this.y = AL.random(0, this.h);
+            this.y = AL.random(0, AL.h);
             this.picker = AL.random(0, 11);
 
             if (this.picker === 0) {
-                this.ctx.strokeStyle = 'white';
+                AL.ctx.strokeStyle = 'white';
             } else if (this.picker === 1) {
-                this.ctx.strokeStyle = 'black';
+                AL.ctx.strokeStyle = 'black';
             } else if (this.picker === 2 || this.picker === 3) {
-                this.ctx.globalCompositeOperation = 'color-dodge';
+                AL.ctx.globalCompositeOperation = 'color-dodge';
             } else if (this.picker === 4 || this.picker === 5) {
-                this.ctx.globalCompositeOperation = 'source-over';
+                AL.ctx.globalCompositeOperation = 'source-over';
             } else if (this.picker === 6) {
-                this.ctx.globalCompositeOperation = 'darken';
+                AL.ctx.globalCompositeOperation = 'darken';
             } else if (this.picker === 7) {
-                this.ctx.globalCompositeOperation = 'color-burn';
+                AL.ctx.globalCompositeOperation = 'color-burn';
             } else {
-                this.ctx.globalCompositeOperation = 'color';
+                AL.ctx.globalCompositeOperation = 'color';
             }
 
             this.setupDrawingStyles();

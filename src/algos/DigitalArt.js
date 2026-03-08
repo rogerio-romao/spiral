@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class DigitalArt extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Digital Art';
 
@@ -19,31 +19,31 @@ export default class DigitalArt extends AL {
 
     initializeProperties() {
         this.size = AL.random(12, 36);
-        this.x = AL.random(75, this.w - 75);
-        this.y = AL.random(30, this.h - 30);
+        this.x = AL.random(75, AL.w - 75);
+        this.y = AL.random(30, AL.h - 30);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor();
-        this.ctx.font = `${this.size}px serif`;
+        AL.ctx.fillStyle = AL.randomColor();
+        AL.ctx.font = `${this.size}px serif`;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             const letter = this.t % 2 ? '0' : '1';
-            this.ctx.font = `${this.size * 2}px serif`;
+            AL.ctx.font = `${this.size * 2}px serif`;
             if (this.t % 2) {
-                this.ctx.textAlign = 'left';
-                this.ctx.textBaseline = 'top';
-                this.ctx.fillText(`${letter}-`, this.w / 2, this.h / 2);
+                AL.ctx.textAlign = 'left';
+                AL.ctx.textBaseline = 'top';
+                AL.ctx.fillText(`${letter}-`, AL.w / 2, AL.h / 2);
             } else {
-                this.ctx.textAlign = 'right';
-                this.ctx.textBaseline = 'bottom';
-                this.ctx.fillText(`${letter}_`, this.w / 2, this.h / 2);
+                AL.ctx.textAlign = 'right';
+                AL.ctx.textBaseline = 'bottom';
+                AL.ctx.fillText(`${letter}_`, AL.w / 2, AL.h / 2);
             }
 
-            this.ctx.font = `${this.size}px serif`;
-            this.ctx.fillText(letter, this.x, this.y);
+            AL.ctx.font = `${this.size}px serif`;
+            AL.ctx.fillText(letter, this.x, this.y);
         }
 
         this.t += 1;

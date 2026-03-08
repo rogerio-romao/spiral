@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Nazca extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Nazca';
 
@@ -26,19 +26,19 @@ export default class Nazca extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'soft-light';
+        AL.ctx.globalCompositeOperation = 'soft-light';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.15, 0.55);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.75, 1);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.15, 0.55);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, Math.random() * Math.PI);
-            this.ctx.fill();
-            this.ctx.stroke();
+            AL.ctx.arc(AL.w / 2, AL.h / 2, this.radius, 0, Math.random() * Math.PI);
+            AL.ctx.fill();
+            AL.ctx.stroke();
             this.radius += this.increment;
         }
 
@@ -46,16 +46,16 @@ export default class Nazca extends AL {
 
         this.rotateCanvasRadians(-this.angle);
 
-        if (this.radius > Math.max(this.w, this.h)) {
+        if (this.radius > Math.max(AL.w, AL.h)) {
             this.cycles += 1;
             if (this.cycles % 10 === 0) {
-                this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+                AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
             }
 
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.lineWidth = AL.random(1, 7);
-            this.ctx.beginPath();
+            AL.ctx.lineWidth = AL.random(1, 7);
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Smooth extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Smooth';
 
@@ -15,17 +15,17 @@ export default class Smooth extends AL {
     initializeProperties() {
         this.size = AL.random(50, 500);
         this.rotate = AL.random(1, 11);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.08);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.08);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillRect(this.x, this.y, this.size, this.size);
+            AL.ctx.fillRect(this.x, this.y, this.size, this.size);
         }
 
         this.t += 1;

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Slices extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Slices';
 
@@ -18,30 +18,30 @@ export default class Slices extends AL {
         this.slice = Math.random();
         this.radius = AL.random(70, 220);
         this.rotate = AL.random(2, 90);
-        this.offsetX = AL.random(50, this.w / 2);
-        this.offsetY = AL.random(50, this.h / 2);
+        this.offsetX = AL.random(50, AL.w / 2);
+        this.offsetY = AL.random(50, AL.h / 2);
         this.angleChange = Math.random() * 2 - 1;
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'black';
+        AL.ctx.strokeStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(30, 255, 0.3, 0.9);
+        AL.ctx.fillStyle = AL.randomColor(30, 255, 0.3, 0.9);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            const x = this.w / 2 + Math.sin(this.angle) * this.offsetX;
-            const y = this.h / 2 + Math.cos(this.angle) * this.offsetY;
+            const x = AL.w / 2 + Math.sin(this.angle) * this.offsetX;
+            const y = AL.h / 2 + Math.cos(this.angle) * this.offsetY;
             this.angle += this.angleChange;
 
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, this.radius, 0, this.slice * Math.PI);
-            this.ctx.closePath();
-            this.ctx.fill();
-            this.ctx.stroke();
+            AL.ctx.beginPath();
+            AL.ctx.arc(x, y, this.radius, 0, this.slice * Math.PI);
+            AL.ctx.closePath();
+            AL.ctx.fill();
+            AL.ctx.stroke();
         }
 
         this.t += 1;

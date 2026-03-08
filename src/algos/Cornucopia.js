@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Cornucopia extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Cornucopia';
 
@@ -13,8 +13,8 @@ export default class Cornucopia extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(50, this.w - 50);
-        this.y = AL.random(50, this.h - 50);
+        this.x = AL.random(50, AL.w - 50);
+        this.y = AL.random(50, AL.h - 50);
         this.height = AL.random(15, 150);
         this.width = AL.random(15, 240);
         this.rotate = AL.random(3, 32);
@@ -25,13 +25,13 @@ export default class Cornucopia extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.1);
-        this.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.03, 0.1);
+        AL.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(
+            AL.ctx.roundRectExtra(
                 this.x,
                 this.y,
                 this.width,

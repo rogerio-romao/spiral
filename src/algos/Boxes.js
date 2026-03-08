@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Boxes extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Boxes';
 
@@ -22,28 +22,23 @@ export default class Boxes extends AL {
     initializeProperties() {
         this.rows = AL.random(3, 17);
         this.cols = AL.random(3, 17);
-        this.width = this.w / this.cols;
-        this.height = this.h / this.rows;
+        this.width = AL.w / this.cols;
+        this.height = AL.h / this.rows;
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'black';
+        AL.ctx.strokeStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.075, 0.075);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.075, 0.075);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.fillRect(i * this.width, i * this.height, this.width / 2, this.height / 2);
-                this.ctx.strokeRect(
-                    i * this.width,
-                    i * this.height,
-                    this.width / 2,
-                    this.height / 2,
-                );
+                AL.ctx.fillRect(i * this.width, i * this.height, this.width / 2, this.height / 2);
+                AL.ctx.strokeRect(i * this.width, i * this.height, this.width / 2, this.height / 2);
             }
         }
 

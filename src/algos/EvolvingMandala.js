@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class EvolvingMandala extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Evolving Mandala';
 
@@ -33,18 +33,14 @@ export default class EvolvingMandala extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
-        this.ctx.font = `bold ${AL.random(70, 360)}px sans-serif`;
-        this.ctx.textAlign = 'center';
+        AL.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
+        AL.ctx.font = `bold ${AL.random(70, 360)}px sans-serif`;
+        AL.ctx.textAlign = 'center';
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText(
-                `${this.letter} ${this.letter}  ${this.letter}`,
-                this.w / 2,
-                this.h / 2,
-            );
+            AL.ctx.strokeText(`${this.letter} ${this.letter}  ${this.letter}`, AL.w / 2, AL.h / 2);
 
             this.rotateCanvasDegrees(this.rotate);
         }
@@ -54,18 +50,18 @@ export default class EvolvingMandala extends AL {
         if (this.t % (this.speed * 45) === 0) {
             const pick = Math.random();
             if (pick < 0.075) {
-                this.ctx.strokeStyle = 'black';
+                AL.ctx.strokeStyle = 'black';
             } else if (pick < 0.15) {
-                this.ctx.strokeStyle = 'white';
+                AL.ctx.strokeStyle = 'white';
             } else {
-                this.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
+                AL.ctx.strokeStyle = AL.randomColor(20, 255, 0.85, 0.85);
             }
 
             this.rotate += 2;
         }
 
         if (this.t % (this.speed * 90) === 0) {
-            this.ctx.font = `bold ${AL.random(70, 260)}px sans-serif`;
+            AL.ctx.font = `bold ${AL.random(70, 260)}px sans-serif`;
         }
 
         if (this.t % (this.speed * 360) === 0) {

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Irradiate extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Irradiate';
 
@@ -15,27 +15,27 @@ export default class Irradiate extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(1, 181);
-        this.width = AL.random(50, this.w / 2);
-        this.height = AL.random(50, this.h / 2);
-        this.ul = AL.random(10, Math.min(this.w, this.h));
-        this.ur = AL.random(10, Math.min(this.w, this.h));
-        this.ll = AL.random(10, Math.min(this.w, this.h));
-        this.lr = AL.random(10, Math.min(this.w, this.h));
+        this.width = AL.random(50, AL.w / 2);
+        this.height = AL.random(50, AL.h / 2);
+        this.ul = AL.random(10, Math.min(AL.w, AL.h));
+        this.ur = AL.random(10, Math.min(AL.w, AL.h));
+        this.ll = AL.random(10, Math.min(AL.w, AL.h));
+        this.lr = AL.random(10, Math.min(AL.w, AL.h));
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'hard-light';
+        AL.ctx.globalCompositeOperation = 'hard-light';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.33);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(
-                this.w / 2 - this.width / 2,
-                this.h / 2 - this.height / 2,
+            AL.ctx.roundRectExtra(
+                AL.w / 2 - this.width / 2,
+                AL.h / 2 - this.height / 2,
                 this.width,
                 this.height,
                 {
@@ -54,7 +54,7 @@ export default class Irradiate extends AL {
         if (this.t % (this.speed * 150) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

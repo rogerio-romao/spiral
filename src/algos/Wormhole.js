@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Wormhole extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Wormhole';
 
@@ -18,20 +18,20 @@ export default class Wormhole extends AL {
         this.ll = AL.random(10, 50);
         this.lr = AL.random(10, 50);
         this.rotate = AL.random(1, 44);
-        this.width = AL.random(30, this.w);
-        this.height = AL.random(30, this.h);
-        this.x = AL.random(50, this.w - 50);
-        this.y = AL.random(50, this.h - 50);
+        this.width = AL.random(30, AL.w);
+        this.height = AL.random(30, AL.h);
+        this.x = AL.random(50, AL.w - 50);
+        this.y = AL.random(50, AL.h - 50);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.2, 0.5);
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.01);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.2, 0.5);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.01);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(
+            AL.ctx.roundRectExtra(
                 this.x,
                 this.y,
                 this.width,

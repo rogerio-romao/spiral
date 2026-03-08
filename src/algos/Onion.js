@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Onion extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Onion';
 
@@ -19,26 +19,26 @@ export default class Onion extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.radius = AL.random(45, 500);
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'black';
+        AL.ctx.strokeStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.005, 0.015);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-            this.ctx.stroke();
-            this.ctx.fill();
-            this.ctx.closePath();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            AL.ctx.stroke();
+            AL.ctx.fill();
+            AL.ctx.closePath();
         }
 
         this.t += 1;
@@ -48,7 +48,7 @@ export default class Onion extends AL {
         if (this.t % (this.speed * 135) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         if (this.t % (this.speed * 540) === 0) {

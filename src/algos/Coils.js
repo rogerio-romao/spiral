@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Coils extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Coils';
 
@@ -39,23 +39,23 @@ export default class Coils extends AL {
         this.obj2 = {
             color: AL.randomColor(60, 255, 0.6, 1),
             radius: AL.random(30, 130),
-            x: this.w / 2,
-            y: this.h / 2,
+            x: AL.w / 2,
+            y: AL.h / 2,
         };
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowBlur = 15;
-        this.ctx.strokeStyle = this.ctx.shadowColor = this.obj1.color;
+        AL.ctx.shadowBlur = 15;
+        AL.ctx.strokeStyle = AL.ctx.shadowColor = this.obj1.color;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.obj1.x, this.obj1.y, this.obj1.radius, 0, 2 * Math.PI);
-            this.ctx.fill();
-            this.ctx.stroke();
-            this.ctx.closePath();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.obj1.x, this.obj1.y, this.obj1.radius, 0, 2 * Math.PI);
+            AL.ctx.fill();
+            AL.ctx.stroke();
+            AL.ctx.closePath();
         }
 
         this.rotateCanvasRadians(this.rot);
@@ -111,7 +111,7 @@ export default class Coils extends AL {
                     duration: this.dur4,
                     ease: 'power1',
                     onUpdate: () => {
-                        this.ctx.strokeStyle = this.ctx.shadowColor = this.obj1.color;
+                        AL.ctx.strokeStyle = AL.ctx.shadowColor = this.obj1.color;
                     },
                 },
                 '<',

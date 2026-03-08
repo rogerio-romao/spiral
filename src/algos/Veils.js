@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Veils extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Veils';
 
@@ -25,26 +25,26 @@ export default class Veils extends AL {
     initializeProperties() {
         this.letter = String.fromCodePoint(AL.pickRandomElement(this.letters));
 
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.size = AL.random(30, 400);
     }
 
     setupConstantStyles() {
-        this.ctx.textAlign = 'center';
+        AL.ctx.textAlign = 'center';
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${this.size}px serif`;
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
+        AL.ctx.font = `${this.size}px serif`;
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText(this.letter, this.x, this.y);
+            AL.ctx.strokeText(this.letter, this.x, this.y);
 
             this.size += 2;
-            this.ctx.font = `${this.size}px serif`;
+            AL.ctx.font = `${this.size}px serif`;
         }
 
         this.t += 1;

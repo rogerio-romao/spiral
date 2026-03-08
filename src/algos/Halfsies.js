@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Halfsies extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Halfsies';
 
@@ -21,21 +21,21 @@ export default class Halfsies extends AL {
         this.width1 = AL.random(2, 11);
         this.width2 = AL.random(2, 11);
         this.radius = AL.random(40, 400);
-        this.x = AL.random(this.w / 2 - this.radius, this.w / 2 + this.radius);
-        this.y = AL.random(this.h / 2 - this.radius, this.h / 2 + this.radius);
+        this.x = AL.random(AL.w / 2 - this.radius, AL.w / 2 + this.radius);
+        this.y = AL.random(AL.h / 2 - this.radius, AL.h / 2 + this.radius);
     }
 
     draw() {
-        this.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
-        this.ctx.strokeStyle = this.t % 2 ? 'black' : 'white';
+        AL.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
+        AL.ctx.strokeStyle = this.t % 2 ? 'black' : 'white';
         this.counter = !this.counter;
-        this.ctx.globalCompositeOperation = this.t % 2 ? 'source-over' : 'difference';
+        AL.ctx.globalCompositeOperation = this.t % 2 ? 'source-over' : 'difference';
 
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI, this.counter);
-            this.ctx.stroke();
-            this.ctx.closePath();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.x, this.y, this.radius, 0, Math.PI, this.counter);
+            AL.ctx.stroke();
+            AL.ctx.closePath();
         }
 
         this.t += 1;
@@ -44,7 +44,7 @@ export default class Halfsies extends AL {
 
         if (this.t % (this.speed * 120) === 0) {
             this.initializeProperties();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

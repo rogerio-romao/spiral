@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Progression extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Progression';
 
@@ -13,21 +13,21 @@ export default class Progression extends AL {
     }
 
     initializeProperties() {
-        this.height = AL.random(40, this.h);
-        this.width = AL.random(40, this.w);
+        this.height = AL.random(40, AL.h);
+        this.width = AL.random(40, AL.w);
         this.rotate = AL.random(1, 180);
         this.round = AL.random(1, 350);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.03);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.03);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(
-                this.w / 2,
-                this.h / 2,
+            AL.ctx.roundRectExtra(
+                AL.w / 2,
+                AL.h / 2,
                 this.width,
                 this.height,
                 {
@@ -48,7 +48,7 @@ export default class Progression extends AL {
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

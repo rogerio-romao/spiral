@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Ourobouros extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Ourobouros';
 
@@ -24,24 +24,24 @@ export default class Ourobouros extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(4, 30);
-        this.x = AL.random(100, this.w - 100);
-        this.y = AL.random(100, this.h - 100);
+        this.x = AL.random(100, AL.w - 100);
+        this.y = AL.random(100, AL.h - 100);
     }
 
     setupConstantStyles() {
-        this.ctx.lineWidth = 20;
-        this.ctx.textAlign = 'center';
-        this.ctx.globalCompositeOperation = 'difference';
+        AL.ctx.lineWidth = 20;
+        AL.ctx.textAlign = 'center';
+        AL.ctx.globalCompositeOperation = 'difference';
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${AL.random(40, 300)}px sans-serif`;
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.08, 0.4);
+        AL.ctx.font = `${AL.random(40, 300)}px sans-serif`;
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.08, 0.4);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.strokeText(this.letter, this.x, this.y);
+            AL.ctx.strokeText(this.letter, this.x, this.y);
         }
 
         this.t += 1;

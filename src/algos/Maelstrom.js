@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Maelstrom extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Maelstrom';
 
@@ -14,27 +14,27 @@ export default class Maelstrom extends AL {
     }
 
     initializeProperties() {
-        this.cp1 = AL.random(0, this.w);
-        this.cp2 = AL.random(0, this.h);
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
+        this.cp1 = AL.random(0, AL.w);
+        this.cp2 = AL.random(0, AL.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
         this.angle = AL.random(1, 200);
     }
 
     setupConstantStyles() {
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.225)';
-        this.ctx.lineWidth = 2;
+        AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.225)';
+        AL.ctx.lineWidth = 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.7, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.quadraticCurveTo(this.cp1, this.cp2, this.x1, this.y1);
-            this.ctx.stroke();
+            AL.ctx.moveTo(AL.w / 2, AL.h / 2);
+            AL.ctx.quadraticCurveTo(this.cp1, this.cp2, this.x1, this.y1);
+            AL.ctx.stroke();
 
             this.x1 += 1;
             this.y1 += 1;
@@ -48,7 +48,7 @@ export default class Maelstrom extends AL {
             this.initializeProperties();
             this.setupDrawingStyles();
             this.fillScreen();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

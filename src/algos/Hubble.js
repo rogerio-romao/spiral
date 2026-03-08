@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Hubble extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Hubble';
 
@@ -20,23 +20,23 @@ export default class Hubble extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.filter = 'blur(5px)';
-        this.ctx.globalCompositeOperation = 'hard-light';
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
+        AL.ctx.filter = 'blur(5px)';
+        AL.ctx.globalCompositeOperation = 'hard-light';
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillRect(this.w / 2, this.h / 2, this.currentVal * 3, this.currentVal * 3);
-            this.ctx.fillRect(this.w / 2, this.h / 2, this.currentVal * 3, -this.currentVal * 3);
-            this.ctx.fillRect(this.w / 2, this.h / 2, -this.currentVal * 3, this.currentVal * 3);
-            this.ctx.fillRect(this.w / 2, this.h / 2, -this.currentVal * 3, -this.currentVal * 3);
+            AL.ctx.fillRect(AL.w / 2, AL.h / 2, this.currentVal * 3, this.currentVal * 3);
+            AL.ctx.fillRect(AL.w / 2, AL.h / 2, this.currentVal * 3, -this.currentVal * 3);
+            AL.ctx.fillRect(AL.w / 2, AL.h / 2, -this.currentVal * 3, this.currentVal * 3);
+            AL.ctx.fillRect(AL.w / 2, AL.h / 2, -this.currentVal * 3, -this.currentVal * 3);
 
             this.index += 1;
             if (this.index >= this.seq.length - 1) {
                 this.index = 0;
                 this.rotate = AL.random(1, 44);
-                this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
+                AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
             }
             this.currentVal = this.seq[this.index];
         }

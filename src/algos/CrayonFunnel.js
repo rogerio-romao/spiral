@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class CrayonFunnel extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Crayon Funnel';
 
@@ -13,24 +13,24 @@ export default class CrayonFunnel extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(this.w / 3, this.w * 0.66);
-        this.y = AL.random(this.h / 3, this.h * 0.66);
+        this.x = AL.random(AL.w / 3, AL.w * 0.66);
+        this.y = AL.random(AL.h / 3, AL.h * 0.66);
         this.increment = AL.random(1, 6);
         this.rotate = AL.random(1, 150);
         this.radius = AL.random(5, 60);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
-        this.ctx.lineWidth = 2;
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
+        AL.ctx.lineWidth = 2;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
             this.radius += this.increment;
-            this.ctx.stroke();
+            AL.ctx.stroke();
         }
 
         this.t += 1;
@@ -43,7 +43,7 @@ export default class CrayonFunnel extends AL {
             if (Math.random() < 0.5) {
                 this.strokeStyle = Math.random() < 0.5 ? 'white' : 'black';
             } else {
-                this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
+                AL.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
             }
         }
 

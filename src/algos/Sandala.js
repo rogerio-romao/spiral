@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Sandala extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Sandala';
 
@@ -29,11 +29,11 @@ export default class Sandala extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.globalCompositeOperation = 'soft-light';
+        AL.ctx.globalCompositeOperation = 'soft-light';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 1, 1);
     }
 
     draw() {
@@ -42,10 +42,10 @@ export default class Sandala extends AL {
                 this.rotateCanvasRadians(this.rotate);
 
                 for (let col = 0; col <= this.cols; col++) {
-                    this.ctx.strokeText(
+                    AL.ctx.strokeText(
                         String.fromCodePoint(AL.pickRandomElement(this.letters)),
-                        row * (this.w / this.cols),
-                        col * (this.h / this.rows),
+                        row * (AL.w / this.cols),
+                        col * (AL.h / this.rows),
                     );
                 }
             }

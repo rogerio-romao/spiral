@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Clock extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Clock';
 
@@ -40,47 +40,47 @@ export default class Clock extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
-        this.ctx.font = `${AL.random(60, 600)}px sans-serif`;
-        this.ctx.globalCompositeOperation = 'source-over';
-        this.ctx.textAlign = 'center';
-        this.ctx.shadowBlur = 8;
-        this.ctx.lineWidth = 3;
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = this.color;
+        AL.ctx.font = `${AL.random(60, 600)}px sans-serif`;
+        AL.ctx.globalCompositeOperation = 'source-over';
+        AL.ctx.textAlign = 'center';
+        AL.ctx.shadowBlur = 8;
+        AL.ctx.lineWidth = 3;
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.strokeText(`  ${this.letter}`, 0, 0);
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
-            this.ctx.beginPath();
+            AL.ctx.translate(AL.w / 2, AL.h / 2);
+            AL.ctx.strokeText(`  ${this.letter}`, 0, 0);
+            AL.ctx.rotate(this.rotate);
+            AL.ctx.translate(-AL.w / 2, -AL.h / 2);
+            AL.ctx.beginPath();
         }
 
         this.t += 1;
 
         if (this.t % (this.speed * 40) === 0) {
-            this.ctx.font = `${AL.random(60, 600)}px sans-serif`;
+            AL.ctx.font = `${AL.random(60, 600)}px sans-serif`;
 
             const col = Math.random();
             if (col < 0.15) {
-                this.ctx.lineWidth = 2;
-                this.ctx.shadowBlur = 12;
+                AL.ctx.lineWidth = 2;
+                AL.ctx.shadowBlur = 12;
                 this.color = 'rgba(255, 255, 255, 0.5)';
             } else if (col < 0.3) {
-                this.ctx.lineWidth = 5;
+                AL.ctx.lineWidth = 5;
                 this.color = 'rgba(0, 0, 0, 0.5)';
             } else {
-                this.ctx.shadowBlur = 8;
-                this.ctx.lineWidth = 3;
+                AL.ctx.shadowBlur = 8;
+                AL.ctx.lineWidth = 3;
                 this.color = AL.randomColor(0, 255, 0.66, 0.66);
             }
 
-            this.ctx.shadowColor = this.ctx.strokeStyle = this.color;
+            AL.ctx.shadowColor = AL.ctx.strokeStyle = this.color;
         }
 
         if (this.t % (this.speed * 120) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+            AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         if (this.t % (this.speed * 200) === 0) {

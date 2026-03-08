@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Polyhedra extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Polyhedra';
 
@@ -20,19 +20,19 @@ export default class Polyhedra extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.rotate = AL.pickRandomElement(this.rotations);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.lineTo(this.x, this.y);
-            this.ctx.fill();
+            AL.ctx.lineTo(this.x, this.y);
+            AL.ctx.fill();
 
             this.rotateCanvasRadians(this.rotate);
         }
@@ -42,7 +42,7 @@ export default class Polyhedra extends AL {
         if (this.t % (this.speed * 60) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

@@ -1,6 +1,7 @@
 // oxlint-disable max-classes-per-file
 // oxlint-disable no-empty-function
 
+import AlgorithmLoader from '../src/AlgorithmLoader.js';
 import TransitionManager from '../src/TransitionManager.js';
 import createMockCanvas from './helpers/mockCanvas.js';
 
@@ -30,13 +31,16 @@ vi.mock(import('../src/generated/algorithmRegistry.js'), () => ({
 }));
 
 function createDeps(overrides = {}) {
-    const { canvas } = createMockCanvas();
+    const { canvas, ctx } = createMockCanvas();
     const mockHud = { displayAlgorithmName: vi.fn() };
+
+    AlgorithmLoader.ctx = ctx;
+    AlgorithmLoader.w = 1920;
+    AlgorithmLoader.h = 1080;
 
     return {
         algorithmLoader: { speed: 0 },
         canvas,
-        getDimensions: () => ({ h: 1080, w: 1920 }),
         hudController: mockHud,
         ...overrides,
     };
@@ -268,10 +272,11 @@ describe('transitionManager', () => {
             // Patch globalThis.devicePixelRatio for DPR scaling
             globalThis.devicePixelRatio = 2;
 
+            AlgorithmLoader.ctx = ctx;
+
             const tm = new TransitionManager({
                 algorithmLoader: { speed: 0 },
                 canvas,
-                getDimensions: () => ({ h: 100, w: 100 }),
                 hudController: { displayAlgorithmName: vi.fn() },
             });
 

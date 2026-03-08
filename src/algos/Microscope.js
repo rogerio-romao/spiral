@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Microscope extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Microscope';
 
@@ -36,28 +36,28 @@ export default class Microscope extends AL {
     initializeProperties() {
         this.radiusX = AL.random(35, 415);
         this.radiusY = AL.random(35, 415);
-        this.rows = Math.ceil(this.h / this.radiusY) + 5;
-        this.cols = Math.ceil(this.w / this.radiusX) + 5;
+        this.rows = Math.ceil(AL.h / this.radiusY) + 5;
+        this.cols = Math.ceil(AL.w / this.radiusX) + 5;
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 6;
+        AL.ctx.shadowBlur = 6;
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 0.5);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+                AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
 
                 this.rotateCanvasRadians(this.rotate);
 
                 for (let j = 0; j <= this.cols; j++) {
-                    this.ctx.beginPath();
-                    this.ctx.ellipse(
+                    AL.ctx.beginPath();
+                    AL.ctx.ellipse(
                         this.radiusX * j,
                         this.radiusY * i,
                         this.radiusX,
@@ -67,7 +67,7 @@ export default class Microscope extends AL {
                         2 * Math.PI,
                         false,
                     );
-                    this.ctx.stroke();
+                    AL.ctx.stroke();
                 }
             }
         }

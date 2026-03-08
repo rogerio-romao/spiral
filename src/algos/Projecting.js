@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Projecting extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Projecting';
 
@@ -53,21 +53,21 @@ export default class Projecting extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 10;
-        this.ctx.strokeStyle = 'black';
-        this.ctx.shadowColor = this.color3.color;
+        AL.ctx.shadowBlur = 10;
+        AL.ctx.strokeStyle = 'black';
+        AL.ctx.shadowColor = this.color3.color;
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = this.color1.color;
-        this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+        AL.ctx.fillStyle = this.color1.color;
+        AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
     }
 
     draw() {
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(this.rotate1.rot * (Math.PI / 180));
-        this.ctx.fillRect(0, 0, this.w, this.width);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        AL.ctx.translate(AL.w / 2, AL.h / 2);
+        AL.ctx.rotate(this.rotate1.rot * (Math.PI / 180));
+        AL.ctx.fillRect(0, 0, AL.w, this.width);
+        AL.ctx.translate(-AL.w / 2, -AL.h / 2);
 
         this.t += 1;
 
@@ -105,7 +105,7 @@ export default class Projecting extends AL {
             {
                 color: this.color2.color,
                 duration: AL.random(3, 10),
-                onUpdate: () => (this.ctx.fillStyle = this.color1.color),
+                onUpdate: () => (AL.ctx.fillStyle = this.color1.color),
             },
             '<',
         );
@@ -114,7 +114,7 @@ export default class Projecting extends AL {
             {
                 color: this.color4.color,
                 duration: AL.random(3, 10),
-                onUpdate: () => (this.ctx.shadowColor = this.color3.color),
+                onUpdate: () => (AL.ctx.shadowColor = this.color3.color),
             },
             '<',
         );

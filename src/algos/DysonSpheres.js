@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class DysonSpheres extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Dyson Spheres';
 
@@ -13,47 +13,47 @@ export default class DysonSpheres extends AL {
     }
 
     initializeProperties() {
-        this.length = AL.random(60, Math.max(this.h / 2, this.h - 60));
-        this.height = AL.random(20, this.h / 2 - 40);
+        this.length = AL.random(60, Math.max(AL.h / 2, AL.h - 60));
+        this.height = AL.random(20, AL.h / 2 - 40);
         this.rotate = AL.random(1, 6);
     }
 
     setupDrawingStyles() {
-        this.ctx.shadowBlur = 20;
-        this.ctx.shadowOffsetX = 1;
-        this.ctx.shadowOffsetY = 1;
-        this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(5, 255, 0.33, 0.33);
+        AL.ctx.shadowBlur = 20;
+        AL.ctx.shadowOffsetX = 1;
+        AL.ctx.shadowOffsetY = 1;
+        AL.ctx.shadowColor = AL.ctx.strokeStyle = AL.randomColor(5, 255, 0.33, 0.33);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.ellipse(this.w / 2, this.h / 2, this.length, this.height, this.rotate, 0, 0);
-            this.ctx.stroke();
+            AL.ctx.ellipse(AL.w / 2, AL.h / 2, this.length, this.height, this.rotate, 0, 0);
+            AL.ctx.stroke();
         }
 
         this.t += 1;
 
         if (this.t % (this.speed * 170) === 0) {
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
 
             const color = Math.random();
             if (color < 0.2) {
-                this.ctx.shadowBlur = 10;
-                this.ctx.shadowOffsetX = 0;
-                this.ctx.shadowOffsetY = 0;
-                this.ctx.shadowColor = this.ctx.strokeStyle = 'black';
+                AL.ctx.shadowBlur = 10;
+                AL.ctx.shadowOffsetX = 0;
+                AL.ctx.shadowOffsetY = 0;
+                AL.ctx.shadowColor = AL.ctx.strokeStyle = 'black';
             } else if (color < 0.4) {
-                this.ctx.shadowBlur = 10;
-                this.ctx.shadowOffsetX = 0;
-                this.ctx.shadowOffsetY = 0;
-                this.ctx.shadowColor = this.ctx.strokeStyle = 'white';
+                AL.ctx.shadowBlur = 10;
+                AL.ctx.shadowOffsetX = 0;
+                AL.ctx.shadowOffsetY = 0;
+                AL.ctx.shadowColor = AL.ctx.strokeStyle = 'white';
             } else {
-                this.ctx.shadowBlur = 20;
-                this.ctx.shadowColor = this.ctx.strokeStyle = AL.randomColor(5, 255, 0.33, 0.33);
+                AL.ctx.shadowBlur = 20;
+                AL.ctx.shadowColor = AL.ctx.strokeStyle = AL.randomColor(5, 255, 0.33, 0.33);
             }
 
-            this.length = AL.random(60, Math.max(this.h / 2, this.h - 60));
-            this.height = AL.random(20, this.h / 2 - 40);
+            this.length = AL.random(60, Math.max(AL.h / 2, AL.h - 60));
+            this.height = AL.random(20, AL.h / 2 - 40);
         }
 
         this.rotate = AL.random(0, 360);

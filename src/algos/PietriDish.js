@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class PietriDish extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Pietri Dish';
 
@@ -21,37 +21,37 @@ export default class PietriDish extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 35;
-        this.ctx.globalCompositeOperation = 'overlay';
-        this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
+        AL.ctx.shadowBlur = 35;
+        AL.ctx.globalCompositeOperation = 'overlay';
+        AL.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor();
-        this.ctx.lineWidth = AL.random(2, 18);
-        this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
+        AL.ctx.fillStyle = AL.randomColor();
+        AL.ctx.lineWidth = AL.random(2, 18);
+        AL.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(
+            AL.ctx.beginPath();
+            AL.ctx.arc(
                 this.x - this.size / 2,
                 this.y - this.size / 2,
                 this.size / 2,
                 0,
                 2 * Math.PI,
             );
-            this.ctx.stroke();
-            this.ctx.fill();
+            AL.ctx.stroke();
+            AL.ctx.fill();
 
             this.x += this.size;
-            if (this.x > this.w) {
+            if (this.x > AL.w) {
                 this.x = 0;
                 this.y += this.size;
             }
-            if (this.y > this.h) {
+            if (this.y > AL.h) {
                 this.x = 0;
                 this.y = 0;
                 this.size = AL.random(15, 115);
@@ -63,16 +63,16 @@ export default class PietriDish extends AL {
         if (this.t % (this.speed * 150) === 0) {
             this.rotate = AL.random(1, 90);
 
-            this.ctx.fillStyle = Math.random() < 0.2 ? 'black' : AL.randomColor();
+            AL.ctx.fillStyle = Math.random() < 0.2 ? 'black' : AL.randomColor();
 
-            this.ctx.lineWidth = AL.random(2, 18);
-            this.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
+            AL.ctx.lineWidth = AL.random(2, 18);
+            AL.ctx.shadowColor = AL.randomColor(100, 255, 0.75, 1);
         }
 
         if (this.t % (this.speed * 450) === 0) {
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
             this.size = AL.random(15, 85);
-            this.ctx.strokeStyle = AL.randomColor();
+            AL.ctx.strokeStyle = AL.randomColor();
         }
 
         this.rotateCanvasDegrees(this.rotate);

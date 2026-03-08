@@ -27,6 +27,12 @@ export default class AlgorithmLoader {
      */
     static frequencyAnalyser = null;
 
+    static ctx = null;
+
+    static w = 0;
+
+    static h = 0;
+
     /**
      * Reference to GSAP animation library (global).
      * This expects GSAP to be loaded globally via <script src="./assets/js/gsap.min.js"></script> in index.html.
@@ -149,28 +155,20 @@ export default class AlgorithmLoader {
         return randomColor(minC, maxC, minA, maxA);
     }
 
+    t = 0;
+
+    animationFrameId = null;
+
+    speed = AlgorithmLoader.random(2, 5);
+
+    stagger = 0;
+
+    isRunning = true;
+
     /**
      * Initializes a new algorithm instance.
-     * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
-     * @param {number} w - The width of the canvas.
-     * @param {number} h - The height of the canvas.
      */
-    constructor(ctx, w, h) {
-        this.ctx = ctx;
-        this.w = w;
-        this.h = h;
-
-        // Time related properties for animation control
-        this.t = 0;
-        this.animationFrameId = null;
-        this.speed = AlgorithmLoader.random(2, 5);
-
-        // Used for staggered animations
-        this.stagger = 0;
-
-        // Used for cleanup and error handling in the draw loop
-        this.isRunning = true;
-
+    constructor() {
         // Wrap the subclass draw() in an error boundary.
         // If the algorithm throws during animation, stop() is called and
         // an 'algorithm-error' event is dispatched so the app can recover.
@@ -183,7 +181,7 @@ export default class AlgorithmLoader {
                 originalDraw();
             } catch {
                 this.stop();
-                this.ctx.canvas.dispatchEvent(new CustomEvent('algorithm-error'));
+                AlgorithmLoader.ctx.canvas.dispatchEvent(new CustomEvent('algorithm-error'));
             }
         };
     }
@@ -194,10 +192,15 @@ export default class AlgorithmLoader {
      * Clears the entire canvas, resetting any transforms.
      */
     clearScreen() {
-        this.ctx.save();
-        this.ctx.resetTransform();
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.restore();
+        AlgorithmLoader.ctx.save();
+        AlgorithmLoader.ctx.resetTransform();
+        AlgorithmLoader.ctx.clearRect(
+            0,
+            0,
+            AlgorithmLoader.ctx.canvas.width,
+            AlgorithmLoader.ctx.canvas.height,
+        );
+        AlgorithmLoader.ctx.restore();
     }
 
     /**
@@ -225,10 +228,15 @@ export default class AlgorithmLoader {
      * Fills the entire canvas with the current fill style, resetting any transforms.
      */
     fillScreen() {
-        this.ctx.save();
-        this.ctx.resetTransform();
-        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.restore();
+        AlgorithmLoader.ctx.save();
+        AlgorithmLoader.ctx.resetTransform();
+        AlgorithmLoader.ctx.fillRect(
+            0,
+            0,
+            AlgorithmLoader.ctx.canvas.width,
+            AlgorithmLoader.ctx.canvas.height,
+        );
+        AlgorithmLoader.ctx.restore();
     }
 
     /**
@@ -244,9 +252,9 @@ export default class AlgorithmLoader {
      * @param {number} angle - The angle in degrees to rotate.
      */
     rotateCanvasDegrees(angle) {
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate((angle * Math.PI) / 180);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        AlgorithmLoader.ctx.translate(AlgorithmLoader.w / 2, AlgorithmLoader.h / 2);
+        AlgorithmLoader.ctx.rotate((angle * Math.PI) / 180);
+        AlgorithmLoader.ctx.translate(-AlgorithmLoader.w / 2, -AlgorithmLoader.h / 2);
     }
 
     /**
@@ -254,9 +262,9 @@ export default class AlgorithmLoader {
      * @param {number} angle - The angle in radians to rotate.
      */
     rotateCanvasRadians(angle) {
-        this.ctx.translate(this.w / 2, this.h / 2);
-        this.ctx.rotate(angle);
-        this.ctx.translate(-this.w / 2, -this.h / 2);
+        AlgorithmLoader.ctx.translate(AlgorithmLoader.w / 2, AlgorithmLoader.h / 2);
+        AlgorithmLoader.ctx.rotate(angle);
+        AlgorithmLoader.ctx.translate(-AlgorithmLoader.w / 2, -AlgorithmLoader.h / 2);
     }
 
     /**

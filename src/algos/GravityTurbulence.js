@@ -15,8 +15,8 @@ import AL from '../AlgorithmLoader.js';
  */
 
 export default class GravityTurbulence extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Gravity Turbulence';
 
@@ -30,7 +30,7 @@ export default class GravityTurbulence extends AL {
         /** @type {GravityTurbulenceParticle} */
         this.sun1 = AL.createParticle(150, 200, 1, Math.random() * Math.PI * 2);
         /** @type {GravityTurbulenceParticle} */
-        this.sun2 = AL.createParticle(this.w / 2, this.h / 2, 2, Math.random() * Math.PI * 2);
+        this.sun2 = AL.createParticle(AL.w / 2, AL.h / 2, 2, Math.random() * Math.PI * 2);
 
         this.sun1.radius = 40;
         this.sun2.radius = 30;
@@ -43,8 +43,8 @@ export default class GravityTurbulence extends AL {
         for (let i = 0; i < this.numParticles; i++) {
             /** @type {GravityTurbulenceParticle} */
             const particle = AL.createParticle(
-                AL.mathUtils.randomRange(0, this.w),
-                AL.mathUtils.randomRange(0, this.h),
+                AL.mathUtils.randomRange(0, AL.w),
+                AL.mathUtils.randomRange(0, AL.h),
                 AL.mathUtils.randomRange(7, 8),
                 Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1),
             );
@@ -61,44 +61,44 @@ export default class GravityTurbulence extends AL {
     }
 
     draw() {
-        this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
-        this.ctx.fillRect(0, 0, this.w, this.h);
+        AL.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        AL.ctx.fillRect(0, 0, AL.w, AL.h);
 
         this.sun1.update();
         this.sun2.update();
 
-        if (this.sun1.x - this.sun1.radius > this.w) {
+        if (this.sun1.x - this.sun1.radius > AL.w) {
             this.sun1.x = -this.sun1.radius;
         }
         if (this.sun1.x + this.sun1.radius < 0) {
-            this.sun1.x = this.w + this.sun1.radius;
+            this.sun1.x = AL.w + this.sun1.radius;
         }
-        if (this.sun1.y - this.sun1.radius > this.h) {
+        if (this.sun1.y - this.sun1.radius > AL.h) {
             this.sun1.y = -this.sun1.radius;
         }
         if (this.sun1.y + this.sun1.radius < 0) {
-            this.sun1.y = this.h + this.sun1.radius;
+            this.sun1.y = AL.h + this.sun1.radius;
         }
-        if (this.sun2.x - this.sun2.radius > this.w) {
+        if (this.sun2.x - this.sun2.radius > AL.w) {
             this.sun2.x = -this.sun2.radius;
         }
         if (this.sun2.x + this.sun2.radius < 0) {
-            this.sun2.x = this.w + this.sun2.radius;
+            this.sun2.x = AL.w + this.sun2.radius;
         }
-        if (this.sun2.y - this.sun2.radius > this.h) {
+        if (this.sun2.y - this.sun2.radius > AL.h) {
             this.sun2.y = -this.sun2.radius;
         }
         if (this.sun2.y + this.sun2.radius < 0) {
-            this.sun2.y = this.h + this.sun2.radius;
+            this.sun2.y = AL.h + this.sun2.radius;
         }
 
         for (const particle of this.particles) {
             particle.update();
             this.drawPart(particle, 'white');
 
-            if (particle.x > this.w || particle.x < 0 || particle.y > this.h || particle.y < 0) {
-                particle.x = AL.mathUtils.randomRange(0, this.w);
-                particle.y = AL.mathUtils.randomRange(0, this.h);
+            if (particle.x > AL.w || particle.x < 0 || particle.y > AL.h || particle.y < 0) {
+                particle.x = AL.mathUtils.randomRange(0, AL.w);
+                particle.y = AL.mathUtils.randomRange(0, AL.h);
                 particle.setSpeed(AL.mathUtils.randomRange(7, 8));
                 particle.setHeading(Math.PI / 2 + AL.mathUtils.randomRange(-0.1, 0.1));
             }
@@ -122,9 +122,9 @@ export default class GravityTurbulence extends AL {
     }
 
     drawPart(particle, color) {
-        this.ctx.fillStyle = color;
-        this.ctx.beginPath();
-        this.ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
-        this.ctx.fill();
+        AL.ctx.fillStyle = color;
+        AL.ctx.beginPath();
+        AL.ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
+        AL.ctx.fill();
     }
 }

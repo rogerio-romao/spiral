@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Dye extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Dye';
 
@@ -43,29 +43,29 @@ export default class Dye extends AL {
         this.color2 = { color: AL.randomColor() };
         this.color3 = { color: AL.randomColor() };
         this.color4 = { color: AL.randomColor() };
-        this.offsetX = AL.random(-this.w / 5 / 2, this.w / 5 / 2);
-        this.offsetY = AL.random(-this.h / 5 / 2, this.h / 5 / 2);
+        this.offsetX = AL.random(-AL.w / 5 / 2, AL.w / 5 / 2);
+        this.offsetY = AL.random(-AL.h / 5 / 2, AL.h / 5 / 2);
     }
 
     setupConstantStyles() {
-        // this.ctx.clearRect(0, 0, this.w, this.h);
-        this.ctx.globalCompositeOperation = 'soft-light';
+        // AL.ctx.clearRect(0, 0, AL.w, AL.h);
+        AL.ctx.globalCompositeOperation = 'soft-light';
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${this.font1.size}px bold serif`;
-        this.ctx.strokeStyle = this.color1.color;
-        this.ctx.fillStyle = this.color2.color;
-        this.ctx.lineWidth = this.line1.width;
+        AL.ctx.font = `${this.font1.size}px bold serif`;
+        AL.ctx.strokeStyle = this.color1.color;
+        AL.ctx.fillStyle = this.color2.color;
+        AL.ctx.lineWidth = this.line1.width;
     }
 
     draw() {
-        for (let i = -100; i <= this.w + 100; i += this.w / 5) {
-            for (let j = -100; j <= this.h + 100; j += this.h / 5) {
+        for (let i = -100; i <= AL.w + 100; i += AL.w / 5) {
+            for (let j = -100; j <= AL.h + 100; j += AL.h / 5) {
                 this.rotateCanvasRadians(this.rotate);
 
-                this.ctx.fillText(this.text, i + this.offsetX, j + this.offsetY);
-                this.ctx.strokeText(this.text, i + this.offsetX, j + this.offsetY);
+                AL.ctx.fillText(this.text, i + this.offsetX, j + this.offsetY);
+                AL.ctx.strokeText(this.text, i + this.offsetX, j + this.offsetY);
             }
         }
 
@@ -99,7 +99,7 @@ export default class Dye extends AL {
                 this.font1,
                 {
                     duration: AL.random(4, 10),
-                    onUpdate: () => (this.ctx.font = `${this.font1.size}px bold serif`),
+                    onUpdate: () => (AL.ctx.font = `${this.font1.size}px bold serif`),
                     size: this.font2.size,
                 },
                 '<',
@@ -109,7 +109,7 @@ export default class Dye extends AL {
                 {
                     color: this.color3.color,
                     duration: AL.random(3, 13),
-                    onUpdate: () => (this.ctx.strokeStyle = this.color1.color),
+                    onUpdate: () => (AL.ctx.strokeStyle = this.color1.color),
                 },
                 '<',
             )
@@ -118,7 +118,7 @@ export default class Dye extends AL {
                 {
                     color: this.color1.color,
                     duration: AL.random(3, 10),
-                    onUpdate: () => (this.ctx.fillStyle = this.color2.color),
+                    onUpdate: () => (AL.ctx.fillStyle = this.color2.color),
                 },
                 '<',
             )
@@ -126,7 +126,7 @@ export default class Dye extends AL {
                 this.line1,
                 {
                     duration: AL.random(2, 10),
-                    onUpdate: () => (this.ctx.lineWidth = this.line1.width),
+                    onUpdate: () => (AL.ctx.lineWidth = this.line1.width),
                     width: this.line2.width,
                 },
                 '<',

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Loading extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Loading';
 
@@ -22,24 +22,24 @@ export default class Loading extends AL {
         this.rotate = AL.random(2, 45);
         this.width1 = AL.random(4, 51);
         this.width2 = AL.random(4, 51);
-        this.radius = AL.random(30, Math.max(this.w, this.h) / 2);
+        this.radius = AL.random(30, Math.max(AL.w, AL.h) / 2);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = 'black';
+        AL.ctx.fillStyle = 'black';
         this.fillScreen();
     }
 
     draw() {
-        this.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
-        this.ctx.strokeStyle = this.t % 2 ? 'black' : this.color;
+        AL.ctx.lineWidth = this.t % 2 ? this.width1 : this.width2;
+        AL.ctx.strokeStyle = this.t % 2 ? 'black' : this.color;
         this.counterClockwise = this.t % 2 === 1;
-        this.ctx.globalCompositeOperation = this.t % 2 ? 'source-over' : 'difference';
+        AL.ctx.globalCompositeOperation = this.t % 2 ? 'source-over' : 'difference';
 
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.w / 2, this.h / 2, this.radius, 0, Math.PI, this.counterClockwise);
-            this.ctx.stroke();
+            AL.ctx.beginPath();
+            AL.ctx.arc(AL.w / 2, AL.h / 2, this.radius, 0, Math.PI, this.counterClockwise);
+            AL.ctx.stroke();
         }
 
         this.t += 1;

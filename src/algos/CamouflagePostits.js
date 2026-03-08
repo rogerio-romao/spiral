@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class CamouflagePostits extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Camouflage Post-its';
 
@@ -29,20 +29,20 @@ export default class CamouflagePostits extends AL {
     }
 
     initializeProperties() {
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.randCol = AL.random(0, 255);
-        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+        this.length = AL.random(50, Math.min(AL.w, AL.h) / 1.5);
     }
 
     setupConstantStyles() {
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeStyle = 'white';
-        this.ctx.moveTo(this.w / 2, this.h / 2);
+        AL.ctx.lineWidth = 2;
+        AL.ctx.strokeStyle = 'white';
+        AL.ctx.moveTo(AL.w / 2, AL.h / 2);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = `rgb(
+        AL.ctx.fillStyle = `rgb(
         ${this.randCol + AL.random(-8, 8)},
         ${this.randCol + AL.random(-8, 8)},
         ${this.randCol + AL.random(-8, 8)}
@@ -51,10 +51,10 @@ export default class CamouflagePostits extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillRect(this.x, this.y, this.length, this.length);
+            AL.ctx.fillRect(this.x, this.y, this.length, this.length);
 
-            this.x = AL.random(0, this.w);
-            this.y = AL.random(0, this.h);
+            this.x = AL.random(0, AL.w);
+            this.y = AL.random(0, AL.h);
 
             this.rotateCanvasRadians(AL.random(0, 360));
         }
@@ -65,15 +65,15 @@ export default class CamouflagePostits extends AL {
             this.length = AL.random(5, 125);
             this.randCol = AL.random(0, 255);
 
-            this.ctx.fillRect(
-                this.w / 2 - this.length * 1.5,
-                this.h / 2 - this.length * 1.5,
+            AL.ctx.fillRect(
+                AL.w / 2 - this.length * 1.5,
+                AL.h / 2 - this.length * 1.5,
                 3 * this.length,
                 3 * this.length,
             );
-            this.ctx.strokeRect(
-                this.w / 2 - this.length * 1.5,
-                this.h / 2 - this.length * 1.5,
+            AL.ctx.strokeRect(
+                AL.w / 2 - this.length * 1.5,
+                AL.h / 2 - this.length * 1.5,
                 3 * this.length,
                 3 * this.length,
             );
@@ -82,7 +82,7 @@ export default class CamouflagePostits extends AL {
         }
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+            AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         this.requestFrame();

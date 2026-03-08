@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class VanishingPoint extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Vanishing Point';
 
@@ -14,7 +14,7 @@ export default class VanishingPoint extends AL {
     }
 
     initializeBaseProperties() {
-        this.size = Math.min(this.w, this.h);
+        this.size = Math.min(AL.w, AL.h);
         this.decrease = AL.random(2, 11);
         this.timer = null;
     }
@@ -29,13 +29,13 @@ export default class VanishingPoint extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = 'black';
+        AL.ctx.strokeStyle = 'black';
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillStyle = AL.pickRandomElement(this.colors);
-            this.drawTriangle(this.w / 2, this.h / 2);
+            AL.ctx.fillStyle = AL.pickRandomElement(this.colors);
+            this.drawTriangle(AL.w / 2, AL.h / 2);
 
             this.size -= this.decrease;
             if (this.size - this.decrease <= 1) {
@@ -45,7 +45,7 @@ export default class VanishingPoint extends AL {
                 this.initializeProperties();
 
                 this.timer = setTimeout(() => {
-                    this.size = Math.min(this.w, this.h);
+                    this.size = Math.min(AL.w, AL.h);
                     this.decrease = AL.random(2, 11);
                 }, 3500);
             }
@@ -64,13 +64,13 @@ export default class VanishingPoint extends AL {
     }
 
     drawTriangle = (x, y) => {
-        this.ctx.moveTo(x, y);
-        this.ctx.beginPath();
-        this.ctx.lineTo(x + this.size, y);
-        this.ctx.lineTo(x, y + this.size);
-        this.ctx.lineTo(x, y);
-        this.ctx.closePath();
-        this.ctx.fill();
-        this.ctx.stroke();
+        AL.ctx.moveTo(x, y);
+        AL.ctx.beginPath();
+        AL.ctx.lineTo(x + this.size, y);
+        AL.ctx.lineTo(x, y + this.size);
+        AL.ctx.lineTo(x, y);
+        AL.ctx.closePath();
+        AL.ctx.fill();
+        AL.ctx.stroke();
     };
 }

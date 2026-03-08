@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class HyperTunnel extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'HyperTunnel';
 
@@ -14,26 +14,26 @@ export default class HyperTunnel extends AL {
 
     initializeProperties() {
         this.rotate = AL.random(95, 175);
-        this.side = AL.random(25, Math.min(this.w, this.h));
+        this.side = AL.random(25, Math.min(AL.w, AL.h));
     }
 
     setupDrawingStyles() {
         this.setFillStyle();
-        this.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
+        AL.ctx.strokeStyle = AL.randomColor(5, 255, 0.25, 0.25);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.lineTo(this.w / 2 - this.side / 2, this.h / 2 - this.side / 2);
-            this.ctx.stroke();
-            this.ctx.moveTo(this.w / 2, this.h / 2);
-            this.ctx.lineTo(this.w / 2 + this.side / 2, this.h / 2 - this.side / 2);
-            this.ctx.stroke();
-            this.ctx.lineTo(this.w / 2 - this.side / 2, this.h / 2 - this.side / 2);
-            this.ctx.stroke();
-            this.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.moveTo(AL.w / 2, AL.h / 2);
+            AL.ctx.lineTo(AL.w / 2 - this.side / 2, AL.h / 2 - this.side / 2);
+            AL.ctx.stroke();
+            AL.ctx.moveTo(AL.w / 2, AL.h / 2);
+            AL.ctx.lineTo(AL.w / 2 + this.side / 2, AL.h / 2 - this.side / 2);
+            AL.ctx.stroke();
+            AL.ctx.lineTo(AL.w / 2 - this.side / 2, AL.h / 2 - this.side / 2);
+            AL.ctx.stroke();
+            AL.ctx.fill();
 
             this.rotateCanvasDegrees(this.rotate);
         }
@@ -41,7 +41,7 @@ export default class HyperTunnel extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * (360 / this.rotate)) === 0) {
-            this.side = AL.random(25, Math.min(this.w, this.h));
+            this.side = AL.random(25, Math.min(AL.w, AL.h));
             this.setupDrawingStyles();
         }
 
@@ -54,8 +54,8 @@ export default class HyperTunnel extends AL {
     }
 
     setFillStyle() {
-        this.ctx.fillStyle =
-            this.side > Math.min(this.w, this.h) / 2
+        AL.ctx.fillStyle =
+            this.side > Math.min(AL.w, AL.h) / 2
                 ? AL.randomColor(5, 255, 0.02, 0.02)
                 : AL.randomColor(5, 255, 0.2, 0.2);
     }

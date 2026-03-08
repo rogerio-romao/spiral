@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class FourDee extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Four Dee';
 
@@ -15,39 +15,39 @@ export default class FourDee extends AL {
     }
 
     initializeBaseProperties() {
-        this.springPoint = { x: this.w / 2, y: this.h / 2 };
+        this.springPoint = { x: AL.w / 2, y: AL.h / 2 };
     }
 
     initializeProperties() {
-        this.weight = AL.createParticle(AL.random(0, this.w), AL.random(0, this.h), 0, 0);
+        AL.weight = AL.createParticle(AL.random(0, AL.w), AL.random(0, AL.h), 0, 0);
         this.rotate = AL.random(-90, -1);
         this.k = Math.random();
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.strokeStyle = AL.randomColor();
         this.radius = 20;
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(40, 255, 0.1, 0.25);
+        AL.ctx.fillStyle = AL.randomColor(40, 255, 0.1, 0.25);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            const dx = this.springPoint.x - this.weight.x;
-            const dy = this.springPoint.y - this.weight.y;
+            const dx = this.springPoint.x - AL.weight.x;
+            const dy = this.springPoint.y - AL.weight.y;
             const distance = Math.hypot(dx, dy);
             const springForce = distance * this.k;
             const ax = (dx / distance) * springForce;
             const ay = (dy / distance) * springForce;
-            this.weight.vx += ax;
-            this.weight.vy += ay;
-            this.weight.update();
+            AL.weight.vx += ax;
+            AL.weight.vy += ay;
+            AL.weight.update();
 
-            this.ctx.beginPath();
-            this.ctx.arc(this.weight.x, this.weight.y, this.radius, 0, 2 * Math.PI);
-            this.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.arc(AL.weight.x, AL.weight.y, this.radius, 0, 2 * Math.PI);
+            AL.ctx.fill();
         }
 
         this.t += 1;
@@ -55,7 +55,7 @@ export default class FourDee extends AL {
         this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 600) === 0) {
-            this.ctx.fillStyle = 'black';
+            AL.ctx.fillStyle = 'black';
             this.fillScreen();
 
             this.initializeProperties();

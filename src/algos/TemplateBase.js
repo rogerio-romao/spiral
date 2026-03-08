@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class TemplateBase extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'TemplateBase';
 
@@ -14,19 +14,19 @@ export default class TemplateBase extends AL {
 
     initializeProperties() {
         this.rotation = AL.random(1, 100);
-        this.x = AL.random(0, this.w);
-        this.y = AL.random(0, this.h);
+        this.x = AL.random(0, AL.w);
+        this.y = AL.random(0, AL.h);
         this.width = AL.random(10, 200);
         this.height = AL.random(10, 200);
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor();
+        AL.ctx.fillStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.fillRect(this.x, this.y, this.width, this.height);
+            AL.ctx.fillRect(this.x, this.y, this.width, this.height);
         }
 
         this.rotateCanvasRadians(this.rotation);

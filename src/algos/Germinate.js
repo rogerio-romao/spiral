@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Germinate extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Germinate';
 
@@ -23,31 +23,31 @@ export default class Germinate extends AL {
 
     initializeProperties() {
         this.rotate = AL.pickRandomElement(this.angles);
-        this.width = AL.random(35, this.w * 0.8);
-        this.height = AL.random(35, this.h * 0.8);
+        this.width = AL.random(35, AL.w * 0.8);
+        this.height = AL.random(35, AL.h * 0.8);
         this.ul = AL.random(4, 115);
         this.ur = AL.random(4, 115);
         this.dl = AL.random(4, 115);
         this.dr = AL.random(4, 115);
-        this.wc = AL.random(-5, 6);
-        this.hc = AL.random(-5, 6);
+        AL.wc = AL.random(-5, 6);
+        AL.hc = AL.random(-5, 6);
         this.rc = AL.random(-7, 8);
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 2;
+        AL.ctx.shadowBlur = 2;
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(0, 255, 1, 1);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.2);
+        AL.ctx.strokeStyle = AL.ctx.shadowColor = AL.randomColor(0, 255, 1, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.roundRectExtra(
-                this.w / 2,
-                this.h / 2,
+            AL.ctx.roundRectExtra(
+                AL.w / 2,
+                AL.h / 2,
                 this.width,
                 this.height,
                 {
@@ -65,14 +65,14 @@ export default class Germinate extends AL {
 
         if (this.t % (this.speed * 4) === 0) {
             this.ul += this.rc;
-            this.ur += this.wc;
-            this.dr += this.hc;
+            this.ur += AL.wc;
+            this.dr += AL.hc;
             this.dl -= this.rc;
         }
 
         if (this.t % (this.speed * 12) === 0) {
-            this.width -= this.wc;
-            this.height += this.hc;
+            this.width -= AL.wc;
+            this.height += AL.hc;
         }
 
         if (this.t % (this.speed * 280) === 0) {

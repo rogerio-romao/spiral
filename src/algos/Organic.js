@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Organic extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Organic';
 
@@ -15,8 +15,8 @@ export default class Organic extends AL {
 
     initializeBaseProperties() {
         this.decrease = 0.99;
-        this.side1 = this.w / 2;
-        this.side2 = this.h / 2;
+        this.side1 = AL.w / 2;
+        this.side2 = AL.h / 2;
     }
 
     initializeProperties() {
@@ -28,18 +28,18 @@ export default class Organic extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = AL.random(6, 36);
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.45);
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.1, 0.45);
+        AL.ctx.lineWidth = AL.random(6, 36);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.1, 0.45);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.1, 0.45);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.roundRectExtra(
-                this.ctx.lineWidth - 2,
-                this.ctx.lineWidth - 2,
+            AL.ctx.translate(AL.w / 2, AL.h / 2);
+            AL.ctx.rotate(this.rotate);
+            AL.ctx.roundRectExtra(
+                AL.ctx.lineWidth - 2,
+                AL.ctx.lineWidth - 2,
                 this.side1,
                 this.side2,
                 {
@@ -51,14 +51,14 @@ export default class Organic extends AL {
                 true,
                 true,
             );
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            AL.ctx.translate(-AL.w / 2, -AL.h / 2);
 
             this.side1 *= this.decrease;
             this.side2 *= this.decrease;
             if (this.side1 < 10 || this.side2 < 10) {
                 this.decrease = 1.01;
             }
-            if (this.side1 > this.w || this.side2 > this.h) {
+            if (this.side1 > AL.w || this.side2 > AL.h) {
                 this.decrease = 0.99;
             }
         }
@@ -68,7 +68,7 @@ export default class Organic extends AL {
         if (this.t % (this.speed * 250) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Hive extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Hive';
 
@@ -20,28 +20,28 @@ export default class Hive extends AL {
 
     initializeProperties() {
         this.rows = AL.random(3, 10);
-        this.height = this.h / this.rows;
+        this.height = AL.h / this.rows;
         this.rot = AL.pickRandomElement(this.angles);
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 7;
-        this.ctx.lineWidth = AL.random(7, 18);
+        AL.ctx.shadowBlur = 7;
+        AL.ctx.lineWidth = AL.random(7, 18);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor();
-        this.ctx.shadowColor = AL.randomColor();
-        this.ctx.globalCompositeOperation = 'overlay';
+        AL.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.shadowColor = AL.randomColor();
+        AL.ctx.globalCompositeOperation = 'overlay';
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i <= this.rows; i++) {
-                this.ctx.strokeRect(
-                    AL.random(0, this.w),
+                AL.ctx.strokeRect(
+                    AL.random(0, AL.w),
                     i * this.height,
-                    AL.random(0, this.w),
+                    AL.random(0, AL.w),
                     this.height,
                 );
             }
@@ -57,11 +57,11 @@ export default class Hive extends AL {
         }
 
         if (this.t % (this.speed * 500) === 0) {
-            this.ctx.globalCompositeOperation = 'difference';
+            AL.ctx.globalCompositeOperation = 'difference';
         }
 
         if (this.t % (this.speed * 1500) === 0) {
-            this.ctx.globalCompositeOperation = 'hard-light';
+            AL.ctx.globalCompositeOperation = 'hard-light';
         }
 
         this.requestFrame();

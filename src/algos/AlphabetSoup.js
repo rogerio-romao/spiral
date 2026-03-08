@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class AlphabetSoup extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Alphabet Soup';
 
@@ -34,18 +34,18 @@ export default class AlphabetSoup extends AL {
 
     setupDrawingStyles() {
         this.fontChange = AL.random(35, 180);
-        this.ctx.font = `${this.fontChange}px sans-serif`;
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
+        AL.ctx.font = `${this.fontChange}px sans-serif`;
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.45, 0.7);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             this.rotateCanvasDegrees(this.rotate);
 
-            this.ctx.fillText(
+            AL.ctx.fillText(
                 `${this.letter1} ${this.letter2} ${this.letter3} ${this.letter4}`,
-                this.w / 2,
-                this.h / 2,
+                AL.w / 2,
+                AL.h / 2,
             );
         }
 

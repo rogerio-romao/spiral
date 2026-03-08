@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Warp2001 extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Warp 2001';
 
@@ -24,29 +24,29 @@ export default class Warp2001 extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 3;
-        this.ctx.shadowColor = 'black';
+        AL.ctx.shadowBlur = 3;
+        AL.ctx.shadowColor = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = AL.random(5, 45);
-        this.ctx.strokeStyle = AL.randomColor();
+        AL.ctx.lineWidth = AL.random(5, 45);
+        AL.ctx.strokeStyle = AL.randomColor();
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.moveTo(this.x, this.y);
+            AL.ctx.translate(AL.w / 2, AL.h / 2);
+            AL.ctx.moveTo(this.x, this.y);
             this.x *= 1.618;
             this.y *= 1.618;
-            if (this.x >= Math.max(this.w, this.h)) {
+            if (this.x >= Math.max(AL.w, AL.h)) {
                 this.x = 1;
                 this.y = 1;
             }
-            this.ctx.lineTo(this.x, this.y);
-            this.ctx.stroke();
-            this.ctx.rotate(this.rotate);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            AL.ctx.lineTo(this.x, this.y);
+            AL.ctx.stroke();
+            AL.ctx.rotate(this.rotate);
+            AL.ctx.translate(-AL.w / 2, -AL.h / 2);
         }
 
         this.t += 1;
@@ -54,7 +54,7 @@ export default class Warp2001 extends AL {
         if (this.t % (this.speed * 180) === 0) {
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

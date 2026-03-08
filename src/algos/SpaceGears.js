@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class SpaceGears extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Space Gears';
 
@@ -27,19 +27,19 @@ export default class SpaceGears extends AL {
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${AL.random(100, 700)}px serif`;
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 0.6);
+        AL.ctx.font = `${AL.random(100, 700)}px serif`;
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.6, 0.6);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.textAlign = 'left';
-            this.ctx.strokeText(` ${this.letter.repeat(3)}`, 0, 0);
-            this.ctx.translate(this.w / 2, this.h / 2);
-            this.ctx.rotate(this.rotate);
-            this.ctx.textAlign = 'center';
-            this.ctx.strokeText(this.letter, 0, 0);
-            this.ctx.translate(-this.w / 2, -this.h / 2);
+            AL.ctx.textAlign = 'left';
+            AL.ctx.strokeText(` ${this.letter.repeat(3)}`, 0, 0);
+            AL.ctx.translate(AL.w / 2, AL.h / 2);
+            AL.ctx.rotate(this.rotate);
+            AL.ctx.textAlign = 'center';
+            AL.ctx.strokeText(this.letter, 0, 0);
+            AL.ctx.translate(-AL.w / 2, -AL.h / 2);
         }
 
         this.t += 1;

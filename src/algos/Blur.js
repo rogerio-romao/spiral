@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Blur extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Blur';
 
@@ -23,27 +23,27 @@ export default class Blur extends AL {
         this.factor = AL.random(3, 20);
         this.rotate = AL.random(1, 71);
         this.circles = AL.random(8, 25);
-        this.radius = AL.random(25, Math.max(this.w, this.h) / 2);
+        this.radius = AL.random(25, Math.max(AL.w, AL.h) / 2);
     }
 
     setupConstantStyles() {
-        this.ctx.lineWidth = 0.25;
+        AL.ctx.lineWidth = 0.25;
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i < this.circles * 2; i++) {
                 this.angle = (i * Math.PI * 2) / this.circles;
-                const x = this.w / 2 + Math.cos(this.angle) * this.radius;
-                const y = this.h / 2 + Math.sin(this.angle) * this.radius;
+                const x = AL.w / 2 + Math.cos(this.angle) * this.radius;
+                const y = AL.h / 2 + Math.sin(this.angle) * this.radius;
 
-                this.ctx.beginPath();
-                this.ctx.arc(x, y, this.size + i * this.factor, 0, 2 * Math.PI);
-                this.ctx.stroke();
+                AL.ctx.beginPath();
+                AL.ctx.arc(x, y, this.size + i * this.factor, 0, 2 * Math.PI);
+                AL.ctx.stroke();
             }
         }
 
@@ -57,7 +57,7 @@ export default class Blur extends AL {
         }
 
         if (this.t % (this.speed * 630) === 0) {
-            this.ctx.strokeStyle = 'black';
+            AL.ctx.strokeStyle = 'black';
         }
 
         this.requestFrame();

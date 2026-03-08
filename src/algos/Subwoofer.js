@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Subwoofer extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Subwoofer';
 
@@ -21,26 +21,20 @@ export default class Subwoofer extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'white';
+        AL.ctx.strokeStyle = 'white';
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = AL.random(7, 70);
+        AL.ctx.lineWidth = AL.random(7, 70);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
             for (let i = 0; i < 30; i++) {
-                this.ctx.strokeStyle = this.colors[i % this.colors.length];
-                this.ctx.beginPath();
-                this.ctx.arc(
-                    this.w / 2,
-                    this.h / 2,
-                    this.size + i * this.ctx.lineWidth,
-                    0,
-                    2 * Math.PI,
-                );
-                this.ctx.stroke();
+                AL.ctx.strokeStyle = this.colors[i % this.colors.length];
+                AL.ctx.beginPath();
+                AL.ctx.arc(AL.w / 2, AL.h / 2, this.size + i * AL.ctx.lineWidth, 0, 2 * Math.PI);
+                AL.ctx.stroke();
             }
         }
 

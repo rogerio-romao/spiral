@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class SoapyBubbles extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Soapy Bubbles';
 
@@ -26,20 +26,20 @@ export default class SoapyBubbles extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.shadowBlur = 30;
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        AL.ctx.shadowBlur = 30;
+        AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = this.ctx.shadowColor = AL.randomColor(50, 255, 0.5, 1);
+        AL.ctx.strokeStyle = AL.ctx.shadowColor = AL.randomColor(50, 255, 0.5, 1);
     }
 
     draw() {
         if (this.t % this.speed === 0) {
-            this.ctx.beginPath();
-            this.ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
-            this.ctx.stroke();
-            this.ctx.fill();
+            AL.ctx.beginPath();
+            AL.ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
+            AL.ctx.stroke();
+            AL.ctx.fill();
 
             this.position.addTo(this.velocity);
         }

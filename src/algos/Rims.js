@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Rims extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Rims';
 
@@ -18,16 +18,16 @@ export default class Rims extends AL {
         this.rotate = AL.random(1, 6);
         this.startAngle = AL.random(0, 100);
         this.endAngle = AL.random(101, 360);
-        this.radius = AL.random(30, this.h);
+        this.radius = AL.random(30, AL.h);
         this.radius2 = AL.random(10, this.radius);
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = ' black';
+        AL.ctx.strokeStyle = ' black';
     }
 
     setupDrawingStyles() {
-        this.ctx.fillStyle = AL.randomColor(5, 255, 0.01, 0.01);
+        AL.ctx.fillStyle = AL.randomColor(5, 255, 0.01, 0.01);
     }
 
     draw() {
@@ -35,9 +35,9 @@ export default class Rims extends AL {
             this.stagger %= 3;
 
             if (this.stagger === 0) {
-                this.ctx.ellipse(
-                    this.w / 2,
-                    this.h / 2,
+                AL.ctx.ellipse(
+                    AL.w / 2,
+                    AL.h / 2,
                     this.radius,
                     this.radius2,
                     this.rotate,
@@ -47,9 +47,9 @@ export default class Rims extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.ellipse(
-                    this.w / 2,
-                    this.h / 2,
+                AL.ctx.ellipse(
+                    AL.w / 2,
+                    AL.h / 2,
                     this.radius2,
                     this.radius,
                     this.rotate,
@@ -59,20 +59,20 @@ export default class Rims extends AL {
             }
 
             if (this.stagger === 2) {
-                this.ctx.ellipse(
+                AL.ctx.ellipse(
                     this.startAngle + this.gap,
                     this.endAngle + this.gap,
                     this.radius,
                     this.radius2,
                     -this.rotate,
-                    this.w / 2,
-                    this.h / 2,
+                    AL.w / 2,
+                    AL.h / 2,
                 );
             }
         }
 
-        this.ctx.fill();
-        this.ctx.stroke();
+        AL.ctx.fill();
+        AL.ctx.stroke();
 
         this.t += 1;
 
@@ -82,7 +82,7 @@ export default class Rims extends AL {
             this.speed = AL.random(1, 10);
             this.initializeProperties();
             this.setupDrawingStyles();
-            this.ctx.beginPath();
+            AL.ctx.beginPath();
         }
 
         this.requestFrame();

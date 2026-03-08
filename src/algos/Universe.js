@@ -2,8 +2,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class Universe extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Universe';
 
@@ -14,32 +14,32 @@ export default class Universe extends AL {
     }
 
     initializeProperties() {
-        this.side1 = AL.random(20, this.w);
-        this.side2 = AL.random(20, this.h);
-        this.side3 = AL.random(20, this.w);
-        this.side4 = AL.random(20, this.h);
-        this.side5 = AL.random(20, this.w);
-        this.side6 = AL.random(20, this.h);
-        this.side7 = AL.random(20, this.w);
-        this.side8 = AL.random(20, this.h);
+        this.side1 = AL.random(20, AL.w);
+        this.side2 = AL.random(20, AL.h);
+        this.side3 = AL.random(20, AL.w);
+        this.side4 = AL.random(20, AL.h);
+        this.side5 = AL.random(20, AL.w);
+        this.side6 = AL.random(20, AL.h);
+        this.side7 = AL.random(20, AL.w);
+        this.side8 = AL.random(20, AL.h);
         this.rounded1 = AL.random(5, 250);
         this.rounded2 = AL.random(5, 250);
         this.rounded3 = AL.random(5, 250);
         this.rounded4 = AL.random(5, 250);
-        this.x1 = AL.random(0, this.w);
-        this.y1 = AL.random(0, this.h);
-        this.x2 = AL.random(0, this.w);
-        this.y2 = AL.random(0, this.h);
-        this.x3 = AL.random(0, this.w);
-        this.y3 = AL.random(0, this.h);
-        this.x4 = AL.random(0, this.w);
-        this.y4 = AL.random(0, this.h);
+        this.x1 = AL.random(0, AL.w);
+        this.y1 = AL.random(0, AL.h);
+        this.x2 = AL.random(0, AL.w);
+        this.y2 = AL.random(0, AL.h);
+        this.x3 = AL.random(0, AL.w);
+        this.y3 = AL.random(0, AL.h);
+        this.x4 = AL.random(0, AL.w);
+        this.y4 = AL.random(0, AL.h);
         this.rotate = AL.random(1, 11);
     }
 
     setupDrawingStyles() {
-        this.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
-        this.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
+        AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
+        AL.ctx.fillStyle = AL.randomColor(0, 255, 0.01, 0.05);
     }
 
     draw() {
@@ -47,7 +47,7 @@ export default class Universe extends AL {
             this.stagger %= 4;
 
             if (this.stagger === 0) {
-                this.ctx.roundRectExtra(
+                AL.ctx.roundRectExtra(
                     this.x1++,
                     this.y1++,
                     this.side1++,
@@ -64,7 +64,7 @@ export default class Universe extends AL {
             }
 
             if (this.stagger === 1) {
-                this.ctx.roundRectExtra(
+                AL.ctx.roundRectExtra(
                     this.x2--,
                     this.y2--,
                     this.side3--,
@@ -81,7 +81,7 @@ export default class Universe extends AL {
             }
 
             if (this.stagger === 2) {
-                this.ctx.roundRectExtra(
+                AL.ctx.roundRectExtra(
                     this.x3++,
                     this.y3++,
                     this.side5++,
@@ -98,7 +98,7 @@ export default class Universe extends AL {
             }
 
             if (this.stagger === 3) {
-                this.ctx.roundRectExtra(
+                AL.ctx.roundRectExtra(
                     this.x4,
                     this.y4,
                     this.side7,

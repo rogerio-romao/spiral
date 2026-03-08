@@ -1,3 +1,4 @@
+import AlgorithmLoader from './AlgorithmLoader.js';
 import { algorithms } from './generated/algorithmRegistry.js';
 import { random, randomColor } from './utils/randomUtils.js';
 
@@ -28,14 +29,11 @@ export default class TransitionManager {
      * @param {HTMLCanvasElement} deps.canvas - The HTML canvas element
      * @param {import('./AlgorithmLoader.js').default} deps.algorithmLoader - Algorithm loader instance
      * @param {import('./HudController.js').default} deps.hudController - HUD controller instance
-     * @param {Function} deps.getDimensions  - Returns { w, h }
      */
-    constructor({ canvas, algorithmLoader, hudController, getDimensions }) {
+    constructor({ canvas, algorithmLoader, hudController }) {
         this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
         this.algorithmLoader = algorithmLoader;
         this.hudController = hudController;
-        this.getDimensions = getDimensions;
     }
 
     /** Change to a new algorithm, handling timing, errors, and dev mode. Idempotent if a transition is already in progress. */
@@ -87,8 +85,6 @@ export default class TransitionManager {
 
     /** Choose and instantiate a new algorithm, with retry logic for constructor errors. Respects dev mode settings. Idempotent if already transitioning. */
     chooseAlgos() {
-        const { w, h } = this.getDimensions();
-
         let AlgorithmClass = null;
         if (this.devModeActive) {
             // In dev mode, alternate between two specified algorithms (or random if null) on each call. This allows for quick testing of specific algorithms without changing code.
@@ -102,7 +98,7 @@ export default class TransitionManager {
 
         // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.
         try {
-            this.currentAlgorithm = new AlgorithmClass(this.ctx, w, h);
+            this.currentAlgorithm = new AlgorithmClass();
             this.hudController.displayAlgorithmName(this.currentAlgorithm.name);
             this.algoRetries = 0;
         } catch {
@@ -133,7 +129,8 @@ export default class TransitionManager {
      * resets and adds 7 previously missing ones.
      */
     resetCanvasContext() {
-        const { canvas, ctx } = this;
+        const { canvas } = this;
+        const { ctx } = AlgorithmLoader;
         const dpr = globalThis.devicePixelRatio || 1;
 
         // Reset transform fully (clears accumulated rotation)

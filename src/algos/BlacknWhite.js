@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class BlacknWhite extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Black & White';
 
@@ -14,12 +14,12 @@ export default class BlacknWhite extends AL {
 
     initializeProperties() {
         this.height = this.length / AL.random(1, 5);
-        this.length = AL.random(50, Math.min(this.w, this.h) / 1.5);
+        this.length = AL.random(50, Math.min(AL.w, AL.h) / 1.5);
     }
 
     setupDrawingStyles() {
-        this.ctx.lineWidth = 4;
-        this.ctx.strokeStyle = 'white';
+        AL.ctx.lineWidth = 4;
+        AL.ctx.strokeStyle = 'white';
         this.modes = ['source-over', 'difference', 'destination-out'];
     }
 
@@ -28,16 +28,16 @@ export default class BlacknWhite extends AL {
             this.stagger %= 4;
 
             if (this.stagger === 0) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.w / 2, this.h / 2);
-                this.ctx.strokeRect(
-                    this.w / 2 - this.length / 2,
-                    this.h / 2 - this.height / 2,
+                AL.ctx.beginPath();
+                AL.ctx.moveTo(AL.w / 2, AL.h / 2);
+                AL.ctx.strokeRect(
+                    AL.w / 2 - this.length / 2,
+                    AL.h / 2 - this.height / 2,
                     this.length,
                     this.height,
                 );
 
-                this.length = AL.random(20, Math.max(this.w, this.h));
+                this.length = AL.random(20, Math.max(AL.w, AL.h));
                 this.height = this.length / AL.random(1, 5);
             }
 
@@ -46,13 +46,13 @@ export default class BlacknWhite extends AL {
             }
 
             if (this.stagger === 2) {
-                this.ctx.arcTo(this.height, this.length, 0, this.h / 2, this.w / 2);
-                this.ctx.stroke();
+                AL.ctx.arcTo(this.height, this.length, 0, AL.h / 2, AL.w / 2);
+                AL.ctx.stroke();
             }
 
             if (this.stagger === 3) {
-                this.ctx.arcTo(this.w / 2, this.h / 2, AL.random(1, 10), this.height, this.length);
-                this.ctx.stroke();
+                AL.ctx.arcTo(AL.w / 2, AL.h / 2, AL.random(1, 10), this.height, this.length);
+                AL.ctx.stroke();
             }
 
             this.stagger += 1;
@@ -61,7 +61,7 @@ export default class BlacknWhite extends AL {
         this.t += 1;
 
         if (this.t % (this.speed * 100) === 0) {
-            this.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
+            AL.ctx.globalCompositeOperation = AL.pickRandomElement(this.modes);
         }
 
         this.requestFrame();

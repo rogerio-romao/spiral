@@ -1,8 +1,8 @@
 import AL from '../AlgorithmLoader.js';
 
 export default class GenesisTypewriter extends AL {
-    constructor(ctx, w, h) {
-        super(ctx, w, h);
+    constructor() {
+        super();
 
         this.name = 'Genesis Typewriter';
 
@@ -27,8 +27,8 @@ export default class GenesisTypewriter extends AL {
     }
 
     initializeProperties() {
-        this.pos1 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
-        this.pos2 = { x: AL.random(0, this.w), y: AL.random(0, this.h) };
+        this.pos1 = { x: AL.random(0, AL.w), y: AL.random(0, AL.h) };
+        this.pos2 = { x: AL.random(0, AL.w), y: AL.random(0, AL.h) };
         this.text = AL.pickRandomElement([...this.letters]);
         this.font2 = { size: AL.random(160, 600) };
         this.font1 = { size: AL.random(20, 100) };
@@ -38,18 +38,18 @@ export default class GenesisTypewriter extends AL {
     }
 
     setupConstantStyles() {
-        this.ctx.strokeStyle = 'white';
-        this.ctx.fillStyle = 'black';
+        AL.ctx.strokeStyle = 'white';
+        AL.ctx.fillStyle = 'black';
     }
 
     setupDrawingStyles() {
-        this.ctx.font = `${this.font1.size}px bold serif`;
-        this.ctx.lineWidth = this.line1.width;
+        AL.ctx.font = `${this.font1.size}px bold serif`;
+        AL.ctx.lineWidth = this.line1.width;
     }
 
     draw() {
-        this.ctx.fillText(this.text, this.pos1.x, this.pos1.y);
-        this.ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
+        AL.ctx.fillText(this.text, this.pos1.x, this.pos1.y);
+        AL.ctx.strokeText(this.text, this.pos1.x, this.pos1.y);
 
         this.t += 1;
 
@@ -59,7 +59,7 @@ export default class GenesisTypewriter extends AL {
             this.initializeProperties();
 
             this.setupDrawingStyles();
-            this.ctx.strokeStyle = Math.random() < 0.25 ? 'white' : AL.randomColor();
+            AL.ctx.strokeStyle = Math.random() < 0.25 ? 'white' : AL.randomColor();
 
             this.getTweens();
         }
@@ -83,7 +83,7 @@ export default class GenesisTypewriter extends AL {
                 this.font1,
                 {
                     duration: AL.random(12, 40),
-                    onUpdate: () => (this.ctx.font = `${this.font1.size}px bold serif`),
+                    onUpdate: () => (AL.ctx.font = `${this.font1.size}px bold serif`),
                     size: this.font2.size,
                 },
                 '<',
@@ -108,7 +108,7 @@ export default class GenesisTypewriter extends AL {
                 this.line1,
                 {
                     duration: AL.random(6, 14),
-                    onUpdate: () => (this.ctx.lineWidth = this.line1.width),
+                    onUpdate: () => (AL.ctx.lineWidth = this.line1.width),
                     width: this.line2.width,
                 },
                 '<',
