@@ -1,24 +1,39 @@
+// oxlint-disable max-classes-per-file
 // oxlint-disable no-empty-function
 
 import TransitionManager from '../src/TransitionManager.js';
 import createMockCanvas from './helpers/mockCanvas.js';
 
+vi.mock(import('../src/generated/algorithmRegistry.js'), () => ({
+    algorithms: [
+        class AlgoA {
+            name = 'AlgoA';
+            stop() {}
+        },
+        class AlgoB {
+            name = 'AlgoB';
+            stop() {}
+        },
+        class AlgoC {
+            name = 'AlgoC';
+            stop() {}
+        },
+        class AlgoD {
+            name = 'AlgoD';
+            stop() {}
+        },
+        class AlgoE {
+            name = 'AlgoE';
+            stop() {}
+        },
+    ],
+}));
+
 function createDeps(overrides = {}) {
     const { canvas } = createMockCanvas();
     const mockHud = { displayAlgorithmName: vi.fn() };
-    const mockChooser = {
-        getRandomAlgorithm: vi.fn(
-            () =>
-                class FakeAlgo {
-                    name = 'FakeAlgo';
-
-                    stop() {}
-                },
-        ),
-    };
 
     return {
-        algorithmChooser: mockChooser,
         algorithmLoader: { speed: 0 },
         canvas,
         getDimensions: () => ({ h: 1080, w: 1920 }),
@@ -65,12 +80,10 @@ describe('transitionManager', () => {
     });
 
     describe('changeAlgorithm', () => {
-        it('instantiates a new algorithm via the chooser', () => {
-            const deps = createDeps();
-            const tm = new TransitionManager(deps);
+        it('instantiates a new algorithm', () => {
+            const tm = new TransitionManager(createDeps());
             tm.changeAlgorithm();
 
-            expect(deps.algorithmChooser.getRandomAlgorithm).toHaveBeenCalledWith();
             expect(tm.currentAlgorithm).not.toBeNull();
         });
 
@@ -79,16 +92,19 @@ describe('transitionManager', () => {
             const tm = new TransitionManager(deps);
             tm.changeAlgorithm();
 
-            expect(deps.hudController.displayAlgorithmName).toHaveBeenCalledWith('FakeAlgo');
+            expect(deps.hudController.displayAlgorithmName).toHaveBeenCalledWith(
+                expect.any(String),
+            );
         });
 
         it('does nothing when already transitioning', () => {
-            const deps = createDeps();
-            const tm = new TransitionManager(deps);
+            const tm = new TransitionManager(createDeps());
+            const initialAlgorithm = { name: 'test', stop() {} };
+            tm.currentAlgorithm = initialAlgorithm;
             tm.isTransitioning = true;
             tm.changeAlgorithm();
 
-            expect(deps.algorithmChooser.getRandomAlgorithm).not.toHaveBeenCalled();
+            expect(tm.currentAlgorithm).toBe(initialAlgorithm);
         });
 
         it('resets isTransitioning to false after completion', () => {
@@ -102,23 +118,20 @@ describe('transitionManager', () => {
     describe('chooseAlgos retry logic', () => {
         it('retries up to 3 times when the algorithm constructor throws', () => {
             let callCount = 0;
-            const chooser = {
-                getRandomAlgorithm: vi.fn(() => {
-                    callCount += 1;
-                    return class BadAlgo {
-                        constructor() {
-                            throw new Error('constructor failed');
-                        }
-                    };
-                }),
-            };
-
-            const tm = new TransitionManager(createDeps({ algorithmChooser: chooser }));
+            const tm = new TransitionManager(createDeps());
+            const spy = vi.spyOn(tm, 'getRandomAlgorithm').mockImplementation(() => {
+                callCount += 1;
+                return class BadAlgo {
+                    constructor() {
+                        throw new Error('constructor failed');
+                    }
+                };
+            });
             tm.chooseAlgos();
 
-            // Should try 3 times (1 initial + 2 retries) then stop
             expect(callCount).toBe(3);
             expect(tm.algoRetries).toBe(0);
+            spy.mockRestore();
         });
 
         it('resets retry counter on success', () => {
@@ -156,13 +169,12 @@ describe('transitionManager', () => {
         });
 
         it('calls changeAlgorithm after the autoChange interval elapses', () => {
-            const deps = createDeps();
-            const tm = new TransitionManager(deps);
+            const tm = new TransitionManager(createDeps());
             tm.autoChangeIntervalInSeconds = 2;
             tm.resetAutoChangeTimer();
             vi.advanceTimersByTime(2000);
 
-            expect(deps.algorithmChooser.getRandomAlgorithm).toHaveBeenCalledWith();
+            expect(tm.currentAlgorithm).not.toBeNull();
         });
     });
 
@@ -257,7 +269,6 @@ describe('transitionManager', () => {
             globalThis.devicePixelRatio = 2;
 
             const tm = new TransitionManager({
-                algorithmChooser: { getRandomAlgorithm: vi.fn() },
                 algorithmLoader: { speed: 0 },
                 canvas,
                 getDimensions: () => ({ h: 100, w: 100 }),
@@ -290,6 +301,55 @@ describe('transitionManager', () => {
             expect(setProps.direction).toBe('inherit');
             expect(setProps.filter).toBe('none');
             expect(canvas.style.background).toBe('transparent');
+        });
+    });
+
+    describe('getRandomAlgorithm', () => {
+        it('returns an algorithm class from the pool', () => {
+            const tm = new TransitionManager(createDeps());
+            const result = tm.getRandomAlgorithm();
+
+            expect(result).toBeDefined();
+            expect(result).not.toBeNull();
+        });
+
+        it('adds picked algorithms to the history set', () => {
+            const tm = new TransitionManager(createDeps());
+            tm.getRandomAlgorithm();
+
+            expect(tm.lastAlgos.size).toBe(1);
+        });
+
+        it('does not repeat algorithms within the history window', () => {
+            const tm = new TransitionManager(createDeps());
+            tm.lastAlgosCapacity = 4;
+            const picks = new Set();
+            for (let i = 0; i < 5; i++) {
+                picks.add(tm.getRandomAlgorithm());
+            }
+
+            expect(picks.size).toBe(5);
+        });
+
+        it('evicts oldest history entry when capacity is exceeded', () => {
+            const tm = new TransitionManager(createDeps());
+            tm.lastAlgosCapacity = 3;
+
+            tm.lastAlgos = new Set([
+                tm.getRandomAlgorithm(),
+                tm.getRandomAlgorithm(),
+                tm.getRandomAlgorithm(),
+            ]);
+
+            tm.getRandomAlgorithm();
+
+            expect(tm.lastAlgos.size).toBe(3);
+        });
+
+        it('defaults to a capacity of 50', () => {
+            const tm = new TransitionManager(createDeps());
+
+            expect(tm.lastAlgosCapacity).toBe(50);
         });
     });
 });

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import FrequencyAnalyser from '../src/utils/FrequencyAnalyser.js';
+import FrequencyAnalyser from '../src/FrequencyAnalyser.js';
 
 function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
     const dataArray = new Uint8Array(binCount);

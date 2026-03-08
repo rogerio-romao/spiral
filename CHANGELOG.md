@@ -2,6 +2,10 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-03-08
+
+- refactor: Move AlgorithmChooser logic into TransitionManager — removes standalone AlgorithmChooser class, adds getRandomAlgorithm() method with lastAlgos history tracking to TransitionManager; updates tests accordingly
+
 ## 2026-03-02
 
 - chore: Add unit tests for WaveformController (0%→100%) — 17 tests covering constructor, \_resizeCanvas, toggle, \_start, \_stop, destroy, \_draw (including exponential-smoothing assertion), and getWaveformData; total test count 260→277

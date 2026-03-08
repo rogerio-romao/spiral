@@ -1,3 +1,4 @@
+import { algorithms } from './generated/algorithmRegistry.js';
 import { random, randomColor } from './utils/randomUtils.js';
 
 /**
@@ -9,7 +10,6 @@ import { random, randomColor } from './utils/randomUtils.js';
  * - Dev mode for testing specific algorithms
  */
 export default class TransitionManager {
-    // INSTANCE PROPERTIES
     algoRetries = 0;
     autoChangeIntervalInSeconds = 60;
     autoChangeTimeout = null;
@@ -20,20 +20,20 @@ export default class TransitionManager {
     devModeAlternator = 0;
     isInManualMode = false;
     isTransitioning = false;
+    lastAlgos = new Set();
+    lastAlgosCapacity = 50;
 
     /**
      * @param {Object} deps - Dependencies object containing required components
      * @param {HTMLCanvasElement} deps.canvas - The HTML canvas element
      * @param {import('./AlgorithmLoader.js').default} deps.algorithmLoader - Algorithm loader instance
-     * @param {import('./AlgorithmChooser.js').default} deps.algorithmChooser - Algorithm chooser instance
      * @param {import('./HudController.js').default} deps.hudController - HUD controller instance
      * @param {Function} deps.getDimensions  - Returns { w, h }
      */
-    constructor({ canvas, algorithmLoader, algorithmChooser, hudController, getDimensions }) {
+    constructor({ canvas, algorithmLoader, hudController, getDimensions }) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.algorithmLoader = algorithmLoader;
-        this.algorithmChooser = algorithmChooser;
         this.hudController = hudController;
         this.getDimensions = getDimensions;
     }
@@ -67,6 +67,24 @@ export default class TransitionManager {
         }
     }
 
+    /**
+     * Returns a random algorithm class, avoiding recently used ones. Adds the selected algorithm to the recent set and evicts the oldest if needed.
+     * @returns {Function} The chosen algorithm class constructor.
+     */
+    getRandomAlgorithm() {
+        const picks = algorithms.filter((algo) => !this.lastAlgos.has(algo));
+
+        const randomIndex = Math.floor(Math.random() * picks.length);
+        const AlgorithmClass = picks[randomIndex];
+
+        this.lastAlgos.add(AlgorithmClass);
+        if (this.lastAlgos.size > this.lastAlgosCapacity) {
+            this.lastAlgos.delete(this.lastAlgos.values().next().value);
+        }
+
+        return AlgorithmClass;
+    }
+
     /** Choose and instantiate a new algorithm, with retry logic for constructor errors. Respects dev mode settings. Idempotent if already transitioning. */
     chooseAlgos() {
         const { w, h } = this.getDimensions();
@@ -77,9 +95,9 @@ export default class TransitionManager {
             const isSlotA = this.devModeAlternator === 0;
             this.devModeAlternator = 1 - this.devModeAlternator;
             const algoChoice = isSlotA ? this.devModeAlgoA : this.devModeAlgoB;
-            AlgorithmClass = algoChoice || this.algorithmChooser.getRandomAlgorithm();
+            AlgorithmClass = algoChoice || this.getRandomAlgorithm();
         } else {
-            AlgorithmClass = this.algorithmChooser.getRandomAlgorithm();
+            AlgorithmClass = this.getRandomAlgorithm();
         }
 
         // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.

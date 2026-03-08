@@ -1,11 +1,10 @@
-import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
 import DevModeController from './DevModeController.js';
+import FrequencyAnalyser from './FrequencyAnalyser.js';
 import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
-import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import WaveformController from './WaveformController.js';
 
 /**
@@ -47,10 +46,7 @@ export default class Spiral {
         // ALGORITHM & TRANSITION MANAGEMENT
         this.algorithmLoader = new AlgorithmLoader(this.ctx, this.w, this.h);
 
-        this.algorithmChooser = new AlgorithmChooser();
-
         this.transitionManager = new TransitionManager({
-            algorithmChooser: this.algorithmChooser,
             algorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
             getDimensions: () => ({ h: this.h, w: this.w }),
