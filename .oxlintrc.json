@@ -85,7 +85,7 @@
         "vitest/require-hook": "off",
         "vitest/prefer-called-times": "off",
         "vitest/no-hooks": "off",
-        "vitest/max-expects": ["warn", { "max": 13 }]
+        "vitest/max-expects": ["warn", { "max": 21 }]
     },
     "settings": {
         "jsx-a11y": {

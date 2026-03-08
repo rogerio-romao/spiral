@@ -210,4 +210,86 @@ describe('transitionManager', () => {
             expect(secondPick).toBe('B');
         });
     });
+
+    describe('resets canvas on transition', () => {
+        it('resetCanvasContext sets all expected context properties and calls methods', () => {
+            // Mock canvas and context
+            const setProps = {};
+            const ctx = {
+                beginPath: vi.fn(),
+                clearRect: vi.fn(),
+                resetTransform: vi.fn(),
+                scale: vi.fn(),
+                setLineDash: vi.fn(),
+            };
+            // Spy on property assignments
+            [
+                'globalAlpha',
+                'globalCompositeOperation',
+                'strokeStyle',
+                'fillStyle',
+                'lineWidth',
+                'lineDashOffset',
+                'lineCap',
+                'lineJoin',
+                'miterLimit',
+                'shadowBlur',
+                'shadowColor',
+                'shadowOffsetX',
+                'shadowOffsetY',
+                'textAlign',
+                'textBaseline',
+                'direction',
+                'filter',
+            ].map((prop) => {
+                Object.defineProperty(ctx, prop, {
+                    configurable: true,
+                    get: () => setProps[prop],
+                    set: (val) => {
+                        setProps[prop] = val;
+                    },
+                });
+                return prop;
+            });
+            const canvas = { getContext: () => ctx, height: 100, style: {}, width: 100 };
+
+            // Patch globalThis.devicePixelRatio for DPR scaling
+            globalThis.devicePixelRatio = 2;
+
+            const tm = new TransitionManager({
+                algorithmChooser: { getRandomAlgorithm: vi.fn() },
+                algorithmLoader: { speed: 0 },
+                canvas,
+                getDimensions: () => ({ h: 100, w: 100 }),
+                hudController: { displayAlgorithmName: vi.fn() },
+            });
+
+            tm.resetCanvasContext();
+
+            // Check that all expected methods were called
+            expect(ctx.resetTransform).toHaveBeenCalledWith();
+            expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 100);
+            expect(ctx.scale).toHaveBeenCalledWith(2, 2);
+            expect(ctx.setLineDash).toHaveBeenCalledWith([]);
+            expect(ctx.beginPath).toHaveBeenCalledWith();
+
+            // Check that all expected properties were set
+            expect(setProps.globalAlpha).toBe(1);
+            expect(setProps.globalCompositeOperation).toBe('source-over');
+            expect(setProps.lineWidth).toBe(1);
+            expect(setProps.lineDashOffset).toBe(0);
+            expect(setProps.lineCap).toBe('butt');
+            expect(setProps.lineJoin).toBe('miter');
+            expect(setProps.miterLimit).toBe(10);
+            expect(setProps.shadowBlur).toBe(0);
+            expect(setProps.shadowColor).toBe('transparent');
+            expect(setProps.shadowOffsetX).toBe(0);
+            expect(setProps.shadowOffsetY).toBe(0);
+            expect(setProps.textAlign).toBe('start');
+            expect(setProps.textBaseline).toBe('alphabetic');
+            expect(setProps.direction).toBe('inherit');
+            expect(setProps.filter).toBe('none');
+            expect(canvas.style.background).toBe('transparent');
+        });
+    });
 });
