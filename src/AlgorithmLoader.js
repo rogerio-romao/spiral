@@ -23,7 +23,7 @@ export default class AlgorithmLoader {
      * Gets injected by `Spiral` after initialization. Algorithms can check if it's available and use it to get frequency data for visualization.
      *
      * @static
-     * @type {import('./utils/FrequencyAnalyser.js').default|null}
+     * @type {import('./FrequencyAnalyser.js').default|null}
      */
     static frequencyAnalyser = null;
 
