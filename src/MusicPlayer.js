@@ -717,6 +717,7 @@ export default class MusicPlayer {
     /** Update the now-playing track name display. */
     updateTrackName() {
         if (this.trackNames.length === 0) {
+            this.trackNameEl.textContent = '';
             return;
         }
 
