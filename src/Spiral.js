@@ -1,11 +1,11 @@
 import AlgorithmChooser from './AlgorithmChooser.js';
 import AlgorithmLoader from './AlgorithmLoader.js';
 import DevModeController from './DevModeController.js';
+import FrequencyAnalyser from './FrequencyAnalyser.js';
 import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
-import FrequencyAnalyser from './utils/FrequencyAnalyser.js';
 import WaveformController from './WaveformController.js';
 
 /**
