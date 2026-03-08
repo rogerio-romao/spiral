@@ -195,7 +195,7 @@ export default class Spiral {
                 this.hud.displayMessage('TIP: F FOR FULLSCREEN');
             }, 20_000),
             setTimeout(() => {
-                this.hud.displayMessage('TIP: P TO OPEN MUSIC PLAYER');
+                this.hud.displayMessage('TIP: P TO VIEW/HIDE MUSIC PLAYER');
             }, 30_000),
         ];
 
