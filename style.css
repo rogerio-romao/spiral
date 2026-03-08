@@ -131,6 +131,15 @@ canvas {
     z-index: 2;
 }
 
+#msg {
+    position: absolute;
+    bottom: 2em;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 2;
+}
+
 #help {
     background: rgb(0 0 0 / 80%);
     display: none;

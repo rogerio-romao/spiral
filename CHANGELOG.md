@@ -4,6 +4,8 @@
 
 ## 2026-03-08
 
+- fix: Move #msg element from bottom-right to bottom-center of screen — positions messages centered while keeping algorithm names at bottom-right
+
 - refactor: Move AlgorithmChooser logic into TransitionManager — removes standalone AlgorithmChooser class, adds getRandomAlgorithm() method with lastAlgos history tracking to TransitionManager; updates tests accordingly
 
 - refactor: Make canvas context, width, and height static properties on AlgorithmLoader — eliminates ctx/w/h constructor params from all 143 algorithms; values auto-update on resize (closes #138)
