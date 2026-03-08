@@ -45,8 +45,7 @@ function createMockAudioContext({ fftSize = 2048, binCount = 1024 } = {}) {
         state: 'running',
     };
 
-    // eslint-disable-next-line func-style
-    // oxlint-disable-next-line jest/prefer-spy-on
+    // oxlint-disable-next-line jest/prefer-spy-on - in jsdom environment, AudioContext is not constructible, so we mock
     globalThis.AudioContext = vi.fn(function audioContext() {
         return mockCtx;
     });
@@ -73,12 +72,14 @@ describe('frequencyAnalyser', () => {
     describe('getBands', () => {
         it('returns an array of the requested band count', () => {
             const bands = analyser.getBands();
+
             expect(bands).toHaveLength(5);
         });
 
         it('returns all zeros when data array is all zeros', () => {
             dataArray.fill(0);
             const bands = analyser.getBands();
+
             for (const b of bands) {
                 expect(b).toBe(0);
             }
@@ -87,6 +88,7 @@ describe('frequencyAnalyser', () => {
         it('returns values close to 0.5 when data is all 128', () => {
             dataArray.fill(128);
             const bands = analyser.getBands();
+
             for (const b of bands) {
                 expect(b).toBeCloseTo(128 / 255, 1);
             }
@@ -95,6 +97,7 @@ describe('frequencyAnalyser', () => {
         it('returns values close to 1 when data is all 255', () => {
             dataArray.fill(255);
             const bands = analyser.getBands();
+
             for (const b of bands) {
                 expect(b).toBeCloseTo(1, 1);
             }
@@ -103,6 +106,7 @@ describe('frequencyAnalyser', () => {
         it('returns values in 0-1 range', () => {
             dataArray.fill(200);
             const bands = analyser.getBands();
+
             for (const b of bands) {
                 expect(b).toBeGreaterThanOrEqual(0);
                 expect(b).toBeLessThanOrEqual(1);
@@ -114,6 +118,7 @@ describe('frequencyAnalyser', () => {
         it('returns normalized values between 0 and 1', () => {
             timeDomainData.fill(128);
             const waveform = analyser.getWaveform();
+
             for (const value of waveform) {
                 expect(value).toBeGreaterThanOrEqual(0);
                 expect(value).toBeLessThanOrEqual(1);
@@ -123,12 +128,14 @@ describe('frequencyAnalyser', () => {
         it('normalizes 0 to 0', () => {
             timeDomainData.fill(0);
             const waveform = analyser.getWaveform();
+
             expect(waveform[0]).toBe(0);
         });
 
         it('normalizes 255 to 1', () => {
             timeDomainData.fill(255);
             const waveform = analyser.getWaveform();
+
             expect(waveform[0]).toBeCloseTo(1);
         });
     });
@@ -136,17 +143,20 @@ describe('frequencyAnalyser', () => {
     describe('bandCount setter', () => {
         it('updates bandCount for values >= 1', () => {
             analyser.bandCount = 10;
+
             expect(analyser.bandCount).toBe(10);
         });
 
         it('floors non-integer values', () => {
             analyser.bandCount = 7.9;
+
             expect(analyser.bandCount).toBe(7);
         });
 
         it('ignores values below 1', () => {
             analyser.bandCount = 5;
             analyser.bandCount = 0;
+
             expect(analyser.bandCount).toBe(5);
         });
     });
@@ -155,12 +165,14 @@ describe('frequencyAnalyser', () => {
         it('calls AudioContext.resume when state is suspended', () => {
             analyser.audioContext.state = 'suspended';
             analyser.resume();
+
             expect(analyser.audioContext.resume).toHaveBeenCalledOnce();
         });
 
         it('does not call AudioContext.resume when state is running', () => {
             analyser.audioContext.state = 'running';
             analyser.resume();
+
             expect(analyser.audioContext.resume).not.toHaveBeenCalled();
         });
     });
@@ -196,17 +208,18 @@ describe('frequencyAnalyser', () => {
         it('resolves after the given duration', async () => {
             let isResolved = false;
 
-            // eslint-disable-next-line func-style
-            const doFade = async () => {
+            async function doFade() {
                 await analyser.fadeTo(0, 80);
                 isResolved = true;
-            };
+            }
 
             doFade();
 
             expect(isResolved).toBeFalsy();
+
             vi.advanceTimersByTime(80);
             await Promise.resolve();
+
             expect(isResolved).toBeTruthy();
         });
     });
@@ -214,16 +227,16 @@ describe('frequencyAnalyser', () => {
     describe('setGain', () => {
         it('cancels scheduled values and immediately sets gain', () => {
             analyser.setGain(0);
-
             const { gain } = analyser.gainNode;
+
             expect(gain.cancelScheduledValues).toHaveBeenCalledWith(0);
             expect(gain.setValueAtTime).toHaveBeenCalledWith(0, 0);
         });
 
         it('works for any gain value', () => {
             analyser.setGain(0.5);
-
             const { gain } = analyser.gainNode;
+
             expect(gain.setValueAtTime).toHaveBeenCalledWith(0.5, 0);
         });
     });
