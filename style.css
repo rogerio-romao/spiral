@@ -211,10 +211,6 @@ canvas {
 
 /* PLAYER */
 
-input[type='file'] {
-    display: none;
-}
-
 #player {
     background: var(--color-bg-dark);
     display: block;
@@ -245,9 +241,11 @@ input[type='file'] {
     padding: 1em 3em;
 }
 
-#picker label {
+#click-label {
     background: rgb(59 136 253 / 80%);
+    border: none;
     color: var(--color-light);
+    font-family: inherit;
     padding: 0.3em 0.75em;
     margin-top: 0.5em;
     font-size: 0.8em;
@@ -258,7 +256,7 @@ input[type='file'] {
     transition: background var(--transition-normal);
 }
 
-#picker label:hover {
+#click-label:hover {
     background: rgb(255 69 0 / 60%);
 }
 
@@ -336,8 +334,57 @@ input[type='file'] {
 }
 
 #playlist-accordion.open {
-    max-height: 225px;
+    max-height: 265px;
     opacity: 1;
+}
+
+#playlist-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5em;
+    padding: 0.4em 1em 0.5em;
+    border-top: 1px solid var(--color-border);
+}
+
+#playlist-actions button {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
+    cursor: default;
+    font-family: inherit;
+    font-size: 0.8em;
+    letter-spacing: 0.06em;
+    opacity: 0.35;
+    padding: 0.25em 0.6em;
+    border-radius: var(--radius-sm);
+    transition:
+        background var(--transition-normal),
+        border-color var(--transition-normal),
+        color var(--transition-normal),
+        opacity var(--transition-normal);
+}
+
+#playlist-actions button:not(:disabled) {
+    cursor: pointer;
+    opacity: 1;
+}
+
+#save-playlist:not(:disabled) {
+    border-color: rgb(59 136 253 / 60%);
+    color: var(--color-light);
+}
+
+#save-playlist:not(:disabled):hover {
+    background: rgb(59 136 253 / 20%);
+}
+
+#clear-playlist:not(:disabled) {
+    border-color: rgb(255 69 0 / 60%);
+    color: var(--color-light);
+}
+
+#clear-playlist:not(:disabled):hover {
+    background: rgb(255 69 0 / 15%);
 }
 
 #playlist {

@@ -5,6 +5,7 @@ import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
+import { loadPlaylist } from './utils/PlaylistStorage.js';
 import { loadPreferences, savePreference } from './utils/UserPreferences.js';
 import WaveformController from './WaveformController.js';
 
@@ -263,6 +264,37 @@ export default class Spiral {
         showTipsCheckbox.addEventListener('change', () => {
             savePreference('showTips', showTipsCheckbox.checked);
         });
+
+        // Restore the last explicitly saved playlist (non-blocking)
+        this.restorePlaylist();
+    }
+
+    /**
+     * Restore the last explicitly saved playlist on startup.
+     * Resolves saved file paths through the Electron bridge, drops any that no longer
+     * exist, and surfaces a HUD message if files were missing (step 10).
+     */
+    async restorePlaylist() {
+        const saved = loadPlaylist();
+        if (!saved || saved.tracks.length === 0) {
+            return;
+        }
+
+        const paths = saved.tracks.map((t) => t.filePath);
+        const resolved = await globalThis.electronAPI.resolveFiles(paths);
+        if (resolved.length === 0) {
+            return;
+        }
+
+        const savedPath = saved.tracks[saved.currentSongIndex]?.filePath;
+        const newIndex = savedPath ? resolved.findIndex((file) => file.filePath === savedPath) : -1;
+        this.musicPlayer.restorePlaylist(resolved, Math.max(newIndex, 0));
+
+        const missingCount = saved.tracks.length - resolved.length;
+        if (missingCount > 0) {
+            const label = missingCount === 1 ? 'track' : 'tracks';
+            this.hud.displayMessage(`${missingCount} saved ${label} unavailable`);
+        }
     }
 
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */

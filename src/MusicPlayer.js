@@ -1,5 +1,6 @@
 import AlgorithmLoader from './AlgorithmLoader.js';
 import htmlEscape from './utils/htmlEscape.js';
+import { clearPlaylist, savePlaylist } from './utils/PlaylistStorage.js';
 
 /**
  * MusicPlayer — handles audio playback, playlist management,
@@ -8,7 +9,6 @@ import htmlEscape from './utils/htmlEscape.js';
  * The class is designed to be instantiated once and manages its own DOM references and event listeners.
  */
 export default class MusicPlayer {
-    // INSTANCE PROPERTIES
     currentSongIndex = 0;
     eqRafId = null;
     frequencyAnalyser = null;
@@ -22,12 +22,22 @@ export default class MusicPlayer {
     trackSkipWhilePlayingTimeout = null;
 
     /**
-     * List of audio track blob URLs.
+     * Runtime audio source URLs (file://) in playlist order.
      * @type {string[]}
      */
     trackList = [];
-    /** @type {string[]} */
-    trackNames = [];
+
+    /**
+     * Persisted track metadata in playlist order.
+     * Each entry is the durable record used for saving and restoring the playlist.
+     * @type {Array<{ filePath: string, trackName: string }>}
+     */
+    tracks = [];
+
+    /** True when the in-memory playlist differs from the last saved playlist. */
+    isDirty = false;
+    /** True when a saved playlist currently exists in storage. */
+    hasSavedPlaylist = false;
 
     // used for smoothing the EQ animation by keeping track of previous values, and for zeroing out the display when music is paused
     previousFreqBandValues = [0, 0, 0, 0, 0];
@@ -59,7 +69,7 @@ export default class MusicPlayer {
      * Should be called once in the constructor.
      */
     bindEvents() {
-        this.input.addEventListener('change', () => this.handleFiles());
+        this.label.addEventListener('click', () => this.openFilePicker());
 
         this.playBtn.addEventListener('click', () => this.playTrack());
         this.stopBtn.addEventListener('click', () => this.stopPlayback());
@@ -76,6 +86,8 @@ export default class MusicPlayer {
 
         this.playlistToggle.addEventListener('click', () => this.togglePlaylist());
         this.playListEl.addEventListener('click', (e) => this.onPlaylistClick(e));
+        this.savePlBtn.addEventListener('click', () => this.handleSavePlaylist());
+        this.clearPlBtn.addEventListener('click', () => this.handleClearPlaylist());
     }
 
     /**
@@ -102,12 +114,9 @@ export default class MusicPlayer {
         return listItem;
     }
 
-    /** Clean up resources (blob URLs) on app close. */
-    destroy() {
-        for (const url of this.trackList) {
-            globalThis.URL.revokeObjectURL(url);
-        }
-    }
+    /** Clean up resources on app close. No-op — file:// URLs need no revocation. */
+    // oxlint-disable-next-line no-empty-function
+    destroy() {}
 
     /** Update the progress bar and time displays based on current playback position. */
     displayProgress() {
@@ -309,8 +318,10 @@ export default class MusicPlayer {
         const [removed] = this.trackList.splice(this.draggedIndex, 1);
         this.trackList.splice(dropIndex, 0, removed);
 
-        const [removedName] = this.trackNames.splice(this.draggedIndex, 1);
-        this.trackNames.splice(dropIndex, 0, removedName);
+        const [removedTrack] = this.tracks.splice(this.draggedIndex, 1);
+        this.tracks.splice(dropIndex, 0, removedTrack);
+
+        this.isDirty = true;
 
         if (this.currentSongIndex === this.draggedIndex) {
             // moving the currently playing track - update currentSongIndex to new location
@@ -332,14 +343,19 @@ export default class MusicPlayer {
         this.renderPlaylist();
         this.updatePlaylistIndices();
         this.updatePlaylistStyle();
+        this.updatePlaylistActions();
     }
 
     /**
-     * Handle file input changes and build or update the playlist.
-     * Processes selected files, avoids duplicates, updates the UI,
-     * and manages playback state as needed.
+     * Add resolved file entries to the playlist.
+     * Avoids duplicates by path, updates the UI, and manages playback state as needed.
+     * @param {{ filePath: string, trackName: string, fileUrl: string }[]} files - Resolved file entries from the Electron dialog or playlist restore.
      */
-    handleFiles() {
+    handleFiles(files) {
+        if (!files?.length) {
+            return;
+        }
+
         // Pause playback while updating the playlist, and remember if we were playing so we can resume if needed
         const wasPlaying = this.isPlaying;
         this.audio.pause();
@@ -347,31 +363,25 @@ export default class MusicPlayer {
         this.elapsedEl.textContent = '';
         this.totalEl.textContent = '';
 
-        const { files } = this.input;
-        if (!files?.length) {
-            this.progressPanel.style.display = 'none';
-            return;
-        }
-
         // If this is the first time loading tracks, we need to set up the audio source and UI. If not, we'll just append to the existing playlist.
         const isFirstLoad = this.trackList.length === 0;
 
-        for (const file of files) {
-            const baseName = file.name.includes('.')
-                ? file.name.slice(0, file.name.indexOf('.'))
-                : file.name;
-
-            // Don't add the same track multiple times if the user selects it again in the file dialog
-            if (this.trackNames.includes(baseName)) {
+        let added = false;
+        for (const { filePath, trackName, fileUrl } of files) {
+            // Deduplicate by stable file path
+            if (this.tracks.some((t) => t.filePath === filePath)) {
                 continue;
             }
-            this.trackNames.push(baseName);
-
-            const blob = globalThis.URL.createObjectURL(file);
-            this.trackList.push(blob);
+            this.tracks.push({ filePath, trackName });
+            this.trackList.push(fileUrl);
+            added = true;
+        }
+        if (added) {
+            this.isDirty = true;
         }
 
         this.progressPanel.style.display = 'flex';
+        this.updatePlaylistActions();
         this.renderPlaylist();
 
         if (isFirstLoad) {
@@ -385,7 +395,65 @@ export default class MusicPlayer {
 
         this.playlistToggle.classList.add('tracks-present');
         this.updateTrackName();
-        this.input.value = '';
+    }
+
+    /**
+     * Persist the current playlist to storage and reset the dirty flag.
+     * Temporarily shows "Saved!" on the button as lightweight feedback.
+     */
+    handleSavePlaylist() {
+        savePlaylist(this.tracks, this.currentSongIndex);
+        this.isDirty = false;
+        this.hasSavedPlaylist = true;
+        this.updatePlaylistActions();
+        this.savePlBtn.textContent = 'Saved!';
+        setTimeout(() => {
+            this.savePlBtn.textContent = 'Save Playlist';
+        }, 1500);
+    }
+
+    /**
+     * Remove the persisted playlist from storage without affecting the in-memory playlist.
+     * Re-enables Save if there are tracks loaded.
+     */
+    handleClearPlaylist() {
+        clearPlaylist();
+        this.hasSavedPlaylist = false;
+        this.isDirty = this.tracks.length > 0;
+        this.updatePlaylistActions();
+    }
+
+    /**
+     * Restore a previously saved playlist on app startup.
+     * Populates the playlist, then overrides the active track to the saved position.
+     * Sets hasSavedPlaylist = true and clears the dirty flag.
+     * @param {{ filePath: string, trackName: string, fileUrl: string }[]} files - Resolved file entries.
+     * @param {number} restoreIndex - Index of the track to make active; falls back to 0 if out of range.
+     */
+    restorePlaylist(files, restoreIndex) {
+        if (files.length === 0) {
+            return;
+        }
+        this.handleFiles(files);
+        if (restoreIndex > 0 && restoreIndex < this.trackList.length) {
+            this.currentSongIndex = restoreIndex;
+            this.audio.src = this.trackList[this.currentSongIndex];
+            this.updatePlaylistStyle();
+            this.updateTrackName();
+        }
+        this.isDirty = false;
+        this.hasSavedPlaylist = true;
+        this.updatePlaylistActions();
+    }
+
+    /**
+     * Open the native file picker dialog via Electron and add selected tracks.
+     */
+    async openFilePicker() {
+        const files = await globalThis.electronAPI.openFiles();
+        if (files.length > 0) {
+            this.handleFiles(files);
+        }
     }
 
     /**
@@ -402,8 +470,6 @@ export default class MusicPlayer {
         this.iconPause = document.querySelector('#icon-pause');
         /** @type {HTMLButtonElement} */
         this.iconPlay = document.querySelector('#icon-play');
-        /** @type {HTMLInputElement} */
-        this.input = document.querySelector('#input');
         /** @type {HTMLDivElement} */
         this.player = document.querySelector('#player');
         /** @type {HTMLUListElement} */
@@ -412,6 +478,10 @@ export default class MusicPlayer {
         this.progress = document.querySelector('#progress-percent');
         /** @type {HTMLDivElement} */
         this.progressPanel = document.querySelector('#progress');
+        /** @type {HTMLButtonElement} */
+        this.savePlBtn = document.querySelector('#save-playlist');
+        /** @type {HTMLButtonElement} */
+        this.clearPlBtn = document.querySelector('#clear-playlist');
 
         this.accordionEl = document.querySelector('#playlist-accordion');
         this.elapsedEl = document.querySelector('#time-elapsed');
@@ -446,6 +516,9 @@ export default class MusicPlayer {
         this.audio.src = this.trackList[this.currentSongIndex];
         this.updatePlaylistStyle();
         this.enqueuePlay();
+        if (this.hasSavedPlaylist) {
+            savePlaylist(this.tracks, this.currentSongIndex);
+        }
     }
 
     /**
@@ -523,10 +596,9 @@ export default class MusicPlayer {
             return;
         }
 
-        globalThis.URL.revokeObjectURL(this.trackList[index]);
-
         this.trackList.splice(index, 1);
-        this.trackNames.splice(index, 1);
+        this.tracks.splice(index, 1);
+        this.isDirty = true;
 
         if (this.trackList.length === 0) {
             this.audio.src = '';
@@ -542,6 +614,7 @@ export default class MusicPlayer {
             this.totalEl.textContent = '';
             this.stopEq();
             this.eqCanvas.style.display = 'none';
+            this.updatePlaylistActions();
             return;
         }
 
@@ -560,6 +633,7 @@ export default class MusicPlayer {
         this.renderPlaylist();
         this.updatePlaylistIndices();
         this.updatePlaylistStyle();
+        this.updatePlaylistActions();
     }
 
     /**
@@ -569,9 +643,8 @@ export default class MusicPlayer {
     renderPlaylist() {
         this.playListEl.innerHTML = '';
         const fragment = document.createDocumentFragment();
-        for (let i = 0; i < this.trackList.length; i++) {
-            const fileName = this.trackNames[i];
-            const listItem = this.createPlaylistItem(fileName, i);
+        for (let i = 0; i < this.tracks.length; i++) {
+            const listItem = this.createPlaylistItem(this.tracks[i].trackName, i);
             fragment.append(listItem);
         }
         this.playListEl.append(fragment);
@@ -626,6 +699,9 @@ export default class MusicPlayer {
             this.enqueuePlay();
         } else {
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
+        }
+        if (this.hasSavedPlaylist) {
+            savePlaylist(this.tracks, this.currentSongIndex);
         }
     }
 
@@ -693,6 +769,12 @@ export default class MusicPlayer {
         this.iconPause.style.display = isPlaying ? 'inline' : 'none';
     }
 
+    /** Sync the Save / Clear button enabled states with current dirty and saved-playlist flags. */
+    updatePlaylistActions() {
+        this.savePlBtn.disabled = !this.isDirty || this.tracks.length === 0;
+        this.clearPlBtn.disabled = !this.hasSavedPlaylist;
+    }
+
     /** Update data-index attributes for all list items. This is needed when the user reorders tracks by drag and drop or removes a track. */
     updatePlaylistIndices() {
         /** @type {NodeListOf<HTMLLIElement>} */
@@ -716,11 +798,11 @@ export default class MusicPlayer {
 
     /** Update the now-playing track name display. */
     updateTrackName() {
-        if (this.trackNames.length === 0) {
+        if (this.tracks.length === 0) {
             this.trackNameEl.textContent = '';
             return;
         }
 
-        this.trackNameEl.textContent = this.trackNames[this.currentSongIndex] ?? '';
+        this.trackNameEl.textContent = this.tracks[this.currentSongIndex]?.trackName ?? '';
     }
 }

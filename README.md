@@ -49,6 +49,14 @@ the visuals.
 Load up your favorite tracks, hit play, and let the algorithms do their thing.
 Each visualization is unique and will never look exactly the same twice.
 
+### Saving Your Playlist
+
+Click **Save Playlist** (inside the expanded playlist view) to persist your
+current tracks to disk. On the next launch the playlist and the track you were
+last on will be restored automatically. Switching tracks while a playlist is
+saved keeps the saved position up to date — no need to save again. Click
+**Clear Saved Playlist** to remove the saved playlist and start fresh.
+
 ## What's the Point?
 
 Sometimes you just want to zone out with some good music and watch something

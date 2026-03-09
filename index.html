@@ -120,6 +120,13 @@
                     <span class="keys">Press S for silence mode to toggle it on/off. </span>
                 </p>
                 <p>
+                    PLAYLIST:
+                    <span class="keys">Use Save Playlist to persist your current tracks.</span>
+                    On next launch the playlist and the last track you were on will be restored
+                    automatically. Use Clear Saved Playlist to stop this from happening. Switching
+                    tracks while a playlist is saved will update the saved position automatically.
+                </p>
+                <p>
                     Your preferences (player visibility, silence mode, auto-change timing, waveform,
                     and manual/auto mode) are saved automatically and restored on next launch.
                 </p>
@@ -137,8 +144,7 @@
 
         <div id="player">
             <div id="picker">
-                <label id="click-label" for="input">Add Track(s)</label>
-                <input type="file" id="input" accept="audio/*" multiple />
+                <button id="click-label">Add Track(s)</button>
                 <div id="now-playing">
                     <canvas id="eq-display" width="50" height="20"></canvas>
                     <span id="track-name"></span>
@@ -250,6 +256,10 @@
             </div>
             <div id="playlist-accordion">
                 <ol id="playlist"></ol>
+                <div id="playlist-actions">
+                    <button id="save-playlist" disabled>Save Playlist</button>
+                    <button id="clear-playlist" disabled>Clear Saved Playlist</button>
+                </div>
             </div>
             <div id="progress">
                 <span id="time-elapsed" title="Click to toggle remaining time"></span>
