@@ -90,7 +90,10 @@ describe('musicPlayer methods', () => {
     describe('updateTrackName', () => {
         it('sets the track name from the current playlist entry', () => {
             const instance = Object.create(proto);
-            instance.trackNames = ['Song One', 'Song Two'];
+            instance.tracks = [
+                { filePath: '/1', trackName: 'Song One' },
+                { filePath: '/2', trackName: 'Song Two' },
+            ];
             instance.currentSongIndex = 1;
             instance.trackNameEl = { textContent: '' };
 
@@ -101,7 +104,7 @@ describe('musicPlayer methods', () => {
 
         it('clears the track name when the playlist is empty', () => {
             const instance = Object.create(proto);
-            instance.trackNames = [];
+            instance.tracks = [];
             instance.trackNameEl = { textContent: 'previous' };
 
             instance.updateTrackName();

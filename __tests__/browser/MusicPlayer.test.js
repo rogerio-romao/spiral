@@ -2,8 +2,7 @@ import MusicPlayer from '../../src/MusicPlayer.js';
 
 const FIXTURE = /* html */ `
     <div id="player" style="display: block">
-        <label id="click-label" for="input">Add Track(s)</label>
-        <input type="file" id="input" accept="audio/*" multiple />
+        <button id="click-label">Add Track(s)</button>
         <canvas id="eq-display" width="50" height="20"></canvas>
         <span id="track-name"></span>
         <button id="playlist-toggle"></button>
@@ -14,8 +13,13 @@ const FIXTURE = /* html */ `
         </button>
         <button id="stop"></button>
         <button id="next"></button>
-        <div id="playlist-accordion"></div>
-        <ol id="playlist"></ol>
+        <div id="playlist-accordion">
+            <ol id="playlist"></ol>
+            <div id="playlist-actions">
+                <button id="save-playlist" disabled>Save Playlist</button>
+                <button id="clear-playlist" disabled>Clear Saved Playlist</button>
+            </div>
+        </div>
         <div id="progress" style="display: none">
             <span id="time-elapsed"></span>
             <progress id="progress-percent" max="100" value="0"></progress>
@@ -31,8 +35,6 @@ const FIXTURE = /* html */ `
 // - Avoid errors or unpredictable behavior in test environments
 function createPlayer() {
     document.body.innerHTML = FIXTURE;
-    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
-    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(vi.fn());
     vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(null);
     vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(vi.fn());
     return new MusicPlayer();
@@ -96,7 +98,10 @@ describe('musicPlayer (browser)', () => {
         it('creates list items for each track', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2'];
-            player.trackNames = ['Track 1', 'Track 2'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track 1' },
+                { filePath: '/2', trackName: 'Track 2' },
+            ];
             player.currentSong = 0;
             player.renderPlaylist();
 
@@ -106,7 +111,10 @@ describe('musicPlayer (browser)', () => {
         it('sets track name text content correctly', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2'];
-            player.trackNames = ['Track One', 'Track Two'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track One' },
+                { filePath: '/2', trackName: 'Track Two' },
+            ];
             player.currentSong = 0;
             player.renderPlaylist();
 
@@ -118,7 +126,11 @@ describe('musicPlayer (browser)', () => {
         it('reorders playlist items via drag and drop and keeps DOM and state in sync', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2', 'blob:url3'];
-            player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track 1' },
+                { filePath: '/2', trackName: 'Track 2' },
+                { filePath: '/3', trackName: 'Track 3' },
+            ];
             player.currentSongIndex = 1;
             player.renderPlaylist();
 
@@ -134,7 +146,11 @@ describe('musicPlayer (browser)', () => {
             items[0].dispatchEvent(new DragEvent('dragend', { bubbles: true, dataTransfer }));
 
             // After reordering, Track 1 should be last, and the current song index should update to reflect the new position of the previously playing track (Track 2)
-            expect(player.trackNames).toStrictEqual(['Track 2', 'Track 3', 'Track 1']);
+            expect(player.tracks.map((t) => t.trackName)).toStrictEqual([
+                'Track 2',
+                'Track 3',
+                'Track 1',
+            ]);
             expect(player.trackList).toStrictEqual(['blob:url2', 'blob:url3', 'blob:url1']);
             expect(player.currentSongIndex).toBe(0);
 
@@ -153,7 +169,11 @@ describe('musicPlayer (browser)', () => {
             const scrollIntoViewSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView');
 
             player.trackList = ['blob:url1', 'blob:url2', 'blob:url3'];
-            player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track 1' },
+                { filePath: '/2', trackName: 'Track 2' },
+                { filePath: '/3', trackName: 'Track 3' },
+            ];
             player.currentSongIndex = 0;
             player.audio.src = player.trackList[0];
 
@@ -182,23 +202,31 @@ describe('musicPlayer (browser)', () => {
     describe('handleFiles', () => {
         it('loads selected files and initializes the playlist and UI', () => {
             const player = createPlayer();
-            URL.createObjectURL.mockReturnValueOnce('blob:url1').mockReturnValueOnce('blob:url2');
 
             const files = [
-                new File(['one'], 'Track One.mp3', { type: 'audio/mpeg' }),
-                new File(['two'], 'Track Two.wav', { type: 'audio/wav' }),
+                {
+                    filePath: '/music/Track One.mp3',
+                    fileUrl: 'file:///music/Track One.mp3',
+                    trackName: 'Track One',
+                },
+                {
+                    filePath: '/music/Track Two.wav',
+                    fileUrl: 'file:///music/Track Two.wav',
+                    trackName: 'Track Two',
+                },
             ];
 
-            // here we directly call the event handler for the file input change event, since simulating the full file selection dialog and user interaction is not feasible in JSDOM. We also need to define the `files` property on the input element, as it is read-only and cannot be set directly.
-            Object.defineProperty(player.input, 'files', {
-                configurable: true,
-                value: files,
-            });
-
-            player.input.dispatchEvent(new Event('change', { bubbles: true }));
+            player.handleFiles(files);
 
             expect(HTMLMediaElement.prototype.pause).toHaveBeenCalledWith();
-            expect(player.trackList).toStrictEqual(['blob:url1', 'blob:url2']);
+            expect(player.trackList).toStrictEqual([
+                'file:///music/Track One.mp3',
+                'file:///music/Track Two.wav',
+            ]);
+            expect(player.tracks.map((t) => t.filePath)).toStrictEqual([
+                '/music/Track One.mp3',
+                '/music/Track Two.wav',
+            ]);
             expect(player.currentSongIndex).toBe(0);
             expect(player.isPlaying).toBeFalsy();
             expect(player.progressPanel.style.display).toBe('flex');
@@ -206,7 +234,23 @@ describe('musicPlayer (browser)', () => {
             expect(player.trackNameEl.textContent).toBe('Track One');
             expect(document.querySelectorAll('.list-item')).toHaveLength(2);
             expect(document.querySelector('#icon-play').style.display).toBe('inline');
-            expect(player.input.value).toBe('');
+        });
+
+        it('deduplicates tracks by file path', () => {
+            const player = createPlayer();
+
+            const files = [
+                {
+                    filePath: '/music/Track One.mp3',
+                    fileUrl: 'file:///music/Track One.mp3',
+                    trackName: 'Track One',
+                },
+            ];
+
+            player.handleFiles(files);
+            player.handleFiles(files);
+
+            expect(player.trackList).toHaveLength(1);
         });
     });
 
@@ -216,7 +260,10 @@ describe('musicPlayer (browser)', () => {
             const enqueuePlaySpy = vi.spyOn(player, 'enqueuePlay').mockImplementation(vi.fn());
 
             player.trackList = ['blob:url1', 'blob:url2'];
-            player.trackNames = ['Track 1', 'Track 2'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track 1' },
+                { filePath: '/2', trackName: 'Track 2' },
+            ];
             player.currentSongIndex = 0;
             player.isPlaying = true;
             player.renderPlaylist();
@@ -254,27 +301,20 @@ describe('musicPlayer (browser)', () => {
     });
 
     describe('removeTrack', () => {
-        it('removes a track from trackList and trackNames', () => {
+        it('removes a track from trackList and tracks', () => {
             const player = createPlayer();
             player.trackList = ['blob:url1', 'blob:url2', 'blob:url3'];
-            player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track 1' },
+                { filePath: '/2', trackName: 'Track 2' },
+                { filePath: '/3', trackName: 'Track 3' },
+            ];
             player.currentSong = 0;
             player.renderPlaylist();
 
             player.removeTrack(1);
             expect(player.trackList).toHaveLength(2);
-            expect(player.trackNames).not.toContain('Track 2');
-        });
-
-        it('calls revokeObjectURL for the removed track', () => {
-            const player = createPlayer();
-            player.trackList = ['blob:url1', 'blob:url2'];
-            player.trackNames = ['Track 1', 'Track 2'];
-            player.currentSong = 0;
-            player.renderPlaylist();
-
-            player.removeTrack(0);
-            expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:url1');
+            expect(player.tracks.map((t) => t.trackName)).not.toContain('Track 2');
         });
 
         it('removes the currently playing track and continues with the next track', () => {
@@ -283,7 +323,11 @@ describe('musicPlayer (browser)', () => {
             const scrollIntoViewSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView');
 
             player.trackList = ['blob:url1', 'blob:url2', 'blob:url3'];
-            player.trackNames = ['Track 1', 'Track 2', 'Track 3'];
+            player.tracks = [
+                { filePath: '/1', trackName: 'Track 1' },
+                { filePath: '/2', trackName: 'Track 2' },
+                { filePath: '/3', trackName: 'Track 3' },
+            ];
             player.currentSongIndex = 1;
             player.isPlaying = true;
             player.audio.src = 'blob:url2';
@@ -293,9 +337,8 @@ describe('musicPlayer (browser)', () => {
             // Simulate clicking the remove button for the currently playing track (Track 2)
             removeButtons[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-            // After removing the currently playing track, the player should call revokeObjectURL for that track, update the track list and names to remove it, update the current song index to point to the next track (which will now be at the same index as the removed track), load the next track's URL into the audio element, and enqueue play to continue playback. The playlist UI should also update to reflect the removed track and highlight the new current track.
-            expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:url2');
-            expect(player.trackNames).toStrictEqual(['Track 1', 'Track 3']);
+            // After removing the currently playing track, the player should update the track list and names to remove it, update the current song index to point to the next track (which will now be at the same index as the removed track), load the next track's URL into the audio element, and enqueue play to continue playback. The playlist UI should also update to reflect the removed track and highlight the new current track.
+            expect(player.tracks.map((t) => t.trackName)).toStrictEqual(['Track 1', 'Track 3']);
             expect(player.currentSongIndex).toBe(1);
             expect(player.audio.src).toContain('blob:url3');
             expect(player.isPlaying).toBeTruthy();
@@ -325,12 +368,254 @@ describe('musicPlayer (browser)', () => {
     });
 
     describe('destroy', () => {
-        it('calls revokeObjectURL for all blob URLs', () => {
+        it('runs without errors', () => {
             const player = createPlayer();
-            player.trackList = ['blob:url1', 'blob:url2'];
+            player.trackList = ['file:///music/Track One.mp3', 'file:///music/Track Two.wav'];
 
-            player.destroy();
-            expect(URL.revokeObjectURL).toHaveBeenCalledTimes(2);
+            expect(() => player.destroy()).not.toThrow();
+        });
+    });
+
+    describe('playlist persistence — button states', () => {
+        const TRACK_A = {
+            filePath: '/music/a.mp3',
+            fileUrl: 'file:///music/a.mp3',
+            trackName: 'Track A',
+        };
+        const TRACK_B = {
+            filePath: '/music/b.mp3',
+            fileUrl: 'file:///music/b.mp3',
+            trackName: 'Track B',
+        };
+
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
+        it('save is disabled initially', () => {
+            const player = createPlayer();
+            expect(player.savePlBtn.disabled).toBeTruthy();
+        });
+
+        it('clear is disabled initially', () => {
+            const player = createPlayer();
+            expect(player.clearPlBtn.disabled).toBeTruthy();
+        });
+
+        it('save is enabled after adding tracks', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            expect(player.savePlBtn.disabled).toBeFalsy();
+        });
+
+        it('save is disabled and clear is enabled after saving', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            expect(player.savePlBtn.disabled).toBeTruthy();
+            expect(player.clearPlBtn.disabled).toBeFalsy();
+        });
+
+        it('clear is disabled and save is re-enabled after clearing', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            player.handleClearPlaylist();
+            expect(player.clearPlBtn.disabled).toBeTruthy();
+            expect(player.savePlBtn.disabled).toBeFalsy();
+        });
+
+        it('save is disabled when the playlist is empty even if isDirty is true', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.removeTrack(0);
+            expect(player.savePlBtn.disabled).toBeTruthy();
+        });
+
+        it('save becomes enabled after a drag-and-drop reorder', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A, TRACK_B]);
+            player.handleSavePlaylist();
+
+            player.tracks = [
+                { filePath: '/music/b.mp3', trackName: 'Track B' },
+                { filePath: '/music/a.mp3', trackName: 'Track A' },
+            ];
+            player.trackList = ['file:///music/b.mp3', 'file:///music/a.mp3'];
+            player.isDirty = true;
+            player.updatePlaylistActions();
+
+            expect(player.savePlBtn.disabled).toBeFalsy();
+        });
+    });
+
+    describe('handleSavePlaylist', () => {
+        const TRACK_A = {
+            filePath: '/music/a.mp3',
+            fileUrl: 'file:///music/a.mp3',
+            trackName: 'Track A',
+        };
+
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
+        it('persists tracks and currentSongIndex to storage', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            const stored = JSON.parse(localStorage.getItem('spiral:playlist'));
+            expect(stored.currentSongIndex).toBe(0);
+            expect(stored.tracks).toStrictEqual([
+                { filePath: '/music/a.mp3', trackName: 'Track A' },
+            ]);
+        });
+
+        it('disables Save and enables Clear', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            expect(player.isDirty).toBeFalsy();
+            expect(player.hasSavedPlaylist).toBeTruthy();
+            expect(player.savePlBtn.disabled).toBeTruthy();
+            expect(player.clearPlBtn.disabled).toBeFalsy();
+        });
+
+        it('temporarily shows "Saved!" then restores the button label', () => {
+            vi.useFakeTimers();
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+
+            player.handleSavePlaylist();
+            expect(player.savePlBtn.textContent).toBe('Saved!');
+
+            vi.runAllTimers();
+            expect(player.savePlBtn.textContent).toBe('Save Playlist');
+            vi.useRealTimers();
+        });
+    });
+
+    describe('handleClearPlaylist', () => {
+        const TRACK_A = {
+            filePath: '/music/a.mp3',
+            fileUrl: 'file:///music/a.mp3',
+            trackName: 'Track A',
+        };
+
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
+        it('removes the saved playlist from storage', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            player.handleClearPlaylist();
+            expect(localStorage.getItem('spiral:playlist')).toBeNull();
+        });
+
+        it('leaves the in-memory playlist intact', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            player.handleClearPlaylist();
+            expect(player.tracks).toHaveLength(1);
+            expect(player.trackList).toHaveLength(1);
+        });
+
+        it('disables Clear and re-enables Save when tracks remain', () => {
+            const player = createPlayer();
+            player.handleFiles([TRACK_A]);
+            player.handleSavePlaylist();
+            player.handleClearPlaylist();
+            expect(player.hasSavedPlaylist).toBeFalsy();
+            expect(player.isDirty).toBeTruthy();
+            expect(player.clearPlBtn.disabled).toBeTruthy();
+            expect(player.savePlBtn.disabled).toBeFalsy();
+        });
+    });
+
+    describe('restorePlaylist', () => {
+        const FILES = [
+            { filePath: '/music/a.mp3', fileUrl: 'file:///music/a.mp3', trackName: 'Track A' },
+            { filePath: '/music/b.mp3', fileUrl: 'file:///music/b.mp3', trackName: 'Track B' },
+        ];
+
+        it('populates the playlist from provided files', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 0);
+            expect(player.trackList).toHaveLength(2);
+            expect(player.tracks).toHaveLength(2);
+        });
+
+        it('sets currentSongIndex to the provided restoreIndex', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 1);
+            expect(player.currentSongIndex).toBe(1);
+            expect(player.audio.src).toContain('file:///music/b.mp3');
+            expect(player.trackNameEl.textContent).toBe('Track B');
+        });
+
+        it('falls back to index 0 when restoreIndex is out of range', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 99);
+            expect(player.currentSongIndex).toBe(0);
+        });
+
+        it('clears isDirty and sets hasSavedPlaylist', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 0);
+            expect(player.isDirty).toBeFalsy();
+            expect(player.hasSavedPlaylist).toBeTruthy();
+        });
+
+        it('enables Clear and disables Save after restore', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 0);
+            expect(player.clearPlBtn.disabled).toBeFalsy();
+            expect(player.savePlBtn.disabled).toBeTruthy();
+        });
+
+        it('does nothing when the files array is empty', () => {
+            const player = createPlayer();
+            player.restorePlaylist([], 0);
+            expect(player.trackList).toHaveLength(0);
+            expect(player.hasSavedPlaylist).toBeFalsy();
+        });
+    });
+
+    describe('auto-save index on track change', () => {
+        const FILES = [
+            { filePath: '/music/a.mp3', fileUrl: 'file:///music/a.mp3', trackName: 'Track A' },
+            { filePath: '/music/b.mp3', fileUrl: 'file:///music/b.mp3', trackName: 'Track B' },
+            { filePath: '/music/c.mp3', fileUrl: 'file:///music/c.mp3', trackName: 'Track C' },
+        ];
+
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
+        it('updates the stored index when jumpToTrack is called and hasSavedPlaylist is true', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 0);
+            player.jumpToTrack(2);
+            const stored = JSON.parse(localStorage.getItem('spiral:playlist'));
+            expect(stored.currentSongIndex).toBe(2);
+        });
+
+        it('updates the stored index when skipTrack is called and hasSavedPlaylist is true', () => {
+            const player = createPlayer();
+            player.restorePlaylist(FILES, 0);
+            player.skipTrack(1);
+            const stored = JSON.parse(localStorage.getItem('spiral:playlist'));
+            expect(stored.currentSongIndex).toBe(1);
+        });
+
+        it('does not write to storage when hasSavedPlaylist is false', () => {
+            const player = createPlayer();
+            player.handleFiles(FILES);
+            player.jumpToTrack(1);
+            expect(localStorage.getItem('spiral:playlist')).toBeNull();
         });
     });
 });

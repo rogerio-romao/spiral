@@ -3,9 +3,45 @@
 // oxlint-disable promise/catch-or-return
 // oxlint-disable unicorn/prefer-top-level-await
 // oxlint-disable sort-keys
-import { app, BrowserWindow, Menu, screen } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, screen } from 'electron';
+import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+function trackNameFromPath(filePath) {
+    const base = path.basename(filePath);
+    const dotIndex = base.indexOf('.');
+    return dotIndex > 0 ? base.slice(0, dotIndex) : base;
+}
+
+function fileResult(filePath) {
+    return {
+        filePath,
+        trackName: trackNameFromPath(filePath),
+        fileUrl: pathToFileURL(filePath).href,
+    };
+}
+
+ipcMain.handle('dialog:openFiles', async () => {
+    const [win] = BrowserWindow.getAllWindows();
+    const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+        properties: ['openFile', 'multiSelections'],
+        filters: [
+            {
+                name: 'Audio',
+                extensions: ['mp3', 'flac', 'wav', 'ogg', 'm4a', 'aac', 'opus', 'weba'],
+            },
+        ],
+    });
+    if (canceled) {
+        return [];
+    }
+    return filePaths.map((fp) => fileResult(fp));
+});
+
+ipcMain.handle('playlist:resolveFiles', (_event, paths) =>
+    paths.filter((filePath) => fs.existsSync(filePath)).map((fp) => fileResult(fp)),
+);
 
 if (process.env.NODE_ENV === 'development') {
     const menuTemplate = [
