@@ -92,6 +92,7 @@ export default class BlockedAlgorithmsModal {
 
         for (const item of items) {
             const name = item.querySelector('input').dataset.algoName.toLowerCase();
+
             item.style.display = name.includes(query) ? '' : 'none';
         }
     }

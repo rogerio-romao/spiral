@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
+        "allowJs": true,
         "checkJs": true,
-        "lib": ["dom", "es2023"],
+        "lib": ["dom", "es2023", "DOM.Iterable"],
+        "noEmit": true,
         "target": "es2023"
     },
     "include": ["src", "global.d.ts"]

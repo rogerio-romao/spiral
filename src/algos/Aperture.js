@@ -14,7 +14,7 @@ export default class Aperture extends AL {
     }
 
     initializeBaseProperties() {
-        AL.white = true;
+        this.white = true;
     }
 
     initializeProperties() {
@@ -60,7 +60,7 @@ export default class Aperture extends AL {
         this.rotateCanvasRadians(this.rotate);
 
         if (this.t % (this.speed * 300) === 0) {
-            if (AL.white) {
+            if (this.white) {
                 AL.ctx.strokeStyle = 'black';
                 AL.ctx.fillStyle = 'white';
             } else {
@@ -68,7 +68,7 @@ export default class Aperture extends AL {
                 AL.ctx.fillStyle = 'black';
             }
 
-            AL.white = !AL.white;
+            this.white = !this.white;
 
             this.initializeProperties();
 

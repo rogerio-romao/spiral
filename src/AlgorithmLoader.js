@@ -224,7 +224,7 @@ export default class AlgorithmLoader {
                 originalDraw();
             } catch {
                 this.stop();
-                AlgorithmLoader.ctx.canvas.dispatchEvent(new CustomEvent('algorithm-error'));
+                AlgorithmLoader.ctx?.canvas.dispatchEvent(new CustomEvent('algorithm-error'));
             }
         };
     }
@@ -235,6 +235,10 @@ export default class AlgorithmLoader {
      * Clears the entire canvas, resetting any transforms.
      */
     clearScreen() {
+        if (!AlgorithmLoader.ctx) {
+            return;
+        }
+
         AlgorithmLoader.ctx.save();
         AlgorithmLoader.ctx.resetTransform();
         AlgorithmLoader.ctx.clearRect(
@@ -271,6 +275,10 @@ export default class AlgorithmLoader {
      * Fills the entire canvas with the current fill style, resetting any transforms.
      */
     fillScreen() {
+        if (!AlgorithmLoader.ctx) {
+            return;
+        }
+
         AlgorithmLoader.ctx.save();
         AlgorithmLoader.ctx.resetTransform();
         AlgorithmLoader.ctx.fillRect(
@@ -295,6 +303,10 @@ export default class AlgorithmLoader {
      * @param {number} angle - The angle in degrees to rotate.
      */
     rotateCanvasDegrees(angle) {
+        if (!AlgorithmLoader.ctx) {
+            return;
+        }
+
         AlgorithmLoader.ctx.translate(AlgorithmLoader.w / 2, AlgorithmLoader.h / 2);
         AlgorithmLoader.ctx.rotate((angle * Math.PI) / 180);
         AlgorithmLoader.ctx.translate(-AlgorithmLoader.w / 2, -AlgorithmLoader.h / 2);
@@ -305,6 +317,10 @@ export default class AlgorithmLoader {
      * @param {number} angle - The angle in radians to rotate.
      */
     rotateCanvasRadians(angle) {
+        if (!AlgorithmLoader.ctx) {
+            return;
+        }
+
         AlgorithmLoader.ctx.translate(AlgorithmLoader.w / 2, AlgorithmLoader.h / 2);
         AlgorithmLoader.ctx.rotate(angle);
         AlgorithmLoader.ctx.translate(-AlgorithmLoader.w / 2, -AlgorithmLoader.h / 2);

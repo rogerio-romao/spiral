@@ -6,7 +6,9 @@ export default class WaveformController {
     // INSTANCE PROPERTIES
     showWaveform = false;
     smoothing = 0.6;
+    /** @type {number[]|null} */
     waveformData = null;
+    /** @type {number|null} */
     animationRafId = null;
 
     /**
@@ -18,6 +20,7 @@ export default class WaveformController {
     constructor({ canvasElement, frequencyAnalyser, waveColor = 'white' }) {
         this.canvas = canvasElement;
         this.ctx = canvasElement?.getContext('2d');
+
         this.waveColor = waveColor;
 
         this.frequencyAnalyser = frequencyAnalyser;

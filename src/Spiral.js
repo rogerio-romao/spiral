@@ -36,7 +36,9 @@ export default class Spiral {
         // CANVAS SETUP
         /** @type {HTMLCanvasElement} */
         this.canvas = document.querySelector('#canvas');
+        /** @type {CanvasRenderingContext2D} */
         this.ctx = this.canvas.getContext('2d');
+
         this.w = globalThis.innerWidth;
         this.h = globalThis.innerHeight;
         this.applyDpr();
