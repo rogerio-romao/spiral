@@ -1,22 +1,24 @@
 /**
  * HudController — manages HUD overlay text: transient messages,
- * algorithm name display, silent mode, and help screen toggle.
+ * algorithm name display, silent mode, and help screen toggle,
+ * and their associated timers and state. Designed for use by external modules to trigger HUD updates without direct DOM manipulation.
  */
 export default class HudController {
     // INSTANCE PROPERTIES
     algorithmNameDisplayTimeInMs = 5000;
     algorithmNameTimer = null;
     messageDisplayTimeInMs = 7500;
+    /** @type {{ key: string|null, timer: ReturnType<typeof setTimeout>, element: HTMLElement }[]} */
     messages = [];
     maxMessages = 4;
     showHelpView = false;
     silenceMessages = false;
 
     /**
-     * @param {Object} options - Configuration object for HUD elements
-     * @param {HTMLElement} options.messageElement     - The #msg element
-     * @param {HTMLElement} options.algosDisplayElement - The #algos element
-     * @param {HTMLElement} options.helpElement         - The #help element
+     * @param {Object} domElements - Configuration object for HUD elements
+     * @param {HTMLElement|undefined} domElements.messageElement     - The #msg element
+     * @param {HTMLElement|undefined} domElements.algosDisplayElement - The #algos element
+     * @param {HTMLElement|undefined} domElements.helpElement         - The #help element
      */
     constructor({ messageElement, algosDisplayElement, helpElement }) {
         if (!messageElement) {
@@ -28,8 +30,11 @@ export default class HudController {
         if (!helpElement) {
             throw new Error('Missing required DOM element: #help');
         }
+        /** @type {HTMLElement} */
         this.messageElement = messageElement;
+        /** @type {HTMLElement} */
         this.algosDisplayElement = algosDisplayElement;
+        /** @type {HTMLElement} */
         this.helpElement = helpElement;
     }
 
@@ -38,8 +43,10 @@ export default class HudController {
         for (const msg of this.messages) {
             clearTimeout(msg.timer);
         }
-        this.messages = [];
+
         clearTimeout(this.algorithmNameTimer);
+
+        this.messages = [];
     }
 
     /**
@@ -147,7 +154,7 @@ export default class HudController {
     }
 
     /**
-     * Toggle silence mode on/off.
+     * Toggle silence mode on/off. No algorithm names will be shown.
      */
     toggleSilenceMode() {
         this.silenceMessages = !this.silenceMessages;

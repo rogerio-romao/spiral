@@ -15,10 +15,10 @@
 export default class FrequencyAnalyser {
     /**
      * @param {HTMLAudioElement} audioElement — the <audio> element to analyse.
-     * @param {object}  [options] - optional configuration options for the analyser.
-     * @param {number}  [options.bandCount]  - number of frequency bands.
-     * @param {number}  [options.fftSize] - FFT window size (power of 2).
-     * @param {number}  [options.smoothing] - smoothingTimeConstant (0–1).
+     * @param {object} [options] - optional configuration options for the analyser.
+     * @param {number} [options.bandCount]  - number of frequency bands.
+     * @param {number} [options.fftSize] - FFT window size (power of 2).
+     * @param {number} [options.smoothing] - smoothingTimeConstant (0–1).
      */
 
     constructor(audioElement, { bandCount = 5, fftSize = 2048, smoothing = 0.8 } = {}) {
@@ -52,7 +52,7 @@ export default class FrequencyAnalyser {
     // GETTERS & SETTERS
 
     /**
-     * The underlying AudioContext, for advanced use.
+     * The underlying AudioContext, for external use.
      * @returns {AudioContext} The AudioContext instance.
      */
     get audioContext() {
@@ -60,7 +60,7 @@ export default class FrequencyAnalyser {
     }
 
     /**
-     * The underlying AnalyserNode, for advanced configuration.
+     * The underlying AnalyserNode, for external use.
      * @returns {AnalyserNode} The AnalyserNode instance.
      */
     get analyserNode() {
@@ -86,7 +86,7 @@ export default class FrequencyAnalyser {
     }
 
     /**
-     * The underlying GainNode, for advanced use.
+     * The underlying GainNode, for external use.
      * @returns {GainNode} The GainNode instance.
      */
     get gainNode() {
@@ -99,7 +99,6 @@ export default class FrequencyAnalyser {
      * Smoothly ramp the output gain to `targetGain` over `durationMs` milliseconds.
      * Schedules a sample-accurate linear ramp on the `GainNode` — eliminates the
      * quantisation clicks that occur when mutating `HTMLAudioElement.volume` per frame.
-     *
      * @param {number} targetGain - Target gain value (0 = silent, 1 = full volume).
      * @param {number} durationMs - Duration of the ramp in milliseconds.
      * @returns {Promise<void>} Resolves after the ramp duration has elapsed.
@@ -110,7 +109,7 @@ export default class FrequencyAnalyser {
         gain.cancelScheduledValues(currentTime);
         gain.setValueAtTime(gain.value, currentTime);
         gain.linearRampToValueAtTime(targetGain, currentTime + durationMs / 1000);
-        // oxlint-disable-next-line promise/avoid-new
+
         return new Promise((resolve) => {
             setTimeout(resolve, durationMs);
         });
@@ -120,9 +119,7 @@ export default class FrequencyAnalyser {
      * Get the current frequency data split into `bandCount` logarithmic bands,
      * with more resolution in lower frequencies and broader ranges up high,
      * each normalised to 0–1.
-     *
-     * @returns {number[]} Array of length `bandCount` with values 0–1.
-     *   Returns all zeros when nothing is playing.
+     * @returns {number[]} Array of length `bandCount` with values 0–1. Returns all zeros when nothing is playing.
      */
     getBands() {
         // Get the raw frequency data into our reusable buffer
@@ -161,7 +158,6 @@ export default class FrequencyAnalyser {
     /**
      * Get the raw byte frequency data (0–255 per bin).
      * Useful for advanced visualisations that need full FFT resolution.
-     *
      * @returns {Uint8Array} The internal data array (mutated on each call).
      */
     getRawData() {
@@ -172,9 +168,7 @@ export default class FrequencyAnalyser {
     /**
      * Get the current time-domain data (waveform) as normalized values.
      * Each value is 0–1, where 0.5 represents the center line (silence).
-     *
-     * @returns {number[]} Array of normalized 0–1 values representing the waveform.
-     *   Returns all 0.5s when nothing is playing.
+     * @returns {number[]} Array of normalized 0–1 values representing the waveform. Returns all 0.5s when nothing is playing.
      */
     getWaveform() {
         this.analyser.getByteTimeDomainData(this.timeDomainData);
@@ -193,9 +187,8 @@ export default class FrequencyAnalyser {
     }
 
     /**
-     * Immediately set the output gain to `value` with no ramp.
+     * Immediately set the output gain to `value` with no ramp, unlike `fadeTo()`.
      * Cancels any scheduled ramp first to avoid conflicts.
-     *
      * @param {number} value - Gain value to apply instantly (0–1).
      */
     setGain(value) {
