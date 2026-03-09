@@ -48,13 +48,13 @@ describe('hudController (browser smoke)', () => {
         ).toThrow('Missing required DOM element: #help');
     });
 
-    it('calls clearTimeout on both timers in destroy', () => {
+    it('calls clearTimeout on message and algorithm name timers in destroy', () => {
         const { hud } = createHud();
         const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
 
         hud.displayMessage('test');
         hud.displayAlgorithmName('algo');
-        const messageTimerId = hud.messageTimer;
+        const messageTimerId = hud.messages[0].timer;
         const algoTimerId = hud.algorithmNameTimer;
 
         hud.destroy();
@@ -63,11 +63,13 @@ describe('hudController (browser smoke)', () => {
         clearTimeoutSpy.mockRestore();
     });
 
-    it('displays a message in the real browser DOM', () => {
+    it('displays a message as a child element in the real browser DOM', () => {
         const { hud, messageElement } = createHud();
         hud.displayMessage('browser test');
-        expect(messageElement.textContent).toBe('BROWSER TEST');
-        expect(messageElement.style.display).toBe('block');
+
+        const item = messageElement.querySelector('.msg-item');
+        expect(item).not.toBeNull();
+        expect(item.textContent).toBe('BROWSER TEST');
 
         hud.destroy();
     });
@@ -86,21 +88,49 @@ describe('hudController (browser smoke)', () => {
         hud.destroy();
     });
 
-    it('properly resets timers and DOM on rapid consecutive displayMessage calls', async () => {
+    it('stacks messages simultaneously and each timer expires independently', async () => {
         const { hud, messageElement } = createHud();
         hud.messageDisplayTimeInMs = 500;
 
         hud.displayMessage('first');
-        expect(messageElement.textContent).toBe('FIRST');
+        let items = messageElement.querySelectorAll('.msg-item');
+        expect(items).toHaveLength(1);
+        expect(items[0].textContent).toBe('FIRST');
+
         await sleep(100);
         hud.displayMessage('second');
-        expect(messageElement.textContent).toBe('SECOND');
+        items = messageElement.querySelectorAll('.msg-item');
+        expect(items).toHaveLength(2);
+        expect(items[0].textContent).toBe('FIRST');
+        expect(items[1].textContent).toBe('SECOND');
+
+        // first message (added at t=0) expires at t=500ms — wait until t=510ms
+        await sleep(410);
+        expect(items[0].classList.contains('msg-item-removing')).toBeTruthy();
+        // second message (added at t=100ms) expires at t=600ms — not yet
+        expect(items[1].classList.contains('msg-item-removing')).toBeFalsy();
+
+        // wait for first message's transition to complete (350ms fallback)
         await sleep(400);
-        expect(messageElement.style.display).toBe('block');
-        expect(messageElement.textContent).toBe('SECOND');
-        await sleep(100);
-        expect(messageElement.style.display).toBe('none');
-        expect(messageElement.textContent).toBe('');
+        items = messageElement.querySelectorAll('.msg-item');
+        expect(items).toHaveLength(1);
+        expect(items[0].textContent).toBe('SECOND');
+
+        hud.destroy();
+    });
+
+    it('replaces a keyed message immediately without stacking', async () => {
+        const { hud, messageElement } = createHud();
+
+        hud.displayMessage('manual mode', 'mode');
+        expect(messageElement.querySelectorAll('.msg-item')).toHaveLength(1);
+
+        await sleep(50);
+        hud.displayMessage('auto mode', 'mode');
+
+        const items = messageElement.querySelectorAll('.msg-item');
+        expect(items).toHaveLength(1);
+        expect(items[0].textContent).toBe('AUTO MODE');
 
         hud.destroy();
     });

@@ -99,7 +99,10 @@ describe('keyboardController', () => {
         dispatchKeyup('Equal');
 
         expect(transitionManager.autoChangeIntervalInSeconds).toBe(70);
-        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto-change: 70secs');
+        expect(hudController.displayMessage).toHaveBeenCalledWith(
+            'Auto-change: 70secs',
+            'autochange',
+        );
 
         controller.destroy();
     });
@@ -119,7 +122,10 @@ describe('keyboardController', () => {
         dispatchKeyup('Minus');
 
         expect(transitionManager.autoChangeIntervalInSeconds).toBe(50);
-        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto-change: 50secs');
+        expect(hudController.displayMessage).toHaveBeenCalledWith(
+            'Auto-change: 50secs',
+            'autochange',
+        );
 
         controller.destroy();
     });
@@ -140,7 +146,7 @@ describe('keyboardController', () => {
         dispatchKeyup('KeyA');
 
         expect(transitionManager.isInManualMode).toBeTruthy();
-        expect(hudController.displayMessage).toHaveBeenCalledWith('Manual mode');
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Manual mode', 'mode');
 
         controller.destroy();
     });
@@ -151,7 +157,7 @@ describe('keyboardController', () => {
         dispatchKeyup('KeyA');
 
         expect(transitionManager.isInManualMode).toBeFalsy();
-        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto mode');
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Auto mode', 'mode');
 
         controller.destroy();
     });
@@ -161,13 +167,13 @@ describe('keyboardController', () => {
         dispatchKeyup('KeyS');
 
         expect(hudController.toggleSilenceMode).toHaveBeenCalledOnce();
-        expect(hudController.displayMessage).toHaveBeenCalledWith('Silent mode');
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Silent mode', 'silence');
         expect(hudController.silenceMessages).toBeTruthy();
 
         dispatchKeyup('KeyS');
 
         expect(hudController.toggleSilenceMode).toHaveBeenCalledTimes(2);
-        expect(hudController.displayMessage).toHaveBeenCalledWith('Display mode');
+        expect(hudController.displayMessage).toHaveBeenCalledWith('Display mode', 'silence');
         expect(hudController.silenceMessages).toBeFalsy();
 
         controller.destroy();

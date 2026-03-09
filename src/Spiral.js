@@ -313,7 +313,7 @@ export default class Spiral {
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */
     toggleWaveform() {
         const isOn = this.waveformController.toggleWaveform();
-        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF');
+        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF', 'waveform');
     }
 
     /**

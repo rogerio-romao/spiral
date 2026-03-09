@@ -70,7 +70,10 @@ describe('devModeController (browser)', () => {
         // Badge should be visible
         expect(document.querySelector('#dev-badge').style.display).toBe('block');
         // HUD should show correct message
-        expect(deps.hudController.displayMessage).toHaveBeenLastCalledWith('DEV MODE ENABLED');
+        expect(deps.hudController.displayMessage).toHaveBeenLastCalledWith(
+            'DEV MODE ENABLED',
+            'devmode',
+        );
 
         // Disable dev mode
         checkbox.checked = false;
@@ -78,7 +81,10 @@ describe('devModeController (browser)', () => {
         // Badge should be hidden
         expect(document.querySelector('#dev-badge').style.display).toBe('none');
         // HUD should show correct message
-        expect(deps.hudController.displayMessage).toHaveBeenLastCalledWith('DEV MODE DISABLED');
+        expect(deps.hudController.displayMessage).toHaveBeenLastCalledWith(
+            'DEV MODE DISABLED',
+            'devmode',
+        );
 
         ctrl.destroy();
     });
