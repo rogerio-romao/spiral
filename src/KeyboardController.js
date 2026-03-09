@@ -12,18 +12,27 @@ export default class KeyboardController {
 
     /**
      * @param {Object} deps Dependencies for keyboard shortcut handling.
-     * @param {import('./HudController.js').default}     deps.hudController - The HUD controller for displaying messages and managing UI visibility.
-     * @param {import('./TransitionManager.js').default} deps.transitionManager - The transition manager for handling algorithm changes and auto-change settings.
-     * @param {import('./MusicPlayer.js').default}       deps.musicPlayer - The music player for controlling audio playback and visibility.
-     * @param {import('./DevModeController.js').default} deps.devModeController - The dev mode controller for enabling developer features.
-     * @param {import('./Spiral.js').default}            deps.spiral - The spiral instance for controlling toggling the waveform display.
+     * @param {import('./HudController.js').default}             deps.hudController - The HUD controller for displaying messages and managing UI visibility.
+     * @param {import('./TransitionManager.js').default}         deps.transitionManager - The transition manager for handling algorithm changes and auto-change settings.
+     * @param {import('./MusicPlayer.js').default}               deps.musicPlayer - The music player for controlling audio playback and visibility.
+     * @param {import('./DevModeController.js').default}         deps.devModeController - The dev mode controller for enabling developer features.
+     * @param {import('./Spiral.js').default}                    deps.spiral - The spiral instance for controlling toggling the waveform display.
+     * @param {import('./BlockedAlgorithmsModal.js').default}    deps.blockedAlgorithmsModal - The blocked algorithms modal controller.
      */
-    constructor({ hudController, transitionManager, musicPlayer, devModeController, spiral }) {
+    constructor({
+        hudController,
+        transitionManager,
+        musicPlayer,
+        devModeController,
+        spiral,
+        blockedAlgorithmsModal,
+    }) {
         this.hudController = hudController;
         this.transitionManager = transitionManager;
         this.musicPlayer = musicPlayer;
         this.devModeController = devModeController;
         this.spiral = spiral;
+        this.blockedAlgorithmsModal = blockedAlgorithmsModal;
 
         // Dev mode shortcut should only work in development, we need to check this
         this.isDevEnvironment = globalThis.env?.isDevEnvironment;
@@ -79,6 +88,12 @@ export default class KeyboardController {
             // Toggle the help view in the HUD
             case 'KeyH': {
                 this.hudController.toggleHelpView();
+                break;
+            }
+
+            // Open / close the blocked algorithms modal
+            case 'KeyL': {
+                this.blockedAlgorithmsModal.toggleModal();
                 break;
             }
 

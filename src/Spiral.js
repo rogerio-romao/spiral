@@ -1,10 +1,12 @@
 import AlgorithmLoader from './AlgorithmLoader.js';
+import BlockedAlgorithmsModal from './BlockedAlgorithmsModal.js';
 import DevModeController from './DevModeController.js';
 import FrequencyAnalyser from './FrequencyAnalyser.js';
 import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
+import { loadBlockedAlgorithms } from './utils/BlockedAlgorithms.js';
 import { loadPlaylist } from './utils/PlaylistStorage.js';
 import { loadPreferences, savePreference } from './utils/UserPreferences.js';
 import WaveformController from './WaveformController.js';
@@ -62,6 +64,11 @@ export default class Spiral {
         // DEV MODE CONTROLLER
         this.devModeController = new DevModeController({
             hudController: this.hud,
+            transitionManager: this.transitionManager,
+        });
+
+        // BLOCKED ALGORITHMS MODAL
+        this.blockedAlgorithmsModal = new BlockedAlgorithmsModal({
             transitionManager: this.transitionManager,
         });
 
@@ -162,6 +169,7 @@ export default class Spiral {
         this.hud.destroy();
         this.musicPlayer.destroy();
         this.devModeController.destroy();
+        this.blockedAlgorithmsModal.destroy();
         this.waveformController?.destroy();
 
         if (this.cursorHideTimeout) {
@@ -186,6 +194,10 @@ export default class Spiral {
 
         this.ctx.imageSmoothingEnabled = true;
         this.ctx.imageSmoothingQuality = 'high';
+
+        // Restore persisted blocked algorithms before the first algorithm runs
+        const blocked = loadBlockedAlgorithms();
+        this.transitionManager.blockedAlgorithms = new Set(blocked);
 
         // Apply saved user preferences before starting the timer
         const prefs = loadPreferences();
@@ -249,6 +261,7 @@ export default class Spiral {
 
         // Keyboard controller for global shortcuts
         this.keyboardController = new KeyboardController({
+            blockedAlgorithmsModal: this.blockedAlgorithmsModal,
             devModeController: this.devModeController,
             hudController: this.hud,
             musicPlayer: this.musicPlayer,

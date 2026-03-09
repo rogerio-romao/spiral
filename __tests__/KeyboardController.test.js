@@ -31,8 +31,10 @@ function makeController({ isDevEnvironment = false } = {}) {
     };
     const devModeController = { toggleDevModal: vi.fn() };
     const spiral = { toggleWaveform: vi.fn(), waveformController: { showWaveform: false } };
+    const blockedAlgorithmsModal = { toggleModal: vi.fn() };
 
     const controller = new KeyboardController({
+        blockedAlgorithmsModal,
         devModeController,
         hudController,
         musicPlayer,
@@ -41,7 +43,15 @@ function makeController({ isDevEnvironment = false } = {}) {
     });
     controller.bind();
 
-    return { controller, devModeController, hudController, musicPlayer, spiral, transitionManager };
+    return {
+        blockedAlgorithmsModal,
+        controller,
+        devModeController,
+        hudController,
+        musicPlayer,
+        spiral,
+        transitionManager,
+    };
 }
 
 function dispatchKeyup(code) {
@@ -240,6 +250,15 @@ describe('keyboardController', () => {
         dispatchKeyup('KeyW');
 
         expect(spiral.toggleWaveform).toHaveBeenCalledOnce();
+
+        controller.destroy();
+    });
+
+    it('keyL calls blockedAlgorithmsModal.toggleModal()', () => {
+        const { blockedAlgorithmsModal, controller } = makeController();
+        dispatchKeyup('KeyL');
+
+        expect(blockedAlgorithmsModal.toggleModal).toHaveBeenCalledOnce();
 
         controller.destroy();
     });

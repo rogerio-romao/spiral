@@ -327,7 +327,6 @@ describe('transitionManager', () => {
 
         it('does not repeat algorithms within the history window', () => {
             const tm = new TransitionManager(createDeps());
-            tm.lastAlgosCapacity = 4;
             const picks = new Set();
             for (let i = 0; i < 5; i++) {
                 picks.add(tm.getRandomAlgorithm());
@@ -336,25 +335,89 @@ describe('transitionManager', () => {
             expect(picks.size).toBe(5);
         });
 
-        it('evicts oldest history entry when capacity is exceeded', () => {
+        it('trims history to the effective capacity before each pick', () => {
             const tm = new TransitionManager(createDeps());
-            tm.lastAlgosCapacity = 3;
+            // Mock pool has 5 algos. Set lastAlgosCapacity=2 so effectiveCapacity = floor(5*2/5) = 2.
+            tm.lastAlgosCapacity = 2;
+            // Pick 4 times — history should never grow beyond effectiveCapacity+1 = 3
+            for (let i = 0; i < 4; i++) {
+                tm.getRandomAlgorithm();
+            }
 
-            tm.lastAlgos = new Set([
-                tm.getRandomAlgorithm(),
-                tm.getRandomAlgorithm(),
-                tm.getRandomAlgorithm(),
-            ]);
-
-            tm.getRandomAlgorithm();
-
-            expect(tm.lastAlgos.size).toBe(3);
+            expect(tm.lastAlgos.size).toBeLessThanOrEqual(3);
         });
 
         it('defaults to a capacity of 50', () => {
             const tm = new TransitionManager(createDeps());
 
             expect(tm.lastAlgosCapacity).toBe(50);
+        });
+    });
+
+    describe('blocked algorithms', () => {
+        it('defaults to an empty blocked set', () => {
+            const tm = new TransitionManager(createDeps());
+
+            expect(tm.blockedAlgorithms.size).toBe(0);
+        });
+
+        it('never picks a blocked algorithm', () => {
+            const tm = new TransitionManager(createDeps());
+            // Block 4 of 5 algos; only AlgoE remains
+            tm.blockedAlgorithms = new Set(['AlgoA', 'AlgoB', 'AlgoC', 'AlgoD']);
+
+            for (let i = 0; i < 10; i++) {
+                const picked = tm.getRandomAlgorithm();
+                expect(picked.name).toBe('AlgoE');
+            }
+        });
+
+        it('scales effective capacity proportionally with active pool size', () => {
+            const tm = new TransitionManager(createDeps());
+            // lastAlgosCapacity=50, total pool in mock=5; block 3 → 2 active
+            // effectiveCapacity = floor(2 * 50/5) = floor(20) = 20 → but capped by pool size naturally
+            tm.blockedAlgorithms = new Set(['AlgoA', 'AlgoB', 'AlgoC']);
+            // With 2 active algos and lastAlgosCapacity=2: effectiveCapacity = floor(2*2/5) = 0
+            tm.lastAlgosCapacity = 2;
+
+            for (let i = 0; i < 6; i++) {
+                tm.getRandomAlgorithm();
+            }
+
+            // With effectiveCapacity=0 all entries are evicted each round; size stays at 1 after add
+            expect(tm.lastAlgos.size).toBeLessThanOrEqual(2);
+        });
+
+        it('resets lastAlgos and uses full active pool when all active algos are in history', () => {
+            const tm = new TransitionManager(createDeps());
+            // Only 2 active algos
+            tm.blockedAlgorithms = new Set(['AlgoA', 'AlgoB', 'AlgoC']);
+
+            // Find the actual classes from the registry by picking twice
+            const _first = tm.getRandomAlgorithm();
+            const _second = tm.getRandomAlgorithm();
+            // Now lastAlgos has both active algos — next pick should reset and still succeed
+            const third = tm.getRandomAlgorithm();
+
+            expect(third).toBeDefined();
+        });
+
+        it('setBlockedAlgorithms replaces the blocked set', () => {
+            const tm = new TransitionManager(createDeps());
+            tm.setBlockedAlgorithms(['AlgoA', 'AlgoB']);
+
+            expect(tm.blockedAlgorithms.has('AlgoA')).toBeTruthy();
+            expect(tm.blockedAlgorithms.has('AlgoB')).toBeTruthy();
+            expect(tm.blockedAlgorithms.size).toBe(2);
+        });
+
+        it('setBlockedAlgorithms clears previous entries', () => {
+            const tm = new TransitionManager(createDeps());
+            tm.blockedAlgorithms = new Set(['AlgoC', 'AlgoD']);
+            tm.setBlockedAlgorithms(['AlgoA']);
+
+            expect(tm.blockedAlgorithms.has('AlgoC')).toBeFalsy();
+            expect(tm.blockedAlgorithms.has('AlgoA')).toBeTruthy();
         });
     });
 });

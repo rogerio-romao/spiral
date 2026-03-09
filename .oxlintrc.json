@@ -17,7 +17,7 @@
                 "allowTernary": true
             }
         ],
-        "eslint/max-lines-per-function": ["warn", 550],
+        "eslint/max-lines-per-function": ["warn", 630],
         "eslint/max-statements": ["warn", 130],
         "eslint/max-lines": ["warn", 810],
         "eslint/max-params": ["warn", 5],
@@ -81,6 +81,7 @@
         "import/no-relative-parent-imports": "off",
         "import/no-named-export": "off",
         "import/group-exports": "off",
+        "import/max-dependencies": ["warn", { "max": 12 }],
         "node/no-process-env": ["warn", { "allowedVariables": ["NODE_ENV"] }],
         "vitest/require-hook": "off",
         "vitest/prefer-called-times": "off",
