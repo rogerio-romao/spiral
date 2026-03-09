@@ -16,7 +16,7 @@ const MAX_INTERVAL = 300;
  * Load user preferences from localStorage, merged with defaults.
  * Corrupt or missing storage returns defaults. `autoChangeIntervalInSeconds`
  * is clamped to the valid range [10, 300].
- * @returns {{ autoChangeIntervalInSeconds: number, isInManualMode: boolean, showPlayer: boolean, showWaveform: boolean, silenceMessages: boolean }} The merged preferences object with validated values.
+ * @returns {{ autoChangeIntervalInSeconds: number, isInManualMode: boolean, showPlayer: boolean, showWaveform: boolean, silenceMessages: boolean, showTips: boolean }} The merged preferences object with validated values.
  */
 export function loadPreferences() {
     try {

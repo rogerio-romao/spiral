@@ -257,6 +257,7 @@ export default class Spiral {
         this.keyboardController.bind();
 
         // Wire up the "Show tips" checkbox in the help screen
+        /** @type {HTMLInputElement} */
         const showTipsCheckbox = document.querySelector('#show-tips');
         showTipsCheckbox.checked = prefs.showTips;
         showTipsCheckbox.addEventListener('change', () => {
