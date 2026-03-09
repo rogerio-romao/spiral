@@ -1,3 +1,5 @@
+import { savePreference } from './utils/UserPreferences.js';
+
 /**
  * KeyboardController — centralized keyboard shortcut handler.
  * Consolidates shortcuts from `Spiral` and `MusicPlayer` into one place.
@@ -52,6 +54,7 @@ export default class KeyboardController {
                 this.hudController.displayMessage(
                     this.transitionManager.isInManualMode ? 'Manual mode' : 'Auto mode',
                 );
+                savePreference('isInManualMode', this.transitionManager.isInManualMode);
                 break;
             }
 
@@ -82,6 +85,7 @@ export default class KeyboardController {
             // Toggle the music player's visibility
             case 'KeyM': {
                 this.musicPlayer.togglePlayerVisibility();
+                savePreference('showPlayer', this.musicPlayer.showPlayer);
                 break;
             }
 
@@ -97,12 +101,14 @@ export default class KeyboardController {
                 this.hudController.displayMessage(
                     this.hudController.silenceMessages ? 'Silent mode' : 'Display mode',
                 );
+                savePreference('silenceMessages', this.hudController.silenceMessages);
                 break;
             }
 
             // Toggle the waveform display on/off in the Spiral visualization
             case 'KeyW': {
                 this.spiral.toggleWaveform();
+                savePreference('showWaveform', this.spiral.waveformController.showWaveform);
                 break;
             }
 
@@ -134,6 +140,10 @@ export default class KeyboardController {
                 this.hudController.displayMessage(
                     `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
                 );
+                savePreference(
+                    'autoChangeIntervalInSeconds',
+                    this.transitionManager.autoChangeIntervalInSeconds,
+                );
                 break;
             }
 
@@ -146,6 +156,10 @@ export default class KeyboardController {
                 );
                 this.hudController.displayMessage(
                     `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
+                );
+                savePreference(
+                    'autoChangeIntervalInSeconds',
+                    this.transitionManager.autoChangeIntervalInSeconds,
                 );
                 break;
             }

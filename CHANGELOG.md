@@ -2,6 +2,10 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-03-09
+
+- feat: Save and restore user preferences across sessions — player visibility, silence mode, auto-change timing, waveform, manual/auto mode, and show-tips toggle are persisted in localStorage and restored on next launch; adds "Show welcome tips on startup" checkbox in the help screen (closes #137)
+
 ## 2026-03-08
 
 - feat: Remap keyboard controls — add music player shortcuts (P=play/pause, ←/→=prev/next, X=stop), move player visibility to M, auto/manual mode to A, and timer interval to +/- keys

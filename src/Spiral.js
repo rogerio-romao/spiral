@@ -5,6 +5,7 @@ import HudController from './HudController.js';
 import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
+import { loadPreferences, savePreference } from './utils/UserPreferences.js';
 import WaveformController from './WaveformController.js';
 
 /**
@@ -185,19 +186,29 @@ export default class Spiral {
         this.ctx.imageSmoothingEnabled = true;
         this.ctx.imageSmoothingQuality = 'high';
 
+        // Apply saved user preferences before starting the timer
+        const prefs = loadPreferences();
+        this.hud.silenceMessages = prefs.silenceMessages;
+
         // welcome messages and tips
-        this.hud.displayMessage('WELCOME');
-        this._welcomeTimers = [
-            setTimeout(() => {
-                this.hud.displayMessage('PRESS H FOR HELP');
-            }, 10_000),
-            setTimeout(() => {
-                this.hud.displayMessage('TIP: F FOR FULLSCREEN');
-            }, 20_000),
-            setTimeout(() => {
-                this.hud.displayMessage('TIP: M TO VIEW/HIDE MUSIC PLAYER');
-            }, 30_000),
-        ];
+        if (prefs.showTips) {
+            this.hud.displayMessage('WELCOME');
+            this._welcomeTimers = [
+                setTimeout(() => {
+                    this.hud.displayMessage('PRESS H FOR HELP');
+                }, 10_000),
+                setTimeout(() => {
+                    this.hud.displayMessage('TIP: F FOR FULLSCREEN');
+                }, 20_000),
+                setTimeout(() => {
+                    this.hud.displayMessage('TIP: M TO VIEW/HIDE MUSIC PLAYER');
+                }, 30_000),
+            ];
+        } else {
+            this._welcomeTimers = [];
+        }
+        this.transitionManager.autoChangeIntervalInSeconds = prefs.autoChangeIntervalInSeconds;
+        this.transitionManager.isInManualMode = prefs.isInManualMode;
 
         // initiate the transitions timer
         this.transitionManager.resetAutoChangeTimer();
@@ -211,6 +222,9 @@ export default class Spiral {
         // Music player — deferred from constructor so algorithm loading
         // and first render are not blocked by audio subsystem setup
         this.musicPlayer = new MusicPlayer();
+        if (!prefs.showPlayer) {
+            this.musicPlayer.togglePlayerVisibility();
+        }
 
         // Frequency analyser — connects to the audio element owned by MusicPlayer, and we pass it to AlgorithmLoader so algorithms can access frequency data if they want, and the musicPlayer makes use of it for graphic eq viz and for gain node control over the audio output.
         this.frequencyAnalyser = new FrequencyAnalyser(this.musicPlayer.audio);
@@ -223,6 +237,9 @@ export default class Spiral {
             frequencyAnalyser: this.frequencyAnalyser,
         });
         AlgorithmLoader.waveformController = this.waveformController;
+        if (prefs.showWaveform) {
+            this.waveformController.toggleWaveform();
+        }
 
         // Resume AudioContext on any play event (covers play, next, prev)
         this.musicPlayer.audio.addEventListener('play', () => {
@@ -238,6 +255,13 @@ export default class Spiral {
             transitionManager: this.transitionManager,
         });
         this.keyboardController.bind();
+
+        // Wire up the "Show tips" checkbox in the help screen
+        const showTipsCheckbox = document.querySelector('#show-tips');
+        showTipsCheckbox.checked = prefs.showTips;
+        showTipsCheckbox.addEventListener('change', () => {
+            savePreference('showTips', showTipsCheckbox.checked);
+        });
     }
 
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */

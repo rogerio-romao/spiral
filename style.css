@@ -530,11 +530,16 @@ progress::-webkit-progress-value {
     color: var(--color-text);
 }
 
-#dev-mode input[type='checkbox'] {
+#dev-mode input[type='checkbox'],
+#show-tips {
     accent-color: var(--color-accent);
     width: 18px;
     height: 18px;
     cursor: pointer;
+}
+
+#help label {
+    pointer-events: auto;
 }
 
 #dev-mode .dev-selects {
