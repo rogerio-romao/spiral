@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 /// <reference path="../assets/js/types/gsap-core.d.ts" />
 
 import mathUtils from './utils/math.js';
@@ -27,10 +28,31 @@ export default class AlgorithmLoader {
      */
     static frequencyAnalyser = null;
 
+    /**
+     * Reference to the 2D rendering context of the canvas.
+     * Gets injected by `Spiral` after initialization. Algorithms can use this to draw on the canvas.
+     *
+     * @static
+     * @type {CanvasRenderingContext2D|null}
+     */
     static ctx = null;
 
+    /**
+     * Width of the canvas.
+     * Gets injected by `Spiral` after initialization.
+     *
+     * @static
+     * @type {number}
+     */
     static w = 0;
 
+    /**
+     * Height of the canvas.
+     * Gets injected by `Spiral` after initialization.
+     *
+     * @static
+     * @type {number}
+     */
     static h = 0;
 
     /**
@@ -51,7 +73,6 @@ export default class AlgorithmLoader {
      * Accessible as a class-level utility: AlgorithmLoader.mathUtils.<method>()
      *
      * @static
-     * @readonly
      * @type {typeof import('./utils/math.js').default}
      */
     static mathUtils = mathUtils;
@@ -155,14 +176,36 @@ export default class AlgorithmLoader {
         return randomColor(minC, maxC, minA, maxA);
     }
 
+    // INSTANCE PROPERTIES
+
+    /**
+     * Current time or frame count for the algorithm. Algorithms can use this to track animation progress. Gets incremented on each draw call.
+     * @type {number}
+     */
     t = 0;
 
+    /**
+     * ID of the currently scheduled animation frame, used to cancel the frame when stopping the algorithm. Gets set when requestFrame() is called and cleared when the frame is executed or canceled.
+     * @type {number|null}
+     */
     animationFrameId = null;
 
+    /**
+     * Speed multiplier for the algorithm's animation. Used to control how fast the algorithm animates. Gets initialized to a random value between 2 and 5, everytime there is a transition to a new algorithm.
+     * @type {number}
+     */
     speed = AlgorithmLoader.random(2, 5);
 
+    /**
+     * Some algorithms have staggered animations, this property is used there.
+     * @type {number}
+     */
     stagger = 0;
 
+    /**
+     * Flag indicating whether the algorithm is currently running. Used to control the animation loop and prevent drawing when the algorithm is stopped. Gets set to true in the constructor and set to false in stop().
+     * @type {boolean}
+     */
     isRunning = true;
 
     /**
