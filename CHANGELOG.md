@@ -4,6 +4,8 @@
 
 ## 2026-03-09
 
+- refactor: displayMessage toast-stack system — multiple messages now display simultaneously in stacked lines, each with its own independent 7500ms timer; keyed messages (mode, silence, waveform, autochange, devmode) replace their previous entry rather than stacking; oldest evicted when more than 4 are queued
+
 - feat: Add blocked algorithms modal — press L to open a searchable list of all 143 algorithms with checkboxes to block/unblock them; blocked algorithms are never chosen and persist across sessions via localStorage; active pool scales the recency history window proportionally (closes #122)
 
 - feat: Save and restore user preferences across sessions — player visibility, silence mode, auto-change timing, waveform, manual/auto mode, and show-tips toggle are persisted in localStorage and restored on next launch; adds "Show welcome tips on startup" checkbox in the help screen (closes #137)

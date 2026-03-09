@@ -152,10 +152,10 @@ export default class DevModeController {
         if (enabled) {
             this.updateDevAlgos();
             this.badge.style.display = 'block';
-            this.hudController.displayMessage('DEV MODE ENABLED');
+            this.hudController.displayMessage('DEV MODE ENABLED', 'devmode');
         } else {
             this.badge.style.display = 'none';
-            this.hudController.displayMessage('DEV MODE DISABLED');
+            this.hudController.displayMessage('DEV MODE DISABLED', 'devmode');
         }
     }
 

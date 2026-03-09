@@ -62,6 +62,7 @@ export default class KeyboardController {
                 this.transitionManager.isInManualMode = !this.transitionManager.isInManualMode;
                 this.hudController.displayMessage(
                     this.transitionManager.isInManualMode ? 'Manual mode' : 'Auto mode',
+                    'mode',
                 );
                 savePreference('isInManualMode', this.transitionManager.isInManualMode);
                 break;
@@ -115,6 +116,7 @@ export default class KeyboardController {
                 this.hudController.toggleSilenceMode();
                 this.hudController.displayMessage(
                     this.hudController.silenceMessages ? 'Silent mode' : 'Display mode',
+                    'silence',
                 );
                 savePreference('silenceMessages', this.hudController.silenceMessages);
                 break;
@@ -154,6 +156,7 @@ export default class KeyboardController {
                 );
                 this.hudController.displayMessage(
                     `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
+                    'autochange',
                 );
                 savePreference(
                     'autoChangeIntervalInSeconds',
@@ -171,6 +174,7 @@ export default class KeyboardController {
                 );
                 this.hudController.displayMessage(
                     `Auto-change: ${this.transitionManager.autoChangeIntervalInSeconds}secs`,
+                    'autochange',
                 );
                 savePreference(
                     'autoChangeIntervalInSeconds',

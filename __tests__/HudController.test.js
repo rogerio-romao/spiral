@@ -23,34 +23,110 @@ describe('hudController', () => {
     });
 
     describe('displayMessage', () => {
-        it('shows the message uppercased', () => {
+        it('shows the message uppercased in a child element', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('hello');
 
-            expect(messageElement.textContent).toBe('HELLO');
-            expect(messageElement.style.display).toBe('block');
+            const item = messageElement.querySelector('.msg-item');
+            expect(item).not.toBeNull();
+            expect(item.textContent).toBe('HELLO');
 
             hud.destroy();
         });
 
-        it('replaces a prior message', () => {
+        it('stacks messages simultaneously when no key is provided', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('first');
             hud.displayMessage('second');
 
-            expect(messageElement.textContent).toBe('SECOND');
+            const items = messageElement.querySelectorAll('.msg-item');
+            expect(items).toHaveLength(2);
+            expect(items[0].textContent).toBe('FIRST');
+            expect(items[1].textContent).toBe('SECOND');
 
             hud.destroy();
         });
 
-        it('hides the message after 7500ms', () => {
+        it('replaces an existing message with the same key', () => {
+            const { hud, messageElement } = createHud();
+            hud.displayMessage('first', 'mode');
+            hud.displayMessage('second', 'mode');
+
+            const items = messageElement.querySelectorAll('.msg-item');
+            expect(items).toHaveLength(1);
+            expect(items[0].textContent).toBe('SECOND');
+
+            hud.destroy();
+        });
+
+        it('stacks different keyed messages independently', () => {
+            const { hud, messageElement } = createHud();
+            hud.displayMessage('manual mode', 'mode');
+            hud.displayMessage('waveform on', 'waveform');
+
+            const items = messageElement.querySelectorAll('.msg-item');
+            expect(items).toHaveLength(2);
+
+            hud.destroy();
+        });
+
+        it('evicts the oldest message when max capacity is reached', () => {
+            const { hud, messageElement } = createHud();
+            hud.displayMessage('msg1');
+            hud.displayMessage('msg2');
+            hud.displayMessage('msg3');
+            hud.displayMessage('msg4');
+            hud.displayMessage('msg5');
+
+            const items = messageElement.querySelectorAll('.msg-item');
+            expect(items).toHaveLength(4);
+            expect(items[0].textContent).toBe('MSG2');
+            expect(items[3].textContent).toBe('MSG5');
+
+            hud.destroy();
+        });
+
+        it('starts removing the message after 7500ms', () => {
             vi.useFakeTimers();
             const { hud, messageElement } = createHud();
             hud.displayMessage('hello');
             vi.advanceTimersByTime(7500);
 
-            expect(messageElement.style.display).toBe('none');
-            expect(messageElement.textContent).toBe('');
+            const item = messageElement.querySelector('.msg-item');
+            expect(item.classList.contains('msg-item-removing')).toBeTruthy();
+
+            hud.destroy();
+        });
+
+        it('removes the message from DOM after 7500ms and transition', () => {
+            vi.useFakeTimers();
+            const { hud, messageElement } = createHud();
+            hud.displayMessage('hello');
+            vi.advanceTimersByTime(7500 + 350);
+
+            expect(messageElement.querySelector('.msg-item')).toBeNull();
+
+            hud.destroy();
+        });
+
+        it('each message has its own independent timer', () => {
+            vi.useFakeTimers();
+            const { hud, messageElement } = createHud();
+
+            hud.displayMessage('first');
+            vi.advanceTimersByTime(4000);
+            hud.displayMessage('second');
+
+            // advance 3600ms more: total 7600ms
+            // first message timer fires at 7500ms ✓
+            // fallback cleanup fires at 7850ms (not yet) ✓
+            // second message timer fires at 4000 + 7500 = 11500ms (not yet) ✓
+            vi.advanceTimersByTime(3600);
+
+            const items = messageElement.querySelectorAll('.msg-item');
+            expect(items).toHaveLength(2);
+            expect(items[0].classList.contains('msg-item-removing')).toBeTruthy();
+            expect(items[1].classList.contains('msg-item-removing')).toBeFalsy();
 
             hud.destroy();
         });
@@ -143,14 +219,16 @@ describe('hudController', () => {
     });
 
     describe('destroy', () => {
-        it('cancels the pending message timer', () => {
+        it('cancels all pending message timers', () => {
             vi.useFakeTimers();
             const { hud, messageElement } = createHud();
             hud.displayMessage('test');
             hud.destroy();
             vi.advanceTimersByTime(10_000);
 
-            expect(messageElement.style.display).toBe('block');
+            const item = messageElement.querySelector('.msg-item');
+            expect(item).not.toBeNull();
+            expect(item.classList.contains('msg-item-removing')).toBeFalsy();
         });
 
         it('cancels the pending algorithm name timer', () => {

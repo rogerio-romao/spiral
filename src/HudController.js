@@ -7,7 +7,8 @@ export default class HudController {
     algorithmNameDisplayTimeInMs = 5000;
     algorithmNameTimer = null;
     messageDisplayTimeInMs = 7500;
-    messageTimer = null;
+    messages = [];
+    maxMessages = 4;
     showHelpView = false;
     silenceMessages = false;
 
@@ -34,7 +35,10 @@ export default class HudController {
 
     /** Clear all timers, called when the app closes. */
     destroy() {
-        clearTimeout(this.messageTimer);
+        for (const msg of this.messages) {
+            clearTimeout(msg.timer);
+        }
+        this.messages = [];
         clearTimeout(this.algorithmNameTimer);
     }
 
@@ -61,22 +65,77 @@ export default class HudController {
     }
 
     /**
-     * Show a temporary message for `this.messageDisplayTimeInMs` ms. Clears any prior message. Messages are uppercased for clarity. These messages are always shown, regardless of silent mode. Used for transient notifications like "Welcome", "Auto-change: 60secs", etc. This is called externally by various modules, such as the `KeyboardController` when adjusting auto-change settings, or the `DevModeController` when toggling Developer Mode.
+     * Show a temporary message for `this.messageDisplayTimeInMs` ms. Multiple messages stack
+     * vertically, each with its own independent timer. If `key` is provided and a message with
+     * that key is already visible, it is replaced immediately. If the stack is full
+     * (`maxMessages`), the oldest is evicted. Messages are uppercased. Always shown regardless
+     * of silent mode. Called externally by various modules for transient notifications.
      *
      * @param {string} message - The message to display.
+     * @param {string|null} [key] - Optional key: replaces an existing message with the same key.
      */
-    displayMessage(message) {
-        // clear any existing message timers to reset the display time if a new message comes in
-        clearTimeout(this.messageTimer);
+    displayMessage(message, key = null) {
+        if (key !== null) {
+            const existing = this.messages.findIndex((msg) => msg.key === key);
+            if (existing !== -1) {
+                this.evictMessage(existing);
+            }
+        }
 
-        this.messageElement.textContent = message.toUpperCase();
-        this.messageElement.style.display = 'block';
+        if (this.messages.length >= this.maxMessages) {
+            this.evictMessage(0);
+        }
 
-        // hide the message after the default display time
-        this.messageTimer = setTimeout(() => {
-            this.messageElement.style.display = 'none';
-            this.messageElement.textContent = '';
+        const element = document.createElement('div');
+        element.className = 'msg-item';
+        element.textContent = message.toUpperCase();
+        this.messageElement.append(element);
+
+        const timer = setTimeout(() => {
+            this.removeMessage(element);
         }, this.messageDisplayTimeInMs);
+
+        this.messages.push({ element, key, timer });
+    }
+
+    /**
+     * Immediately remove a message at the given index without animation.
+     * Used for keyed replacement and max-capacity eviction.
+     * @param {number} index - The index of the message to evict in the `this.messages` array.
+     */
+    evictMessage(index) {
+        const msg = this.messages[index];
+        clearTimeout(msg.timer);
+        msg.element.remove();
+        this.messages.splice(index, 1);
+    }
+
+    /**
+     * Animate a message out and remove it from the DOM and messages array after the transition.
+     * Falls back to a timeout if `transitionend` does not fire (e.g. in test environments).
+     * @param {HTMLElement} element - The message element to remove.
+     */
+    removeMessage(element) {
+        element.classList.add('msg-item-removing');
+
+        const cleanup = () => {
+            element.remove();
+            const index = this.messages.findIndex((msg) => msg.element === element);
+            if (index !== -1) {
+                this.messages.splice(index, 1);
+            }
+        };
+
+        // matches the --transition-slow duration (0.35s) used in .msg-item-removing
+        const fallback = setTimeout(cleanup, 350);
+        element.addEventListener(
+            'transitionend',
+            () => {
+                clearTimeout(fallback);
+                cleanup();
+            },
+            { once: true },
+        );
     }
 
     /**
