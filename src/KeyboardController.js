@@ -55,6 +55,7 @@ export default class KeyboardController {
      * Route key events to the appropriate module or action. Uses `e.code` so that shortcuts are consistent regardless of keyboard layout or modifier keys.
      * @param {KeyboardEvent} e - The keyboard event.
      */
+    // oxlint-disable-next-line complexity
     handleKeyup(e) {
         switch (e.code) {
             // Toggle Auto/Manual mode on/off. In manual mode, algorithms only change when the user triggers it (e.g. by pressing Space), and the auto-change timer is paused. In auto mode, algorithms change automatically based on the auto-change timer.

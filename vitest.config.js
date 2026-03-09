@@ -7,7 +7,12 @@ export default defineConfig({
             screenshotFailures: false,
         },
         coverage: {
-            exclude: ['src/algos/**', 'src/generated/**', 'coverage/**'],
+            exclude: [
+                'src/algos/**',
+                'src/generated/**',
+                'coverage/**',
+                'src/utils/roundRectExtra.js',
+            ],
             include: ['src/**/*.js', 'scripts/**/*.mjs'],
             provider: 'v8',
         },

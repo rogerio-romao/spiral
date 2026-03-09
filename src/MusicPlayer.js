@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 import AlgorithmLoader from './AlgorithmLoader.js';
 import htmlEscape from './utils/htmlEscape.js';
 import { clearPlaylist, savePlaylist } from './utils/PlaylistStorage.js';

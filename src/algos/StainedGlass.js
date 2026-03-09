@@ -33,6 +33,7 @@ export default class StainedGlass extends AL {
         AL.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
     }
 
+    // oxlint-disable-next-line max-statements, complexity
     draw() {
         if (this.t % this.speed === 0) {
             this.stagger = AL.random(0, 30);

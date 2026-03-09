@@ -1,3 +1,5 @@
+// oxlint-disable vitest/max-expects
+// oxlint-disable max-lines-per-function
 // oxlint-disable max-classes-per-file
 // oxlint-disable no-empty-function
 

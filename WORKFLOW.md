@@ -107,7 +107,7 @@ After implementation, I will:
 
 ### Phase 6: Changelog Update
 
-I will suggest a CHANGELOG entry and wait for your approval:
+I will add a CHANGELOG entry:
 
 **Format:**
 
@@ -129,12 +129,9 @@ I will suggest a CHANGELOG entry and wait for your approval:
 
 **Before adding, I will:**
 
-- Show you the proposed entry
-- Ask if the description is accurate
 - Confirm the date (or update if needed)
-- Update [CHANGELOG.md](CHANGELOG.md) only after approval
 
-### Phase 7: Pull Request Creation
+### Phase 7: Commit, Push, Pull Request Creation
 
 Once everything is verified and CHANGELOG is updated, I will create a PR:
 
@@ -225,22 +222,6 @@ I will **pause and ask for clarification** if:
 
 I will **not proceed** without your confirmation at these checkpoints.
 
-## Conventional Commits Reference
-
-This workflow uses conventional commit syntax for branch names and messages. The
-types are:
-
-- **`feat`** — A new feature or enhancement
-- **`fix`** — A bug fix
-- **`docs`** — Documentation, README, or CHANGELOG updates
-- **`refactor`** — Code restructuring without behavior change
-- **`chore`** — Maintenance, dependencies, build tools, CI/CD
-- **`perf`** — Performance improvements
-- **`style`** — Code style (formatting, missing semicolons, etc.) — rarely used
-  in this project
-
-For this project, the most common types are `feat`, `fix`, and `docs`.
-
 ## Quick Reference
 
 ```
@@ -260,16 +241,3 @@ For this project, the most common types are `feat`, `fix`, and `docs`.
 │ 7. PR: Create pull request (gh pr create) and prepare merge   │
 └─────────────────────────────────────────────────────────────┘
 ```
-
-## Usage
-
-When you request a new task, say something like:
-
-> "I want a new feature to display the FPS counter in the top-right corner of
-> the canvas."
-
-Then I will follow this workflow, starting with Phase 1 (Task Intake) and
-proceeding through all phases with your confirmation at each decision point.
-
-If you want to skip certain phases (e.g., skip PR creation and just commit to
-the branch), let me know and I'll adapt the workflow accordingly.

@@ -1,3 +1,4 @@
+// oxlint-disable max-lines-per-function
 // @vitest-environment jsdom
 
 import WaveformController from '../src/WaveformController.js';

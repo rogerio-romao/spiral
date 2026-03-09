@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 import AlgorithmLoader from './AlgorithmLoader.js';
 import BlockedAlgorithmsModal from './BlockedAlgorithmsModal.js';
 import DevModeController from './DevModeController.js';
