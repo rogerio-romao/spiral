@@ -1,5 +1,6 @@
 import AlgorithmLoader from './AlgorithmLoader.js';
 import { algorithms } from './generated/algorithmRegistry.js';
+import { saveBlockedAlgorithms } from './utils/BlockedAlgorithms.js';
 import { random, randomColor } from './utils/randomUtils.js';
 
 /**
@@ -14,6 +15,7 @@ export default class TransitionManager {
     algoRetries = 0;
     autoChangeIntervalInSeconds = 60;
     autoChangeTimeout = null;
+    blockedAlgorithms = new Set();
     currentAlgorithm = null;
     devModeActive = false;
     devModeAlgoA = null;
@@ -66,21 +68,47 @@ export default class TransitionManager {
     }
 
     /**
-     * Returns a random algorithm class, avoiding recently used ones. Adds the selected algorithm to the recent set and evicts the oldest if needed.
+     * Returns a random algorithm class, avoiding recently used and blocked ones.
+     * The recency capacity scales down proportionally as algorithms are blocked,
+     * so the Set never holds more entries than there are active algorithms.
      * @returns {Function} The chosen algorithm class constructor.
      */
     getRandomAlgorithm() {
-        const picks = algorithms.filter((algo) => !this.lastAlgos.has(algo));
+        const activeAlgos = algorithms.filter((algo) => !this.blockedAlgorithms.has(algo.name));
+
+        const effectiveCapacity = Math.floor(
+            activeAlgos.length * (this.lastAlgosCapacity / algorithms.length),
+        );
+
+        // Trim lastAlgos down to the effective capacity by evicting oldest entries
+        while (this.lastAlgos.size > effectiveCapacity) {
+            this.lastAlgos.delete(this.lastAlgos.values().next().value);
+        }
+
+        let picks = activeAlgos.filter((algo) => !this.lastAlgos.has(algo));
+
+        // If all active algos are in lastAlgos (only happens at very small pool sizes),
+        // reset and use the full active pool
+        if (picks.length === 0) {
+            this.lastAlgos.clear();
+            picks = activeAlgos;
+        }
 
         const randomIndex = Math.floor(Math.random() * picks.length);
         const AlgorithmClass = picks[randomIndex];
 
         this.lastAlgos.add(AlgorithmClass);
-        if (this.lastAlgos.size > this.lastAlgosCapacity) {
-            this.lastAlgos.delete(this.lastAlgos.values().next().value);
-        }
 
         return AlgorithmClass;
+    }
+
+    /**
+     * Replace the entire blocked set with a new collection of names and persist it.
+     * @param {Iterable<string>} names - Algorithm class names to block.
+     */
+    setBlockedAlgorithms(names) {
+        this.blockedAlgorithms = new Set(names);
+        saveBlockedAlgorithms([...this.blockedAlgorithms]);
     }
 
     /** Choose and instantiate a new algorithm, with retry logic for constructor errors. Respects dev mode settings. Idempotent if already transitioning. */

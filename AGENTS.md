@@ -60,7 +60,7 @@ ALWAYS run tests after modifying code, even if you think the changes are minor. 
 
 ## Keyboard (KeyboardController.js)
 
-Space, F, I, D, M, S, H, P, E
+Space, F, A, L, M, S, H, P, W, X, E (dev only)
 
 ## Dependencies
 
@@ -73,3 +73,4 @@ Space, F, I, D, M, S, H, P, E
 - NO inline comments - if comment is needed, write it in its own line above the
   code
 - Dont use `_` prefix for private methods/props - just use normal names.
+- Dont use forEach - prefer for of or regular for loops, or a functional method like map/filter/reduce if it makes sense.

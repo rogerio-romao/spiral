@@ -4,6 +4,8 @@
 
 ## 2026-03-09
 
+- feat: Add blocked algorithms modal — press L to open a searchable list of all 143 algorithms with checkboxes to block/unblock them; blocked algorithms are never chosen and persist across sessions via localStorage; active pool scales the recency history window proportionally (closes #122)
+
 - feat: Save and restore user preferences across sessions — player visibility, silence mode, auto-change timing, waveform, manual/auto mode, and show-tips toggle are persisted in localStorage and restored on next launch; adds "Show welcome tips on startup" checkbox in the help screen (closes #137)
 
 ## 2026-03-08
