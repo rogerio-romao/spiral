@@ -120,6 +120,16 @@
                     <span class="keys">Press S for silence mode to toggle it on/off. </span>
                 </p>
                 <p>
+                    Your preferences (player visibility, silence mode, auto-change timing, waveform,
+                    and manual/auto mode) are saved automatically and restored on next launch.
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" id="show-tips" checked />
+                        Show welcome tips on startup
+                    </label>
+                </p>
+                <p>
                     <span class="help">H to open / close the help screen.</span>
                 </p>
             </div>
@@ -252,6 +262,7 @@
                 <span id="time-total"></span>
             </div>
         </div>
+        <script src="./assets/js/prefsInit.js"></script>
 
         <audio id="audio"></audio>
 
