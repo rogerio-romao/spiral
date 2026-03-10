@@ -755,7 +755,7 @@ export default class MusicPlayer {
 
     /** Stop the EQ animation loop and show flat bars. */
     stopEq() {
-        if (this.eqRafId) {
+        if (this.eqRafId !== null) {
             cancelAnimationFrame(this.eqRafId);
             this.eqRafId = null;
         }
@@ -774,7 +774,9 @@ export default class MusicPlayer {
             this.togglePlayPauseIcon(false);
             this.stopEq();
             // oxlint-disable-next-line unicorn/no-array-for-each
-            this.playlistEls.forEach((el) => (el.style.color = '#555'));
+            this.playlistEls.forEach((el) => {
+                el.style.color = '#555';
+            });
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         } else if (this.playlistEls) {
             // if already paused, just rewind to the beginning
@@ -829,7 +831,9 @@ export default class MusicPlayer {
      */
     updatePlaylistStyle() {
         // oxlint-disable-next-line unicorn/no-array-for-each
-        this.playlistEls.forEach((el) => (el.style.color = '#555'));
+        this.playlistEls.forEach((el) => {
+            el.style.color = '#555';
+        });
         this.playlistEls[this.currentSongIndex].style.color = 'orange';
         this.playlistEls[this.currentSongIndex].scrollIntoView({ block: 'nearest' });
         this.updateTrackName();
