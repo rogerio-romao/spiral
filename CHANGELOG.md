@@ -2,6 +2,10 @@
 
 <!-- Format: ## YYYY-MM-DD followed by one-liner entries. -->
 
+## 2026-03-10
+
+- feat: Save playlist track time on close and explicit save — saves current track playback time along with playlist data; on restore, seeks to saved time but stays paused; on app close, saves current time if playlist exists (even if paused)
+
 ## 2026-03-09
 
 - refactor: displayMessage toast-stack system — multiple messages now display simultaneously in stacked lines, each with its own independent 7500ms timer; keyed messages (mode, silence, waveform, autochange, devmode) replace their previous entry rather than stacking; oldest evicted when more than 4 are queued

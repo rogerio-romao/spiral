@@ -68,12 +68,12 @@ describe('spiral.restorePlaylist', () => {
     it('calls restorePlaylist with resolved files and the correct index', async () => {
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify({ currentSongIndex: 1, tracks: SAVED_TRACKS }),
+            JSON.stringify({ currentSongIndex: 1, currentTime: 30, tracks: SAVED_TRACKS }),
         );
         const spiral = createSpiral(RESOLVED_ALL);
         await spiral.restorePlaylist();
 
-        expect(spiral.musicPlayer.restorePlaylist).toHaveBeenCalledWith(RESOLVED_ALL, 1);
+        expect(spiral.musicPlayer.restorePlaylist).toHaveBeenCalledWith(RESOLVED_ALL, 1, 30);
     });
 
     it('falls back to index 0 when the saved current track is missing after filtering', async () => {
@@ -81,12 +81,12 @@ describe('spiral.restorePlaylist', () => {
         const resolvedWithoutB = [RESOLVED_ALL[0], RESOLVED_ALL[2]];
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify({ currentSongIndex: 1, tracks: SAVED_TRACKS }),
+            JSON.stringify({ currentSongIndex: 1, currentTime: 0, tracks: SAVED_TRACKS }),
         );
         const spiral = createSpiral(resolvedWithoutB);
         await spiral.restorePlaylist();
 
-        expect(spiral.musicPlayer.restorePlaylist).toHaveBeenCalledWith(resolvedWithoutB, 0);
+        expect(spiral.musicPlayer.restorePlaylist).toHaveBeenCalledWith(resolvedWithoutB, 0, 0);
     });
 
     it('shows a HUD message when some tracks are missing', async () => {

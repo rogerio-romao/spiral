@@ -1,6 +1,11 @@
 // @vitest-environment jsdom
 
-import { clearPlaylist, loadPlaylist, savePlaylist } from '../../src/utils/PlaylistStorage.js';
+import {
+    clearPlaylist,
+    loadPlaylist,
+    savePlaylist,
+    updatePlaylistTime,
+} from '../../src/utils/PlaylistStorage.js';
 
 const STORAGE_KEY = 'spiral:playlist';
 
@@ -22,10 +27,14 @@ describe('playlistStorage', () => {
         it('returns the saved playlist when all data is valid', () => {
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify({ currentSongIndex: 1, tracks: TRACKS }),
+                JSON.stringify({ currentSongIndex: 1, currentTime: 30, tracks: TRACKS }),
             );
 
-            expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 1, tracks: TRACKS });
+            expect(loadPlaylist()).toStrictEqual({
+                currentSongIndex: 1,
+                currentTime: 30,
+                tracks: TRACKS,
+            });
         });
 
         it('returns null for corrupt JSON', () => {
@@ -65,43 +74,69 @@ describe('playlistStorage', () => {
             const mixed = [...TRACKS, { trackName: 'No Path' }];
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify({ currentSongIndex: 0, tracks: mixed }),
+                JSON.stringify({ currentSongIndex: 0, currentTime: 0, tracks: mixed }),
             );
 
-            expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: TRACKS });
+            expect(loadPlaylist()).toStrictEqual({
+                currentSongIndex: 0,
+                currentTime: 0,
+                tracks: TRACKS,
+            });
         });
 
         it('filters out a track entry missing trackName and keeps the rest', () => {
             const mixed = [{ filePath: '/music/track.mp3' }, ...TRACKS];
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify({ currentSongIndex: 0, tracks: mixed }),
+                JSON.stringify({ currentSongIndex: 0, currentTime: 0, tracks: mixed }),
             );
 
-            expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: TRACKS });
+            expect(loadPlaylist()).toStrictEqual({
+                currentSongIndex: 0,
+                currentTime: 0,
+                tracks: TRACKS,
+            });
         });
 
         it('filters out a track entry with a non-string filePath and keeps the rest', () => {
             const mixed = [{ filePath: 123, trackName: 'Track' }, ...TRACKS];
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify({ currentSongIndex: 0, tracks: mixed }),
+                JSON.stringify({ currentSongIndex: 0, currentTime: 0, tracks: mixed }),
             );
 
-            expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: TRACKS });
+            expect(loadPlaylist()).toStrictEqual({
+                currentSongIndex: 0,
+                currentTime: 0,
+                tracks: TRACKS,
+            });
         });
 
         it('returns a playlist with an empty tracks array when all entries are invalid', () => {
             const bad = [{ foo: 'bar' }, null, 42];
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex: 0, tracks: bad }));
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify({ currentSongIndex: 0, currentTime: 0, tracks: bad }),
+            );
 
-            expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: [] });
+            expect(loadPlaylist()).toStrictEqual({
+                currentSongIndex: 0,
+                currentTime: 0,
+                tracks: [],
+            });
         });
 
         it('accepts an empty tracks array with index 0', () => {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex: 0, tracks: [] }));
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify({ currentSongIndex: 0, currentTime: 0, tracks: [] }),
+            );
 
-            expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: [] });
+            expect(loadPlaylist()).toStrictEqual({
+                currentSongIndex: 0,
+                currentTime: 0,
+                tracks: [],
+            });
         });
 
         it('returns null when localStorage throws', () => {
@@ -120,7 +155,14 @@ describe('playlistStorage', () => {
             savePlaylist(TRACKS, 1);
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-            expect(stored).toStrictEqual({ currentSongIndex: 1, tracks: TRACKS });
+            expect(stored).toStrictEqual({ currentSongIndex: 1, currentTime: 0, tracks: TRACKS });
+        });
+
+        it('persists currentTime when provided', () => {
+            savePlaylist(TRACKS, 1, 45);
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+            expect(stored).toStrictEqual({ currentSongIndex: 1, currentTime: 45, tracks: TRACKS });
         });
 
         it('overwrites a previously saved playlist', () => {
@@ -139,6 +181,35 @@ describe('playlistStorage', () => {
 
             expect(() => savePlaylist(TRACKS, 0)).not.toThrow();
 
+            vi.restoreAllMocks();
+        });
+    });
+
+    describe('updatePlaylistTime()', () => {
+        it('updates the currentTime of an existing saved playlist', () => {
+            savePlaylist(TRACKS, 0, 10);
+            const result = updatePlaylistTime(45);
+
+            expect(result).toBeTruthy();
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            expect(stored).toStrictEqual({ currentSongIndex: 0, currentTime: 45, tracks: TRACKS });
+        });
+
+        it('returns false when no playlist exists', () => {
+            const result = updatePlaylistTime(30);
+
+            expect(result).toBeFalsy();
+        });
+
+        it('returns false when localStorage throws', () => {
+            savePlaylist(TRACKS, 0);
+            vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+                throw new DOMException('QuotaExceededError');
+            });
+
+            const result = updatePlaylistTime(30);
+
+            expect(result).toBeFalsy();
             vi.restoreAllMocks();
         });
     });
