@@ -177,17 +177,40 @@ export default class Spiral {
 
     /** Clean up resources before the app closes. */
     destroy() {
+        // Clear welcome timers
         this.welcomeTimers.map(clearTimeout);
+
+        // Clear debounce timeout for algorithm restart
+        if (this.debounceTimeout) {
+            clearTimeout(this.debounceTimeout);
+            this.debounceTimeout = null;
+        }
+
+        // Remove global keyup handler
+        if (this.keyboardController) {
+            this.keyboardController.destroy();
+        }
+
+        // Stop transition interval and current algorithm
+        if (this.transitionManager) {
+            this.transitionManager.resetAutoChangeTimer(); // clears interval
+            this.transitionManager.stopCurrentAlgorithm();
+        }
+
+        // Now destroy controllers (no callbacks should run after this)
         this.hudController.destroy();
         this.devModeController.destroy();
         this.blockedAlgorithmsModal.destroy();
         this.waveformController?.destroy();
 
+        // Clear other timers
         if (this.cursorHideTimeout) {
             clearTimeout(this.cursorHideTimeout);
+            this.cursorHideTimeout = null;
         }
         if (this.resizeTimeout) {
             clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = null;
         }
     }
 
@@ -310,6 +333,12 @@ export default class Spiral {
         /** @type {{ filePath: string, trackName: string, fileUrl: string }[]} */
         const resolved = await /** @type {any}  */ (globalThis).electronAPI.resolveFiles(paths);
 
+        const missingCount = saved.tracks.length - resolved.length;
+        if (missingCount > 0) {
+            const label = missingCount === 1 ? 'track' : 'tracks';
+            this.hudController.displayMessage(`${missingCount} saved ${label} unavailable`);
+        }
+
         if (resolved.length === 0) {
             return;
         }
@@ -317,12 +346,6 @@ export default class Spiral {
         const savedPath = saved.tracks[saved.currentSongIndex]?.filePath;
         const newIndex = savedPath ? resolved.findIndex((file) => file.filePath === savedPath) : -1;
         this.musicPlayer.restorePlaylist(resolved, Math.max(newIndex, 0));
-
-        const missingCount = saved.tracks.length - resolved.length;
-        if (missingCount > 0) {
-            const label = missingCount === 1 ? 'track' : 'tracks';
-            this.hudController.displayMessage(`${missingCount} saved ${label} unavailable`);
-        }
     }
 
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */
