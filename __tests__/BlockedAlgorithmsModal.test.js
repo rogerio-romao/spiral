@@ -47,6 +47,7 @@ describe('blockedAlgorithmsModal', () => {
             const checkboxes = document.querySelectorAll(
                 '#blocked-algos-modal input[type="checkbox"]',
             );
+
             expect(checkboxes).toHaveLength(5);
         });
 
@@ -55,6 +56,7 @@ describe('blockedAlgorithmsModal', () => {
                 ...document.querySelectorAll('#blocked-algos-modal .blocked-item input'),
             ].map((checkbox) => checkbox.dataset.algoName);
             const sorted = [...labels].toSorted((a, b) => a.localeCompare(b));
+
             expect(labels).toStrictEqual(sorted);
         });
     });
@@ -62,12 +64,14 @@ describe('blockedAlgorithmsModal', () => {
     describe('toggleModal()', () => {
         it('shows the modal when it is hidden', () => {
             modal.toggleModal();
+
             expect(document.querySelector('#blocked-algos-modal').style.display).toBe('flex');
         });
 
         it('hides the modal when it is visible', () => {
             modal.toggleModal();
             modal.toggleModal();
+
             expect(document.querySelector('#blocked-algos-modal').style.display).toBe('none');
         });
 
@@ -90,6 +94,7 @@ describe('blockedAlgorithmsModal', () => {
         it('clears search input on open', () => {
             modal.searchInput.value = 'foo';
             modal.toggleModal();
+
             expect(modal.searchInput.value).toBe('');
         });
     });
@@ -98,6 +103,7 @@ describe('blockedAlgorithmsModal', () => {
         it('shows correct blocked count', () => {
             tm.blockedAlgorithms = new Set(['AlgoA', 'AlgoB']);
             modal.updateList();
+
             expect(modal.countDisplay.textContent).toBe('2 / 5 blocked');
         });
 
@@ -110,6 +116,7 @@ describe('blockedAlgorithmsModal', () => {
                 ...document.querySelectorAll('#blocked-algos-modal input[type="checkbox"]'),
             ];
             const unchecked = checkboxes.filter((checkbox) => !checkbox.checked);
+
             expect(unchecked).toHaveLength(1);
             expect(unchecked[0].disabled).toBeTruthy();
         });
@@ -125,6 +132,8 @@ describe('blockedAlgorithmsModal', () => {
                     '#blocked-algos-modal input[type="checkbox"]:disabled',
                 ),
             ];
+
+            // All should be re-enabled since only 1 is blocked
             expect(disabled).toHaveLength(0);
         });
     });
@@ -176,7 +185,6 @@ describe('blockedAlgorithmsModal', () => {
             const checkbox = [
                 ...document.querySelectorAll('#blocked-algos-modal input[type="checkbox"]'),
             ].find((cbox) => cbox.dataset.algoName === 'AlgoA');
-
             checkbox.checked = true;
             checkbox.dispatchEvent(new Event('change'));
 
@@ -220,7 +228,9 @@ describe('blockedAlgorithmsModal', () => {
     describe('destroy()', () => {
         it('removes the modal from the DOM', () => {
             modal.destroy();
+
             expect(document.querySelector('#blocked-algos-modal')).toBeNull();
+
             // Create a replacement for afterEach cleanup
             modal = new BlockedAlgorithmsModal({ transitionManager: tm });
         });

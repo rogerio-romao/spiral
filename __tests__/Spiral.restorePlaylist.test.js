@@ -41,6 +41,7 @@ describe('spiral.restorePlaylist', () => {
     it('does nothing when no saved playlist exists', async () => {
         const spiral = createSpiral(RESOLVED_ALL);
         await spiral.restorePlaylist();
+
         expect(spiral.musicPlayer.restorePlaylist).not.toHaveBeenCalled();
         expect(globalThis.electronAPI.resolveFiles).not.toHaveBeenCalled();
     });
@@ -49,6 +50,7 @@ describe('spiral.restorePlaylist', () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex: 0, tracks: [] }));
         const spiral = createSpiral(RESOLVED_ALL);
         await spiral.restorePlaylist();
+
         expect(spiral.musicPlayer.restorePlaylist).not.toHaveBeenCalled();
     });
 
@@ -59,6 +61,7 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral([]);
         await spiral.restorePlaylist();
+
         expect(spiral.musicPlayer.restorePlaylist).not.toHaveBeenCalled();
     });
 
@@ -69,6 +72,7 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral(RESOLVED_ALL);
         await spiral.restorePlaylist();
+
         expect(spiral.musicPlayer.restorePlaylist).toHaveBeenCalledWith(RESOLVED_ALL, 1);
     });
 
@@ -81,6 +85,7 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral(resolvedWithoutB);
         await spiral.restorePlaylist();
+
         expect(spiral.musicPlayer.restorePlaylist).toHaveBeenCalledWith(resolvedWithoutB, 0);
     });
 
@@ -92,6 +97,7 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral(resolvedWithoutC);
         await spiral.restorePlaylist();
+
         expect(spiral.hudController.displayMessage).toHaveBeenCalledWith(
             '1 saved track unavailable',
         );
@@ -104,6 +110,7 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral([RESOLVED_ALL[0]]);
         await spiral.restorePlaylist();
+
         expect(spiral.hudController.displayMessage).toHaveBeenCalledWith(
             '2 saved tracks unavailable',
         );
@@ -116,6 +123,7 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral(RESOLVED_ALL);
         await spiral.restorePlaylist();
+
         expect(spiral.hudController.displayMessage).not.toHaveBeenCalled();
     });
 });

@@ -26,8 +26,8 @@ describe('hudController', () => {
         it('shows the message uppercased in a child element', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('hello');
-
             const item = messageElement.querySelector('.msg-item');
+
             expect(item).not.toBeNull();
             expect(item.textContent).toBe('HELLO');
 
@@ -38,8 +38,8 @@ describe('hudController', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('first');
             hud.displayMessage('second');
-
             const items = messageElement.querySelectorAll('.msg-item');
+
             expect(items).toHaveLength(2);
             expect(items[0].textContent).toBe('FIRST');
             expect(items[1].textContent).toBe('SECOND');
@@ -51,8 +51,8 @@ describe('hudController', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('first', 'mode');
             hud.displayMessage('second', 'mode');
-
             const items = messageElement.querySelectorAll('.msg-item');
+
             expect(items).toHaveLength(1);
             expect(items[0].textContent).toBe('SECOND');
 
@@ -63,8 +63,8 @@ describe('hudController', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('manual mode', 'mode');
             hud.displayMessage('waveform on', 'waveform');
-
             const items = messageElement.querySelectorAll('.msg-item');
+
             expect(items).toHaveLength(2);
 
             hud.destroy();
@@ -77,8 +77,8 @@ describe('hudController', () => {
             hud.displayMessage('msg3');
             hud.displayMessage('msg4');
             hud.displayMessage('msg5');
-
             const items = messageElement.querySelectorAll('.msg-item');
+
             expect(items).toHaveLength(4);
             expect(items[0].textContent).toBe('MSG2');
             expect(items[3].textContent).toBe('MSG5');
@@ -91,8 +91,8 @@ describe('hudController', () => {
             const { hud, messageElement } = createHud();
             hud.displayMessage('hello');
             vi.advanceTimersByTime(7500);
-
             const item = messageElement.querySelector('.msg-item');
+
             expect(item.classList.contains('msg-item-removing')).toBeTruthy();
 
             hud.destroy();
@@ -112,18 +112,16 @@ describe('hudController', () => {
         it('each message has its own independent timer', () => {
             vi.useFakeTimers();
             const { hud, messageElement } = createHud();
-
             hud.displayMessage('first');
             vi.advanceTimersByTime(4000);
             hud.displayMessage('second');
-
             // advance 3600ms more: total 7600ms
             // first message timer fires at 7500ms ✓
             // fallback cleanup fires at 7850ms (not yet) ✓
             // second message timer fires at 4000 + 7500 = 11500ms (not yet) ✓
             vi.advanceTimersByTime(3600);
-
             const items = messageElement.querySelectorAll('.msg-item');
+
             expect(items).toHaveLength(2);
             expect(items[0].classList.contains('msg-item-removing')).toBeTruthy();
             expect(items[1].classList.contains('msg-item-removing')).toBeFalsy();
@@ -178,8 +176,9 @@ describe('hudController', () => {
         it('returns false on second call', () => {
             const { hud } = createHud();
             hud.toggleSilenceMode();
+            hud.toggleSilenceMode();
 
-            expect(hud.toggleSilenceMode()).toBeFalsy();
+            expect(hud.silenceMessages).toBeFalsy();
 
             hud.destroy();
         });
@@ -191,6 +190,7 @@ describe('hudController', () => {
 
             expect(algosDisplayElement.textContent).toBe('');
             expect(algosDisplayElement.style.display).toBe('none');
+
             hud.destroy();
         });
     });

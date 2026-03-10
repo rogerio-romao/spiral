@@ -29,8 +29,11 @@ function makeController({ isDevEnvironment = false } = {}) {
         stopPlayback: vi.fn(),
         togglePlayerVisibility: vi.fn(),
     };
+
     const devModeController = { toggleDevModal: vi.fn() };
+
     const spiral = { toggleWaveform: vi.fn(), waveformController: { showWaveform: false } };
+
     const blockedAlgorithmsModal = { toggleModal: vi.fn() };
 
     const controller = new KeyboardController({
