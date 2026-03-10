@@ -460,12 +460,19 @@ export default class MusicPlayer {
         // check restoreIndex bounds
         if (restoreIndex >= 0 && restoreIndex < this.trackList.length) {
             this.currentSongIndex = restoreIndex;
-            const onRestoreTime = () => {
-                this.audio.currentTime = restoreTime;
-                this.audio.removeEventListener('loadedmetadata', onRestoreTime);
-            };
-            this.audio.addEventListener('loadedmetadata', onRestoreTime);
             this.audio.src = this.trackList[this.currentSongIndex];
+
+            if (restoreTime > 0) {
+                if (this.audio.readyState >= 1) {
+                    this.audio.currentTime = restoreTime;
+                } else {
+                    const onRestoreTime = () => {
+                        this.audio.currentTime = restoreTime;
+                        this.audio.removeEventListener('loadedmetadata', onRestoreTime);
+                    };
+                    this.audio.addEventListener('loadedmetadata', onRestoreTime);
+                }
+            }
 
             this.updatePlaylistStyle();
             this.updateTrackName();
