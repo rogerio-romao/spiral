@@ -176,8 +176,9 @@ describe('hudController', () => {
         it('returns false on second call', () => {
             const { hud } = createHud();
             hud.toggleSilenceMode();
-            hud.toggleSilenceMode();
+            const result = hud.toggleSilenceMode();
 
+            expect(result).toBeFalsy();
             expect(hud.silenceMessages).toBeFalsy();
 
             hud.destroy();

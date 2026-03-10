@@ -57,9 +57,29 @@ ipcMain.handle('dialog:openFiles', async () => {
 /**
  * This IPC handler listens for the 'playlist:resolveFiles' event from the renderer process, which is triggered when the application opens and needs to restore the previously saved playlist. It takes an array of file paths as an argument and filters out any paths that do not exist on the file system using `fs.existsSync`. For each existing file path, it creates a file result object using the `fileResult` function, which includes the file path, track name, and file URL. This allows the renderer process to update the playlist with valid tracks and remove any tracks that no longer exist on the file system.
  */
-ipcMain.handle('playlist:resolveFiles', (_event, paths) =>
-    paths.filter((filePath) => fs.existsSync(filePath)).map((fp) => fileResult(fp)),
-);
+ipcMain.handle('playlist:resolveFiles', async (_event, paths) => {
+    if (!Array.isArray(paths)) {
+        return [];
+    }
+
+    try {
+        const filePaths = paths.filter((filePath) => typeof filePath === 'string');
+        const stats = await Promise.allSettled(
+            filePaths.map((filePath) => fs.promises.stat(filePath)),
+        );
+
+        return stats
+            .map((result, index) => {
+                if (result.status !== 'fulfilled' || !result.value.isFile()) {
+                    return null;
+                }
+                return fileResult(filePaths[index]);
+            })
+            .filter((value) => value !== null);
+    } catch {
+        return [];
+    }
+});
 
 // In development mode, we set up a custom application menu that includes a "View" menu with an option to toggle the developer tools. In production mode, we remove the application menu entirely.
 if (process.env.NODE_ENV === 'development') {

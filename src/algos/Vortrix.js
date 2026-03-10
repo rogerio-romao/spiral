@@ -53,8 +53,8 @@ export default class Vortrix extends AL {
      * @param {number} y - The y-coordinate of the first vertex of the triangle.
      */
     drawTriangle(x, y) {
-        AL.ctx.moveTo(x, y);
         AL.ctx.beginPath();
+        AL.ctx.moveTo(x, y);
         AL.ctx.lineTo(x + this.size, y);
         AL.ctx.lineTo(x, y + this.size);
         AL.ctx.lineTo(x, y);
