@@ -236,7 +236,7 @@ I will **not proceed** without your confirmation at these checkpoints.
 ├─────────────────────────────────────────────────────────────┤
 │ 5. VERIFY: Test app, check console, report findings          │
 ├─────────────────────────────────────────────────────────────┤
-│ 6. CHANGELOG: Add entry, check date is correct              │
+│ 6. CHANGELOG: Add entry (ensure date is correct first)      │
 ├─────────────────────────────────────────────────────────────┤
 │ 7. PR: Create pull request (gh pr create) and prepare merge   │
 └─────────────────────────────────────────────────────────────┘

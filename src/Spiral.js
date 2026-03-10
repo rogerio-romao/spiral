@@ -178,7 +178,8 @@ export default class Spiral {
     /** Clean up resources before the app closes. */
     destroy() {
         // Clear welcome timers
-        this.welcomeTimers.map(clearTimeout);
+        // oxlint-disable-next-line unicorn/no-array-for-each
+        this.welcomeTimers.forEach(clearTimeout);
 
         // Clear debounce timeout for algorithm restart
         if (this.debounceTimeout) {

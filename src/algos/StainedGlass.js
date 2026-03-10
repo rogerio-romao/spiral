@@ -6,11 +6,48 @@ export default class StainedGlass extends AL {
 
         this.name = 'Stained Glass';
 
+        this.initializeConstantProperties();
         this.initializeProperties();
         this.setupConstantStyles();
         this.setupDrawingStyles();
 
         this.requestFrame();
+    }
+
+    initializeConstantProperties() {
+        // Grid coordinates for stagger values 0-29
+        this.gridPositions = [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [3, 0],
+            [4, 0],
+            [5, 0],
+            [5, 1],
+            [4, 1],
+            [3, 1],
+            [2, 1],
+            [1, 1],
+            [0, 1],
+            [0, 2],
+            [1, 2],
+            [2, 2],
+            [3, 2],
+            [4, 2],
+            [5, 2],
+            [5, 3],
+            [4, 3],
+            [3, 3],
+            [2, 3],
+            [1, 3],
+            [0, 3],
+            [0, 4],
+            [1, 4],
+            [2, 4],
+            [3, 4],
+            [4, 4],
+            [5, 4],
+        ];
     }
 
     initializeProperties() {
@@ -37,42 +74,8 @@ export default class StainedGlass extends AL {
         if (this.t % this.speed === 0) {
             this.stagger = AL.random(0, 30);
 
-            // Grid coordinates for stagger values 0-29
-            const gridPositions = [
-                [0, 0],
-                [1, 0],
-                [2, 0],
-                [3, 0],
-                [4, 0],
-                [5, 0],
-                [5, 1],
-                [4, 1],
-                [3, 1],
-                [2, 1],
-                [1, 1],
-                [0, 1],
-                [0, 2],
-                [1, 2],
-                [2, 2],
-                [3, 2],
-                [4, 2],
-                [5, 2],
-                [5, 3],
-                [4, 3],
-                [3, 3],
-                [2, 3],
-                [1, 3],
-                [0, 3],
-                [0, 4],
-                [1, 4],
-                [2, 4],
-                [3, 4],
-                [4, 4],
-                [5, 4],
-            ];
-
-            if (this.stagger < gridPositions.length) {
-                const [col, row] = gridPositions[this.stagger];
+            if (this.stagger < this.gridPositions.length) {
+                const [col, row] = this.gridPositions[this.stagger];
                 AL.ctx.strokeRect(col * this.length, row * this.height, this.length, this.height);
                 AL.ctx.fillRect(col * this.length, row * this.height, this.length, this.height);
                 this.setupDrawingStyles();

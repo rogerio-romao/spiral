@@ -23,6 +23,8 @@ If you want to run Spiral locally or contribute to its development, follow these
 Prerequisites: **Node.js 18+** and **pnpm**.
 
 ```bash
+git clone https://github.com/rogerio-romao/spiral.git
+cd spiral
 pnpm install
 pnpm start
 ```
