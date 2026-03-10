@@ -58,11 +58,20 @@ export function loadPlaylist() {
  * @param {SavedTrack[]} tracks - Track metadata to persist.
  * @param {number} currentSongIndex - Index of the currently selected track.
  */
+/**
+ * Persist the current playlist to localStorage.
+ * Returns true if successful, false if storage fails.
+ * @param {SavedTrack[]} tracks - Track metadata to persist.
+ * @param {number} currentSongIndex - Index of the currently selected track.
+ * @returns {boolean} True if save succeeded, false otherwise.
+ */
 export function savePlaylist(tracks, currentSongIndex) {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex, tracks }));
+        return true;
     } catch {
         // localStorage unavailable or quota exceeded — fail silently
+        return false;
     }
 }
 

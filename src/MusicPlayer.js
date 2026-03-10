@@ -407,15 +407,28 @@ export default class MusicPlayer {
      * Temporarily shows "Saved!" on the button as lightweight feedback.
      */
     handleSavePlaylist() {
-        savePlaylist(this.tracks, this.currentSongIndex);
-        this.isDirty = false;
-        this.hasSavedPlaylist = true;
-        this.updatePlaylistActions();
-
-        this.savePlBtn.textContent = 'Saved!';
-        setTimeout(() => {
-            this.savePlBtn.textContent = 'Save Playlist';
-        }, 1500);
+        const success = savePlaylist(this.tracks, this.currentSongIndex);
+        if (success) {
+            this.isDirty = false;
+            this.hasSavedPlaylist = true;
+            this.updatePlaylistActions();
+            this.savePlBtn.textContent = 'Saved!';
+            setTimeout(() => {
+                this.savePlBtn.textContent = 'Save Playlist';
+            }, 1500);
+        } else {
+            // Show error state, keep Save enabled for retry
+            this.savePlBtn.textContent = 'Save Failed!';
+            setTimeout(() => {
+                this.savePlBtn.textContent = 'Save Playlist';
+            }, 2000);
+            // Optionally log error for debugging
+            if (globalThis && globalThis.console) {
+                globalThis.console.error(
+                    'Failed to save playlist: localStorage unavailable or quota exceeded.',
+                );
+            }
+        }
     }
 
     /**
