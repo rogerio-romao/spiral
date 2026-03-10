@@ -207,7 +207,7 @@ Throughout the workflow, I will pause and ask for confirmation at these points:
 | 2     | Issue creation       | Approve title/description, add labels, or revise          |
 | 3     | Branch naming        | Approve branch name or request different format           |
 | 5     | Verification results | Accept findings, request more testing, or mark as blocked |
-| 6     | Changelog entry      | Approve entry, revise wording, or update date             |
+| 6     | Changelog entry      | Add entry, check date is correct                          |
 | 7     | PR creation          | Approve PR details, request changes, or add notes         |
 
 ## Exit Conditions
@@ -236,7 +236,7 @@ I will **not proceed** without your confirmation at these checkpoints.
 ├─────────────────────────────────────────────────────────────┤
 │ 5. VERIFY: Test app, check console, report findings          │
 ├─────────────────────────────────────────────────────────────┤
-│ 6. CHANGELOG: Suggest entry, update file upon approval       │
+│ 6. CHANGELOG: Add entry, check date is correct              │
 ├─────────────────────────────────────────────────────────────┤
 │ 7. PR: Create pull request (gh pr create) and prepare merge   │
 └─────────────────────────────────────────────────────────────┘
