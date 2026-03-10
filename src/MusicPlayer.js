@@ -407,7 +407,8 @@ export default class MusicPlayer {
      * Temporarily shows "Saved!" on the button as lightweight feedback.
      */
     handleSavePlaylist() {
-        const success = savePlaylist(this.tracks, this.currentSongIndex);
+        const time = this.isPlaying ? this.audio.currentTime : 0;
+        const success = savePlaylist(this.tracks, this.currentSongIndex, time);
         if (success) {
             this.isDirty = false;
             this.hasSavedPlaylist = true;
@@ -448,17 +449,25 @@ export default class MusicPlayer {
      * Sets hasSavedPlaylist = true and clears the dirty flag.
      * @param {trackFiles} files - Resolved file entries.
      * @param {number} restoreIndex - Index of the track to make active; falls back to 0 if out of range.
+     * @param {number} [restoreTime] - Playback time in seconds to seek to.
      */
-    restorePlaylist(files, restoreIndex) {
+    restorePlaylist(files, restoreIndex, restoreTime = 0) {
         if (files.length === 0) {
             return;
         }
 
         this.handleFiles(files);
         // check restoreIndex bounds
-        if (restoreIndex > 0 && restoreIndex < this.trackList.length) {
+        if (restoreIndex >= 0 && restoreIndex < this.trackList.length) {
             this.currentSongIndex = restoreIndex;
             this.audio.src = this.trackList[this.currentSongIndex];
+
+            const onRestoreTime = () => {
+                this.audio.currentTime = restoreTime;
+                this.audio.removeEventListener('loadedmetadata', onRestoreTime);
+            };
+            this.audio.addEventListener('loadedmetadata', onRestoreTime);
+
             this.updatePlaylistStyle();
             this.updateTrackName();
         }

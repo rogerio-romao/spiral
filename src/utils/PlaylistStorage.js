@@ -2,7 +2,7 @@ const STORAGE_KEY = 'spiral:playlist';
 
 /**
  * @typedef {{ filePath: string, trackName: string }} SavedTrack
- * @typedef {{ tracks: SavedTrack[], currentSongIndex: number }} SavedPlaylist
+ * @typedef {{ tracks: SavedTrack[], currentSongIndex: number, currentTime: number }} SavedPlaylist
  */
 
 /**
@@ -35,7 +35,9 @@ export function loadPlaylist() {
             return null;
         }
 
-        const { tracks, currentSongIndex } = /** @type {Record<string, unknown>} */ (parsed);
+        const { tracks, currentSongIndex, currentTime } = /** @type {Record<string, unknown>} */ (
+            parsed
+        );
         if (!Array.isArray(tracks)) {
             return null;
         }
@@ -46,7 +48,11 @@ export function loadPlaylist() {
 
         const validTracks = /** @type {SavedTrack[]} */ (tracks.filter((t) => isValidTrack(t)));
 
-        return { currentSongIndex: /** @type {number} */ (currentSongIndex), tracks: validTracks };
+        return {
+            currentSongIndex: /** @type {number} */ (currentSongIndex),
+            currentTime: typeof currentTime === 'number' ? currentTime : 0,
+            tracks: validTracks,
+        };
     } catch {
         return null;
     }
@@ -57,14 +63,51 @@ export function loadPlaylist() {
  * Returns true if successful, false if storage fails.
  * @param {SavedTrack[]} tracks - Track metadata to persist.
  * @param {number} currentSongIndex - Index of the currently selected track.
+ * @param {number} [currentTime] - Playback time in seconds of the current track.
  * @returns {boolean} True if save succeeded, false otherwise.
  */
-export function savePlaylist(tracks, currentSongIndex) {
+export function savePlaylist(tracks, currentSongIndex, currentTime = 0) {
     try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex, tracks }));
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ currentSongIndex, currentTime, tracks }),
+        );
         return true;
     } catch {
         // localStorage unavailable or quota exceeded — fail silently
+        return false;
+    }
+}
+
+/**
+ * Update just the currentTime field of an already-saved playlist.
+ * Returns true if successful, false if storage fails or no playlist exists.
+ * @param {number} currentTime - Playback time in seconds to save.
+ * @returns {boolean} True if update succeeded, false otherwise.
+ */
+export function updatePlaylistTime(currentTime) {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+            return false;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') {
+            return false;
+        }
+
+        const { tracks, currentSongIndex } = /** @type {Record<string, unknown>} */ (parsed);
+        if (!Array.isArray(tracks) || !Number.isInteger(currentSongIndex)) {
+            return false;
+        }
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ currentSongIndex, currentTime, tracks }),
+        );
+        return true;
+    } catch {
         return false;
     }
 }

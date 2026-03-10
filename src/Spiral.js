@@ -8,7 +8,7 @@ import KeyboardController from './KeyboardController.js';
 import MusicPlayer from './MusicPlayer.js';
 import TransitionManager from './TransitionManager.js';
 import { loadBlockedAlgorithms } from './utils/BlockedAlgorithms.js';
-import { loadPlaylist } from './utils/PlaylistStorage.js';
+import { loadPlaylist, updatePlaylistTime } from './utils/PlaylistStorage.js';
 import { loadPreferences, savePreference } from './utils/UserPreferences.js';
 import WaveformController from './WaveformController.js';
 
@@ -177,6 +177,11 @@ export default class Spiral {
 
     /** Clean up resources before the app closes. */
     destroy() {
+        // Save playlist time if has saved playlist
+        if (this.musicPlayer?.hasSavedPlaylist) {
+            updatePlaylistTime(this.musicPlayer.audio.currentTime);
+        }
+
         // Clear welcome timers
         // oxlint-disable-next-line unicorn/no-array-for-each
         this.welcomeTimers.forEach(clearTimeout);
@@ -346,7 +351,7 @@ export default class Spiral {
 
         const savedPath = saved.tracks[saved.currentSongIndex]?.filePath;
         const newIndex = savedPath ? resolved.findIndex((file) => file.filePath === savedPath) : -1;
-        this.musicPlayer.restorePlaylist(resolved, Math.max(newIndex, 0));
+        this.musicPlayer.restorePlaylist(resolved, Math.max(newIndex, 0), saved.currentTime || 0);
     }
 
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */

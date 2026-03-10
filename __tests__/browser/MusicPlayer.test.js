@@ -564,6 +564,19 @@ describe('musicPlayer (browser)', () => {
             expect(player.trackNameEl.textContent).toBe('Track B');
         });
 
+        it('restores the audio currentTime from saved time', async () => {
+            const player = createPlayer();
+            vi.spyOn(player.audio, 'dispatchEvent');
+
+            player.restorePlaylist(FILES, 0, 45);
+
+            const event = new Event('loadedmetadata');
+            player.audio.dispatchEvent(event);
+
+            await Promise.resolve();
+            expect(player.audio.currentTime).toBe(45);
+        });
+
         it('falls back to index 0 when restoreIndex is out of range', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 99);
