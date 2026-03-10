@@ -54,12 +54,6 @@ export function loadPlaylist() {
 
 /**
  * Persist the current playlist to localStorage.
- * Errors are silently swallowed so storage failures never crash the app.
- * @param {SavedTrack[]} tracks - Track metadata to persist.
- * @param {number} currentSongIndex - Index of the currently selected track.
- */
-/**
- * Persist the current playlist to localStorage.
  * Returns true if successful, false if storage fails.
  * @param {SavedTrack[]} tracks - Track metadata to persist.
  * @param {number} currentSongIndex - Index of the currently selected track.

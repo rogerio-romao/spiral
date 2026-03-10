@@ -32,7 +32,7 @@ export default class WaveformController {
      * Destroy the controller and stop animation.
      */
     destroy() {
-        if (this.animationRafId) {
+        if (this.animationRafId !== null) {
             cancelAnimationFrame(this.animationRafId);
             this.animationRafId = null;
         }
@@ -134,7 +134,7 @@ export default class WaveformController {
      */
     start() {
         // Prevent multiple animation loops if already running
-        if (this.animationRafId) {
+        if (this.animationRafId !== null) {
             return;
         }
 

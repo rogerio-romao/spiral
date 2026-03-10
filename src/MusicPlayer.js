@@ -773,7 +773,8 @@ export default class MusicPlayer {
             this.isPlaying = false;
             this.togglePlayPauseIcon(false);
             this.stopEq();
-            [...this.playlistEls].map((el) => (el.style.color = '#555'));
+            // oxlint-disable-next-line unicorn/no-array-for-each
+            this.playlistEls.forEach((el) => (el.style.color = '#555'));
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         } else if (this.playlistEls) {
             // if already paused, just rewind to the beginning
@@ -827,7 +828,8 @@ export default class MusicPlayer {
      * and updates the now-playing track name.
      */
     updatePlaylistStyle() {
-        [...this.playlistEls].map((el) => (el.style.color = '#555'));
+        // oxlint-disable-next-line unicorn/no-array-for-each
+        this.playlistEls.forEach((el) => (el.style.color = '#555'));
         this.playlistEls[this.currentSongIndex].style.color = 'orange';
         this.playlistEls[this.currentSongIndex].scrollIntoView({ block: 'nearest' });
         this.updateTrackName();
