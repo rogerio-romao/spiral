@@ -472,9 +472,21 @@ export default class MusicPlayer {
      * Open the native file picker dialog via Electron and add selected tracks.
      */
     async openFilePicker() {
-        const files = await /** @type {any} */ (globalThis).electronAPI.openFiles();
-        if (files.length > 0) {
+        // oxlint-disable-next-line prefer-destructuring
+        const electronAPI = /** @type {any} */ (globalThis).electronAPI;
+        if (!electronAPI || typeof electronAPI.openFiles !== 'function') {
+            return;
+        }
+
+        try {
+            const files = await electronAPI.openFiles();
+            if (!Array.isArray(files) || files.length === 0) {
+                return;
+            }
             this.handleFiles(files);
+        } catch (error) {
+            // oxlint-disable-next-line no-console
+            console.error('Failed to open file picker.', error);
         }
     }
 

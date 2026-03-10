@@ -86,6 +86,16 @@ export default class TransitionManager {
             AlgorithmClass = this.getRandomAlgorithm();
         }
 
+        if (!AlgorithmClass) {
+            this.setBlockedAlgorithms([]);
+            this.algoRetries = 0;
+            AlgorithmClass = this.getRandomAlgorithm();
+            if (!AlgorithmClass) {
+                this.hudController.displayAlgorithmName('No algorithm available');
+                return;
+            }
+        }
+
         // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.
         try {
             this.currentAlgorithm = new AlgorithmClass();
