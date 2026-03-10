@@ -110,7 +110,7 @@ export default class MusicPlayer {
         const listItem = document.createElement('li');
         listItem.classList.add('list-item');
         listItem.setAttribute('draggable', 'true');
-        listItem.dataset.index = String(index);
+        listItem.dataset['index'] = String(index);
         listItem.innerHTML = /* html */ `
             <span class="track-name">${htmlEscape(baseName)}</span>
             <button class="remove-track" title="Remove track">remove</button>
@@ -118,7 +118,7 @@ export default class MusicPlayer {
 
         listItem.querySelector('.remove-track').addEventListener('click', (e) => {
             e.stopPropagation();
-            const idx = Number(listItem.dataset.index);
+            const idx = Number(listItem.dataset['index']);
             this.removeTrack(idx);
         });
         return listItem;
@@ -285,7 +285,7 @@ export default class MusicPlayer {
      */
     handleDragStart(e) {
         if (e.target instanceof HTMLElement) {
-            this.draggedIndex = Number(e.target.dataset.index);
+            this.draggedIndex = Number(e.target.dataset['index']);
             e.target.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
         }
@@ -315,7 +315,7 @@ export default class MusicPlayer {
         if (!targetItem || !(targetItem instanceof HTMLElement)) {
             return;
         }
-        const dropIndex = Number(targetItem.dataset.index);
+        const dropIndex = Number(targetItem.dataset['index']);
         if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
             return;
         }
@@ -561,7 +561,7 @@ export default class MusicPlayer {
 
         const listItem = e.target.closest('.list-item');
         if (listItem && listItem instanceof HTMLElement && !e.target.closest('.remove-track')) {
-            const index = Number(listItem.dataset.index);
+            const index = Number(listItem.dataset['index']);
             this.jumpToTrack(index);
         }
     }
@@ -792,7 +792,7 @@ export default class MusicPlayer {
         /** @type {NodeListOf<HTMLLIElement>} */
         const items = this.playListEl.querySelectorAll('.list-item');
         for (let i = 0; i < items.length; i++) {
-            items[i].dataset.index = String(i);
+            items[i].dataset['index'] = String(i);
         }
     }
 

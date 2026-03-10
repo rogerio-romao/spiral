@@ -102,12 +102,15 @@ export default class DevModeController {
      * These handlers create references for binding and unbinding to DOM elements, such as cleaning up the listeners when the application is closing.
      */
     initHandlers() {
-        /** @type {(e: Event & { target: HTMLInputElement }) => void} */
-        this.onToggleDevModeChangeHandler = (e) => this.onToggleDevModeChange(e.target.checked);
-        /** @type {(e: Event & { target: HTMLSelectElement }) => void} */
-        this.onAlgoAChangeHandler = (e) => this.onDevAlgoChange('A', e.target.value);
-        /** @type {(e: Event & { target: HTMLSelectElement }) => void} */
-        this.onAlgoBChangeHandler = (e) => this.onDevAlgoChange('B', e.target.value);
+        /** @type {EventListener} */
+        this.onToggleDevModeChangeHandler = (e) =>
+            this.onToggleDevModeChange(/** @type {HTMLInputElement} */ (e.target).checked);
+        /** @type {EventListener} */
+        this.onAlgoAChangeHandler = (e) =>
+            this.onDevAlgoChange('A', /** @type {HTMLSelectElement} */ (e.target).value);
+        /** @type {EventListener} */
+        this.onAlgoBChangeHandler = (e) =>
+            this.onDevAlgoChange('B', /** @type {HTMLSelectElement} */ (e.target).value);
     }
 
     /**

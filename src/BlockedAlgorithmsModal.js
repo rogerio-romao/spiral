@@ -56,7 +56,7 @@ export default class BlockedAlgorithmsModal {
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.dataset.algoName = algo.name;
+            checkbox.dataset['algoName'] = algo.name;
             checkbox.addEventListener('change', (e) => this.handleCheckboxChange(e));
 
             item.append(checkbox);
@@ -91,7 +91,7 @@ export default class BlockedAlgorithmsModal {
         const items = this.listContainer.querySelectorAll('label.blocked-item');
 
         for (const item of items) {
-            const name = item.querySelector('input').dataset.algoName.toLowerCase();
+            const name = item.querySelector('input').dataset['algoName'].toLowerCase();
 
             item.style.display = name.includes(query) ? '' : 'none';
         }
@@ -103,7 +103,7 @@ export default class BlockedAlgorithmsModal {
      */
     handleCheckboxChange(e) {
         const checkbox = /** @type {HTMLInputElement} */ (e.target);
-        const name = checkbox.dataset.algoName;
+        const name = checkbox.dataset['algoName'];
         const { blockedAlgorithms } = this.transitionManager;
 
         if (checkbox.checked) {
@@ -149,7 +149,7 @@ export default class BlockedAlgorithmsModal {
         const checkboxes = this.listContainer.querySelectorAll('input[type="checkbox"]');
 
         for (const checkbox of checkboxes) {
-            const name = checkbox.dataset.algoName;
+            const name = checkbox.dataset['algoName'];
             const isBlocked = blockedAlgorithms.has(name);
             checkbox.checked = isBlocked;
             // Disable the checkbox for the last remaining unblocked algorithm
