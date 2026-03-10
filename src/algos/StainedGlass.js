@@ -33,188 +33,48 @@ export default class StainedGlass extends AL {
         AL.ctx.fillStyle = AL.randomColor(0, 255, 0, 1);
     }
 
-    // oxlint-disable-next-line max-statements, complexity
     draw() {
         if (this.t % this.speed === 0) {
             this.stagger = AL.random(0, 30);
 
-            if (this.stagger === 0) {
-                AL.ctx.strokeRect(0, 0, this.length, this.height);
-                AL.ctx.fillRect(0, 0, this.length, this.height);
-                this.setupDrawingStyles();
-            }
+            // Grid coordinates for stagger values 0-29
+            const gridPositions = [
+                [0, 0],
+                [1, 0],
+                [2, 0],
+                [3, 0],
+                [4, 0],
+                [5, 0],
+                [5, 1],
+                [4, 1],
+                [3, 1],
+                [2, 1],
+                [1, 1],
+                [0, 1],
+                [0, 2],
+                [1, 2],
+                [2, 2],
+                [3, 2],
+                [4, 2],
+                [5, 2],
+                [5, 3],
+                [4, 3],
+                [3, 3],
+                [2, 3],
+                [1, 3],
+                [0, 3],
+                [0, 4],
+                [1, 4],
+                [2, 4],
+                [3, 4],
+                [4, 4],
+                [5, 4],
+            ];
 
-            if (this.stagger === 1) {
-                AL.ctx.strokeRect(this.length, 0, this.length, this.height);
-                AL.ctx.fillRect(this.length, 0, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 2) {
-                AL.ctx.strokeRect(2 * this.length, 0, this.length, this.height);
-                AL.ctx.fillRect(2 * this.length, 0, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 3) {
-                AL.ctx.strokeRect(3 * this.length, 0, this.length, this.height);
-                AL.ctx.fillRect(3 * this.length, 0, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 4) {
-                AL.ctx.strokeRect(4 * this.length, 0, this.length, this.height);
-                AL.ctx.fillRect(4 * this.length, 0, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 5) {
-                AL.ctx.strokeRect(5 * this.length, 0, this.length, this.height);
-                AL.ctx.fillRect(5 * this.length, 0, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 6) {
-                AL.ctx.strokeRect(5 * this.length, this.height, this.length, this.height);
-                AL.ctx.fillRect(5 * this.length, this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 7) {
-                AL.ctx.strokeRect(4 * this.length, this.height, this.length, this.height);
-                AL.ctx.fillRect(4 * this.length, this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 8) {
-                AL.ctx.strokeRect(3 * this.length, this.height, this.length, this.height);
-                AL.ctx.fillRect(3 * this.length, this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 9) {
-                AL.ctx.strokeRect(2 * this.length, this.height, this.length, this.height);
-                AL.ctx.fillRect(2 * this.length, this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 10) {
-                AL.ctx.strokeRect(this.length, this.height, this.length, this.height);
-                AL.ctx.fillRect(this.length, this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 11) {
-                AL.ctx.strokeRect(0, this.height, this.length, this.height);
-                AL.ctx.fillRect(0, this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 12) {
-                AL.ctx.strokeRect(0, 2 * this.height, this.length, this.height);
-                AL.ctx.fillRect(0, 2 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 13) {
-                AL.ctx.strokeRect(this.length, 2 * this.height, this.length, this.height);
-                AL.ctx.fillRect(this.length, 2 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 14) {
-                AL.ctx.strokeRect(2 * this.length, 2 * this.height, this.length, this.height);
-                AL.ctx.fillRect(2 * this.length, 2 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 15) {
-                AL.ctx.strokeRect(3 * this.length, 2 * this.height, this.length, this.height);
-                AL.ctx.fillRect(3 * this.length, 2 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 16) {
-                AL.ctx.strokeRect(4 * this.length, 2 * this.height, this.length, this.height);
-                AL.ctx.fillRect(4 * this.length, 2 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 17) {
-                AL.ctx.strokeRect(5 * this.length, 2 * this.height, this.length, this.height);
-                AL.ctx.fillRect(5 * this.length, 2 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 18) {
-                AL.ctx.strokeRect(5 * this.length, 3 * this.height, this.length, this.height);
-                AL.ctx.fillRect(5 * this.length, 3 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 19) {
-                AL.ctx.strokeRect(4 * this.length, 3 * this.height, this.length, this.height);
-                AL.ctx.fillRect(4 * this.length, 3 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 20) {
-                AL.ctx.strokeRect(3 * this.length, 3 * this.height, this.length, this.height);
-                AL.ctx.fillRect(3 * this.length, 3 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 21) {
-                AL.ctx.strokeRect(2 * this.length, 3 * this.height, this.length, this.height);
-                AL.ctx.fillRect(2 * this.length, 3 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 22) {
-                AL.ctx.strokeRect(this.length, 3 * this.height, this.length, this.height);
-                AL.ctx.fillRect(this.length, 3 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 23) {
-                AL.ctx.strokeRect(0, 3 * this.height, this.length, this.height);
-                AL.ctx.fillRect(0, 3 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 24) {
-                AL.ctx.strokeRect(0, 4 * this.height, this.length, this.height);
-                AL.ctx.fillRect(0, 4 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 25) {
-                AL.ctx.strokeRect(this.length, 4 * this.height, this.length, this.height);
-                AL.ctx.fillRect(this.length, 4 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 26) {
-                AL.ctx.strokeRect(2 * this.length, 4 * this.height, this.length, this.height);
-                AL.ctx.fillRect(2 * this.length, 4 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 27) {
-                AL.ctx.strokeRect(3 * this.length, 4 * this.height, this.length, this.height);
-                AL.ctx.fillRect(3 * this.length, 4 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 28) {
-                AL.ctx.strokeRect(4 * this.length, 4 * this.height, this.length, this.height);
-                AL.ctx.fillRect(4 * this.length, 4 * this.height, this.length, this.height);
-                this.setupDrawingStyles();
-            }
-
-            if (this.stagger === 29) {
-                AL.ctx.strokeRect(5 * this.length, 4 * this.height, this.length, this.height);
-                AL.ctx.fillRect(5 * this.length, 4 * this.height, this.length, this.height);
+            if (this.stagger < gridPositions.length) {
+                const [col, row] = gridPositions[this.stagger];
+                AL.ctx.strokeRect(col * this.length, row * this.height, this.length, this.height);
+                AL.ctx.fillRect(col * this.length, row * this.height, this.length, this.height);
                 this.setupDrawingStyles();
             }
         }

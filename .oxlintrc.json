@@ -53,7 +53,7 @@
         "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
         "eslint/class-methods-use-this": "off",
         "eslint/capitalized-comments": "off",
-        "eslint/complexity": ["warn", 16],
+        "eslint/complexity": ["warn", 15],
         "eslint/func-style": ["error", "declaration"],
         "eslint/sort-imports": "off",
         "eslint/no-extend-native": "off",

@@ -39,8 +39,8 @@ export default class Triangulate extends AL {
      * @param {number} i - The index used to calculate the positions of the other two vertices, creating a staggered effect.
      */
     drawTriangle(x, y, i) {
-        AL.ctx.moveTo(x, y);
         AL.ctx.beginPath();
+        AL.ctx.moveTo(x, y);
         AL.ctx.lineTo(x + this.size + i, y + i);
         AL.ctx.lineTo(x + i, y + this.size + i);
         AL.ctx.lineTo(x, y);

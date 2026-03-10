@@ -12,8 +12,8 @@ import AL from '../AlgorithmLoader.js';
  * @property {number} [mass] - The mass of the particle (extension).
  * @property {function} addGravitation - Method to add gravitational influence from another particle.
  * @property {function} update - Method to update the particle's position based on its velocity and gravitational influences.
- * @property {function} setSpeed - Method to set the speed of the particle (extension).
- * @property {function} setHeading - Method to set the heading of the particle (extension).
+ * @property {(speed: number) => void} setSpeed - Method to set the speed of the particle (extension).
+ * @property {(heading: number) => void} setHeading - Method to set the heading of the particle (extension).
  */
 
 export default class GravityTurbulence extends AL {
