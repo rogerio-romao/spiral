@@ -14,9 +14,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
  * @returns {string} the track name, which is the file name without the extension
  */
 function trackNameFromPath(filePath) {
-    const base = path.basename(filePath);
-    const dotIndex = base.indexOf('.');
-    return dotIndex > 0 ? base.slice(0, dotIndex) : base;
+    return path.parse(filePath).name;
 }
 
 /** @typedef {{ filePath: string, trackName: string, fileUrl: string }} FileResult */

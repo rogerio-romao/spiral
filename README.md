@@ -17,6 +17,16 @@ Spiral transforms your music listening experience into a visual journey. As your
 - **Waveform Display:** See the audio waveform alongside the generative art.
 - **Minimal UI:** Focus on the art and music, with controls that stay out of your way.
 
+## Setup & Run
+
+If you want to run Spiral locally or contribute to its development, follow these steps:
+Prerequisites: **Node.js 18+** and **pnpm**.
+
+```bash
+pnpm install
+pnpm start
+```
+
 ## How to Use Spiral
 
 1. **Open Spiral** and load your favorite music tracks.
