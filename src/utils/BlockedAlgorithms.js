@@ -12,10 +12,12 @@ export function loadBlockedAlgorithms() {
         if (!raw) {
             return [];
         }
+
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) {
             return [];
         }
+
         return parsed.filter((entry) => typeof entry === 'string');
     } catch {
         return [];

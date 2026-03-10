@@ -2,6 +2,24 @@
 // oxlint-disable jsdoc/require-param
 // note: the above is due to a bug in the linter where it doesn't recognize the JSDoc comments for `randomRange`, even though they are correct. Reported at https://github.com/oxc-project/oxc/issues/20037
 
+/** @typedef {Object} Point
+ *  @property {number} x - The x coordinate.
+ *  @property {number} y - The y coordinate.
+ */
+
+/** @typedef {Object} Rect
+ *  @property {number} x - The x coordinate of the top-left corner.
+ *  @property {number} y - The y coordinate of the top-left corner.
+ *  @property {number} width - The width of the rectangle.
+ *  @property {number} height - The height of the rectangle.
+ */
+
+/** @typedef {Object} Circle
+ *  @property {number} x - The x coordinate.
+ *  @property {number} y - The y coordinate.
+ *  @property {number} radius - The radius of the circle.
+ */
+
 /**
  * A collection of mathematical utility functions for common operations such as collision detection, interpolation, and range checking.
  *
@@ -13,8 +31,8 @@
 const utils = {
     /**
      * Check if two circles collide.
-     * @param {object} c0 - First circle with properties x, y, and radius.
-     * @param {object} c1 - Second circle with properties x, y, and radius.
+     * @param {Circle} c0 - First circle.
+     * @param {Circle} c1 - Second circle.
      * @returns {boolean} True if circles collide, false otherwise.
      */
     circleCollision(c0, c1) {
@@ -25,7 +43,7 @@ const utils = {
      * Check if a point is inside a circle.
      * @param {number} x - X coordinate of the point.
      * @param {number} y - Y coordinate of the point.
-     * @param {object} circle - Circle with properties x, y, and radius.
+     * @param {Circle} circle - Circle with properties x, y, and radius.
      * @returns {boolean} True if the point is inside the circle, false otherwise.
      */
     circlePointCollision(x, y, circle) {
@@ -45,26 +63,27 @@ const utils = {
 
     /**
      * Cubic Bezier interpolation.
-     * @param {object} p0 - First control point with properties x and y.
-     * @param {object} p1 - Second control point with properties x and y.
-     * @param {object} p2 - Third control point with properties x and y.
-     * @param {object} p3 - Fourth control point with properties x and y.
+     * @param {Point} p0 - First control point with properties x and y.
+     * @param {Point} p1 - Second control point with properties x and y.
+     * @param {Point} p2 - Third control point with properties x and y.
+     * @param {Point} p3 - Fourth control point with properties x and y.
      * @param {number} interpolationFactor - Fraction of time elapsed (0–1).
-     * @param {object} [pFinal] - Optional object to store the result.
-     * @returns {object} The interpolated point with properties x and y.
+     * @returns {Point} The interpolated point with properties x and y.
      */
     // oxlint-disable-next-line max-params
-    cubicBezier(p0, p1, p2, p3, interpolationFactor, pFinal = {}) {
-        pFinal.x =
-            (1 - interpolationFactor) ** 3 * p0.x +
-            (1 - interpolationFactor) ** 2 * 3 * interpolationFactor * p1.x +
-            (1 - interpolationFactor) * 3 * interpolationFactor * interpolationFactor * p2.x +
-            interpolationFactor * interpolationFactor * interpolationFactor * p3.x;
-        pFinal.y =
-            (1 - interpolationFactor) ** 3 * p0.y +
-            (1 - interpolationFactor) ** 2 * 3 * interpolationFactor * p1.y +
-            (1 - interpolationFactor) * 3 * interpolationFactor * interpolationFactor * p2.y +
-            interpolationFactor * interpolationFactor * interpolationFactor * p3.y;
+    cubicBezier(p0, p1, p2, p3, interpolationFactor) {
+        const pFinal = {
+            x:
+                (1 - interpolationFactor) ** 3 * p0.x +
+                (1 - interpolationFactor) ** 2 * 3 * interpolationFactor * p1.x +
+                (1 - interpolationFactor) * 3 * interpolationFactor * interpolationFactor * p2.x +
+                interpolationFactor * interpolationFactor * interpolationFactor * p3.x,
+            y:
+                (1 - interpolationFactor) ** 3 * p0.y +
+                (1 - interpolationFactor) ** 2 * 3 * interpolationFactor * p1.y +
+                (1 - interpolationFactor) * 3 * interpolationFactor * interpolationFactor * p2.y +
+                interpolationFactor * interpolationFactor * interpolationFactor * p3.y,
+        };
         return pFinal;
     },
 
@@ -79,8 +98,8 @@ const utils = {
 
     /**
      * Distance between two points.
-     * @param {object} p0 - First point with properties x and y.
-     * @param {object} p1 - Second point with properties x and y.
+     * @param {Point} p0 - First point with properties x and y.
+     * @param {Point} p1 - Second point with properties x and y.
      * @returns {number} Distance between the two points.
      */
     distance(p0, p1) {
@@ -151,7 +170,7 @@ const utils = {
      * Check if point is inside rect.
      * @param {number} x - X coordinate of the point.
      * @param {number} y - Y coordinate of the point.
-     * @param {object} rect - Rectangle with properties x, y, width, and height.
+     * @param {Rect} rect - Rectangle with properties x, y, width, and height.
      * @returns {boolean} True if the point is inside the rectangle, false otherwise.
      */
     pointInRect(x, y, rect) {
@@ -163,22 +182,24 @@ const utils = {
 
     /**
      * Quadratic Bezier interpolation.
-     * @param {object} p0 - First control point with properties x and y.
-     * @param {object} p1 - Second control point with properties x and y.
-     * @param {object} p2 - Third control point with properties x and y.
+     * @param {Point} p0 - First control point with properties x and y.
+     * @param {Point} p1 - Second control point with properties x and y.
+     * @param {Point} p2 - Third control point with properties x and y.
      * @param {number} interpolationFactor - The interpolation factor (0–1).
-     * @param {object} [pFinal] - Optional object to store the result.
-     * @returns {object} The interpolated point with properties x and y.
+     * @returns {Point} The interpolated point with properties x and y.
      */
-    quadraticBezier(p0, p1, p2, interpolationFactor, pFinal = {}) {
-        pFinal.x =
-            (1 - interpolationFactor) ** 2 * p0.x +
-            (1 - interpolationFactor) * 2 * interpolationFactor * p1.x +
-            interpolationFactor * interpolationFactor * p2.x;
-        pFinal.y =
-            (1 - interpolationFactor) ** 2 * p0.y +
-            (1 - interpolationFactor) * 2 * interpolationFactor * p1.y +
-            interpolationFactor * interpolationFactor * p2.y;
+    quadraticBezier(p0, p1, p2, interpolationFactor) {
+        const pFinal = {
+            x:
+                (1 - interpolationFactor) ** 2 * p0.x +
+                (1 - interpolationFactor) * 2 * interpolationFactor * p1.x +
+                interpolationFactor * interpolationFactor * p2.x,
+            y:
+                (1 - interpolationFactor) ** 2 * p0.y +
+                (1 - interpolationFactor) * 2 * interpolationFactor * p1.y +
+                interpolationFactor * interpolationFactor * p2.y,
+        };
+
         return pFinal;
     },
 
@@ -228,8 +249,8 @@ const utils = {
 
     /**
      * Check if two rectangles intersect.
-     * @param {object} r0 - First rectangle with properties x, y, width, and height.
-     * @param {object} r1 - Second rectangle with properties x, y, width, and height.
+     * @param {Rect} r0 - First rectangle with properties x, y, width, and height.
+     * @param {Rect} r1 - Second rectangle with properties x, y, width, and height.
      * @returns {boolean} True if the rectangles intersect, false otherwise.
      */
     rectIntersect(r0, r1) {

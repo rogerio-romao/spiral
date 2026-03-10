@@ -19,7 +19,7 @@ export default class FourDee extends AL {
     }
 
     initializeProperties() {
-        AL.weight = AL.createParticle(AL.random(0, AL.w), AL.random(0, AL.h), 0, 0);
+        this.weight = AL.createParticle(AL.random(0, AL.w), AL.random(0, AL.h), 0, 0);
         this.rotate = AL.random(-90, -1);
         this.k = Math.random();
     }
@@ -35,18 +35,18 @@ export default class FourDee extends AL {
 
     draw() {
         if (this.t % this.speed === 0) {
-            const dx = this.springPoint.x - AL.weight.x;
-            const dy = this.springPoint.y - AL.weight.y;
+            const dx = this.springPoint.x - this.weight.x;
+            const dy = this.springPoint.y - this.weight.y;
             const distance = Math.hypot(dx, dy);
             const springForce = distance * this.k;
             const ax = (dx / distance) * springForce;
             const ay = (dy / distance) * springForce;
-            AL.weight.vx += ax;
-            AL.weight.vy += ay;
-            AL.weight.update();
+            this.weight.vx += ax;
+            this.weight.vy += ay;
+            this.weight.update();
 
             AL.ctx.beginPath();
-            AL.ctx.arc(AL.weight.x, AL.weight.y, this.radius, 0, 2 * Math.PI);
+            AL.ctx.arc(this.weight.x, this.weight.y, this.radius, 0, 2 * Math.PI);
             AL.ctx.fill();
         }
 

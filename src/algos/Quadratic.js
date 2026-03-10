@@ -29,6 +29,13 @@ export default class Quadratic extends AL {
         AL.ctx.strokeStyle = AL.randomColor(0, 255, 0.5, 1);
     }
 
+    /**
+     * Generates a sequence of numbers where the difference between consecutive numbers increases by a constant amount (the second difference).
+     * @param {number} startNum - The first number in the sequence.
+     * @param {number} firstDiff - The initial difference between the first two numbers.
+     * @param {number} secondDiff - The constant amount by which the difference increases for each subsequent number.
+     * @returns {number[]} An array representing the generated quadratic sequence.
+     */
     createQuadraticSequence(startNum, firstDiff, secondDiff) {
         const arr = [startNum];
 

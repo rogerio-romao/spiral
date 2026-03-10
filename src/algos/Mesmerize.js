@@ -24,10 +24,10 @@ export default class Mesmerize extends AL {
         this.ur1 = AL.random(0, 30);
         this.ll1 = AL.random(0, 30);
         this.lr1 = AL.random(0, 30);
-        AL.w1 = AL.random(30, 300);
-        AL.h1 = AL.random(30, 300);
-        AL.w2 = AL.random(60, 600);
-        AL.h2 = AL.random(60, 600);
+        this.w1 = AL.random(30, 300);
+        this.h1 = AL.random(30, 300);
+        this.w2 = AL.random(60, 600);
+        this.h2 = AL.random(60, 600);
         this.ul2 = AL.random(-300, 600);
         this.ur2 = AL.random(-300, 600);
         this.ll2 = AL.random(-300, 600);
@@ -35,34 +35,34 @@ export default class Mesmerize extends AL {
         this.rotate = AL.random(1, 199);
         this.color2 = AL.randomColor(0, 127);
         this.color1 = AL.randomColor(127, 255);
-        this.x1 = AL.random(0, AL.w - AL.w1);
-        this.x2 = AL.random(0, AL.w - AL.w2);
-        this.y1 = AL.random(0, AL.h - AL.h1);
-        this.y2 = AL.random(0, AL.h - AL.h2);
+        this.x1 = AL.random(0, AL.w - this.w1);
+        this.x2 = AL.random(0, AL.w - this.w2);
+        this.y1 = AL.random(0, AL.h - this.h1);
+        this.y2 = AL.random(0, AL.h - this.h2);
         this.fill2 = AL.randomColor(0, 255, 0.04, 0.1);
         this.fill1 = AL.randomColor(0, 255, 0.01, 0.04);
 
         this.obj1 = {
             color: this.color1,
             fill: this.fill1,
-            height: AL.h1,
+            height: this.h1,
             lowerLeft: this.ll1,
             lowerRight: this.lr1,
             upperLeft: this.ul1,
             upperRight: this.ur1,
-            width: AL.w1,
+            width: this.w1,
             x: this.x1,
             y: this.y1,
         };
         this.obj2 = {
             color: this.color2,
             fill: this.fill2,
-            height: AL.h2,
+            height: this.h2,
             lowerLeft: this.ll2,
             lowerRight: this.lr2,
             upperLeft: this.ul2,
             upperRight: this.ur2,
-            width: AL.w2,
+            width: this.w2,
             x: this.x2,
             y: this.y2,
         };

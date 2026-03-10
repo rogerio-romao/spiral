@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 import AlgorithmLoader from './AlgorithmLoader.js';
 import BlockedAlgorithmsModal from './BlockedAlgorithmsModal.js';
 import DevModeController from './DevModeController.js';
@@ -23,19 +24,30 @@ export default class Spiral {
     // INSTANCE PROPERTIES
     algoChangeDebounceDelayInMs = 250;
     cursorHideDelayInMs = 4000;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     cursorHideTimeout = null;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     debounceTimeout = null;
+    /** @type {FrequencyAnalyser|null} */
     frequencyAnalyser = null;
+    /** @type {KeyboardController|null} */
     keyboardController = null;
+    /** @type {MusicPlayer|null} */
     musicPlayer = null;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     resizeTimeout = null;
+    /** @type {WaveformController|null} */
     waveformController = null;
+    /** @type {ReturnType<typeof setTimeout>[]}*/
+    welcomeTimers = [];
 
     constructor() {
         // CANVAS SETUP
         /** @type {HTMLCanvasElement} */
         this.canvas = document.querySelector('#canvas');
+        /** @type {CanvasRenderingContext2D} */
         this.ctx = this.canvas.getContext('2d');
+
         this.w = globalThis.innerWidth;
         this.h = globalThis.innerHeight;
         this.applyDpr();
@@ -46,7 +58,7 @@ export default class Spiral {
         AlgorithmLoader.h = this.h;
 
         // HUD SETUP
-        this.hud = new HudController({
+        this.hudController = new HudController({
             algosDisplayElement: document.querySelector('#algos'),
             helpElement: document.querySelector('#help'),
             messageElement: document.querySelector('#msg'),
@@ -58,12 +70,12 @@ export default class Spiral {
         this.transitionManager = new TransitionManager({
             algorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
-            hudController: this.hud,
+            hudController: this.hudController,
         });
 
         // DEV MODE CONTROLLER
         this.devModeController = new DevModeController({
-            hudController: this.hud,
+            hudController: this.hudController,
             transitionManager: this.transitionManager,
         });
 
@@ -165,18 +177,41 @@ export default class Spiral {
 
     /** Clean up resources before the app closes. */
     destroy() {
-        this._welcomeTimers.map(clearTimeout);
-        this.hud.destroy();
-        this.musicPlayer.destroy();
+        // Clear welcome timers
+        // oxlint-disable-next-line unicorn/no-array-for-each
+        this.welcomeTimers.forEach(clearTimeout);
+
+        // Clear debounce timeout for algorithm restart
+        if (this.debounceTimeout) {
+            clearTimeout(this.debounceTimeout);
+            this.debounceTimeout = null;
+        }
+
+        // Remove global keyup handler
+        if (this.keyboardController) {
+            this.keyboardController.destroy();
+        }
+
+        // Stop transition interval and current algorithm
+        if (this.transitionManager) {
+            this.transitionManager.resetAutoChangeTimer(); // clears interval
+            this.transitionManager.stopCurrentAlgorithm();
+        }
+
+        // Now destroy controllers (no callbacks should run after this)
+        this.hudController.destroy();
         this.devModeController.destroy();
         this.blockedAlgorithmsModal.destroy();
         this.waveformController?.destroy();
 
+        // Clear other timers
         if (this.cursorHideTimeout) {
             clearTimeout(this.cursorHideTimeout);
+            this.cursorHideTimeout = null;
         }
         if (this.resizeTimeout) {
             clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = null;
         }
     }
 
@@ -201,27 +236,27 @@ export default class Spiral {
 
         // Apply saved user preferences before starting the timer
         const prefs = loadPreferences();
-        this.hud.silenceMessages = prefs.silenceMessages;
+        this.hudController.silenceMessages = prefs.silenceMessages;
+        this.transitionManager.autoChangeIntervalInSeconds = prefs.autoChangeIntervalInSeconds;
+        this.transitionManager.isInManualMode = prefs.isInManualMode;
 
         // welcome messages and tips
         if (prefs.showTips) {
-            this.hud.displayMessage('WELCOME');
-            this._welcomeTimers = [
+            this.hudController.displayMessage('WELCOME');
+            this.welcomeTimers = [
                 setTimeout(() => {
-                    this.hud.displayMessage('PRESS H FOR HELP');
+                    this.hudController.displayMessage('PRESS H FOR HELP');
                 }, 10_000),
                 setTimeout(() => {
-                    this.hud.displayMessage('TIP: F FOR FULLSCREEN');
+                    this.hudController.displayMessage('TIP: F FOR FULLSCREEN');
                 }, 20_000),
                 setTimeout(() => {
-                    this.hud.displayMessage('TIP: M TO VIEW/HIDE MUSIC PLAYER');
+                    this.hudController.displayMessage('TIP: M TO VIEW/HIDE MUSIC PLAYER');
                 }, 30_000),
             ];
         } else {
-            this._welcomeTimers = [];
+            this.welcomeTimers = [];
         }
-        this.transitionManager.autoChangeIntervalInSeconds = prefs.autoChangeIntervalInSeconds;
-        this.transitionManager.isInManualMode = prefs.isInManualMode;
 
         // initiate the transitions timer
         this.transitionManager.resetAutoChangeTimer();
@@ -250,6 +285,7 @@ export default class Spiral {
             frequencyAnalyser: this.frequencyAnalyser,
         });
         AlgorithmLoader.waveformController = this.waveformController;
+
         if (prefs.showWaveform) {
             this.waveformController.toggleWaveform();
         }
@@ -263,7 +299,7 @@ export default class Spiral {
         this.keyboardController = new KeyboardController({
             blockedAlgorithmsModal: this.blockedAlgorithmsModal,
             devModeController: this.devModeController,
-            hudController: this.hud,
+            hudController: this.hudController,
             musicPlayer: this.musicPlayer,
             spiral: this,
             transitionManager: this.transitionManager,
@@ -274,6 +310,7 @@ export default class Spiral {
         /** @type {HTMLInputElement} */
         const showTipsCheckbox = document.querySelector('#show-tips');
         showTipsCheckbox.checked = prefs.showTips;
+
         showTipsCheckbox.addEventListener('change', () => {
             savePreference('showTips', showTipsCheckbox.checked);
         });
@@ -294,7 +331,15 @@ export default class Spiral {
         }
 
         const paths = saved.tracks.map((t) => t.filePath);
-        const resolved = await globalThis.electronAPI.resolveFiles(paths);
+        /** @type {{ filePath: string, trackName: string, fileUrl: string }[]} */
+        const resolved = await /** @type {any}  */ (globalThis).electronAPI.resolveFiles(paths);
+
+        const missingCount = saved.tracks.length - resolved.length;
+        if (missingCount > 0) {
+            const label = missingCount === 1 ? 'track' : 'tracks';
+            this.hudController.displayMessage(`${missingCount} saved ${label} unavailable`);
+        }
+
         if (resolved.length === 0) {
             return;
         }
@@ -302,18 +347,12 @@ export default class Spiral {
         const savedPath = saved.tracks[saved.currentSongIndex]?.filePath;
         const newIndex = savedPath ? resolved.findIndex((file) => file.filePath === savedPath) : -1;
         this.musicPlayer.restorePlaylist(resolved, Math.max(newIndex, 0));
-
-        const missingCount = saved.tracks.length - resolved.length;
-        if (missingCount > 0) {
-            const label = missingCount === 1 ? 'track' : 'tracks';
-            this.hud.displayMessage(`${missingCount} saved ${label} unavailable`);
-        }
     }
 
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */
     toggleWaveform() {
         const isOn = this.waveformController.toggleWaveform();
-        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF', 'waveform');
+        this.hudController.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF', 'waveform');
     }
 
     /**

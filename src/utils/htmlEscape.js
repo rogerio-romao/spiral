@@ -1,5 +1,5 @@
-/** * Escapes special characters in a string to prevent HTML injection.
- *
+/**
+ * Escapes special characters in a string to prevent HTML injection.
  * @param {string} str - The string to be escaped.
  * @returns {string} The escaped string.
  */

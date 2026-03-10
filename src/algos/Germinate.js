@@ -29,8 +29,8 @@ export default class Germinate extends AL {
         this.ur = AL.random(4, 115);
         this.dl = AL.random(4, 115);
         this.dr = AL.random(4, 115);
-        AL.wc = AL.random(-5, 6);
-        AL.hc = AL.random(-5, 6);
+        this.wc = AL.random(-5, 6);
+        this.hc = AL.random(-5, 6);
         this.rc = AL.random(-7, 8);
     }
 
@@ -65,14 +65,14 @@ export default class Germinate extends AL {
 
         if (this.t % (this.speed * 4) === 0) {
             this.ul += this.rc;
-            this.ur += AL.wc;
-            this.dr += AL.hc;
+            this.ur += this.wc;
+            this.dr += this.hc;
             this.dl -= this.rc;
         }
 
         if (this.t % (this.speed * 12) === 0) {
-            this.width -= AL.wc;
-            this.height += AL.hc;
+            this.width -= this.wc;
+            this.height += this.hc;
         }
 
         if (this.t % (this.speed * 280) === 0) {

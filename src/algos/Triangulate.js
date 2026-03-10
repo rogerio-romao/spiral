@@ -32,9 +32,15 @@ export default class Triangulate extends AL {
         AL.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.45);
     }
 
+    /**
+     * Draws a triangle with one vertex at (x, y) and the other two vertices determined by the size and index.
+     * @param {number} x - The x-coordinate of the first vertex of the triangle.
+     * @param {number} y - The y-coordinate of the first vertex of the triangle.
+     * @param {number} i - The index used to calculate the positions of the other two vertices, creating a staggered effect.
+     */
     drawTriangle(x, y, i) {
-        AL.ctx.moveTo(x, y);
         AL.ctx.beginPath();
+        AL.ctx.moveTo(x, y);
         AL.ctx.lineTo(x + this.size + i, y + i);
         AL.ctx.lineTo(x + i, y + this.size + i);
         AL.ctx.lineTo(x, y);

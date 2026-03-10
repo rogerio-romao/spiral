@@ -47,9 +47,14 @@ export default class Vortrix extends AL {
         this.requestFrame();
     }
 
+    /**
+     * Draws a triangle with one vertex at (x, y) and the other two vertices determined by the size.
+     * @param {number} x - The x-coordinate of the first vertex of the triangle.
+     * @param {number} y - The y-coordinate of the first vertex of the triangle.
+     */
     drawTriangle(x, y) {
-        AL.ctx.moveTo(x, y);
         AL.ctx.beginPath();
+        AL.ctx.moveTo(x, y);
         AL.ctx.lineTo(x + this.size, y);
         AL.ctx.lineTo(x, y + this.size);
         AL.ctx.lineTo(x, y);

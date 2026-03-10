@@ -30,10 +30,16 @@ CanvasRenderingContext2D.prototype.roundRectExtra = function roundRectExtra(
         upperRight: 0,
     };
 
-    if (typeof radius === 'object') {
+    if (typeof radius === 'number') {
+        cornerRadius.lowerLeft = radius;
+        cornerRadius.lowerRight = radius;
+        cornerRadius.upperLeft = radius;
+        cornerRadius.upperRight = radius;
+    } else if (radius !== null && typeof radius === 'object') {
         for (const side in radius) {
             if (Object.hasOwn(radius, side)) {
-                cornerRadius[side] = radius[side];
+                cornerRadius[/** @type {keyof typeof cornerRadius} */ (side)] =
+                    radius[/** @type {keyof typeof radius} */ (side)];
             }
         }
     }

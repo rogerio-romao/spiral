@@ -28,6 +28,7 @@ describe('user preferences', () => {
                 STORAGE_KEY,
                 JSON.stringify({ isInManualMode: true, showPlayer: false }),
             );
+
             expect(loadPreferences()).toStrictEqual({
                 ...DEFAULTS,
                 isInManualMode: true,
@@ -37,16 +38,19 @@ describe('user preferences', () => {
 
         it('returns defaults when localStorage contains corrupt JSON', () => {
             localStorage.setItem(STORAGE_KEY, 'not-valid-json{{{');
+
             expect(loadPreferences()).toStrictEqual(DEFAULTS);
         });
 
         it('clamps autoChangeIntervalInSeconds below minimum to 10', () => {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ autoChangeIntervalInSeconds: 5 }));
+
             expect(loadPreferences().autoChangeIntervalInSeconds).toBe(10);
         });
 
         it('clamps autoChangeIntervalInSeconds above maximum to 300', () => {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ autoChangeIntervalInSeconds: 999 }));
+
             expect(loadPreferences().autoChangeIntervalInSeconds).toBe(300);
         });
 
@@ -55,6 +59,7 @@ describe('user preferences', () => {
                 STORAGE_KEY,
                 JSON.stringify({ autoChangeIntervalInSeconds: 'fast' }),
             );
+
             expect(loadPreferences().autoChangeIntervalInSeconds).toBe(60);
         });
 
@@ -64,6 +69,7 @@ describe('user preferences', () => {
                 JSON.stringify({ isInManualMode: 'yes', showPlayer: 0, silenceMessages: 1 }),
             );
             const prefs = loadPreferences();
+
             expect(prefs.showPlayer).toBeFalsy();
             expect(prefs.silenceMessages).toBeTruthy();
             expect(prefs.isInManualMode).toBeTruthy();
@@ -72,6 +78,7 @@ describe('user preferences', () => {
         it('returns all defaults correctly when stored data contains only unknown keys', () => {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ unknownKey: 'something' }));
             const prefs = loadPreferences();
+
             expect(prefs).toMatchObject(DEFAULTS);
         });
     });
@@ -80,6 +87,7 @@ describe('user preferences', () => {
         it('persists a preference to localStorage', () => {
             savePreference('showPlayer', false);
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
             expect(stored.showPlayer).toBeFalsy();
         });
 
@@ -87,14 +95,17 @@ describe('user preferences', () => {
             savePreference('isInManualMode', true);
             savePreference('showPlayer', false);
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
             expect(stored.showPlayer).toBeFalsy();
             expect(stored.isInManualMode).toBeTruthy();
+            expect(stored.showTips).toBeUndefined();
         });
 
         it('overwrites a previously saved value for the same key', () => {
             savePreference('autoChangeIntervalInSeconds', 120);
             savePreference('autoChangeIntervalInSeconds', 180);
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
             expect(stored.autoChangeIntervalInSeconds).toBe(180);
         });
 
@@ -102,7 +113,9 @@ describe('user preferences', () => {
             vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
                 throw new DOMException('QuotaExceededError');
             });
+
             expect(() => savePreference('showPlayer', false)).not.toThrow();
+
             vi.restoreAllMocks();
         });
     });

@@ -137,10 +137,8 @@ describe('musicPlayer methods', () => {
                     return Promise.resolve(null);
                 }),
             };
-
             // oxlint-disable-next-line jest/prefer-mock-return-shorthand
             vi.spyOn(instance.audio, 'pause').mockImplementation(() => order.push('pause'));
-
             await instance.fadePause();
 
             expect(order).toStrictEqual(['fade', 'pause']);

@@ -107,7 +107,7 @@ After implementation, I will:
 
 ### Phase 6: Changelog Update
 
-I will suggest a CHANGELOG entry and wait for your approval:
+I will add a CHANGELOG entry:
 
 **Format:**
 
@@ -129,12 +129,9 @@ I will suggest a CHANGELOG entry and wait for your approval:
 
 **Before adding, I will:**
 
-- Show you the proposed entry
-- Ask if the description is accurate
 - Confirm the date (or update if needed)
-- Update [CHANGELOG.md](CHANGELOG.md) only after approval
 
-### Phase 7: Pull Request Creation
+### Phase 7: Commit, Push, Pull Request Creation
 
 Once everything is verified and CHANGELOG is updated, I will create a PR:
 
@@ -210,7 +207,7 @@ Throughout the workflow, I will pause and ask for confirmation at these points:
 | 2     | Issue creation       | Approve title/description, add labels, or revise          |
 | 3     | Branch naming        | Approve branch name or request different format           |
 | 5     | Verification results | Accept findings, request more testing, or mark as blocked |
-| 6     | Changelog entry      | Approve entry, revise wording, or update date             |
+| 6     | Changelog entry      | Add entry, check date is correct                          |
 | 7     | PR creation          | Approve PR details, request changes, or add notes         |
 
 ## Exit Conditions
@@ -224,22 +221,6 @@ I will **pause and ask for clarification** if:
 - The task scope expands beyond the original issue
 
 I will **not proceed** without your confirmation at these checkpoints.
-
-## Conventional Commits Reference
-
-This workflow uses conventional commit syntax for branch names and messages. The
-types are:
-
-- **`feat`** — A new feature or enhancement
-- **`fix`** — A bug fix
-- **`docs`** — Documentation, README, or CHANGELOG updates
-- **`refactor`** — Code restructuring without behavior change
-- **`chore`** — Maintenance, dependencies, build tools, CI/CD
-- **`perf`** — Performance improvements
-- **`style`** — Code style (formatting, missing semicolons, etc.) — rarely used
-  in this project
-
-For this project, the most common types are `feat`, `fix`, and `docs`.
 
 ## Quick Reference
 
@@ -255,21 +236,8 @@ For this project, the most common types are `feat`, `fix`, and `docs`.
 ├─────────────────────────────────────────────────────────────┤
 │ 5. VERIFY: Test app, check console, report findings          │
 ├─────────────────────────────────────────────────────────────┤
-│ 6. CHANGELOG: Suggest entry, update file upon approval       │
+│ 6. CHANGELOG: Add entry (ensure date is correct first)      │
 ├─────────────────────────────────────────────────────────────┤
 │ 7. PR: Create pull request (gh pr create) and prepare merge   │
 └─────────────────────────────────────────────────────────────┘
 ```
-
-## Usage
-
-When you request a new task, say something like:
-
-> "I want a new feature to display the FPS counter in the top-right corner of
-> the canvas."
-
-Then I will follow this workflow, starting with Phase 1 (Task Intake) and
-proceeding through all phases with your confirmation at each decision point.
-
-If you want to skip certain phases (e.g., skip PR creation and just commit to
-the branch), let me know and I'll adapt the workflow accordingly.

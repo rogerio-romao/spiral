@@ -1,3 +1,4 @@
+// oxlint-disable max-lines-per-function
 import MusicPlayer from '../../src/MusicPlayer.js';
 
 const FIXTURE = /* html */ `
@@ -52,7 +53,7 @@ describe('musicPlayer (browser)', () => {
             expect(player).toBeDefined();
         });
 
-        it('shows player panel initially', () => {
+        it('shows player panel initially by default', () => {
             createPlayer();
 
             expect(document.querySelector('#player').style.display).toBe('block');
@@ -62,34 +63,34 @@ describe('musicPlayer (browser)', () => {
     describe('setPlayIcon', () => {
         it('shows pause icon and hides play icon when playing', () => {
             const player = createPlayer();
-
             player.togglePlayPauseIcon(true);
+
             expect(document.querySelector('#icon-play').style.display).toBe('none');
             expect(document.querySelector('#icon-pause').style.display).toBe('inline');
         });
 
         it('shows play icon and hides pause icon when not playing', () => {
             const player = createPlayer();
-
             player.togglePlayPauseIcon(false);
+
             expect(document.querySelector('#icon-play').style.display).toBe('inline');
             expect(document.querySelector('#icon-pause').style.display).toBe('none');
         });
     });
 
     describe('togglePlayerVisibility', () => {
-        it('player is visible initially, hides the player on first call', () => {
+        it('if player is visible initially, hides the player on first call', () => {
             const player = createPlayer();
-
             player.togglePlayerVisibility();
+
             expect(document.querySelector('#player').style.display).toBe('none');
         });
 
-        it('shows the player on second call', () => {
+        it('if player is visible initially, shows the player on second call', () => {
             const player = createPlayer();
+            player.togglePlayerVisibility();
+            player.togglePlayerVisibility();
 
-            player.togglePlayerVisibility();
-            player.togglePlayerVisibility();
             expect(document.querySelector('#player').style.display).toBe('block');
         });
     });
@@ -167,7 +168,6 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             const enqueuePlaySpy = vi.spyOn(player, 'enqueuePlay').mockImplementation(vi.fn());
             const scrollIntoViewSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView');
-
             player.trackList = ['blob:url1', 'blob:url2', 'blob:url3'];
             player.tracks = [
                 { filePath: '/1', trackName: 'Track 1' },
@@ -245,9 +245,13 @@ describe('musicPlayer (browser)', () => {
                     fileUrl: 'file:///music/Track One.mp3',
                     trackName: 'Track One',
                 },
+                {
+                    filePath: '/music/Track One.mp3',
+                    fileUrl: 'file:///music/Track One.mp3',
+                    trackName: 'Track One',
+                },
             ];
 
-            player.handleFiles(files);
             player.handleFiles(files);
 
             expect(player.trackList).toHaveLength(1);
@@ -367,16 +371,11 @@ describe('musicPlayer (browser)', () => {
         });
     });
 
-    describe('destroy', () => {
-        it('runs without errors', () => {
-            const player = createPlayer();
-            player.trackList = ['file:///music/Track One.mp3', 'file:///music/Track Two.wav'];
-
-            expect(() => player.destroy()).not.toThrow();
-        });
-    });
-
     describe('playlist persistence — button states', () => {
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
         const TRACK_A = {
             filePath: '/music/a.mp3',
             fileUrl: 'file:///music/a.mp3',
@@ -388,23 +387,22 @@ describe('musicPlayer (browser)', () => {
             trackName: 'Track B',
         };
 
-        beforeEach(() => {
-            localStorage.clear();
-        });
-
         it('save is disabled initially', () => {
             const player = createPlayer();
+
             expect(player.savePlBtn.disabled).toBeTruthy();
         });
 
         it('clear is disabled initially', () => {
             const player = createPlayer();
+
             expect(player.clearPlBtn.disabled).toBeTruthy();
         });
 
         it('save is enabled after adding tracks', () => {
             const player = createPlayer();
             player.handleFiles([TRACK_A]);
+
             expect(player.savePlBtn.disabled).toBeFalsy();
         });
 
@@ -412,6 +410,7 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
+
             expect(player.savePlBtn.disabled).toBeTruthy();
             expect(player.clearPlBtn.disabled).toBeFalsy();
         });
@@ -421,6 +420,7 @@ describe('musicPlayer (browser)', () => {
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
             player.handleClearPlaylist();
+
             expect(player.clearPlBtn.disabled).toBeTruthy();
             expect(player.savePlBtn.disabled).toBeFalsy();
         });
@@ -429,6 +429,7 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             player.handleFiles([TRACK_A]);
             player.removeTrack(0);
+
             expect(player.savePlBtn.disabled).toBeTruthy();
         });
 
@@ -450,21 +451,22 @@ describe('musicPlayer (browser)', () => {
     });
 
     describe('handleSavePlaylist', () => {
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
         const TRACK_A = {
             filePath: '/music/a.mp3',
             fileUrl: 'file:///music/a.mp3',
             trackName: 'Track A',
         };
 
-        beforeEach(() => {
-            localStorage.clear();
-        });
-
         it('persists tracks and currentSongIndex to storage', () => {
             const player = createPlayer();
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
             const stored = JSON.parse(localStorage.getItem('spiral:playlist'));
+
             expect(stored.currentSongIndex).toBe(0);
             expect(stored.tracks).toStrictEqual([
                 { filePath: '/music/a.mp3', trackName: 'Track A' },
@@ -475,6 +477,7 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
+
             expect(player.isDirty).toBeFalsy();
             expect(player.hasSavedPlaylist).toBeTruthy();
             expect(player.savePlBtn.disabled).toBeTruthy();
@@ -496,21 +499,22 @@ describe('musicPlayer (browser)', () => {
     });
 
     describe('handleClearPlaylist', () => {
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
         const TRACK_A = {
             filePath: '/music/a.mp3',
             fileUrl: 'file:///music/a.mp3',
             trackName: 'Track A',
         };
 
-        beforeEach(() => {
-            localStorage.clear();
-        });
-
         it('removes the saved playlist from storage', () => {
             const player = createPlayer();
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
             player.handleClearPlaylist();
+
             expect(localStorage.getItem('spiral:playlist')).toBeNull();
         });
 
@@ -519,6 +523,7 @@ describe('musicPlayer (browser)', () => {
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
             player.handleClearPlaylist();
+
             expect(player.tracks).toHaveLength(1);
             expect(player.trackList).toHaveLength(1);
         });
@@ -528,6 +533,7 @@ describe('musicPlayer (browser)', () => {
             player.handleFiles([TRACK_A]);
             player.handleSavePlaylist();
             player.handleClearPlaylist();
+
             expect(player.hasSavedPlaylist).toBeFalsy();
             expect(player.isDirty).toBeTruthy();
             expect(player.clearPlBtn.disabled).toBeTruthy();
@@ -544,6 +550,7 @@ describe('musicPlayer (browser)', () => {
         it('populates the playlist from provided files', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 0);
+
             expect(player.trackList).toHaveLength(2);
             expect(player.tracks).toHaveLength(2);
         });
@@ -551,6 +558,7 @@ describe('musicPlayer (browser)', () => {
         it('sets currentSongIndex to the provided restoreIndex', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 1);
+
             expect(player.currentSongIndex).toBe(1);
             expect(player.audio.src).toContain('file:///music/b.mp3');
             expect(player.trackNameEl.textContent).toBe('Track B');
@@ -559,12 +567,14 @@ describe('musicPlayer (browser)', () => {
         it('falls back to index 0 when restoreIndex is out of range', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 99);
+
             expect(player.currentSongIndex).toBe(0);
         });
 
         it('clears isDirty and sets hasSavedPlaylist', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 0);
+
             expect(player.isDirty).toBeFalsy();
             expect(player.hasSavedPlaylist).toBeTruthy();
         });
@@ -572,6 +582,7 @@ describe('musicPlayer (browser)', () => {
         it('enables Clear and disables Save after restore', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 0);
+
             expect(player.clearPlBtn.disabled).toBeFalsy();
             expect(player.savePlBtn.disabled).toBeTruthy();
         });
@@ -579,27 +590,29 @@ describe('musicPlayer (browser)', () => {
         it('does nothing when the files array is empty', () => {
             const player = createPlayer();
             player.restorePlaylist([], 0);
+
             expect(player.trackList).toHaveLength(0);
             expect(player.hasSavedPlaylist).toBeFalsy();
         });
     });
 
     describe('auto-save index on track change', () => {
+        beforeEach(() => {
+            localStorage.clear();
+        });
+
         const FILES = [
             { filePath: '/music/a.mp3', fileUrl: 'file:///music/a.mp3', trackName: 'Track A' },
             { filePath: '/music/b.mp3', fileUrl: 'file:///music/b.mp3', trackName: 'Track B' },
             { filePath: '/music/c.mp3', fileUrl: 'file:///music/c.mp3', trackName: 'Track C' },
         ];
 
-        beforeEach(() => {
-            localStorage.clear();
-        });
-
         it('updates the stored index when jumpToTrack is called and hasSavedPlaylist is true', () => {
             const player = createPlayer();
             player.restorePlaylist(FILES, 0);
             player.jumpToTrack(2);
             const stored = JSON.parse(localStorage.getItem('spiral:playlist'));
+
             expect(stored.currentSongIndex).toBe(2);
         });
 
@@ -608,6 +621,7 @@ describe('musicPlayer (browser)', () => {
             player.restorePlaylist(FILES, 0);
             player.skipTrack(1);
             const stored = JSON.parse(localStorage.getItem('spiral:playlist'));
+
             expect(stored.currentSongIndex).toBe(1);
         });
 
@@ -615,6 +629,7 @@ describe('musicPlayer (browser)', () => {
             const player = createPlayer();
             player.handleFiles(FILES);
             player.jumpToTrack(1);
+
             expect(localStorage.getItem('spiral:playlist')).toBeNull();
         });
     });

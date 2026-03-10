@@ -6,7 +6,9 @@ export default class WaveformController {
     // INSTANCE PROPERTIES
     showWaveform = false;
     smoothing = 0.6;
+    /** @type {number[]|null} */
     waveformData = null;
+    /** @type {number|null} */
     animationRafId = null;
 
     /**
@@ -18,6 +20,7 @@ export default class WaveformController {
     constructor({ canvasElement, frequencyAnalyser, waveColor = 'white' }) {
         this.canvas = canvasElement;
         this.ctx = canvasElement?.getContext('2d');
+
         this.waveColor = waveColor;
 
         this.frequencyAnalyser = frequencyAnalyser;
@@ -29,7 +32,7 @@ export default class WaveformController {
      * Destroy the controller and stop animation.
      */
     destroy() {
-        if (this.animationRafId) {
+        if (this.animationRafId !== null) {
             cancelAnimationFrame(this.animationRafId);
             this.animationRafId = null;
         }
@@ -131,7 +134,7 @@ export default class WaveformController {
      */
     start() {
         // Prevent multiple animation loops if already running
-        if (this.animationRafId) {
+        if (this.animationRafId !== null) {
             return;
         }
 

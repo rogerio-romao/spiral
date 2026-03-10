@@ -148,7 +148,6 @@ describe('algorithmLoader', () => {
             const { canvas, ctx } = createMockCtx();
             AlgorithmLoader.ctx = ctx;
             const algo = new AlgorithmLoader();
-
             const handler = vi.fn();
             canvas.addEventListener('algorithm-error', handler);
 
@@ -202,9 +201,10 @@ describe('algorithmLoader', () => {
             const fakeWave = { getWave: () => [0.1, 0.2] };
             AlgorithmLoader.frequencyAnalyser = fakeFreq;
             AlgorithmLoader.waveformController = fakeWave;
+
             expect(AlgorithmLoader.frequencyAnalyser.getBands()).toStrictEqual([1, 2, 3]);
             expect(AlgorithmLoader.waveformController.getWave()).toStrictEqual([0.1, 0.2]);
-            // Reset
+
             AlgorithmLoader.frequencyAnalyser = null;
             AlgorithmLoader.waveformController = null;
         });

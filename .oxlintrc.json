@@ -17,11 +17,12 @@
                 "allowTernary": true
             }
         ],
-        "eslint/max-lines-per-function": ["warn", 630],
-        "eslint/max-statements": ["warn", 130],
-        "eslint/max-lines": ["warn", 810],
+        "eslint/max-lines-per-function": ["warn", 250],
+        "eslint/max-statements": ["warn", 48],
+        "eslint/max-lines": ["warn", 285],
         "eslint/max-params": ["warn", 5],
         "eslint/max-classes-per-file": ["warn", 6],
+        "eslint/no-console": "warn",
         "eslint/no-magic-numbers": "off",
         "eslint/no-ternary": "off",
         "eslint/no-continue": "off",
@@ -52,7 +53,7 @@
         "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
         "eslint/class-methods-use-this": "off",
         "eslint/capitalized-comments": "off",
-        "eslint/complexity": ["warn", 33],
+        "eslint/complexity": ["warn", 15],
         "eslint/func-style": ["error", "declaration"],
         "eslint/sort-imports": "off",
         "eslint/no-extend-native": "off",
@@ -86,7 +87,7 @@
         "vitest/require-hook": "off",
         "vitest/prefer-called-times": "off",
         "vitest/no-hooks": "off",
-        "vitest/max-expects": ["warn", { "max": 21 }]
+        "vitest/max-expects": ["warn", { "max": 10 }]
     },
     "settings": {
         "jsx-a11y": {

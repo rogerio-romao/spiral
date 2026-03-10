@@ -20,9 +20,7 @@ function isValidTrack(t) {
 
 /**
  * Load the saved playlist from localStorage.
- * Returns `null` if nothing has been saved, the data is corrupt, or the top-level
- * structure is invalid. Individual track entries that fail validation are silently
- * filtered out so a partially-corrupt playlist is still usable.
+ * Returns `null` if nothing has been saved, the data is corrupt, or the top-level structure is invalid. Individual track entries that fail validation are silently filtered out so a partially-corrupt playlist is still usable.
  * @returns {SavedPlaylist | null} The saved playlist, or null if unavailable or structurally invalid.
  */
 export function loadPlaylist() {
@@ -31,18 +29,23 @@ export function loadPlaylist() {
         if (!raw) {
             return null;
         }
+
         const parsed = JSON.parse(raw);
         if (!parsed || typeof parsed !== 'object') {
             return null;
         }
+
         const { tracks, currentSongIndex } = /** @type {Record<string, unknown>} */ (parsed);
         if (!Array.isArray(tracks)) {
             return null;
         }
+
         if (!Number.isInteger(currentSongIndex) || /** @type {number} */ (currentSongIndex) < 0) {
             return null;
         }
+
         const validTracks = /** @type {SavedTrack[]} */ (tracks.filter((t) => isValidTrack(t)));
+
         return { currentSongIndex: /** @type {number} */ (currentSongIndex), tracks: validTracks };
     } catch {
         return null;
@@ -51,15 +54,18 @@ export function loadPlaylist() {
 
 /**
  * Persist the current playlist to localStorage.
- * Errors are silently swallowed so storage failures never crash the app.
+ * Returns true if successful, false if storage fails.
  * @param {SavedTrack[]} tracks - Track metadata to persist.
  * @param {number} currentSongIndex - Index of the currently selected track.
+ * @returns {boolean} True if save succeeded, false otherwise.
  */
 export function savePlaylist(tracks, currentSongIndex) {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex, tracks }));
+        return true;
     } catch {
         // localStorage unavailable or quota exceeded — fail silently
+        return false;
     }
 }
 

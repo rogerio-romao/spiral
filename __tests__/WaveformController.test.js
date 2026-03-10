@@ -1,3 +1,4 @@
+// oxlint-disable max-lines-per-function
 // @vitest-environment jsdom
 
 import WaveformController from '../src/WaveformController.js';
@@ -93,7 +94,6 @@ describe('waveformController', () => {
 
     describe('toggleWaveform', () => {
         it('first call sets showWaveform to true and returns true', () => {
-            vi.useFakeTimers();
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
@@ -105,7 +105,6 @@ describe('waveformController', () => {
         });
 
         it('first call starts animation loop via requestAnimationFrame', () => {
-            vi.useFakeTimers();
             const { canvas } = createMockCanvas();
             const rafSpy = vi.spyOn(globalThis, 'requestAnimationFrame');
             const wc = new WaveformController({
@@ -118,7 +117,6 @@ describe('waveformController', () => {
         });
 
         it('second call sets showWaveform to false and returns false', () => {
-            vi.useFakeTimers();
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
@@ -131,7 +129,6 @@ describe('waveformController', () => {
         });
 
         it('second call triggers stop and clears the canvas', () => {
-            vi.useFakeTimers();
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
@@ -149,7 +146,6 @@ describe('waveformController', () => {
 
     describe('start', () => {
         it('calls requestAnimationFrame', () => {
-            vi.useFakeTimers();
             const { canvas } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
@@ -178,7 +174,6 @@ describe('waveformController', () => {
 
     describe('stop and destroy', () => {
         it('stop cancels animation frame and clears canvas', () => {
-            vi.useFakeTimers();
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,
@@ -196,7 +191,6 @@ describe('waveformController', () => {
         });
 
         it('destroy delegates to stop', () => {
-            vi.useFakeTimers();
             const { canvas, ctx } = createMockCanvas();
             const wc = new WaveformController({
                 canvasElement: canvas,

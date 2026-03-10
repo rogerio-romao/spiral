@@ -1,6 +1,9 @@
+// oxlint-disable max-lines
 import AlgorithmLoader from './AlgorithmLoader.js';
 import htmlEscape from './utils/htmlEscape.js';
 import { clearPlaylist, savePlaylist } from './utils/PlaylistStorage.js';
+
+/** @typedef {{ filePath: string, trackName: string, fileUrl: string }[]} trackFiles */
 
 /**
  * MusicPlayer — handles audio playback, playlist management,
@@ -10,15 +13,22 @@ import { clearPlaylist, savePlaylist } from './utils/PlaylistStorage.js';
  */
 export default class MusicPlayer {
     currentSongIndex = 0;
+    /** @type {number|null} */
     eqRafId = null;
+    /**
+     * This is set by the AlgorithmLoader when it creates the FrequencyAnalyser, so that the MusicPlayer can use it to drive the EQ visualization. This is a bit of a circular dependency, but it allows us to keep the audio graph setup in one place (the FrequencyAnalyser) while still enabling the MusicPlayer to control the EQ display.
+     * @type {import('./FrequencyAnalyser.js').default|null}
+     */
     frequencyAnalyser = null;
     isPlaying = false;
+    /** @type {NodeListOf<HTMLLIElement>|null} */
     playlistEls = null;
     playlistIsOpen = false;
     playToggleFadeDurationInMs = 80;
     showPlayer = true;
     showRemaining = false;
     trackSkipIntervalInMs = 200;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     trackSkipWhilePlayingTimeout = null;
 
     /**
@@ -100,7 +110,7 @@ export default class MusicPlayer {
         const listItem = document.createElement('li');
         listItem.classList.add('list-item');
         listItem.setAttribute('draggable', 'true');
-        listItem.dataset.index = String(index);
+        listItem.dataset['index'] = String(index);
         listItem.innerHTML = /* html */ `
             <span class="track-name">${htmlEscape(baseName)}</span>
             <button class="remove-track" title="Remove track">remove</button>
@@ -108,15 +118,11 @@ export default class MusicPlayer {
 
         listItem.querySelector('.remove-track').addEventListener('click', (e) => {
             e.stopPropagation();
-            const idx = Number(listItem.dataset.index);
+            const idx = Number(listItem.dataset['index']);
             this.removeTrack(idx);
         });
         return listItem;
     }
-
-    /** Clean up resources on app close. No-op — file:// URLs need no revocation. */
-    // oxlint-disable-next-line no-empty-function
-    destroy() {}
 
     /** Update the progress bar and time displays based on current playback position. */
     displayProgress() {
@@ -131,6 +137,7 @@ export default class MusicPlayer {
         const { currentTime, duration } = this.audio;
         const progressPercent = (currentTime / duration) * 100;
         this.progress.value = progressPercent.toFixed(2);
+
         this.elapsedEl.textContent = this.showRemaining
             ? `-${this.formatTime(duration - currentTime)}`
             : this.formatTime(currentTime);
@@ -187,6 +194,7 @@ export default class MusicPlayer {
      */
     enqueuePlay(overrideIntervalInMs = null) {
         clearTimeout(this.trackSkipWhilePlayingTimeout);
+
         this.trackSkipWhilePlayingTimeout = setTimeout(() => {
             this.isPlaying = true;
             this.fadePlay();
@@ -211,20 +219,16 @@ export default class MusicPlayer {
      * Eliminates the audible click that occurs with an abrupt resume.
      */
     async fadePlay() {
-        if (this.frequencyAnalyser) {
-            this.frequencyAnalyser.setGain(0);
-        }
+        this.frequencyAnalyser?.setGain(0);
+
         try {
             await this.audio.play();
         } catch {
-            if (this.frequencyAnalyser) {
-                this.frequencyAnalyser.setGain(1);
-            }
+            this.frequencyAnalyser?.setGain(1);
             return;
         }
-        if (this.frequencyAnalyser) {
-            await this.frequencyAnalyser.fadeTo(1, this.playToggleFadeDurationInMs);
-        }
+
+        await this.frequencyAnalyser?.fadeTo(1, this.playToggleFadeDurationInMs);
     }
 
     /**
@@ -240,6 +244,7 @@ export default class MusicPlayer {
 
         const minutes = Math.floor(seconds / 60);
         const secondsRemaining = Math.floor(seconds % 60);
+
         return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
     }
 
@@ -280,7 +285,7 @@ export default class MusicPlayer {
      */
     handleDragStart(e) {
         if (e.target instanceof HTMLElement) {
-            this.draggedIndex = Number(e.target.dataset.index);
+            this.draggedIndex = Number(e.target.dataset['index']);
             e.target.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
         }
@@ -310,7 +315,7 @@ export default class MusicPlayer {
         if (!targetItem || !(targetItem instanceof HTMLElement)) {
             return;
         }
-        const dropIndex = Number(targetItem.dataset.index);
+        const dropIndex = Number(targetItem.dataset['index']);
         if (this.draggedIndex === null || this.draggedIndex === dropIndex) {
             return;
         }
@@ -349,10 +354,10 @@ export default class MusicPlayer {
     /**
      * Add resolved file entries to the playlist.
      * Avoids duplicates by path, updates the UI, and manages playback state as needed.
-     * @param {{ filePath: string, trackName: string, fileUrl: string }[]} files - Resolved file entries from the Electron dialog or playlist restore.
+     * @param {trackFiles} files - Resolved file entries from the Electron dialog or playlist restore.
      */
     handleFiles(files) {
-        if (!files?.length) {
+        if (files.length === 0) {
             return;
         }
 
@@ -402,14 +407,28 @@ export default class MusicPlayer {
      * Temporarily shows "Saved!" on the button as lightweight feedback.
      */
     handleSavePlaylist() {
-        savePlaylist(this.tracks, this.currentSongIndex);
-        this.isDirty = false;
-        this.hasSavedPlaylist = true;
-        this.updatePlaylistActions();
-        this.savePlBtn.textContent = 'Saved!';
-        setTimeout(() => {
-            this.savePlBtn.textContent = 'Save Playlist';
-        }, 1500);
+        const success = savePlaylist(this.tracks, this.currentSongIndex);
+        if (success) {
+            this.isDirty = false;
+            this.hasSavedPlaylist = true;
+            this.updatePlaylistActions();
+            this.savePlBtn.textContent = 'Saved!';
+            setTimeout(() => {
+                this.savePlBtn.textContent = 'Save Playlist';
+            }, 1500);
+        } else {
+            // Show error state, keep Save enabled for retry
+            this.savePlBtn.textContent = 'Save Failed!';
+            setTimeout(() => {
+                this.savePlBtn.textContent = 'Save Playlist';
+            }, 2000);
+            // Optionally log error for debugging
+            if (globalThis && globalThis.console) {
+                globalThis.console.error(
+                    'Failed to save playlist: localStorage unavailable or quota exceeded.',
+                );
+            }
+        }
     }
 
     /**
@@ -427,20 +446,23 @@ export default class MusicPlayer {
      * Restore a previously saved playlist on app startup.
      * Populates the playlist, then overrides the active track to the saved position.
      * Sets hasSavedPlaylist = true and clears the dirty flag.
-     * @param {{ filePath: string, trackName: string, fileUrl: string }[]} files - Resolved file entries.
+     * @param {trackFiles} files - Resolved file entries.
      * @param {number} restoreIndex - Index of the track to make active; falls back to 0 if out of range.
      */
     restorePlaylist(files, restoreIndex) {
         if (files.length === 0) {
             return;
         }
+
         this.handleFiles(files);
+        // check restoreIndex bounds
         if (restoreIndex > 0 && restoreIndex < this.trackList.length) {
             this.currentSongIndex = restoreIndex;
             this.audio.src = this.trackList[this.currentSongIndex];
             this.updatePlaylistStyle();
             this.updateTrackName();
         }
+
         this.isDirty = false;
         this.hasSavedPlaylist = true;
         this.updatePlaylistActions();
@@ -450,9 +472,21 @@ export default class MusicPlayer {
      * Open the native file picker dialog via Electron and add selected tracks.
      */
     async openFilePicker() {
-        const files = await globalThis.electronAPI.openFiles();
-        if (files.length > 0) {
+        // oxlint-disable-next-line prefer-destructuring
+        const electronAPI = /** @type {any} */ (globalThis).electronAPI;
+        if (!electronAPI || typeof electronAPI.openFiles !== 'function') {
+            return;
+        }
+
+        try {
+            const files = await electronAPI.openFiles();
+            if (!Array.isArray(files) || files.length === 0) {
+                return;
+            }
             this.handleFiles(files);
+        } catch (error) {
+            // oxlint-disable-next-line no-console
+            console.error('Failed to open file picker.', error);
         }
     }
 
@@ -516,6 +550,7 @@ export default class MusicPlayer {
         this.audio.src = this.trackList[this.currentSongIndex];
         this.updatePlaylistStyle();
         this.enqueuePlay();
+
         if (this.hasSavedPlaylist) {
             savePlaylist(this.tracks, this.currentSongIndex);
         }
@@ -551,7 +586,7 @@ export default class MusicPlayer {
 
         const listItem = e.target.closest('.list-item');
         if (listItem && listItem instanceof HTMLElement && !e.target.closest('.remove-track')) {
-            const index = Number(listItem.dataset.index);
+            const index = Number(listItem.dataset['index']);
             this.jumpToTrack(index);
         }
     }
@@ -700,6 +735,7 @@ export default class MusicPlayer {
         } else {
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         }
+
         if (this.hasSavedPlaylist) {
             savePlaylist(this.tracks, this.currentSongIndex);
         }
@@ -719,7 +755,7 @@ export default class MusicPlayer {
 
     /** Stop the EQ animation loop and show flat bars. */
     stopEq() {
-        if (this.eqRafId) {
+        if (this.eqRafId !== null) {
             cancelAnimationFrame(this.eqRafId);
             this.eqRafId = null;
         }
@@ -737,9 +773,13 @@ export default class MusicPlayer {
             this.isPlaying = false;
             this.togglePlayPauseIcon(false);
             this.stopEq();
-            [...this.playlistEls].map((el) => (el.style.color = '#555'));
+            // oxlint-disable-next-line unicorn/no-array-for-each
+            this.playlistEls.forEach((el) => {
+                el.style.color = '#555';
+            });
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         } else if (this.playlistEls) {
+            // if already paused, just rewind to the beginning
             this.audio.currentTime = 0;
         }
     }
@@ -780,7 +820,7 @@ export default class MusicPlayer {
         /** @type {NodeListOf<HTMLLIElement>} */
         const items = this.playListEl.querySelectorAll('.list-item');
         for (let i = 0; i < items.length; i++) {
-            items[i].dataset.index = String(i);
+            items[i].dataset['index'] = String(i);
         }
     }
 
@@ -790,7 +830,10 @@ export default class MusicPlayer {
      * and updates the now-playing track name.
      */
     updatePlaylistStyle() {
-        [...this.playlistEls].map((el) => (el.style.color = '#555'));
+        // oxlint-disable-next-line unicorn/no-array-for-each
+        this.playlistEls.forEach((el) => {
+            el.style.color = '#555';
+        });
         this.playlistEls[this.currentSongIndex].style.color = 'orange';
         this.playlistEls[this.currentSongIndex].scrollIntoView({ block: 'nearest' });
         this.updateTrackName();

@@ -13,19 +13,18 @@ const outputFile = path.join(outputDir, 'algorithmRegistry.js');
  * Converts a filename to a valid JavaScript identifier (without extension).
  * Throws if the filename does not map to a valid identifier.
  * @param {string} filename - The filename to convert (e.g. 'MyAlgo.js').
- * @returns {string} The identifier (e.g. 'MyAlgo').
- * @throws {Error} If the filename does not map to a valid JavaScript identifier.
+ * @returns {string|null} The identifier (e.g. 'MyAlgo'), or `null` when the
+ * filename cannot be converted to a valid JS identifier.
  */
 function toIdentifier(filename) {
     const baseName = filename.replace(/\.js$/u, '');
 
-    if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(baseName)) {
-        throw new Error(
-            `Algorithm file "${filename}" does not map to a valid JavaScript identifier.`,
-        );
+    if (/^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(baseName)) {
+        return baseName;
     }
 
-    return baseName;
+    // Not a valid identifier — return null so callers can skip this file.
+    return null;
 }
 
 /**
@@ -35,11 +34,27 @@ function toIdentifier(filename) {
  * @returns {{ importLines: string[], arrayLines: string[] }} Object containing import lines and array lines for the given files.
  */
 function buildFileContents(files) {
-    const importLines = files.map((file) => {
+    const items = [];
+    const skipped = [];
+
+    for (const file of files) {
         const identifier = toIdentifier(file);
-        return `import ${identifier} from '../algos/${file}';`;
-    });
-    const arrayLines = files.map((file) => `    ${toIdentifier(file)},`);
+        if (identifier) {
+            items.push({ file, identifier });
+        } else {
+            skipped.push(file);
+        }
+    }
+
+    if (skipped.length > 0) {
+        // oxlint-disable-next-line no-console
+        console.warn('Skipping files that do not map to valid identifiers:', skipped);
+    }
+
+    const importLines = items.map(
+        ({ file, identifier }) => `import ${identifier} from '../algos/${file}';`,
+    );
+    const arrayLines = items.map(({ identifier }) => `    ${identifier},`);
     return { arrayLines, importLines };
 }
 

@@ -67,6 +67,7 @@ describe('devModeController (browser)', () => {
         // Enable dev mode
         checkbox.checked = true;
         checkbox.dispatchEvent(new Event('change'));
+
         // Badge should be visible
         expect(document.querySelector('#dev-badge').style.display).toBe('block');
         // HUD should show correct message
@@ -78,6 +79,7 @@ describe('devModeController (browser)', () => {
         // Disable dev mode
         checkbox.checked = false;
         checkbox.dispatchEvent(new Event('change'));
+
         // Badge should be hidden
         expect(document.querySelector('#dev-badge').style.display).toBe('none');
         // HUD should show correct message
@@ -105,6 +107,7 @@ describe('devModeController (browser)', () => {
         const algoASelect = document.querySelector('#dev-algo-a');
         algoASelect.value = 'random';
         algoASelect.dispatchEvent(new Event('change'));
+
         expect(ctrl.algoA).toBeNull();
         expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(null, ctrl.algoB);
 
@@ -126,6 +129,7 @@ describe('devModeController (browser)', () => {
         const algoBSelect = document.querySelector('#dev-algo-b');
         algoBSelect.value = 'random';
         algoBSelect.dispatchEvent(new Event('change'));
+
         expect(ctrl.algoB).toBeNull();
         expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledWith(ctrl.algoA, null);
 
@@ -150,6 +154,7 @@ describe('devModeController (browser)', () => {
                 document.body.innerHTML = FIXTURE;
                 const el = document.querySelector(selector);
                 el?.remove();
+
                 expect(() => new DevModeController(deps)).toThrow(
                     `Missing required DOM element: #${label}`,
                 );
@@ -218,6 +223,7 @@ describe('devModeController (browser)', () => {
         const algoASelect = document.querySelector('#dev-algo-a');
         algoASelect.value = '0';
         algoASelect.dispatchEvent(new Event('change'));
+
         expect(deps.transitionManager.setDevModeAlgos).toHaveBeenCalledOnce();
 
         ctrl.destroy();
@@ -232,6 +238,7 @@ describe('devModeController (browser)', () => {
         const checkbox = document.querySelector('#dev-enable');
         checkbox.checked = true;
         checkbox.dispatchEvent(new Event('change'));
+
         expect(deps.transitionManager.setDevModeActive).not.toHaveBeenCalled();
     });
 });

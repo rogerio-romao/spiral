@@ -37,6 +37,7 @@ export default class ThreeD extends AL {
         AL.ctx.font = `${this.fontSize}px sans-serif`;
     }
 
+    // oxlint-disable-next-line max-statements
     draw() {
         if (this.t % this.speed === 0) {
             this.stagger %= 5;

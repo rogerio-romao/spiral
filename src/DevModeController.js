@@ -1,17 +1,22 @@
 import { algorithms, templateAlgorithms } from './generated/algorithmRegistry.js';
 
+/** @typedef {import('./TransitionManager.js').default} TransitionManager */
+/** @typedef {import('./HudController.js').default} HudController */
+
 /**
  * Controller for the Developer Mode feature.
  * Handles the UI and logic for selecting and testing specific algorithms.
  */
 export default class DevModeController {
     /**
-     * @param {Object} options - Configuration options for the DevModeController
-     * @param {import('./TransitionManager.js').default} options.transitionManager - The transition manager instance
-     * @param {import('./HudController.js').default} options.hudController - The HUD controller instance
+     * @param {Object} deps - Configuration deps for the DevModeController
+     * @param {TransitionManager} deps.transitionManager - The transition manager instance
+     * @param {HudController} deps.hudController - The HUD controller instance
      */
     constructor({ hudController, transitionManager }) {
+        /** @type {HudController} */
         this.hudController = hudController;
+        /** @type {TransitionManager} */
         this.transitionManager = transitionManager;
 
         this.initDomRefs();
@@ -73,16 +78,19 @@ export default class DevModeController {
             throw new Error('Missing required DOM element: #dev-mode');
         }
 
+        /** @type {HTMLSelectElement} */
         this.algoASelect = document.querySelector('#dev-algo-a');
         if (!this.algoASelect) {
             throw new Error('Missing required DOM element: #dev-algo-a');
         }
 
+        /** @type {HTMLSelectElement} */
         this.algoBSelect = document.querySelector('#dev-algo-b');
         if (!this.algoBSelect) {
             throw new Error('Missing required DOM element: #dev-algo-b');
         }
 
+        /** @type {HTMLInputElement} */
         this.enableCheckbox = document.querySelector('#dev-enable');
         if (!this.enableCheckbox) {
             throw new Error('Missing required DOM element: #dev-enable');
@@ -94,9 +102,15 @@ export default class DevModeController {
      * These handlers create references for binding and unbinding to DOM elements, such as cleaning up the listeners when the application is closing.
      */
     initHandlers() {
-        this.onToggleDevModeChangeHandler = (e) => this.onToggleDevModeChange(e.target.checked);
-        this.onAlgoAChangeHandler = (e) => this.onDevAlgoChange('A', e.target.value);
-        this.onAlgoBChangeHandler = (e) => this.onDevAlgoChange('B', e.target.value);
+        /** @type {EventListener} */
+        this.onToggleDevModeChangeHandler = (e) =>
+            this.onToggleDevModeChange(/** @type {HTMLInputElement} */ (e.target).checked);
+        /** @type {EventListener} */
+        this.onAlgoAChangeHandler = (e) =>
+            this.onDevAlgoChange('A', /** @type {HTMLSelectElement} */ (e.target).value);
+        /** @type {EventListener} */
+        this.onAlgoBChangeHandler = (e) =>
+            this.onDevAlgoChange('B', /** @type {HTMLSelectElement} */ (e.target).value);
     }
 
     /**
@@ -104,7 +118,7 @@ export default class DevModeController {
      * Sets environment flags, tracks the active state of Developer Mode, and prepares the list of algorithms.
      */
     initState() {
-        this.isNotProduction = globalThis.env?.isDevEnvironment;
+        this.isNotProduction = Boolean(/** @type {any} */ (globalThis).env?.isDevEnvironment);
         this.isDevModeActive = false;
 
         this.algoA = null;

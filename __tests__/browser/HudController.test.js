@@ -1,5 +1,4 @@
 import HudController from '../../src/HudController.js';
-import sleep from '../helpers/sleep.js';
 
 function createHud() {
     document.body.innerHTML = /* html */ `<div id="msg"></div><div id="algos"></div><div id="help"></div>`;
@@ -15,7 +14,15 @@ function createHud() {
     };
 }
 
-describe('hudController (browser smoke)', () => {
+describe('hudController (browser)', () => {
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
     it('throws if any required DOM element is missing', () => {
         // messageElement missing
         expect(
@@ -56,18 +63,19 @@ describe('hudController (browser smoke)', () => {
         hud.displayAlgorithmName('algo');
         const messageTimerId = hud.messages[0].timer;
         const algoTimerId = hud.algorithmNameTimer;
-
         hud.destroy();
+
         expect(clearTimeoutSpy).toHaveBeenCalledWith(messageTimerId);
         expect(clearTimeoutSpy).toHaveBeenCalledWith(algoTimerId);
+
         clearTimeoutSpy.mockRestore();
     });
 
     it('displays a message as a child element in the real browser DOM', () => {
         const { hud, messageElement } = createHud();
         hud.displayMessage('browser test');
-
         const item = messageElement.querySelector('.msg-item');
+
         expect(item).not.toBeNull();
         expect(item.textContent).toBe('BROWSER TEST');
 
@@ -76,8 +84,8 @@ describe('hudController (browser smoke)', () => {
 
     it('toggleHelpView shows and hides the help panel', () => {
         const { hud, helpElement } = createHud();
-
         hud.toggleHelpView();
+
         expect(hud.showHelpView).toBeTruthy();
         expect(helpElement.style.display).toBe('block');
 
@@ -88,30 +96,33 @@ describe('hudController (browser smoke)', () => {
         hud.destroy();
     });
 
-    it('stacks messages simultaneously and each timer expires independently', async () => {
+    it('stacks messages simultaneously and each timer expires independently', () => {
         const { hud, messageElement } = createHud();
         hud.messageDisplayTimeInMs = 500;
-
         hud.displayMessage('first');
         let items = messageElement.querySelectorAll('.msg-item');
+
         expect(items).toHaveLength(1);
         expect(items[0].textContent).toBe('FIRST');
 
-        await sleep(100);
+        vi.advanceTimersByTime(100);
         hud.displayMessage('second');
         items = messageElement.querySelectorAll('.msg-item');
+
         expect(items).toHaveLength(2);
         expect(items[0].textContent).toBe('FIRST');
         expect(items[1].textContent).toBe('SECOND');
 
+        vi.advanceTimersByTime(410);
+
         // first message (added at t=0) expires at t=500ms — wait until t=510ms
-        await sleep(410);
+        items = messageElement.querySelectorAll('.msg-item');
         expect(items[0].classList.contains('msg-item-removing')).toBeTruthy();
         // second message (added at t=100ms) expires at t=600ms — not yet
         expect(items[1].classList.contains('msg-item-removing')).toBeFalsy();
 
         // wait for first message's transition to complete (350ms fallback)
-        await sleep(400);
+        vi.advanceTimersByTime(400);
         items = messageElement.querySelectorAll('.msg-item');
         expect(items).toHaveLength(1);
         expect(items[0].textContent).toBe('SECOND');
@@ -119,35 +130,40 @@ describe('hudController (browser smoke)', () => {
         hud.destroy();
     });
 
-    it('replaces a keyed message immediately without stacking', async () => {
+    it('replaces a keyed message immediately without stacking', () => {
         const { hud, messageElement } = createHud();
-
         hud.displayMessage('manual mode', 'mode');
+
         expect(messageElement.querySelectorAll('.msg-item')).toHaveLength(1);
 
-        await sleep(50);
+        vi.advanceTimersByTime(50);
         hud.displayMessage('auto mode', 'mode');
-
         const items = messageElement.querySelectorAll('.msg-item');
+
         expect(items).toHaveLength(1);
         expect(items[0].textContent).toBe('AUTO MODE');
 
         hud.destroy();
     });
 
-    it('properly resets timers and DOM on rapid consecutive displayAlgorithmName calls', async () => {
+    it('properly resets timers and DOM on rapid consecutive displayAlgorithmName calls', () => {
         const { hud } = createHud();
         hud.algorithmNameDisplayTimeInMs = 500;
 
         const algosDisplayElement = document.querySelector('#algos');
         hud.displayAlgorithmName('algo1');
+
         expect(algosDisplayElement.textContent).toBe('ALGO1');
-        await sleep(100);
+
+        vi.advanceTimersByTime(100);
         hud.displayAlgorithmName('algo2');
+
         expect(algosDisplayElement.textContent).toBe('ALGO2');
-        await sleep(400);
+
+        vi.advanceTimersByTime(400);
         expect(algosDisplayElement.style.display).toBe('block');
-        await sleep(100);
+
+        vi.advanceTimersByTime(100);
         expect(algosDisplayElement.style.display).toBe('none');
         expect(algosDisplayElement.textContent).toBe('');
 
