@@ -24,11 +24,13 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: 1, tracks: TRACKS }),
             );
+
             expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 1, tracks: TRACKS });
         });
 
         it('returns null for corrupt JSON', () => {
             localStorage.setItem(STORAGE_KEY, 'not-valid-json{{{');
+
             expect(loadPlaylist()).toBeNull();
         });
 
@@ -37,6 +39,7 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: 0, tracks: 'bad' }),
             );
+
             expect(loadPlaylist()).toBeNull();
         });
 
@@ -45,6 +48,7 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: 1.5, tracks: TRACKS }),
             );
+
             expect(loadPlaylist()).toBeNull();
         });
 
@@ -53,6 +57,7 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: -1, tracks: TRACKS }),
             );
+
             expect(loadPlaylist()).toBeNull();
         });
 
@@ -62,6 +67,7 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: 0, tracks: mixed }),
             );
+
             expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: TRACKS });
         });
 
@@ -71,6 +77,7 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: 0, tracks: mixed }),
             );
+
             expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: TRACKS });
         });
 
@@ -80,17 +87,20 @@ describe('playlistStorage', () => {
                 STORAGE_KEY,
                 JSON.stringify({ currentSongIndex: 0, tracks: mixed }),
             );
+
             expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: TRACKS });
         });
 
         it('returns a playlist with an empty tracks array when all entries are invalid', () => {
             const bad = [{ foo: 'bar' }, null, 42];
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex: 0, tracks: bad }));
+
             expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: [] });
         });
 
         it('accepts an empty tracks array with index 0', () => {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentSongIndex: 0, tracks: [] }));
+
             expect(loadPlaylist()).toStrictEqual({ currentSongIndex: 0, tracks: [] });
         });
 
@@ -98,7 +108,9 @@ describe('playlistStorage', () => {
             vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
                 throw new DOMException('SecurityError');
             });
+
             expect(loadPlaylist()).toBeNull();
+
             vi.restoreAllMocks();
         });
     });
@@ -107,6 +119,7 @@ describe('playlistStorage', () => {
         it('persists tracks and currentSongIndex to localStorage', () => {
             savePlaylist(TRACKS, 1);
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
             expect(stored).toStrictEqual({ currentSongIndex: 1, tracks: TRACKS });
         });
 
@@ -115,6 +128,7 @@ describe('playlistStorage', () => {
             const updated = [{ filePath: '/music/New.mp3', trackName: 'New' }];
             savePlaylist(updated, 0);
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
             expect(stored.tracks).toStrictEqual(updated);
         });
 
@@ -122,7 +136,9 @@ describe('playlistStorage', () => {
             vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
                 throw new DOMException('QuotaExceededError');
             });
+
             expect(() => savePlaylist(TRACKS, 0)).not.toThrow();
+
             vi.restoreAllMocks();
         });
     });
@@ -131,6 +147,7 @@ describe('playlistStorage', () => {
         it('removes the saved playlist from localStorage', () => {
             savePlaylist(TRACKS, 0);
             clearPlaylist();
+
             expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
         });
 
@@ -142,7 +159,9 @@ describe('playlistStorage', () => {
             vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
                 throw new DOMException('SecurityError');
             });
+
             expect(() => clearPlaylist()).not.toThrow();
+
             vi.restoreAllMocks();
         });
     });
