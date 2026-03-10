@@ -566,10 +566,7 @@ describe('musicPlayer (browser)', () => {
 
         it('restores the audio currentTime from saved time', async () => {
             const player = createPlayer();
-            vi.spyOn(player.audio, 'dispatchEvent');
-
             player.restorePlaylist(FILES, 0, 45);
-
             const event = new Event('loadedmetadata');
             player.audio.dispatchEvent(event);
 

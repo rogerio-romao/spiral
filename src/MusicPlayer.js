@@ -407,7 +407,7 @@ export default class MusicPlayer {
      * Temporarily shows "Saved!" on the button as lightweight feedback.
      */
     handleSavePlaylist() {
-        const time = this.isPlaying ? this.audio.currentTime : 0;
+        const time = this.audio.currentTime || 0;
         const success = savePlaylist(this.tracks, this.currentSongIndex, time);
         if (success) {
             this.isDirty = false;
@@ -460,13 +460,12 @@ export default class MusicPlayer {
         // check restoreIndex bounds
         if (restoreIndex >= 0 && restoreIndex < this.trackList.length) {
             this.currentSongIndex = restoreIndex;
-            this.audio.src = this.trackList[this.currentSongIndex];
-
             const onRestoreTime = () => {
                 this.audio.currentTime = restoreTime;
                 this.audio.removeEventListener('loadedmetadata', onRestoreTime);
             };
             this.audio.addEventListener('loadedmetadata', onRestoreTime);
+            this.audio.src = this.trackList[this.currentSongIndex];
 
             this.updatePlaylistStyle();
             this.updateTrackName();
