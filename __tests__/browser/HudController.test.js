@@ -1,5 +1,4 @@
 import HudController from '../../src/HudController.js';
-import sleep from '../helpers/sleep.js';
 
 function createHud() {
     document.body.innerHTML = /* html */ `<div id="msg"></div><div id="algos"></div><div id="help"></div>`;
@@ -16,6 +15,14 @@ function createHud() {
 }
 
 describe('hudController (browser)', () => {
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
     it('throws if any required DOM element is missing', () => {
         // messageElement missing
         expect(
@@ -89,7 +96,7 @@ describe('hudController (browser)', () => {
         hud.destroy();
     });
 
-    it('stacks messages simultaneously and each timer expires independently', async () => {
+    it('stacks messages simultaneously and each timer expires independently', () => {
         const { hud, messageElement } = createHud();
         hud.messageDisplayTimeInMs = 500;
         hud.displayMessage('first');
@@ -98,7 +105,7 @@ describe('hudController (browser)', () => {
         expect(items).toHaveLength(1);
         expect(items[0].textContent).toBe('FIRST');
 
-        await sleep(100);
+        vi.advanceTimersByTime(100);
         hud.displayMessage('second');
         items = messageElement.querySelectorAll('.msg-item');
 
@@ -106,15 +113,16 @@ describe('hudController (browser)', () => {
         expect(items[0].textContent).toBe('FIRST');
         expect(items[1].textContent).toBe('SECOND');
 
-        await sleep(410);
+        vi.advanceTimersByTime(410);
 
         // first message (added at t=0) expires at t=500ms — wait until t=510ms
+        items = messageElement.querySelectorAll('.msg-item');
         expect(items[0].classList.contains('msg-item-removing')).toBeTruthy();
         // second message (added at t=100ms) expires at t=600ms — not yet
         expect(items[1].classList.contains('msg-item-removing')).toBeFalsy();
 
         // wait for first message's transition to complete (350ms fallback)
-        await sleep(400);
+        vi.advanceTimersByTime(400);
         items = messageElement.querySelectorAll('.msg-item');
         expect(items).toHaveLength(1);
         expect(items[0].textContent).toBe('SECOND');
@@ -122,13 +130,13 @@ describe('hudController (browser)', () => {
         hud.destroy();
     });
 
-    it('replaces a keyed message immediately without stacking', async () => {
+    it('replaces a keyed message immediately without stacking', () => {
         const { hud, messageElement } = createHud();
         hud.displayMessage('manual mode', 'mode');
 
         expect(messageElement.querySelectorAll('.msg-item')).toHaveLength(1);
 
-        await sleep(50);
+        vi.advanceTimersByTime(50);
         hud.displayMessage('auto mode', 'mode');
         const items = messageElement.querySelectorAll('.msg-item');
 
@@ -138,7 +146,7 @@ describe('hudController (browser)', () => {
         hud.destroy();
     });
 
-    it('properly resets timers and DOM on rapid consecutive displayAlgorithmName calls', async () => {
+    it('properly resets timers and DOM on rapid consecutive displayAlgorithmName calls', () => {
         const { hud } = createHud();
         hud.algorithmNameDisplayTimeInMs = 500;
 
@@ -147,15 +155,15 @@ describe('hudController (browser)', () => {
 
         expect(algosDisplayElement.textContent).toBe('ALGO1');
 
-        await sleep(100);
+        vi.advanceTimersByTime(100);
         hud.displayAlgorithmName('algo2');
 
         expect(algosDisplayElement.textContent).toBe('ALGO2');
 
-        await sleep(400);
+        vi.advanceTimersByTime(400);
         expect(algosDisplayElement.style.display).toBe('block');
 
-        await sleep(100);
+        vi.advanceTimersByTime(100);
         expect(algosDisplayElement.style.display).toBe('none');
         expect(algosDisplayElement.textContent).toBe('');
 
