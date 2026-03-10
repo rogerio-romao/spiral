@@ -58,7 +58,7 @@ export default class Spiral {
         AlgorithmLoader.h = this.h;
 
         // HUD SETUP
-        this.hud = new HudController({
+        this.hudController = new HudController({
             algosDisplayElement: document.querySelector('#algos'),
             helpElement: document.querySelector('#help'),
             messageElement: document.querySelector('#msg'),
@@ -70,12 +70,12 @@ export default class Spiral {
         this.transitionManager = new TransitionManager({
             algorithmLoader: this.algorithmLoader,
             canvas: this.canvas,
-            hudController: this.hud,
+            hudController: this.hudController,
         });
 
         // DEV MODE CONTROLLER
         this.devModeController = new DevModeController({
-            hudController: this.hud,
+            hudController: this.hudController,
             transitionManager: this.transitionManager,
         });
 
@@ -178,7 +178,7 @@ export default class Spiral {
     /** Clean up resources before the app closes. */
     destroy() {
         this.welcomeTimers.map(clearTimeout);
-        this.hud.destroy();
+        this.hudController.destroy();
         this.devModeController.destroy();
         this.blockedAlgorithmsModal.destroy();
         this.waveformController?.destroy();
@@ -212,22 +212,22 @@ export default class Spiral {
 
         // Apply saved user preferences before starting the timer
         const prefs = loadPreferences();
-        this.hud.silenceMessages = prefs.silenceMessages;
+        this.hudController.silenceMessages = prefs.silenceMessages;
         this.transitionManager.autoChangeIntervalInSeconds = prefs.autoChangeIntervalInSeconds;
         this.transitionManager.isInManualMode = prefs.isInManualMode;
 
         // welcome messages and tips
         if (prefs.showTips) {
-            this.hud.displayMessage('WELCOME');
+            this.hudController.displayMessage('WELCOME');
             this.welcomeTimers = [
                 setTimeout(() => {
-                    this.hud.displayMessage('PRESS H FOR HELP');
+                    this.hudController.displayMessage('PRESS H FOR HELP');
                 }, 10_000),
                 setTimeout(() => {
-                    this.hud.displayMessage('TIP: F FOR FULLSCREEN');
+                    this.hudController.displayMessage('TIP: F FOR FULLSCREEN');
                 }, 20_000),
                 setTimeout(() => {
-                    this.hud.displayMessage('TIP: M TO VIEW/HIDE MUSIC PLAYER');
+                    this.hudController.displayMessage('TIP: M TO VIEW/HIDE MUSIC PLAYER');
                 }, 30_000),
             ];
         } else {
@@ -275,7 +275,7 @@ export default class Spiral {
         this.keyboardController = new KeyboardController({
             blockedAlgorithmsModal: this.blockedAlgorithmsModal,
             devModeController: this.devModeController,
-            hudController: this.hud,
+            hudController: this.hudController,
             musicPlayer: this.musicPlayer,
             spiral: this,
             transitionManager: this.transitionManager,
@@ -321,14 +321,14 @@ export default class Spiral {
         const missingCount = saved.tracks.length - resolved.length;
         if (missingCount > 0) {
             const label = missingCount === 1 ? 'track' : 'tracks';
-            this.hud.displayMessage(`${missingCount} saved ${label} unavailable`);
+            this.hudController.displayMessage(`${missingCount} saved ${label} unavailable`);
         }
     }
 
     /** Toggle the audio waveform display on or off, and show a message in the HUD indicating the new state. Called by the `KeyboardController` when the user presses the assigned shortcut key. */
     toggleWaveform() {
         const isOn = this.waveformController.toggleWaveform();
-        this.hud.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF', 'waveform');
+        this.hudController.displayMessage(isOn ? 'Waveform: ON' : 'Waveform: OFF', 'waveform');
     }
 
     /**

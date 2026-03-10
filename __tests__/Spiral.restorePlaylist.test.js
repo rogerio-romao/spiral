@@ -24,7 +24,7 @@ const RESOLVED_ALL = [
 function createSpiral(resolvedFiles) {
     const spiral = Object.create(Spiral.prototype);
     spiral.musicPlayer = { restorePlaylist: vi.fn() };
-    spiral.hud = { displayMessage: vi.fn() };
+    spiral.hudController = { displayMessage: vi.fn() };
     globalThis.electronAPI = { resolveFiles: vi.fn().mockResolvedValue(resolvedFiles) };
     return spiral;
 }
@@ -92,7 +92,9 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral(resolvedWithoutC);
         await spiral.restorePlaylist();
-        expect(spiral.hud.displayMessage).toHaveBeenCalledWith('1 saved track unavailable');
+        expect(spiral.hudController.displayMessage).toHaveBeenCalledWith(
+            '1 saved track unavailable',
+        );
     });
 
     it('uses the plural form in the HUD message for multiple missing tracks', async () => {
@@ -102,7 +104,9 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral([RESOLVED_ALL[0]]);
         await spiral.restorePlaylist();
-        expect(spiral.hud.displayMessage).toHaveBeenCalledWith('2 saved tracks unavailable');
+        expect(spiral.hudController.displayMessage).toHaveBeenCalledWith(
+            '2 saved tracks unavailable',
+        );
     });
 
     it('does not show a HUD message when all tracks resolve', async () => {
@@ -112,6 +116,6 @@ describe('spiral.restorePlaylist', () => {
         );
         const spiral = createSpiral(RESOLVED_ALL);
         await spiral.restorePlaylist();
-        expect(spiral.hud.displayMessage).not.toHaveBeenCalled();
+        expect(spiral.hudController.displayMessage).not.toHaveBeenCalled();
     });
 });

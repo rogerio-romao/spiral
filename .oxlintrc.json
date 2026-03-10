@@ -22,6 +22,7 @@
         "eslint/max-lines": ["warn", 285],
         "eslint/max-params": ["warn", 5],
         "eslint/max-classes-per-file": ["warn", 6],
+        "eslint/no-console": "warn",
         "eslint/no-magic-numbers": "off",
         "eslint/no-ternary": "off",
         "eslint/no-continue": "off",
