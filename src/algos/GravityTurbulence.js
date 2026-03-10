@@ -12,6 +12,8 @@ import AL from '../AlgorithmLoader.js';
  * @property {number} [mass] - The mass of the particle (extension).
  * @property {function} addGravitation - Method to add gravitational influence from another particle.
  * @property {function} update - Method to update the particle's position based on its velocity and gravitational influences.
+ * @property {function} setSpeed - Method to set the speed of the particle (extension).
+ * @property {function} setHeading - Method to set the heading of the particle (extension).
  */
 
 export default class GravityTurbulence extends AL {
@@ -38,6 +40,7 @@ export default class GravityTurbulence extends AL {
         this.sun2.mass = -10_000;
         this.numParticles = 375;
 
+        /** @type {GravityTurbulenceParticle[]} */
         this.particles = [];
 
         for (let i = 0; i < this.numParticles; i++) {
@@ -121,6 +124,10 @@ export default class GravityTurbulence extends AL {
         this.requestFrame();
     }
 
+    /**
+     * @param {GravityTurbulenceParticle} particle - the particle to draw
+     * @param {string} color - the color of the particle
+     */
     drawPart(particle, color) {
         AL.ctx.fillStyle = color;
         AL.ctx.beginPath();

@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "allowJs": true,
+        "noImplicitAny": true,
         "checkJs": true,
         "lib": ["dom", "es2023", "DOM.Iterable"],
         "noEmit": true,

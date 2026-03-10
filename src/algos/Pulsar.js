@@ -57,6 +57,9 @@ export default class Pulsar extends AL {
         this.requestFrame();
     }
 
+    /**
+     * @param {number} rot - rotation angle in degrees for the current bezier curve
+     */
     drawBezier(rot) {
         AL.ctx.save();
         AL.ctx.beginPath();

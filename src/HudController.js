@@ -6,6 +6,7 @@
 export default class HudController {
     // INSTANCE PROPERTIES
     algorithmNameDisplayTimeInMs = 5000;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     algorithmNameTimer = null;
     messageDisplayTimeInMs = 7500;
     /** @type {{ key: string|null, timer: ReturnType<typeof setTimeout>, element: HTMLElement }[]} */

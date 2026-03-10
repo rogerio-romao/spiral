@@ -63,6 +63,11 @@ export default class VanishingPoint extends AL {
         super.stop();
     }
 
+    /**
+     *
+     * @param {number} x - the x coordinate
+     * @param {number} y - the y coordinate
+     */
     drawTriangle = (x, y) => {
         AL.ctx.moveTo(x, y);
         AL.ctx.beginPath();

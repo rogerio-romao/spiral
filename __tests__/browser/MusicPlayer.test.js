@@ -368,15 +368,6 @@ describe('musicPlayer (browser)', () => {
         });
     });
 
-    describe('destroy', () => {
-        it('runs without errors', () => {
-            const player = createPlayer();
-            player.trackList = ['file:///music/Track One.mp3', 'file:///music/Track Two.wav'];
-
-            expect(() => player.destroy()).not.toThrow();
-        });
-    });
-
     describe('playlist persistence — button states', () => {
         const TRACK_A = {
             filePath: '/music/a.mp3',

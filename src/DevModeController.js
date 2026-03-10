@@ -115,7 +115,7 @@ export default class DevModeController {
      * Sets environment flags, tracks the active state of Developer Mode, and prepares the list of algorithms.
      */
     initState() {
-        this.isNotProduction = Boolean(globalThis.env?.isDevEnvironment);
+        this.isNotProduction = Boolean(/** @type {any} */ (globalThis).env?.isDevEnvironment);
         this.isDevModeActive = false;
 
         this.algoA = null;

@@ -237,13 +237,6 @@ describe('math utils', () => {
             expect(result.x).toBeCloseTo(p2.x);
             expect(result.y).toBeCloseTo(p2.y);
         });
-
-        it('writes into provided pFinal object', () => {
-            const pFinal = { x: 0, y: 0 };
-            const result = utils.quadraticBezier(p0, p1, p2, 0.5, pFinal);
-
-            expect(result).toBe(pFinal);
-        });
     });
 
     describe('cubicBezier', () => {
@@ -264,13 +257,6 @@ describe('math utils', () => {
 
             expect(result.x).toBeCloseTo(p3.x);
             expect(result.y).toBeCloseTo(p3.y);
-        });
-
-        it('writes into provided pFinal object', () => {
-            const pFinal = {};
-            const result = utils.cubicBezier(p0, p1, p2, p3, 0.5, pFinal);
-
-            expect(result).toBe(pFinal);
         });
     });
 

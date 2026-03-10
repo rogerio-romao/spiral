@@ -3,6 +3,8 @@ import AlgorithmLoader from './AlgorithmLoader.js';
 import htmlEscape from './utils/htmlEscape.js';
 import { clearPlaylist, savePlaylist } from './utils/PlaylistStorage.js';
 
+/** @typedef {{ filePath: string, trackName: string, fileUrl: string }[]} trackFiles */
+
 /**
  * MusicPlayer — handles audio playback, playlist management,
  * and progress bar, as well as the EQ visualization.
@@ -11,15 +13,22 @@ import { clearPlaylist, savePlaylist } from './utils/PlaylistStorage.js';
  */
 export default class MusicPlayer {
     currentSongIndex = 0;
+    /** @type {number|null} */
     eqRafId = null;
+    /**
+     * This is set by the AlgorithmLoader when it creates the FrequencyAnalyser, so that the MusicPlayer can use it to drive the EQ visualization. This is a bit of a circular dependency, but it allows us to keep the audio graph setup in one place (the FrequencyAnalyser) while still enabling the MusicPlayer to control the EQ display.
+     * @type {import('./FrequencyAnalyser.js').default|null}
+     */
     frequencyAnalyser = null;
     isPlaying = false;
+    /** @type {NodeListOf<HTMLLIElement>|null} */
     playlistEls = null;
     playlistIsOpen = false;
     playToggleFadeDurationInMs = 80;
     showPlayer = true;
     showRemaining = false;
     trackSkipIntervalInMs = 200;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     trackSkipWhilePlayingTimeout = null;
 
     /**
@@ -115,10 +124,6 @@ export default class MusicPlayer {
         return listItem;
     }
 
-    /** Clean up resources on app close. No-op — file:// URLs need no revocation. */
-    // oxlint-disable-next-line no-empty-function
-    destroy() {}
-
     /** Update the progress bar and time displays based on current playback position. */
     displayProgress() {
         // Guard against division by zero or NaN if metadata isn't loaded yet
@@ -132,6 +137,7 @@ export default class MusicPlayer {
         const { currentTime, duration } = this.audio;
         const progressPercent = (currentTime / duration) * 100;
         this.progress.value = progressPercent.toFixed(2);
+
         this.elapsedEl.textContent = this.showRemaining
             ? `-${this.formatTime(duration - currentTime)}`
             : this.formatTime(currentTime);
@@ -188,6 +194,7 @@ export default class MusicPlayer {
      */
     enqueuePlay(overrideIntervalInMs = null) {
         clearTimeout(this.trackSkipWhilePlayingTimeout);
+
         this.trackSkipWhilePlayingTimeout = setTimeout(() => {
             this.isPlaying = true;
             this.fadePlay();
@@ -212,20 +219,16 @@ export default class MusicPlayer {
      * Eliminates the audible click that occurs with an abrupt resume.
      */
     async fadePlay() {
-        if (this.frequencyAnalyser) {
-            this.frequencyAnalyser.setGain(0);
-        }
+        this.frequencyAnalyser?.setGain(0);
+
         try {
             await this.audio.play();
         } catch {
-            if (this.frequencyAnalyser) {
-                this.frequencyAnalyser.setGain(1);
-            }
+            this.frequencyAnalyser?.setGain(1);
             return;
         }
-        if (this.frequencyAnalyser) {
-            await this.frequencyAnalyser.fadeTo(1, this.playToggleFadeDurationInMs);
-        }
+
+        await this.frequencyAnalyser?.fadeTo(1, this.playToggleFadeDurationInMs);
     }
 
     /**
@@ -241,6 +244,7 @@ export default class MusicPlayer {
 
         const minutes = Math.floor(seconds / 60);
         const secondsRemaining = Math.floor(seconds % 60);
+
         return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
     }
 
@@ -350,10 +354,10 @@ export default class MusicPlayer {
     /**
      * Add resolved file entries to the playlist.
      * Avoids duplicates by path, updates the UI, and manages playback state as needed.
-     * @param {{ filePath: string, trackName: string, fileUrl: string }[]} files - Resolved file entries from the Electron dialog or playlist restore.
+     * @param {trackFiles} files - Resolved file entries from the Electron dialog or playlist restore.
      */
     handleFiles(files) {
-        if (!files?.length) {
+        if (files.length === 0) {
             return;
         }
 
@@ -407,6 +411,7 @@ export default class MusicPlayer {
         this.isDirty = false;
         this.hasSavedPlaylist = true;
         this.updatePlaylistActions();
+
         this.savePlBtn.textContent = 'Saved!';
         setTimeout(() => {
             this.savePlBtn.textContent = 'Save Playlist';
@@ -428,20 +433,23 @@ export default class MusicPlayer {
      * Restore a previously saved playlist on app startup.
      * Populates the playlist, then overrides the active track to the saved position.
      * Sets hasSavedPlaylist = true and clears the dirty flag.
-     * @param {{ filePath: string, trackName: string, fileUrl: string }[]} files - Resolved file entries.
+     * @param {trackFiles} files - Resolved file entries.
      * @param {number} restoreIndex - Index of the track to make active; falls back to 0 if out of range.
      */
     restorePlaylist(files, restoreIndex) {
         if (files.length === 0) {
             return;
         }
+
         this.handleFiles(files);
+        // check restoreIndex bounds
         if (restoreIndex > 0 && restoreIndex < this.trackList.length) {
             this.currentSongIndex = restoreIndex;
             this.audio.src = this.trackList[this.currentSongIndex];
             this.updatePlaylistStyle();
             this.updateTrackName();
         }
+
         this.isDirty = false;
         this.hasSavedPlaylist = true;
         this.updatePlaylistActions();
@@ -451,7 +459,7 @@ export default class MusicPlayer {
      * Open the native file picker dialog via Electron and add selected tracks.
      */
     async openFilePicker() {
-        const files = await globalThis.electronAPI.openFiles();
+        const files = await /** @type {any} */ (globalThis).electronAPI.openFiles();
         if (files.length > 0) {
             this.handleFiles(files);
         }
@@ -517,6 +525,7 @@ export default class MusicPlayer {
         this.audio.src = this.trackList[this.currentSongIndex];
         this.updatePlaylistStyle();
         this.enqueuePlay();
+
         if (this.hasSavedPlaylist) {
             savePlaylist(this.tracks, this.currentSongIndex);
         }
@@ -701,6 +710,7 @@ export default class MusicPlayer {
         } else {
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         }
+
         if (this.hasSavedPlaylist) {
             savePlaylist(this.tracks, this.currentSongIndex);
         }
@@ -741,6 +751,7 @@ export default class MusicPlayer {
             [...this.playlistEls].map((el) => (el.style.color = '#555'));
             this.playlistEls[this.currentSongIndex].style.color = 'rgba(255, 165, 0, 0.5)';
         } else if (this.playlistEls) {
+            // if already paused, just rewind to the beginning
             this.audio.currentTime = 0;
         }
     }

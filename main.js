@@ -19,10 +19,12 @@ function trackNameFromPath(filePath) {
     return dotIndex > 0 ? base.slice(0, dotIndex) : base;
 }
 
+/** @typedef {{ filePath: string, trackName: string, fileUrl: string }} FileResult */
+
 /**
  * This is a helper function that takes a file path and returns an object containing the file path, track name, and file URL. The track name is derived from the file path using the `trackNameFromPath` function, and the file URL is created using the `pathToFileURL` function from the Node.js URL module. This object is used to represent a track in the playlist and other parts of the UI.
  * @param {string} filePath - the path to the file
- * @returns {object} an object containing the file path, track name, and file URL
+ * @returns {FileResult} an object containing the file path, track name, and file URL
  */
 function fileResult(filePath) {
     return {

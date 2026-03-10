@@ -13,7 +13,9 @@ export default class SquareNebulas extends AL {
     }
 
     initializeProperties() {
+        /** @type {number} */
         this.length = AL.random(50, Math.min(AL.w, AL.h) / 1.5);
+        /** @type {number} */
         this.maxLength = this.length;
         this.gap = AL.random(4, 100);
     }

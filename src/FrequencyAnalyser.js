@@ -26,7 +26,9 @@ export default class FrequencyAnalyser {
         this._bandCount = bandCount;
 
         // Create the audio context and graph
-        this.ctx = new (globalThis.AudioContext || globalThis.webkitAudioContext)();
+        this.ctx = new (
+            globalThis.AudioContext || /** @type {any} */ (globalThis).webkitAudioContext
+        )();
         this.analyser = this.ctx.createAnalyser();
         this.analyser.fftSize = fftSize;
         this.analyser.smoothingTimeConstant = smoothing;

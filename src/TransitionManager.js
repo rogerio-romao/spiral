@@ -14,11 +14,15 @@ import { random, randomColor } from './utils/randomUtils.js';
 export default class TransitionManager {
     algoRetries = 0;
     autoChangeIntervalInSeconds = 60;
+    /** @type {any} */
     autoChangeTimeout = null;
     blockedAlgorithms = new Set();
+    /** @type {any} */
     currentAlgorithm = null;
     devModeActive = false;
+    /** @type {Function|null} */
     devModeAlgoA = null;
+    /** @type {Function|null} */
     devModeAlgoB = null;
     devModeAlternator = 0;
     isInManualMode = false;
@@ -43,6 +47,7 @@ export default class TransitionManager {
         if (this.isTransitioning) {
             return;
         }
+
         this.isTransitioning = true;
 
         try {
@@ -64,6 +69,35 @@ export default class TransitionManager {
             }
         } finally {
             this.isTransitioning = false;
+        }
+    }
+
+    /** Choose and instantiate a new algorithm, with retry logic for constructor errors. Respects dev mode settings. Idempotent if already transitioning. */
+    chooseAlgos() {
+        /** @type {any} */
+        let AlgorithmClass = null;
+        if (this.devModeActive) {
+            // In dev mode, alternate between two specified algorithms (or random if null) on each call. This allows for quick testing of specific algorithms without changing code.
+            const isSlotA = this.devModeAlternator === 0;
+            this.devModeAlternator = 1 - this.devModeAlternator;
+            const algoChoice = isSlotA ? this.devModeAlgoA : this.devModeAlgoB;
+            AlgorithmClass = algoChoice || this.getRandomAlgorithm();
+        } else {
+            AlgorithmClass = this.getRandomAlgorithm();
+        }
+
+        // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.
+        try {
+            this.currentAlgorithm = new AlgorithmClass();
+            this.hudController.displayAlgorithmName(this.currentAlgorithm.name);
+            this.algoRetries = 0;
+        } catch {
+            this.algoRetries += 1;
+            if (this.algoRetries < 3) {
+                this.chooseAlgos();
+            } else {
+                this.algoRetries = 0;
+            }
         }
     }
 
@@ -100,43 +134,6 @@ export default class TransitionManager {
         this.lastAlgos.add(AlgorithmClass);
 
         return AlgorithmClass;
-    }
-
-    /**
-     * Replace the entire blocked set with a new collection of names and persist it.
-     * @param {Iterable<string>} names - Algorithm class names to block.
-     */
-    setBlockedAlgorithms(names) {
-        this.blockedAlgorithms = new Set(names);
-        saveBlockedAlgorithms([...this.blockedAlgorithms]);
-    }
-
-    /** Choose and instantiate a new algorithm, with retry logic for constructor errors. Respects dev mode settings. Idempotent if already transitioning. */
-    chooseAlgos() {
-        let AlgorithmClass = null;
-        if (this.devModeActive) {
-            // In dev mode, alternate between two specified algorithms (or random if null) on each call. This allows for quick testing of specific algorithms without changing code.
-            const isSlotA = this.devModeAlternator === 0;
-            this.devModeAlternator = 1 - this.devModeAlternator;
-            const algoChoice = isSlotA ? this.devModeAlgoA : this.devModeAlgoB;
-            AlgorithmClass = algoChoice || this.getRandomAlgorithm();
-        } else {
-            AlgorithmClass = this.getRandomAlgorithm();
-        }
-
-        // Attempt to instantiate the chosen algorithm, with retry logic in case of constructor errors. This is important because some algorithms may throw errors due to edge cases or unexpected conditions. We want to ensure that a single failure doesn't break the entire app, and that we can recover gracefully by trying a different algorithm.
-        try {
-            this.currentAlgorithm = new AlgorithmClass();
-            this.hudController.displayAlgorithmName(this.currentAlgorithm.name);
-            this.algoRetries = 0;
-        } catch {
-            this.algoRetries += 1;
-            if (this.algoRetries < 3) {
-                this.chooseAlgos();
-            } else {
-                this.algoRetries = 0;
-            }
-        }
     }
 
     /** Start or restart the auto-change timer based on current settings. */
@@ -207,6 +204,15 @@ export default class TransitionManager {
 
         // Begin new path
         ctx.beginPath();
+    }
+
+    /**
+     * Replace the entire blocked set with a new collection of names and persist it.
+     * @param {Iterable<string>} names - Algorithm class names to block.
+     */
+    setBlockedAlgorithms(names) {
+        this.blockedAlgorithms = new Set(names);
+        saveBlockedAlgorithms([...this.blockedAlgorithms]);
     }
 
     /**

@@ -24,13 +24,22 @@ export default class Spiral {
     // INSTANCE PROPERTIES
     algoChangeDebounceDelayInMs = 250;
     cursorHideDelayInMs = 4000;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     cursorHideTimeout = null;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     debounceTimeout = null;
+    /** @type {FrequencyAnalyser|null} */
     frequencyAnalyser = null;
+    /** @type {KeyboardController|null} */
     keyboardController = null;
+    /** @type {MusicPlayer|null} */
     musicPlayer = null;
+    /** @type {ReturnType<typeof setTimeout>|null} */
     resizeTimeout = null;
+    /** @type {WaveformController|null} */
     waveformController = null;
+    /** @type {ReturnType<typeof setTimeout>[]}*/
+    welcomeTimers = [];
 
     constructor() {
         // CANVAS SETUP
@@ -168,9 +177,8 @@ export default class Spiral {
 
     /** Clean up resources before the app closes. */
     destroy() {
-        this._welcomeTimers.map(clearTimeout);
+        this.welcomeTimers.map(clearTimeout);
         this.hud.destroy();
-        this.musicPlayer.destroy();
         this.devModeController.destroy();
         this.blockedAlgorithmsModal.destroy();
         this.waveformController?.destroy();
@@ -205,11 +213,13 @@ export default class Spiral {
         // Apply saved user preferences before starting the timer
         const prefs = loadPreferences();
         this.hud.silenceMessages = prefs.silenceMessages;
+        this.transitionManager.autoChangeIntervalInSeconds = prefs.autoChangeIntervalInSeconds;
+        this.transitionManager.isInManualMode = prefs.isInManualMode;
 
         // welcome messages and tips
         if (prefs.showTips) {
             this.hud.displayMessage('WELCOME');
-            this._welcomeTimers = [
+            this.welcomeTimers = [
                 setTimeout(() => {
                     this.hud.displayMessage('PRESS H FOR HELP');
                 }, 10_000),
@@ -221,10 +231,8 @@ export default class Spiral {
                 }, 30_000),
             ];
         } else {
-            this._welcomeTimers = [];
+            this.welcomeTimers = [];
         }
-        this.transitionManager.autoChangeIntervalInSeconds = prefs.autoChangeIntervalInSeconds;
-        this.transitionManager.isInManualMode = prefs.isInManualMode;
 
         // initiate the transitions timer
         this.transitionManager.resetAutoChangeTimer();
@@ -253,6 +261,7 @@ export default class Spiral {
             frequencyAnalyser: this.frequencyAnalyser,
         });
         AlgorithmLoader.waveformController = this.waveformController;
+
         if (prefs.showWaveform) {
             this.waveformController.toggleWaveform();
         }
@@ -277,6 +286,7 @@ export default class Spiral {
         /** @type {HTMLInputElement} */
         const showTipsCheckbox = document.querySelector('#show-tips');
         showTipsCheckbox.checked = prefs.showTips;
+
         showTipsCheckbox.addEventListener('change', () => {
             savePreference('showTips', showTipsCheckbox.checked);
         });
@@ -297,7 +307,9 @@ export default class Spiral {
         }
 
         const paths = saved.tracks.map((t) => t.filePath);
-        const resolved = await globalThis.electronAPI.resolveFiles(paths);
+        /** @type {{ filePath: string, trackName: string, fileUrl: string }[]} */
+        const resolved = await /** @type {any}  */ (globalThis).electronAPI.resolveFiles(paths);
+
         if (resolved.length === 0) {
             return;
         }

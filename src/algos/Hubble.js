@@ -48,6 +48,10 @@ export default class Hubble extends AL {
         this.requestFrame();
     }
 
+    /**
+     * @param {number} num - length of the sequence
+     * @returns {number[]} - the generated sequence
+     */
     createSeq(num) {
         const start = [0, 1];
         const values = [];

@@ -48,7 +48,7 @@ export default class KeyboardController {
         this.blockedAlgorithmsModal = blockedAlgorithmsModal;
 
         // Dev mode shortcut should only work in development, we need to check this
-        this.isDevEnvironment = Boolean(globalThis.env?.isDevEnvironment);
+        this.isDevEnvironment = Boolean(/** @type {any} */ (globalThis).env?.isDevEnvironment);
 
         // store the handler as an instance property so we can properly remove it in destroy()
         this.handler = (/** @type {KeyboardEvent} */ e) => this.handleKeyup(e);
