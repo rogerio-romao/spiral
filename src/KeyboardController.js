@@ -70,6 +70,12 @@ export default class KeyboardController {
      */
     // oxlint-disable-next-line complexity
     handleKeyup(e) {
+        // If the event target is an input, textarea, select, or button element, we should ignore the shortcut to avoid interfering with user interactions in forms and controls.
+        const { target } = e;
+        if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement) {
+            return;
+        }
+
         switch (e.code) {
             // Skip to previous track
             case 'ArrowLeft': {
@@ -107,6 +113,7 @@ export default class KeyboardController {
             // Toggle Auto/Manual mode on/off. In manual mode, algorithms only change when the user triggers it (e.g. by pressing Space), and the auto-change timer is paused. In auto mode, algorithms change automatically based on the auto-change timer.
             case 'KeyA': {
                 this.transitionManager.isInManualMode = !this.transitionManager.isInManualMode;
+                this.transitionManager.resetAutoChangeTimer();
 
                 this.hudController.displayMessage(
                     this.transitionManager.isInManualMode ? 'Manual mode' : 'Auto mode',

@@ -19,6 +19,7 @@ function makeController({ isDevEnvironment = false } = {}) {
         autoChangeIntervalInSeconds: 60,
         changeAlgorithm: vi.fn(),
         isInManualMode: false,
+        resetAutoChangeTimer: vi.fn(),
     };
 
     const musicPlayer = {

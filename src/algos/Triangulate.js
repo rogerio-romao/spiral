@@ -29,6 +29,7 @@ export default class Triangulate extends AL {
     setupDrawingStyles() {
         AL.ctx.lineWidth = 3;
         AL.ctx.strokeStyle = 'black';
+        AL.ctx.moveTo(AL.w / 2, AL.h / 2);
         AL.ctx.fillStyle = AL.randomColor(0, 255, 0.2, 0.45);
     }
 

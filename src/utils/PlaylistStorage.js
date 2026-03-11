@@ -86,6 +86,8 @@ export function savePlaylist(tracks, currentSongIndex, currentTime = 0) {
  * @returns {boolean} True if update succeeded, false otherwise.
  */
 export function updatePlaylistTime(currentTime) {
+    const safeTime = Number.isFinite(currentTime) && currentTime >= 0 ? currentTime : 0;
+
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
@@ -104,7 +106,7 @@ export function updatePlaylistTime(currentTime) {
 
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify({ currentSongIndex, currentTime, tracks }),
+            JSON.stringify({ currentSongIndex, currentTime: safeTime, tracks }),
         );
         return true;
     } catch {
