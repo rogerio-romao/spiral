@@ -151,6 +151,7 @@ describe('keyboardController', () => {
 
         expect(transitionManager.isInManualMode).toBeTruthy();
         expect(hudController.displayMessage).toHaveBeenCalledWith('Manual mode', 'mode');
+        expect(transitionManager.resetAutoChangeTimer).toHaveBeenCalledOnce();
 
         controller.destroy();
     });

@@ -70,7 +70,7 @@ export default class KeyboardController {
      */
     // oxlint-disable-next-line complexity
     handleKeyup(e) {
-        // If the event target is an input, textarea, select, or button element, we should ignore the shortcut to avoid interfering with user interactions in forms and controls.
+        // If the event target is an input, or select element, we should ignore the shortcut to avoid interfering with user interactions in forms and controls.
         const { target } = e;
         if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement) {
             return;
