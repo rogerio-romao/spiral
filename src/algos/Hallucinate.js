@@ -39,7 +39,7 @@ export default class Hallucinate extends AL {
             this.initializeProperties();
         }
 
-        if (this.t % (this.speed * 750) === 0) {
+        if (this.t % (this.speed * 600) === 0) {
             this.clearScreen();
         }
 
