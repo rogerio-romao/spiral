@@ -19,6 +19,7 @@ function makeController({ isDevEnvironment = false } = {}) {
         autoChangeIntervalInSeconds: 60,
         changeAlgorithm: vi.fn(),
         isInManualMode: false,
+        resetAutoChangeTimer: vi.fn(),
     };
 
     const musicPlayer = {
@@ -150,6 +151,7 @@ describe('keyboardController', () => {
 
         expect(transitionManager.isInManualMode).toBeTruthy();
         expect(hudController.displayMessage).toHaveBeenCalledWith('Manual mode', 'mode');
+        expect(transitionManager.resetAutoChangeTimer).toHaveBeenCalledOnce();
 
         controller.destroy();
     });

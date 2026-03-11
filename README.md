@@ -33,7 +33,7 @@ pnpm start
 
 1. **Open Spiral** and load your favorite music tracks.
 2. **Play your music** and watch as the screen comes alive with generative visuals.
-3. **Switch visualizations** at any time by pressing the Space bar.
+3. **Switch visualizations** at any time by pressing the Space bar or clicking the visualization area.
 4. **Control playback** and features using keyboard shortcuts:
     - **Space** — Switch to a random new visualization
     - **M** — Toggle the music player open/closed
@@ -60,6 +60,4 @@ No complicated setup, no distractions—just music and art working together.
 
 ---
 
-**Spiral is free and open.**
-
-For more information, visit the official website or check for updates in the app.
+**Spiral is free and open source.**

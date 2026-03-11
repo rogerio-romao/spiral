@@ -22,6 +22,7 @@ export default class Vortrix extends AL {
 
     setupConstantStyles() {
         AL.ctx.shadowBlur = 10;
+        AL.ctx.moveTo(AL.w / 2, AL.h / 2);
         AL.ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     }
 

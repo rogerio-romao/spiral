@@ -44,11 +44,14 @@ export default class SpringOrbits extends AL {
             const dx = this.springPoint.x - this.weight.x;
             const dy = this.springPoint.y - this.weight.y;
             const distance = Math.hypot(dx, dy);
-            const springForce = distance * this.k;
-            const ax = (dx / distance) * springForce;
-            const ay = (dy / distance) * springForce;
-            this.weight.vx += ax;
-            this.weight.vy += ay;
+            // Avoid division by zero and excessively large forces when the weight is very close to the spring point
+            if (distance > 1e-8) {
+                const springForce = distance * this.k;
+                const ax = (dx / distance) * springForce;
+                const ay = (dy / distance) * springForce;
+                this.weight.vx += ax;
+                this.weight.vy += ay;
+            }
             this.weight.update();
 
             AL.ctx.beginPath();

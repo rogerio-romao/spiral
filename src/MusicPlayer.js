@@ -466,11 +466,14 @@ export default class MusicPlayer {
                 if (this.audio.readyState >= 1) {
                     this.audio.currentTime = restoreTime;
                 } else {
+                    const expectedSrc = this.audio.src;
                     const onRestoreTime = () => {
+                        if (this.audio.src !== expectedSrc) {
+                            return;
+                        }
                         this.audio.currentTime = restoreTime;
-                        this.audio.removeEventListener('loadedmetadata', onRestoreTime);
                     };
-                    this.audio.addEventListener('loadedmetadata', onRestoreTime);
+                    this.audio.addEventListener('loadedmetadata', onRestoreTime, { once: true });
                 }
             }
 
