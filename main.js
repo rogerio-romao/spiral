@@ -110,7 +110,7 @@ function createWindow(width, height) {
         },
     });
 
-    mainWindow.loadFile('index.html');
+    mainWindow.loadFile(path.join(path.dirname(fileURLToPath(import.meta.url)), 'index.html'));
 }
 
 // This method will be called when Electron has finished
