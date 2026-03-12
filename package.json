@@ -37,7 +37,7 @@
         "@vitest/coverage-v8": "^4.0.18",
         "electron": "^40.8.0",
         "jsdom": "^28.1.0",
-        "oxfmt": "^0.37.0",
+        "oxfmt": "^0.39.0",
         "oxlint": "^1.52.0",
         "playwright": "^1.58.2",
         "stylelint": "^17.4.0",
