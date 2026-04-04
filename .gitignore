@@ -4,7 +4,6 @@ WORKFLOW.md
 CHANGELOG.md
 TODO.md
 AGENTS.md
-.vscode/
 coverage/
 __tests__/browser/__screenshots__/
 .DS_Store
