@@ -4,5 +4,6 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.fontFamily": "'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
-    "oxc.enable.oxfmt": true
+    "oxc.enable.oxfmt": true,
+    "oxc.enable": true
 }
