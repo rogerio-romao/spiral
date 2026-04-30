@@ -17,6 +17,7 @@ function createHud() {
     };
 }
 
+// oxlint-disable-next-line max-lines-per-function
 describe('hudController', () => {
     afterEach(() => {
         vi.useRealTimers();
@@ -141,12 +142,13 @@ describe('hudController', () => {
             hud.destroy();
         });
 
-        it('does nothing when silent mode is active', () => {
+        it('still stores the name in silent mode but keeps element hidden', () => {
             const { hud, algosDisplayElement } = createHud();
             hud.toggleSilenceMode();
             hud.displayAlgorithmName('myAlgo');
 
-            expect(algosDisplayElement.textContent).toBe('');
+            expect(algosDisplayElement.textContent).toBe('MYALGO');
+            expect(algosDisplayElement.style.display).toBe('none');
 
             hud.destroy();
         });
@@ -184,13 +186,36 @@ describe('hudController', () => {
             hud.destroy();
         });
 
-        it('clears algos display on activation', () => {
+        it('hides element on activation but preserves pending name', () => {
             const { hud, algosDisplayElement } = createHud();
             hud.displayAlgorithmName('test');
             hud.toggleSilenceMode();
 
-            expect(algosDisplayElement.textContent).toBe('');
+            expect(algosDisplayElement.textContent).toBe('TEST');
             expect(algosDisplayElement.style.display).toBe('none');
+
+            hud.destroy();
+        });
+
+        it('reveals pending name when toggled off', () => {
+            const { hud, algosDisplayElement } = createHud();
+            hud.toggleSilenceMode();
+            hud.displayAlgorithmName('myAlgo');
+            hud.toggleSilenceMode();
+
+            expect(algosDisplayElement.textContent).toBe('MYALGO');
+            expect(algosDisplayElement.style.display).toBe('block');
+
+            hud.destroy();
+        });
+
+        it('does not show element when toggled off with no pending name', () => {
+            const { hud, algosDisplayElement } = createHud();
+            hud.toggleSilenceMode();
+            hud.toggleSilenceMode();
+
+            expect(algosDisplayElement.textContent).toBe('');
+            expect(algosDisplayElement.style.display).not.toBe('block');
 
             hud.destroy();
         });

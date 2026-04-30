@@ -55,15 +55,16 @@ export default class HudController {
      * @param {string} name - The algorithm name to display.
      */
     displayAlgorithmName(name) {
-        if (this.silenceMessages) {
-            return;
-        }
-
         // clear any existing timers to reset the display time if a new algorithm name comes in before the prior one is hidden
         clearTimeout(this.algorithmNameTimer);
 
         this.algosDisplayElement.textContent = `${name.toUpperCase()}`;
-        this.algosDisplayElement.style.display = 'block';
+
+        // only show the element if not in silent mode; the name is still stored so
+        // toggling off silent mode can reveal it
+        if (!this.silenceMessages) {
+            this.algosDisplayElement.style.display = 'block';
+        }
 
         // hide the algorithm name after the default display time
         this.algorithmNameTimer = setTimeout(() => {
@@ -159,7 +160,16 @@ export default class HudController {
      */
     toggleSilenceMode() {
         this.silenceMessages = !this.silenceMessages;
-        this.algosDisplayElement.textContent = '';
-        this.algosDisplayElement.style.display = 'none';
+
+        if (this.silenceMessages) {
+            // entering silent mode: hide the element but keep textContent so it
+            // can be revealed if the user exits silent mode while the timer is still running
+            this.algosDisplayElement.style.display = 'none';
+        } else {
+            // exiting silent mode: reveal the element if there is a pending name
+            if (this.algosDisplayElement.textContent !== '') {
+                this.algosDisplayElement.style.display = 'block';
+            }
+        }
     }
 }
