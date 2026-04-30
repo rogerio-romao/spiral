@@ -232,9 +232,9 @@ export default class MusicPlayer {
     }
 
     /**
-     * Format seconds into M:SS string.
+     * Format seconds into M:SS or H:MM:SS string.
      * @param {number} seconds - The time in seconds to format.
-     * @returns {string} The formatted time string in M:SS format.
+     * @returns {string} The formatted time string in M:SS or H:MM:SS format.
      */
     formatTime(seconds) {
         // this should never happen, but just in case
@@ -242,8 +242,16 @@ export default class MusicPlayer {
             return '0:00';
         }
 
-        const minutes = Math.floor(seconds / 60);
+        const totalSeconds = Math.floor(seconds);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
         const secondsRemaining = Math.floor(seconds % 60);
+
+        if (hours > 0) {
+            return `${hours}:${minutes.toString().padStart(2, '0')}:${secondsRemaining
+                .toString()
+                .padStart(2, '0')}`;
+        }
 
         return `${minutes}:${secondsRemaining.toString().padStart(2, '0')}`;
     }

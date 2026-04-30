@@ -24,8 +24,12 @@ describe('musicPlayer.formatTime', () => {
         expect(formatTime(60)).toBe('1:00');
     });
 
-    it('formats a large value', () => {
-        expect(formatTime(3661)).toBe('61:01');
+    it('formats a large value under one hour without hours', () => {
+        expect(formatTime(3599)).toBe('59:59');
+    });
+
+    it('formats values over one hour with hours included', () => {
+        expect(formatTime(3661)).toBe('1:01:01');
     });
 
     it('returns 0:00 for NaN', () => {
